@@ -1,0 +1,37 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta
+    name="description"
+    content="Portafolio"
+  />
+  </head>
+  <body class=" bg-white text-gray-900 dark:bg-gray-900 text-white">
+    <slot />
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</html>
+
+<style is:global>
+  @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+  :root {
+    font-family: "Open Sans", sans-serif;
+  }
+
+  html {
+    font-family: "Open Sans", sans-serif;
+  }
+</style>
