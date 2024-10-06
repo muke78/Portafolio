@@ -18,11 +18,12 @@ import ItemsNavbar from "./ItemsNavbar.astro";
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
         </svg>
       </label>
-  
-      <ul class="menu menu-horizontal px-16 md:flex hidden" id="navbar-menu">
+      <ul class="menu menu-horizontal md:flex hidden">
        <ItemsNavbar/>
-        <ThemeButton/>
       </ul>
+      <div class="list-none">
+        <ThemeButton/>
+      </div>
     </div>
   </div>
 
@@ -40,7 +41,6 @@ import ItemsNavbar from "./ItemsNavbar.astro";
         <!-- Los elementos del menú -->
          <div class="flex flex-col mt-10">
           <ItemsNavbar />
-          <ThemeButton />
          </div>
       </ul>
     </div>

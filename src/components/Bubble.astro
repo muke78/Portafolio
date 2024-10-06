@@ -1,0 +1,5 @@
+---
+const { class: className, classNameToBottom} = Astro.props;
+---
+<div class={`absolute bg-secondary size-96 rounded-full opacity-20 shadow-2xl shadow-primary z-[-1] blur-3xl ${className}`}></div>
+<div class={`absolute bg-accent size-60 rounded-full opacity-15 shadow-md shadow-primary z-[-1] blur-2xl ${classNameToBottom}`}></div>

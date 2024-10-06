@@ -25,7 +25,7 @@ const { title } = Astro.props;
     <meta property="twitter:description" content="Landing Page para proyecto de banco e inversiones online" />
     <meta property="twitter:image" content="https://portafolio-vercel-deploy.vercel.app/kdl.png" />
     <!-- Otros metas importantes -->
-    <meta name="theme-color" content="rgba(111, 55, 207, 1)" />
+    <meta name="theme-color" content="#6f37cf" />
     <!-- Asegúrate de que el color refleje tu marca -->
     <meta name="robots" content="index, follow" />
     <!-- Cambiado a index, follow para permitir la indexación -->
@@ -53,7 +53,7 @@ const { title } = Astro.props;
     animation-name: show;
     animation-fill-mode: both;
     animation-timeline: --reveal;
-    animation-range: entry -15% cover 50%;
+    animation-range: entry 25% cover 50%;
   }
   .sticky-navbar {
     position: sticky;
@@ -64,7 +64,7 @@ const { title } = Astro.props;
 
   @keyframes show {
     from{
-      opacity: 0; scale: -10%;
+      opacity: 0; scale: 10%;
     }
 
     to{

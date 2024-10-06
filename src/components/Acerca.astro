@@ -1,13 +1,64 @@
 ---
-
+import Bubble from "./Bubble.astro";
 ---
 
 <div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content text-center">
-      <div class="max-w-lg">
-        <h1 class="text-6xl font-bold">Acerca de</h1>
-        <p class="py-6"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias repellendus et commodi, animi quae possimus iusto, nihil cum veniam ab deserunt illo reprehenderit quo fuga aliquam non optio, fugiat nobis!</p>
-        <button class="btn btn-primary">Empecemos</button>
+  <div class="hero-content text-center">
+    <Bubble class="right-0 top-0" classNameToBottom="bottom-20 right-0 "/>
+    <div class="max-w-5xl">
+      
+      <div class="grid grid-cols-1 grid-rows-5 gap-4">
+
+        <div>
+          <h2 class="text-6xl font-bold mb-7 mt-20">Acerca de mi</h2>
+        </div>
+        
+        <div class="">
+          <div class="avatar">
+            <div class="ring-primary ring-offset-base-100 w-48 xl:w-80 lg:w-72 md:w-52 sm:w-36 rounded-full ring ring-offset-2">
+              <img src="/yop.webp" />
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class=""> -->
+          <div class="card bg-base-100 w-auto shadow-xl">
+            <div class="card-body">
+              <p class="font-medium">Desarrollador web trabajando en backend y frontend asi tambien
+                como en las base de datos  y despliegues de las paginas, un correcto control de versiones
+                desde el CLI de Git y analisis de datos en Power BI.
+              </p>
+            </div>
+          </div>
+        <!-- </div> -->
+
+        <!-- <div class="w-auto"> -->
+          <div class="stats stats-horizontal shadow w-auto ">
+            <div class="stat">
+              <div class="stat-value">2+</div>
+              <div class="">Años</div>
+              <div class="stat-desc">de experiencia</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">+7</div>
+              <div class="">Proyectos</div>
+              <div class="stat-desc">Completados</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">4+</div>
+              <div class="">Trabajando</div>
+              <div class="stat-desc">en compañias</div>
+            </div>
+          </div>
+        <!-- </div> -->
+
+        <div>
+          <a download href="/CV_Erick_Miguel_Gonzalez_Rivera.pdf" class="btn btn-secondary w-full mt-9">
+              Descargar CV
+          </a>
+      </div>
+
       </div>
     </div>
   </div>
+</div>
