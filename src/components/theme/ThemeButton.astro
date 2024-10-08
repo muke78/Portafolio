@@ -58,7 +58,6 @@ import { dataColorTheme } from "../../utils/dataColorsTheme.astro";
             const btnActClass = btn.getAttribute("data-act-class");
             const btnSvgElement = btn.querySelector("svg");
 
-            // Eliminar la clase activa y ocultar SVG
             if (btnActClass) {
                 btn.classList.remove(btnActClass);
                 if (btnSvgElement) {
@@ -67,7 +66,6 @@ import { dataColorTheme } from "../../utils/dataColorsTheme.astro";
                 }
             }
 
-            // Si el botón es el activo, añadir clase activa y mostrar SVG
             if (btn === activeButton) {
                 if (btnActClass) {
                     btn.classList.add(btnActClass);
@@ -84,11 +82,9 @@ import { dataColorTheme } from "../../utils/dataColorsTheme.astro";
 <style>
   .invisible {
     display: none;
-    /* O cualquier propiedad que oculte el SVG */
   }
 
   .visible {
-    /* O cualquier propiedad que muestre el SVG */
     display: block;
   }
 </style>
