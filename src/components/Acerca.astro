@@ -4,36 +4,32 @@ import Bubble from "./Bubble.astro";
 
 <div class="hero bg-base-200 min-h-screen">
   <div class="hero-content text-center">
-    <Bubble class="right-0 top-0" classNameToBottom="bottom-20 right-0 "/>
+    <Bubble class="top-40 lg:top-72 left-0 bg-primary" classNameToBottom="bottom-80 right-36 bg-accent" />
     <div class="max-w-5xl">
-      
-      <div class="grid grid-cols-1 grid-rows-5 gap-4">
+      <div>
+        <h2 class="text-6xl font-bold mt-20 mb-36">Acerca de mi</h2>
+      </div>
 
-        <div>
-          <h2 class="text-6xl font-bold mb-7 mt-20">Acerca de mi</h2>
-        </div>
-        
-        <div class="">
-          <div class="avatar">
-            <div class="ring-primary ring-offset-base-100 w-48 xl:w-80 lg:w-72 md:w-52 sm:w-36 rounded-full ring ring-offset-2">
+      <div class="grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-3 gap-4 ">
+
+        <div class="lg:col-span-2 lg:row-span-3">
+          <div class="avatar px-3">
+            <div class="ring-primary ring-offset-base-100 w-96 rounded-full ring ring-offset-2">
               <img src="/yop.webp" />
             </div>
           </div>
         </div>
 
-        <!-- <div class=""> -->
-          <div class="card bg-base-100 w-auto shadow-xl">
+        <div class="lg:col-span-2 lg:col-start-3">
+          <div class="backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-500 rounded-lg py-5 card">
             <div class="card-body">
-              <p class="font-medium">Desarrollador web trabajando en backend y frontend asi tambien
-                como en las base de datos  y despliegues de las paginas, un correcto control de versiones
-                desde el CLI de Git y analisis de datos en Power BI.
-              </p>
+              <p class="font-medium">Desarrollador web trabajando en backend y frontend asi tambien como en las base de datos y despliegues de las paginas, un correcto control de versiones desde el CLI de Git y analisis de datos en Power BI. </p>
             </div>
           </div>
-        <!-- </div> -->
-
-        <!-- <div class="w-auto"> -->
-          <div class="stats stats-horizontal shadow w-auto ">
+        </div>
+         
+        <div class="lg:col-span-2 lg:col-start-3 lg:row-start-2">
+          <div class="bg-transparent stats stats-horizontal backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-500 rounded-lg py-5 w-full">
             <div class="stat">
               <div class="stat-value">2+</div>
               <div class="">Años</div>
@@ -50,13 +46,12 @@ import Bubble from "./Bubble.astro";
               <div class="stat-desc">en compañias</div>
             </div>
           </div>
-        <!-- </div> -->
+        </div>
 
-        <div>
-          <a download href="/CV_Erick_Miguel_Gonzalez_Rivera.pdf" class="btn btn-secondary w-full mt-9">
-              Descargar CV
-          </a>
-      </div>
+        <div class="lg:col-span-2 lg:col-start-3 lg:row-start-3">
+          <a download href="/CV_Erick_Miguel_Gonzalez_Rivera.pdf" class="btn btn-secondary w-full mt-9"> Descargar CV </a>
+        </div>
+
 
       </div>
     </div>

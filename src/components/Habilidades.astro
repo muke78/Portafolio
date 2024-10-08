@@ -1,219 +1,39 @@
 ---
-
-
+import { dataSkills } from "../utils/dataHabilidades.astro";
+import Bubble from "./Bubble.astro";
 ---
 
-<div class="hero bg-base-200 min-h-screen">
+<div class="hero bg-base-200  min-h-screen">
   <div class="hero-content text-center">
+    <Bubble class="top-40 bg-primary sm:left-32" classNameToBottom="bottom-20 right-20 bg-accent sm:right-72"/>
     <div class="max-w-5xl">
       <div>
-        <h2 class="text-6xl font-bold mb-7 mt-20">Habilidades</h2>
+        <h2 class="text-6xl font-bold mb-32 mt-20">Habilidades</h2>
       </div>
-
-      <div class="flex w-full flex-col lg:flex-row gap-5">
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=html,css,javascript,php,vite">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1 ">Desarollador en frontend</h2>
-              <div class="badge badge-secondary">Mas de 3 años</div>
-            </div>
+      <div class="backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+          <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2">
+            {dataSkills.map(({ time, area, title, images }) => (
+              <article class="flex max-w-xl flex-col items-start justify-between">
+                <div class="flex items-center gap-x-4 text-xs">
+                   <time>{ time }</time>
+                  <a class="relative z-10 rounded-full bg-secondary px-3 py-1.5 font-medium text-neutral-100">{ area }</a>
+                </div>
+                <div class="group relative">
+                  <h3 class="mt-3 text-lg font-semibold leading-6">
+                    <a>
+                      <span class="text-lg">{ title }</span>
+                    </a>
+                  </h3>
+                  {images.map((image) => (
+                    <img class="mt-5 line-clamp-3 leading-6" src={ image } alt={`Image for ${title}`} />
+                  ))}
+                </div>
+              </article>
+            ))}
           </div>
-
         </div>
-
-        <div class="divider lg:divider-horizontal"></div>
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <div>
-                <img src="https://go-skill-icons.vercel.app/api/icons?i=react,astro,sass">
-              </div>
-            <div>
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=styledcomponents,chartjs,leaflet" alt="">
-            </div>
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Frameworks y librerias</h2>
-              <div class="badge badge-secondary">Mas de un año</div>
-            </div>
-          </div>
-
-        </div>
-        <div class="divider lg:divider-horizontal"></div>
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary"> 
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2xl">Pruebas y testing</h2>
-              <div class="badge badge-secondary">Mas de un año</div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider lg:divider-horizontal"></div>
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=mui,bootstrap,tailwindcss">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Componentes UI</h2>
-              <div class="badge badge-secondary">Mas de 4 años</div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider lg:divider-horizontal"></div>
-
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=pnpm,npm,yarn">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Gestores de paquetes</h2>
-              <div class="badge badge-secondary">Mas de 2 años</div>
-            </div>
-          </div>
-
-        </div>
-
-
-        <div class="divider lg:divider-horizontal"></div>
-
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=figma,ps">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Diseño y maquetado</h2>
-              <div class="badge badge-secondary">Mas de 4 años</div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider lg:divider-horizontal"></div>
-
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=java,nodejs,python,anaconda,express">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Lenguajes y frameworks</h2>
-              <div class="badge badge-secondary">Mas de 3 años</div>
-            </div>
-          </div>
-
-        </div>
-
-
-        <div class="divider lg:divider-horizontal"></div>
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=postman,supabase,postgres">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=mysql,sqlserver,git">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=authjs,zustand,swagger">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Bases de datos y herramientas </h2>
-              <div class="badge badge-secondary">Mas de 1 años</div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider lg:divider-horizontal"></div>
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=aws,github,firebase,netlify,vercel" alt="AWS"> 
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Servicios en la nube</h2>
-              <div class="badge badge-secondary">Mas de 1 años</div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider lg:divider-horizontal"></div>
-
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=pbi" alt="PowerBI">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1">Analisi de datos</h2>
-              <div class="badge badge-secondary">Mas de 1 años</div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider lg:divider-horizontal"></div>
-
-
-        <div class="card card-compact bg-base-100 w-96 shadow-xl">
-
-          <div class="card-body">
-            <figure class="flex flex-col p-4">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=nestjs,typescript,vue">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=vue,angular,kubernetes,docker">
-              <img src="https://go-skill-icons.vercel.app/api/icons?i=mongodb,graphql,apollo,dotnet">
-            </figure>
-            <div class="divider"></div>
-            <div class="card p-2 flex justify-center items-center">
-              <h2 class="card-title p-1 text-2x1"></h2>
-              <div class="badge badge-secondary">En proceso</div>
-            </div>
-          </div>
-
-        </div>
-
-
       </div>
-        </div>
+    </div>
   </div>
 </div>

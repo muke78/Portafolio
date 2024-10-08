@@ -44,16 +44,25 @@ const { title } = Astro.props;
 
 
 <style is:global>
+  
   html {
     scroll-behavior: smooth;
   }
+
+  canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      filter: blur(30px);
+    }
 
   .hero{
     view-timeline-name: --reveal;
     animation-name: show;
     animation-fill-mode: both;
     animation-timeline: --reveal;
-    animation-range: entry 25% cover 50%;
+    animation-range: cover -50% entry 25%;
   }
   .sticky-navbar {
     position: sticky;
