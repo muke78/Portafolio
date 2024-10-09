@@ -1,22 +1,43 @@
 ---
-import Bubble from "./Bubble.astro";
+import { dataContacto } from '../utils/dataContacto.astro';
+import Bubble from './Bubble.astro';
 ---
 
-
 <div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content text-center">
-      <Bubble class="top-40 bg-primary sm:left-32" classNameToBottom="bottom-20 right-20 bg-accent sm:right-72"/>
-      <div class="max-w-5xl">
-        <div>
-          <h2 class="text-6xl font-bold mb-32 mt-20">Contacto</h2>
-        </div>
-        <div class="mockup-browser bg-secondary border">
-          <div class="mockup-browser-toolbar">
-            <div class="input">muke78.com</div>
-          </div>
-          <div class="bg-base-200 flex justify-center px-4 py-16">Hello!</div>
-        </div>
+  <div class="hero-content text-center">
+    <Bubble
+      class="lg:bottom-24 left-0 bg-primary"
+      classNameToBottom="top-80 right-0 lg:top-72 lg:right-24 bg-secondary"
+    />
 
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-6xl font-bold mb-32 mt-20">Proyectos</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          dataContacto.map(({ area, img, title, url, text}) => (
+            <div class="backdrop-blur-[19px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8">
+              <div class="flex items-center mb-2">
+                <div class="avatar w-9 h-9 mr-2">
+                  <img src={img} alt={title} class="rounded-full" />
+                </div>
+                <h2 class="font-semibold text-xl">{area}</h2>
+              </div>
+              <p class="text-base-content">{text}</p>
+              <div class="mt-4">
+                <a
+                  class="mt-4 btn btn-neutral backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg flex justify-center items-center"
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  { title }
+                </a>
+              </div>
+            </div>
+          ))
+        }
       </div>
     </div>
   </div>
+</div>

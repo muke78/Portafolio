@@ -26,11 +26,7 @@ repos = repos.filter(repo => reposDeseados.includes(repo.name));
               </div>
               <h2 class="font-semibold text-xl">{repo.name}</h2>
             </div>
-
-            <!-- Descripción -->
             <p class="text-base-content">{repo.description ? repo.description : 'No description available.'}</p>
-
-            <!-- Topics mejor organizados -->
             <div class="mt-4">
             {repo.topics ? (
               <div class="flex flex-wrap gap-2">
