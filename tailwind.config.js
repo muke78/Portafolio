@@ -15,7 +15,6 @@ module.exports = {
       'corporate',
       'synthwave',
       'retro',
-      'cyberpunk',
       'valentine',
       'halloween',
       'garden',
