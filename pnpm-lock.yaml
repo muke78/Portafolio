@@ -20,9 +20,6 @@ importers:
       daisyui:
         specifier: ^4.12.12
         version: 4.12.12(postcss@8.4.47)
-      flowbite:
-        specifier: ^2.5.2
-        version: 2.5.2(rollup@4.24.0)
       tailwindcss:
         specifier: ^3.4.13
         version: 3.4.13
@@ -480,18 +477,6 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@popperjs/core@2.11.8':
-    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
-
-  '@rollup/plugin-node-resolve@15.3.0':
-    resolution: {integrity: sha512-9eO5McEICxMzJpDW9OnMYSv4Sta3hmt7VtBFz5zR9273suNOydOyq/FrGeGy+KsTRFm8w0SLVhzig2ILFT63Ag==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.78.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
   '@rollup/pluginutils@5.1.2':
     resolution: {integrity: sha512-/FIdS3PyZ39bjZlwqFnWqCOVnW7o963LtKMwQOD0NhQqw22gSr2YY1afu3FxRip4ZCZNsD5jq6Aaz6QV3D/Njw==}
     engines: {node: '>=14.0.0'}
@@ -628,9 +613,6 @@ packages:
 
   '@types/nlcst@2.0.3':
     resolution: {integrity: sha512-vSYNSDe6Ix3q+6Z7ri9lyWqgGhJTmzRjZRqyq15N0Z/1/UnVsno9G/N40NBijoYx2seFDIl0+B2mgAb9mezUCA==}
-
-  '@types/resolve@1.20.2':
-    resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
 
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
@@ -891,10 +873,6 @@ packages:
   decode-named-character-reference@1.0.2:
     resolution: {integrity: sha512-O8x12RzrUF8xyVcY0KJowWsmaJxQbmy0/EtnNtHRpsOcT7dFk5W598coHqBVpmWo1oQQfsCqfCmkZN5DJrZVdg==}
 
-  deepmerge@4.3.1:
-    resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
-    engines: {node: '>=0.10.0'}
-
   dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
@@ -1024,12 +1002,6 @@ packages:
   flattie@1.1.1:
     resolution: {integrity: sha512-9UbaD6XdAL97+k/n+N7JwX46K/M6Zc6KcFYskrYL8wbBV/Uyk0CTAMY0VT+qiK5PM7AIc9aTWYtq65U7T+aCNQ==}
     engines: {node: '>=8'}
-
-  flowbite-datepicker@1.3.0:
-    resolution: {integrity: sha512-CLVqzuoE2vkUvWYK/lJ6GzT0be5dlTbH3uuhVwyB67+PjqJWABm2wv68xhBf5BqjpBxvTSQ3mrmLHpPJ2tvrSQ==}
-
-  flowbite@2.5.2:
-    resolution: {integrity: sha512-kwFD3n8/YW4EG8GlY3Od9IoKND97kitO+/ejISHSqpn3vw2i5K/+ZI8Jm2V+KC4fGdnfi0XZ+TzYqQb4Q1LshA==}
 
   foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
@@ -1174,9 +1146,6 @@ packages:
   is-interactive@2.0.0:
     resolution: {integrity: sha512-qP1vozQRI+BMOPcjFzrjXuQvdak2pHNUMZoeG2eRbiSqyvbEf/wQtEOTOX1guk6E3t36RkaqiSt8A/6YElNxLQ==}
     engines: {node: '>=12'}
-
-  is-module@1.0.0:
-    resolution: {integrity: sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==}
 
   is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
@@ -1428,10 +1397,6 @@ packages:
   mimic-function@5.0.1:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
-
-  mini-svg-data-uri@1.4.4:
-    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
-    hasBin: true
 
   minimatch@9.0.5:
     resolution: {integrity: sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==}
@@ -2605,18 +2570,6 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@popperjs/core@2.11.8': {}
-
-  '@rollup/plugin-node-resolve@15.3.0(rollup@4.24.0)':
-    dependencies:
-      '@rollup/pluginutils': 5.1.2(rollup@4.24.0)
-      '@types/resolve': 1.20.2
-      deepmerge: 4.3.1
-      is-module: 1.0.0
-      resolve: 1.22.8
-    optionalDependencies:
-      rollup: 4.24.0
-
   '@rollup/pluginutils@5.1.2(rollup@4.24.0)':
     dependencies:
       '@types/estree': 1.0.6
@@ -2742,8 +2695,6 @@ snapshots:
   '@types/nlcst@2.0.3':
     dependencies:
       '@types/unist': 3.0.3
-
-  '@types/resolve@1.20.2': {}
 
   '@types/unist@3.0.3': {}
 
@@ -3091,8 +3042,6 @@ snapshots:
     dependencies:
       character-entities: 2.0.2
 
-  deepmerge@4.3.1: {}
-
   dequal@2.0.3: {}
 
   detect-libc@2.0.3:
@@ -3218,21 +3167,6 @@ snapshots:
       pkg-dir: 4.2.0
 
   flattie@1.1.1: {}
-
-  flowbite-datepicker@1.3.0(rollup@4.24.0):
-    dependencies:
-      '@rollup/plugin-node-resolve': 15.3.0(rollup@4.24.0)
-      flowbite: 2.5.2(rollup@4.24.0)
-    transitivePeerDependencies:
-      - rollup
-
-  flowbite@2.5.2(rollup@4.24.0):
-    dependencies:
-      '@popperjs/core': 2.11.8
-      flowbite-datepicker: 1.3.0(rollup@4.24.0)
-      mini-svg-data-uri: 1.4.4
-    transitivePeerDependencies:
-      - rollup
 
   foreground-child@3.3.0:
     dependencies:
@@ -3411,8 +3345,6 @@ snapshots:
       is-docker: 3.0.0
 
   is-interactive@2.0.0: {}
-
-  is-module@1.0.0: {}
 
   is-number@7.0.0: {}
 
@@ -3825,8 +3757,6 @@ snapshots:
       picomatch: 2.3.1
 
   mimic-function@5.0.1: {}
-
-  mini-svg-data-uri@1.4.4: {}
 
   minimatch@9.0.5:
     dependencies:
