@@ -34,20 +34,15 @@ import ItemsNavbar from "./ItemsNavbar.astro";
     <div class="drawer-side">
       <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
       <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4 z-50 relative">
-        <!-- Botón de cerrar (la "X") -->
         <label for="my-drawer-4" class="absolute top-4 right-4 text-4xl cursor-pointer z-50" aria-label="Close">
           &times;
         </label>
-        <!-- Los elementos del menú -->
          <div class="flex flex-col mt-10">
           <ItemsNavbar />
          </div>
       </ul>
     </div>
   </div>
-  
-  
-  
   
   <script>
     document.addEventListener('DOMContentLoaded', () => {
