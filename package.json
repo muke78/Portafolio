@@ -1,7 +1,8 @@
 {
   "name": "portafolio",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "license":"MIT",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
