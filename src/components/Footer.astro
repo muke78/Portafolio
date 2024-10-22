@@ -1,8 +1,11 @@
+---
+const v = import.meta.env.VERSION;
+---
 
 <footer
-  class="footer footer-center bg-gradient-to-tl from-primary  to-accent backdrop-blur-[30px] backdrop-saturate-[180%] rounded-sm card text-base-100 p-10"
+  class="footer footer-center bg-gradient-to-tl from-primary to-accent backdrop-blur-[30px] backdrop-saturate-[180%] rounded-sm card text-base-100 p-10"
 >
-<aside>
+  <aside>
     <div>
       <div class="text-2xl font-bold leading-4 text-base-100">KHE</div>
       <div class="text-2xl font-bold text-base-100">LDE</div>
@@ -37,7 +40,10 @@
     <div class="flex justify-center items-center">
       <p>Proyecto desarrollado con Astro</p>
     </div>
-    <img src="/favicon.svg" alt="astro" class="w-16 fill-current">
+    <div class="flex justify-center items-center flex-row-reverse">
+      <p class="font-semibold">Version {v}</p>
+      <img src="/favicon.svg" alt="astro" class="w-16 fill-current" />
+    </div>
     <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
   </aside>
   <nav>
