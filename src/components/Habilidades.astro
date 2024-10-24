@@ -1,36 +1,52 @@
 ---
-import { dataSkills } from "../utils/dataHabilidades.astro";
-import Bubble from "./Bubble.astro";
+import { dataSkills } from '../utils/dataHabilidades.astro';
+import Bubble from './Bubble.astro';
 ---
 
-<div class="hero bg-base-200  min-h-screen">
+<div class="hero bg-base-200 min-h-screen">
   <div class="hero-content text-center">
-    <Bubble class="top-40 bg-primary sm:left-32" classNameToBottom="bottom-20 right-20 bg-accent sm:right-72"/>
+    <Bubble
+      class="top-40 bg-primary sm:left-32"
+      classNameToBottom="bottom-20 right-20 bg-accent sm:right-72"
+    />
     <div class="max-w-5xl">
       <div>
         <h2 class="text-6xl font-bold mb-32 mt-20">Habilidades</h2>
       </div>
-      <div class="backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card">
+      <div
+        class="backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card"
+      >
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
-          <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2">
-            {dataSkills.map(({ time, area, title, images }) => (
-              <article class="flex max-w-xl flex-col items-start justify-between">
-                <div class="flex items-center gap-x-4 text-xs">
-                   <time>{ time }</time>
-                  <a class="relative z-10 rounded-full bg-secondary px-3 py-1.5 font-medium text-neutral-100">{ area }</a>
-                </div>
-                <div class="group relative">
-                  <h3 class="mt-3 text-lg font-semibold leading-6">
-                    <a>
-                      <span class="text-lg">{ title }</span>
+          <div
+            class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2"
+          >
+            {
+              dataSkills.map(({ time, area, title, images }) => (
+                <article class="flex max-w-xl flex-col items-start justify-between">
+                  <div class="flex items-center gap-x-4 text-xs">
+                    <time>{time}</time>
+                    <a class="relative z-10 rounded-full bg-secondary px-3 py-1.5 font-medium text-neutral-100">
+                      {area}
                     </a>
-                  </h3>
-                  {images.map((image) => (
-                    <img class="mt-5 line-clamp-3 leading-6" src={ image } alt={`Image for ${title}`} />
-                  ))}
-                </div>
-              </article>
-            ))}
+                  </div>
+                  <div class="group relative">
+                    <h3 class="mt-3 text-lg font-semibold leading-6">
+                      <a>
+                        <span class="text-lg">{title}</span>
+                      </a>
+                    </h3>
+                    {images.map((image) => (
+                      <img
+                        class="mt-5 line-clamp-3 leading-6"
+                        src={image}
+                        alt={`Image for ${title}`}
+                        loading="lazy"
+                      />
+                    ))}
+                  </div>
+                </article>
+              ))
+            }
           </div>
         </div>
       </div>

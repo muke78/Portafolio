@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth transition-colors duration-1000 ease-out">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,14 +50,20 @@
 </html>
 
 <style is:global>
+  html {
+    transition:
+      background-color 1.2s ease-out,
+      color 1.2s ease-out;
+  }
+
   .hero {
     view-timeline-name: --reveal;
     animation-name: show;
-    animation-fill-mode: both;
+    animation-fill-mode: none;
     animation-timeline: --reveal;
     animation-range: cover -50% entry 25%;
   }
-  
+
   .sticky-navbar {
     position: sticky;
     top: 0;

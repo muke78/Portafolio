@@ -15,11 +15,16 @@ import Bubble from './Bubble.astro';
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
-          dataContacto.map(({ area, img, title, url, text}) => (
+          dataContacto.map(({ area, img, title, url, text }) => (
             <div class="backdrop-blur-[19px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8">
               <div class="flex items-center mb-2">
                 <div class="avatar w-9 h-9 mr-2">
-                  <img src={img} alt={title} class="rounded-full" />
+                  <img
+                    src={img}
+                    alt={title}
+                    class="rounded-full"
+                    loading="lazy"
+                  />
                 </div>
                 <h2 class="font-semibold text-xl">{area}</h2>
               </div>
@@ -31,7 +36,7 @@ import Bubble from './Bubble.astro';
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  { title }
+                  {title}
                 </a>
               </div>
             </div>
