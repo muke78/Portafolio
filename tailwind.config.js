@@ -1,10 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  content: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    './node_modules/flowbite/**/*.js',
+  ],
   // add daisyUI plugin
-  plugins: [require('daisyui')],
-  
-// daisyUI config (optional - here are the default values)
+  plugins: [require('daisyui', 'flowbite/plugin')],
+
+  // daisyUI config (optional - here are the default values)
   daisyui: {
     themes: [
       'light',
