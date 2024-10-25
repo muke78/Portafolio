@@ -6,10 +6,13 @@ import react from '@astrojs/react';
 export default defineConfig({
   integrations: [tailwind(), react()],
   i18n: {
-    defaultLocale: 'en',
+    defaultLocale: 'es',
     locales: ['es', 'en'],
     routing: {
       prefixDefaultLocale: false,
     },
+    // fallback: {
+    //   en: "es"
+    // }
   },
 });

@@ -1,3 +1,7 @@
+---
+import { languages } from '../i18n/ui';
+---
+
 <button
   id="dropdownDefaultButton"
   data-dropdown-toggle="dropdownTheme"
@@ -37,13 +41,19 @@
 </button>
 
 <!-- Dropdown menu -->
-<div
-  id="dropdownTheme"
-  class="z-10 hidden bg-base-content rounded-lg shadow w-44"
->
+<div id="dropdownTheme" class="z-10 hidden bg-primary rounded-lg shadow w-44">
   <ul class="py-2 text-base-300" aria-labelledby="dropdownDefaultButton">
-    <li>
-      <a href="#" class="block px-4 py-2">Dashboard</a>
-    </li>
+    {
+      Object.entries(languages).map(([lang, label]) => (
+        <li>
+          <a
+            href={`/${lang}/`}
+            class="block px-4 py-2 text-primary-content font-semibold"
+          >
+            {label}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </div>

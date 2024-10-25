@@ -1,10 +1,17 @@
+---
+import { getLangFromUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+---
+
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portafolio</title>
     <meta name="description" content="Portafolio muke78" />
+    <!-- <meta http-equiv="refresh" content="0;url=/es/" /> -->
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta
@@ -56,8 +63,8 @@
 <style is:global>
   html {
     transition:
-      background-color 0.4s ease-out,
-      color 0.7s ease-out;
+      background-color 0.5s ease-out,
+      color 0.5s ease-out;
   }
 
   .hero {

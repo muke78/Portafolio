@@ -1,0 +1,37 @@
+---
+import { StrictMode } from 'react';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Header from '../../components/pages/Header.astro';
+import Acerca from '../../components/Acerca.astro';
+import Habilidades from '../../components/Habilidades.astro';
+import Proyectos from '../../components/Proyectos.astro';
+import Contacto from '../../components/Contacto.astro';
+import Footer from '../../components/Footer.astro';
+import Counter from '../../components/Counter.jsx';
+---
+
+<Layout>
+  <header class="relative max-w-screen-2x1 mx-auto">
+    <Navbar data-aos="fade-in" />
+    <div id="inicio">
+      <Header />
+    </div>
+    <div id="about">
+      <Acerca />
+    </div>
+    <div id="skills">
+      <Habilidades />
+    </div>
+    <div id="projects">
+      <Proyectos />
+    </div>
+    <div id="contact">
+      <Contacto />
+      <!-- <StrictMode>
+        <Counter client:load />
+      </StrictMode> -->
+    </div>
+    <Footer />
+  </header>
+</Layout>

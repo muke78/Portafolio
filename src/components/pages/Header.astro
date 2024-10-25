@@ -1,5 +1,10 @@
 ---
-import Bubble from './Bubble.astro';
+import Bubble from '../Bubble.astro';
+
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="hero bg-base-300 min-h-screen">
@@ -9,16 +14,14 @@ import Bubble from './Bubble.astro';
       <h1
         class="text-6xl xl:text-8xl lg:text-8x1 md:text-6xl sm:text-4xl font-bold"
       >
-        Hola soy
+       {t('header.title')}
       </h1>
       <span
         class="text-7xl xl:text-8xl lg:text-8x1 md:text-6xl sm:text-4xl leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent"
         >Erick González</span
       >
       <p class="py-6 font-medium">
-        Experiencia en el diseño y desarrollo de aplicaciones web, abarcando
-        tanto el frontend como el backend, además de un sólido manejo de
-        análisis de datos y bases de datos.
+        {t('header.about')}
       </p>
       <a
         href="#about"
