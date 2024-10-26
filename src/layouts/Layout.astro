@@ -1,11 +1,9 @@
 ---
-import { getLangFromUrl } from '../i18n/utils';
-
-const lang = getLangFromUrl(Astro.url);
+const { currentLocale } = Astro;
 ---
 
 <!doctype html>
-<html lang={lang} class="scroll-smooth">
+<html lang={currentLocale} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -1,5 +1,9 @@
 ---
+import { getI18N } from '../i18n';
 import Bubble from './Bubble.astro';
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -10,7 +14,9 @@ import Bubble from './Bubble.astro';
     />
     <div class="max-w-5xl">
       <div>
-        <h2 class="text-6xl font-bold mt-20 mb-36">Acerca de mí</h2>
+        <h2 class="text-6xl font-bold mt-20 mb-36">
+          {i18n.ABOUTME.ABOUT_TITLE}
+        </h2>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-4">
@@ -64,14 +70,7 @@ import Bubble from './Bubble.astro';
           >
             <div class="card-body">
               <p class="font-medium">
-                Soy un desarrollador web especializado en la creación de
-                aplicaciones completas desde el diseño de interfaces hasta la
-                implementación de lógica en el servidor. Tengo experiencia en
-                bases de datos y en el despliegue de aplicaciones, asegurando un
-                rendimiento óptimo y una experiencia de usuario fluida. Además,
-                domino el control de versiones a través de Git y utilizo Power
-                BI para el análisis de datos, lo que me permite tomar decisiones
-                informadas basadas en métricas.
+                {i18n.ABOUTME.ABOUT_ABOUT_DESCRIPTION}
               </p>
             </div>
           </div>
@@ -83,18 +82,24 @@ import Bubble from './Bubble.astro';
           >
             <div class="stat">
               <div class="stat-value">2+</div>
-              <div class="">Años</div>
-              <div class="stat-desc">de experiencia</div>
+              <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[0].EXPIRENCE}</div>
+              <div class="stat-desc">
+                {i18n.ABOUTME.ABOUT_EXPIRENCE[0].EXPIRENCE_ABOUT}
+              </div>
             </div>
             <div class="stat">
               <div class="stat-value">+7</div>
-              <div class="">Proyectos</div>
-              <div class="stat-desc">completados</div>
+              <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[1].PROJECTS}</div>
+              <div class="stat-desc">
+                {i18n.ABOUTME.ABOUT_EXPIRENCE[1].PROJECTS_ABOUT}
+              </div>
             </div>
             <div class="stat">
               <div class="stat-value">4+</div>
-              <div class="">Trabajando</div>
-              <div class="stat-desc">en compañias</div>
+              <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING}</div>
+              <div class="stat-desc">
+                {i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING_ABOUT}
+              </div>
             </div>
           </div>
         </div>
@@ -105,7 +110,7 @@ import Bubble from './Bubble.astro';
             href="/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
             class="btn btn-secondary w-full"
           >
-            Descargar CV
+            {i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
           </a>
         </div>
       </div>

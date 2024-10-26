@@ -1,8 +1,27 @@
 {
-    "HEADER" : {
-        "HEADER_TITLE": "Hello I'am",
-        "HEADER_NAME": "Erick Gonzalez",
-        "HEADER_ABOUT": "Experience in the design and development of web applications, covering both frontend and backend, as well as solid knowledge of data analysis and databases.",
-         "HEADER_BUTTON": "About me"
-    }
+  "HEADER": {
+    "HEADER_TITLE": "Hello I'am",
+    "HEADER_NAME": "Erick Gonzalez",
+    "HEADER_ABOUT": "Experience in the design and development of web applications, covering both frontend and backend, as well as solid knowledge of data analysis and databases.",
+    "HEADER_BUTTON": "About me"
+  },
+  "ABOUTME": {
+    "ABOUT_TITLE": "About me",
+    "ABOUT_ABOUT_DESCRIPTION": "I am a web developer specialized in creating complete applications from interface design to logic implementation on the server. I have experience in databases and application deployment, ensuring optimal performance and a smooth user experience. Additionally, I have mastered version control through Git and use Power BI for data analysis, allowing me to make informed decisions based on metrics.",
+    "ABOUT_EXPIRENCE": [
+      {
+        "EXPIRENCE": "Years",
+        "EXPIRENCE_ABOUT": "of experience"
+      },
+      {
+        "PROJECTS": "Projects",
+        "PROJECTS_ABOUT": "completed"
+      },
+      {
+        "WORKING": "Working",
+        "WORKING_ABOUT": "in companies"
+      }
+    ],
+    "ABOUT_DOWNLOAD_CV": "Download CV"
+  }
 }
