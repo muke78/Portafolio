@@ -28,7 +28,8 @@
     "SKILLS_TITLE": "Habilidades"
   },
   "PROJECTS": {
-    "PROJECTS_TITLE": "Proyectos"
+    "PROJECTS_TITLE": "Proyectos",
+    "PROJECTS_VIEW": "Ver proyecto"
   },
   "CONTACT": {
     "CONTACT_TITLE": "Contacto"

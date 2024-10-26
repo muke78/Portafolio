@@ -28,7 +28,8 @@
     "SKILLS_TITLE": "Skills"
   },
   "PROJECTS": {
-    "PROJECTS_TITLE": "Projects"
+    "PROJECTS_TITLE": "Projects",
+    "PROJECTS_VIEW": "See project"
   },
   "CONTACT": {
     "CONTACT_TITLE": "Contact"

@@ -6,7 +6,7 @@ import Bubble from './Bubble.astro';
 const GITHUB_API_URL = import.meta.env.GITHUB_API_URL;
 const response = await fetch(GITHUB_API_URL);
 let repos = await response.json();
-repos = repos.filter(repo => reposDeseados.includes(repo.name));
+repos = repos.filter((repo) => reposDeseados.includes(repo.name));
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
@@ -20,7 +20,9 @@ const i18n = getI18N({ currentLocale });
     />
     <div class="max-w-5xl">
       <div>
-        <h2 class="text-6xl font-bold mb-32 mt-20">{i18n.PROJECTS.PROJECTS_TITLE}</h2>
+        <h2 class="text-6xl font-bold mb-32 mt-20">
+          {i18n.PROJECTS.PROJECTS_TITLE}
+        </h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
@@ -71,7 +73,7 @@ const i18n = getI18N({ currentLocale });
                 href={repo.html_url}
                 target="_blank"
               >
-                Ver Proyecto
+                {i18n.PROJECTS.PROJECTS_VIEW}
               </a>
             </div>
           ))
