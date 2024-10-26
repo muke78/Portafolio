@@ -23,5 +23,16 @@
       }
     ],
     "ABOUT_DOWNLOAD_CV": "Descargar CV"
+  },
+  "SKILLS": {
+    "SKILL_1": {
+      "TIME": "Más de 2 años",
+      "AREA": "Frontend",
+      "TITLE": "Lenguajes y tecnologías principales",
+      "IMAGES": [
+        "https://go-skill-icons.vercel.app/api/icons?i=html,css,javascript",
+        "https://go-skill-icons.vercel.app/api/icons?i=php,vite"
+      ]
+    }
   }
 }
