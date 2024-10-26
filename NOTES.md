@@ -9,5 +9,5 @@
 
 
 ## Cambios que se pueden ir haciendo para despues
-- Mejorar la reponsividad de ipad mini, iPad Air, Galaxy Z Fold 5
+- Mejorar la reponsividad de Galaxy Z Fold 5
 - Mejorando el responsive y los stacks de proyectos
