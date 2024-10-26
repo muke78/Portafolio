@@ -1,10 +1,16 @@
 ---
-import { dataListNavbar } from "../utils/data.astro";
+import { dataListNavbar } from '../utils/dataNavbar.astro';
+import { dataListNavbarEN } from '../utils/dataNavbarEN.astro';
+
+const { currentLocale } = Astro;
+let dataChange;
+dataChange = currentLocale === 'es' ? dataListNavbar : dataListNavbarEN;
 ---
 
-{ dataListNavbar.map((list) => (
-     <li>
-        <a href={list.to}> { list.label } </a>
+{
+  dataChange.map((list) => (
+    <li>
+      <a href={list.to}> {list.label} </a>
     </li>
-)) }
-
+  ))
+}

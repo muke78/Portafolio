@@ -1,5 +1,9 @@
 ---
+import { getI18N } from '../../i18n';
 import { dataColorTheme } from '../../utils/dataColorsTheme.astro';
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
 ---
 
 <button
@@ -26,7 +30,7 @@ import { dataColorTheme } from '../../utils/dataColorsTheme.astro';
       d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
     ></path>
   </svg>
-  <span class="hidden md:inline"> Temas </span>
+  <span class="hidden md:inline"> {i18n.THEME.BUTTON_LABEL} </span>
 
   <svg
     class="w-2.5 h-2.5 ms-3"
@@ -49,7 +53,10 @@ import { dataColorTheme } from '../../utils/dataColorsTheme.astro';
   id="dropdownLang"
   class="z-10 hidden bg-base-content rounded-lg shadow w-44"
 >
-  <ul class="flex flex-col gap-2 p-2 border-none bg-base-100 rounded-md z-50 w-[12rem] h-[20.6rem] overflow-y-auto overflow-x-hidden" aria-labelledby="dropdownDefaultButton">
+  <ul
+    class="flex flex-col gap-2 p-2 border-none bg-base-100 rounded-md z-50 w-[12rem] h-[20.6rem] overflow-y-auto overflow-x-hidden"
+    aria-labelledby="dropdownDefaultButton"
+  >
     {
       dataColorTheme.map(({ colors, name }) => (
         <div class="flex items-center justify-start">
@@ -87,7 +94,6 @@ import { dataColorTheme } from '../../utils/dataColorsTheme.astro';
 </div>
 
 <script>
- 
   document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
