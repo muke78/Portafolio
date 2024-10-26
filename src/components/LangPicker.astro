@@ -5,7 +5,7 @@ import { languages } from '../i18n/ui';
 <button
   id="dropdownDefaultButton"
   data-dropdown-toggle="dropdownTheme"
-  class="btn px-3"
+  class="btn btn-sm btn-ghost hover:btn-outline px-3"
   type="button"
 >
   <svg
@@ -41,15 +41,20 @@ import { languages } from '../i18n/ui';
 </button>
 
 <!-- Dropdown menu -->
-<div id="dropdownTheme" class="z-10 hidden bg-primary rounded-lg shadow w-44">
+<div id="dropdownTheme" class="z-10 hidden bg-base-content rounded-lg shadow w-44">
   <ul class="py-2 text-base-300" aria-labelledby="dropdownDefaultButton">
     {
-      Object.entries(languages).map(([lang, label]) => (
+      Object.entries(languages).map(([code, { label, img }]) => (
         <li>
           <a
-            href={`/${lang}/`}
-            class="block px-4 py-2 text-primary-content font-semibold"
+            href={`/${code}/`}
+            class="block px-4 py-2 text-base font-semibold"
           >
+            <img
+              src={`${img.src}`}
+              alt={`${label} flag`}
+              class="inline-block w-6 h-6 mr-2"
+            />
             {label}
           </a>
         </li>
