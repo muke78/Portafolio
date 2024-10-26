@@ -24,10 +24,28 @@
     ],
     "ABOUT_DOWNLOAD_CV": "Download CV"
   },
+  "SKILLS": {
+    "SKILLS_TITLE": "Skills"
+  },
+  "PROJECTS": {
+    "PROJECTS_TITLE": "Projects"
+  },
+  "CONTACT": {
+    "CONTACT_TITLE": "Contact"
+  },
+  "FOOTER": {
+    "FOOTER_MAKE": "Make with",
+    "FOOTER_SEPARATOR": "and",
+    "FOOTER_DESCRIPTION": "Project developed with Astro",
+    "FOOTER_ALL_RIGHT": "All right reserved"
+  },
   "THEME": {
     "BUTTON_LABEL": "Themes"
   },
   "LANGUAGES": {
     "BUTTON_LABEL": "Languages"
+  },
+  "VERSION": {
+    "BUTTON_LABEL": "Version"
   }
 }

@@ -1,6 +1,13 @@
 ---
+import { getI18N } from '../i18n';
 import { dataContacto } from '../utils/dataContacto.astro';
+import { dataContactoEN } from '../utils/dataContactoEN.astro';
 import Bubble from './Bubble.astro';
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
+let dataChange;
+dataChange = currentLocale === 'es' ? dataContacto : dataContactoEN;
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -11,11 +18,13 @@ import Bubble from './Bubble.astro';
     />
 
     <div class="max-w-5xl mx-auto">
-      <h2 class="text-6xl font-bold mb-32 mt-20">Contacto</h2>
+      <h2 class="text-6xl font-bold mb-32 mt-20">
+        {i18n.CONTACT.CONTACT_TITLE}
+      </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
-          dataContacto.map(({ area, img, title, url, text }) => (
+          dataChange.map(({ area, img, title, url, text }) => (
             <div class="backdrop-blur-[19px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8">
               <div class="flex items-center mb-2">
                 <div class="avatar w-9 h-9 mr-2">

@@ -1,5 +1,10 @@
 ---
+import { getI18N } from '../i18n';
+
 const v = import.meta.env.VERSION;
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
 ---
 
 <footer
@@ -11,7 +16,7 @@ const v = import.meta.env.VERSION;
       <div class="text-2xl font-bold text-base-100">LDE</div>
     </div>
     <p class="font-bold flex items-center justify-center">
-      Hecho con
+      {i18n.FOOTER.FOOTER_MAKE}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1.2em"
@@ -23,7 +28,7 @@ const v = import.meta.env.VERSION;
           d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53z"
         ></path>
       </svg>
-      y &nbsp;
+      {i18n.FOOTER.FOOTER_SEPARATOR} &nbsp;
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="1.2em"
@@ -38,13 +43,13 @@ const v = import.meta.env.VERSION;
       <br />
     </p>
     <div class="flex justify-center items-center">
-      <p>Proyecto desarrollado con Astro</p>
+      <p>{i18n.FOOTER.FOOTER_DESCRIPTION}</p>
     </div>
     <div class="flex justify-center items-center flex-col">
       <img src="/favicon.svg" alt="astro" class="w-11 fill-current" />
       <p class="font-semibold">Version {v}</p>
     </div>
-    <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
+    <p>Copyright © {new Date().getFullYear()} - {i18n.FOOTER.FOOTER_ALL_RIGHT}</p>
   </aside>
   <nav>
     <div class="grid grid-flow-col gap-4">

@@ -2,10 +2,12 @@
 import ThemeButton from './theme/ThemeButton.astro';
 import ItemsNavbar from './ItemsNavbar.astro';
 import LangPicker from '../components/LangPicker.astro';
-
+import { VersionSelect } from './version/ButtonVersion.jsx';
 ---
 
-<div class="navbar backdrop-blur-[8px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-50">
+<div
+  class="navbar backdrop-blur-[8px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-50"
+>
   <div class="flex-grow">
     <div class="avatar">
       <a href="#inicio" class="w-12 rounded">
@@ -16,6 +18,7 @@ import LangPicker from '../components/LangPicker.astro';
           loading="lazy"
         />
       </a>
+      <VersionSelect client:load />
     </div>
   </div>
 
@@ -59,7 +62,7 @@ import LangPicker from '../components/LangPicker.astro';
     <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"
     ></label>
     <ul
-      class="menu bg-base-200 text-base-content min-h-full w-80 p-4 z-50 relative"
+      class="menu bg-base-100 text-base min-h-full w-80 p-4 z-50 top-16 relative"
     >
       <label
         for="my-drawer-4"
