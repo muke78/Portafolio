@@ -19,15 +19,17 @@ export const VersionSelect = () => {
 
   return (
     <form className="flex items-center justify-center max-w-sm mx-auto md:pl-7 pl-3 text-base-300">
-      <select
-        id="versions"
-        className="bg-base-content text-base font-semibold rounded-lg block w-full p-2"
-        onChange={handleChangeSelect}
-        value={selectedVersion || defaultVersion}
-      >
-        <option className="text-base font-semibold" value="v1.0.1">v1.0.1</option>
-        <option className='text-base font-semibold' value="v1.0.0">v1.0.0</option>
-      </select>
+      <label>
+        <select aria-label="State"
+          id="versions"
+          className="bg-base-content text-base font-semibold rounded-lg block w-full p-2"
+          onChange={handleChangeSelect}
+          value={selectedVersion || defaultVersion}
+        >
+          <option className="text-base font-semibold" value="v1.0.1">v1.0.1</option>
+          <option className='text-base font-semibold' value="v1.0.0">v1.0.0</option>
+        </select>
+      </label>
     </form>
   );
 };

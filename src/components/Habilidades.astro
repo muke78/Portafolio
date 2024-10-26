@@ -34,14 +34,14 @@ dataChange = currentLocale === 'es' ? dataSkills : dataSkillsEN;
                 <article class="flex max-w-xl flex-col items-start justify-between">
                   <div class="flex items-center gap-x-4 text-xs">
                     <time>{time}</time>
-                    <a class="relative z-10 rounded-full bg-secondary px-3 py-1.5 font-medium text-neutral-100">
+                    <span class="relative z-10 rounded-full bg-secondary px-3 py-1.5 font-medium text-base-100">
                       {area}
-                    </a>
+                    </span>
                   </div>
                   <div class="group relative">
                     <h3 class="mt-3 text-lg font-semibold leading-6">
                       <a>
-                        <span class="text-lg">{title}</span>
+                        <span class="text-lg text-base-content">{title}</span>
                       </a>
                     </h3>
                     {images.map((image) => (

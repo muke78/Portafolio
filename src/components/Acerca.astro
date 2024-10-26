@@ -30,7 +30,11 @@ const i18n = getI18N({ currentLocale });
           </div>
 
           <div class="flex justify-center items-center mt-8 gap-4">
-            <a href="https://github.com/muke78" target="_blank">
+            <a
+              href="https://github.com/muke78"
+              target="_blank"
+              aria-label="Saber mas acerca de mis repositorios y lo que he hecho"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -47,6 +51,7 @@ const i18n = getI18N({ currentLocale });
             <a
               href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
               target="_blank"
+              aria-label="Saber mas acerca de experiencia"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,23 +86,23 @@ const i18n = getI18N({ currentLocale });
             class="bg-transparent stats stats-horizontal backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-500 rounded-lg py-5 w-full"
           >
             <div class="stat">
-              <div class="stat-value">2+</div>
+              <div class="stat-value">+2</div>
               <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[0].EXPIRENCE}</div>
-              <div class="stat-desc">
+              <div class="stat-title">
                 {i18n.ABOUTME.ABOUT_EXPIRENCE[0].EXPIRENCE_ABOUT}
               </div>
             </div>
             <div class="stat">
               <div class="stat-value">+7</div>
               <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[1].PROJECTS}</div>
-              <div class="stat-desc">
+              <div class="stat-title">
                 {i18n.ABOUTME.ABOUT_EXPIRENCE[1].PROJECTS_ABOUT}
               </div>
             </div>
             <div class="stat">
               <div class="stat-value">4+</div>
               <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING}</div>
-              <div class="stat-desc">
+              <div class="stat-title">
                 {i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING_ABOUT}
               </div>
             </div>
@@ -109,6 +114,7 @@ const i18n = getI18N({ currentLocale });
             download
             href="/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
             class="btn btn-secondary w-full"
+            aria-label="Descargar cv para saber mas acerca de mi"
           >
             {i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
           </a>
