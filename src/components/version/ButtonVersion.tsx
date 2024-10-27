@@ -9,7 +9,7 @@ export const VersionSelect = () => {
     const selectedValue = target.value;
     setSelectedVersion(selectedValue);
     if (selectedValue === 'v1.0.0') {
-      window.location.assign('https://portafolio-vercel-deploy.vercel.app');
+      window.location.assign('https://portafoliov100.vercel.app/');
     }
   };
 
