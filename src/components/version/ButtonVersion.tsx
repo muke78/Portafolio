@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
-const defaultVersion = "v.1.0.1"
 
 export const VersionSelect = () => {
   const [selectedVersion, setSelectedVersion] = useState('');
+
 
   const handleChangeSelect = ({ target }) => {
     const selectedValue = target.value;
@@ -14,17 +14,27 @@ export const VersionSelect = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem('version', JSON.stringify(selectedVersion || defaultVersion));
+    const savedVersion = JSON.parse(localStorage.getItem('version'));
+    if (savedVersion === 'v1.0.0') {
+      setSelectedVersion('v1.0.1');
+    } else {
+      setSelectedVersion(savedVersion || 'v1.0.1');
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('version', JSON.stringify(selectedVersion));
   }, [selectedVersion]);
+
 
   return (
     <form className="flex items-center justify-center max-w-sm mx-auto md:pl-7 pl-3 text-base-300">
       <label>
         <select aria-label="State"
           id="versions"
-          className="bg-base-content text-base font-semibold rounded-lg block w-full p-2"
+          className="bg-transparent text-base-content font-semibold rounded-lg block w-full p-2"
           onChange={handleChangeSelect}
-          value={selectedVersion || defaultVersion}
+          value={selectedVersion}
         >
           <option className="text-base font-semibold" value="v1.0.1">v1.0.1</option>
           <option className='text-base font-semibold' value="v1.0.0">v1.0.0</option>
