@@ -5,8 +5,8 @@
 - Migrar poco a poco de js vanilla a react con dynamic islands
 - Agregar framer motion para animaciones para la experiencia de usuario
 - Agregar la memoria de rutas para que se quede donde estab aunque cambie de idioma
-- QUitar el # de las rutas cuando se maneje la navegacion del portafolio
-
-
+- Quitar el # de las rutas cuando se maneje la navegacion del portafolio
+- Reparar el sidebar para la navegacion
 ## Cambios que se pueden ir haciendo para despues
+
 - Mejorando el responsive y los stacks de proyectos
