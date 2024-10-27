@@ -1,5 +1,4 @@
 ---
-import { StrictMode } from 'react';
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Header from '../../components/Header.astro';
@@ -8,12 +7,11 @@ import Habilidades from '../../components/Habilidades.astro';
 import Proyectos from '../../components/Proyectos.astro';
 import Contacto from '../../components/Contacto.astro';
 import Footer from '../../components/Footer.astro';
-import Counter from '../../components/Counter.jsx';
 ---
 
 <Layout>
   <header class="relative max-w-screen-2x1 mx-auto">
-    <Navbar data-aos="fade-in" />
+    <Navbar />
     <div id="inicio">
       <Header />
     </div>
@@ -28,9 +26,6 @@ import Counter from '../../components/Counter.jsx';
     </div>
     <div id="contact">
       <Contacto />
-      <!-- <StrictMode>
-        <Counter client:load />
-      </StrictMode> -->
     </div>
     <Footer />
   </header>

@@ -5,7 +5,7 @@ module.exports = {
     './node_modules/flowbite/**/*.js',
   ],
   // add daisyUI plugin
-  plugins: [require('daisyui', 'flowbite/plugin')],
+  plugins: [require('daisyui'), require('flowbite/plugin')],
 
   // daisyUI config (optional - here are the default values)
   daisyui: {

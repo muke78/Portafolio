@@ -49,5 +49,10 @@
   "VERSION": {
     "BUTTON_LABEL": "Version",
     "VERSION_CURRENT": "Current"
+  },
+  "TOAST": {
+    "TOAST_TITLE": "Preliminary version",
+    "TOAST_BODY": "Version 1.0.1 is deployed, but there will be future changes in the coming months",
+    "TOAST_BUTTON": "Accept"
   }
 }

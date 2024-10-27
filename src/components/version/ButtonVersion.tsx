@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getI18N } from '../../i18n';
 
-export const VersionSelect = ({ currentLocale }) => {
-  const [selectedVersion, setSelectedVersion] = useState('');
+interface VersionSelectProps {
+  currentLocale: string;
+}
+
+export const VersionSelect: React.FC<VersionSelectProps> = ({ currentLocale }) => {
+  const [selectedVersion, setSelectedVersion] = useState<string>('');
 
   const i18n = getI18N({ currentLocale });
 
-  const handleVersionSelect = (version) => {
+  const handleVersionSelect = (version: string) => {
     setSelectedVersion(version);
     if (version === 'v1.0.0') {
       window.location.assign('https://portafoliov100.vercel.app/');
@@ -14,7 +18,7 @@ export const VersionSelect = ({ currentLocale }) => {
   };
 
   useEffect(() => {
-    const savedVersion = JSON.parse(localStorage.getItem('version'));
+    const savedVersion = JSON.parse(localStorage.getItem('version') || '""');
     if (savedVersion === 'v1.0.0') {
       setSelectedVersion('v1.0.1');
     } else {
@@ -28,11 +32,10 @@ export const VersionSelect = ({ currentLocale }) => {
 
   return (
     <>
-
       <button
         id="dropdownDefaultButton"
         data-dropdown-toggle="dropdownVersion"
-        className="btn btn-sm btn-ghost hover:btn-outline "
+        className="btn btn-sm btn-ghost hover:btn-outline px-3"
         type="button"
         aria-label="Boton de temas"
       >

@@ -2,7 +2,7 @@
 import ThemeButton from './theme/ThemeButton.astro';
 import ItemsNavbar from './ItemsNavbar.astro';
 import LangPicker from '../components/LangPicker.astro';
-import { VersionSelect } from './version/ButtonVersion.jsx';
+import { VersionSelect } from './version/ButtonVersion.tsx';
 
 const { currentLocale } = Astro;
 ---
@@ -20,7 +20,7 @@ const { currentLocale } = Astro;
           loading="lazy"
         />
       </a>
-      <VersionSelect currentLocale={currentLocale} client:idle />
+      <VersionSelect currentLocale={currentLocale} client:load />
     </div>
   </div>
 

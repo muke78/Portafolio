@@ -49,5 +49,10 @@
   "VERSION": {
     "BUTTON_LABEL": "Version",
     "VERSION_CURRENT": "Actual"
+  },
+  "TOAST": {
+    "TOAST_TITLE": "Version preliminar",
+    "TOAST_BODY": "La version 1.0.1 esta desplegada pero habran futuros cambios en los proximos meses",
+    "TOAST_BUTTON": "Aceptar"
   }
 }
