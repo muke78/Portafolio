@@ -3,13 +3,15 @@ import ThemeButton from './theme/ThemeButton.astro';
 import ItemsNavbar from './ItemsNavbar.astro';
 import LangPicker from '../components/LangPicker.astro';
 import { VersionSelect } from './version/ButtonVersion.jsx';
+
+const { currentLocale } = Astro;
 ---
 
 <div
   class="navbar backdrop-blur-[8px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-50"
 >
   <div class="flex-grow">
-    <div class="avatar">
+    <div class="avatar flex items-center justify-center gap-4">
       <a href="#inicio" class="w-12 rounded">
         <img
           src="/kdl.webp"
@@ -18,14 +20,23 @@ import { VersionSelect } from './version/ButtonVersion.jsx';
           loading="lazy"
         />
       </a>
-      <VersionSelect client:idle />
+      <VersionSelect currentLocale={currentLocale} client:idle />
     </div>
   </div>
 
   <div class="flex-none">
+    <ul class="menu menu-horizontal min-[980px]:flex hidden">
+      <ItemsNavbar />
+    </ul>
+    <div class="list-none">
+      <ThemeButton />
+    </div>
+    <div class="pl-2">
+      <LangPicker />
+    </div>
     <label
       for="my-drawer-4"
-      class="btn btn-ghost min-[920px]:hidden drawer-button"
+      class="btn btn-ghost min-[980px]:hidden drawer-button"
       aria-label="label"
     >
       <svg
@@ -43,15 +54,6 @@ import { VersionSelect } from './version/ButtonVersion.jsx';
           d="M4 6h16M4 12h16m-7 6h7"></path>
       </svg>
     </label>
-    <ul class="menu menu-horizontal min-[920px]:flex hidden">
-      <ItemsNavbar />
-    </ul>
-    <div class="list-none">
-      <ThemeButton />
-    </div>
-    <div class="pl-2">
-      <LangPicker />
-    </div>
   </div>
 </div>
 

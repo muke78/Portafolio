@@ -47,6 +47,7 @@
     "BUTTON_LABEL": "Idiomas"
   },
   "VERSION": {
-    "BUTTON_LABEL": "Version"
+    "BUTTON_LABEL": "Version",
+    "VERSION_CURRENT": "Actual"
   }
 }
