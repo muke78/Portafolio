@@ -10,3 +10,4 @@
 ## Cambios que se pueden ir haciendo para despues
 
 - Mejorando el responsive y los stacks de proyectos
+- Cambiar el logo de khelde cuando la pagina este en dark o light a logo en blanco o negro
