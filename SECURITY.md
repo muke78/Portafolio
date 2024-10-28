@@ -1,7 +1,7 @@
 ## Navegadores compatibles
 
 > [!IMPORTANT]
-> En el proyecto se ocupan estilos experimentales que son soportados por los siguienbtes navegadores
+> En el proyecto se ocupan estilos experimentales que son soportados por los siguientes navegadores
 
 | Navegador             | Supported          |
 | --------------------- | ------------------ |
