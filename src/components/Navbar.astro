@@ -8,7 +8,7 @@ const { currentLocale } = Astro;
 ---
 
 <div
-  class="navbar backdrop-blur-[8px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-50"
+  class="navbar backdrop-blur-[8px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-10"
 >
   <div class="flex-grow">
     <div class="avatar flex items-center justify-center gap-4">
@@ -61,10 +61,9 @@ const { currentLocale } = Astro;
   <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content"></div>
   <div class="drawer-side">
-    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"
-    ></label>
+    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
     <ul
-      class="menu bg-base-100 text-base min-h-full w-80 p-4 z-50 top-16 relative"
+      class="menu backdrop-blur-[30px] backdrop-saturate-[180%]  text-base min-h-full min-w-2.5 w-80 p-4 z-50 relative"
     >
       <label
         for="my-drawer-4"
@@ -88,7 +87,7 @@ const { currentLocale } = Astro;
     if (savedTheme) {
       document.documentElement.setAttribute('data-theme', savedTheme);
     }
-    document.querySelectorAll('[data-set-theme]').forEach((button) => {
+    document.querySelectorAll('[data-set-theme]').forEach(button => {
       button.addEventListener('click', () => {
         const theme = button.getAttribute('data-set-theme');
         localStorage.setItem('theme', theme);
