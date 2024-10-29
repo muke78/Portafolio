@@ -1,0 +1,6 @@
+{
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": ["^react", "^@?\\w", "^\\.", "^(?!.*\\.css$).*\\.css$"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

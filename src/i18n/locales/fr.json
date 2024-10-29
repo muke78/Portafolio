@@ -1,59 +1,58 @@
 {
-    "HEADER": {
-      "HEADER_TITLE": "Bonjour, je suis",
-      "HEADER_NAME": "Erick González",
-      "HEADER_ABOUT": "Expérience dans la conception et le développement d'applications web, englobant à la fois le frontend et le backend, ainsi qu'une solide maîtrise de l'analyse des données et des bases de données.",
-      "HEADER_BUTTON": "À propos de moi"
-    },
-    "ABOUTME": {
-      "ABOUT_TITLE": "À propos de moi",
-      "ABOUT_ABOUT_DESCRIPTION": "Je suis un développeur web spécialisé dans la création d'applications complètes, de la conception d'interfaces à la mise en œuvre de la logique sur le serveur. J'ai de l'expérience dans les bases de données et le déploiement d'applications, garantissant des performances optimales et une expérience utilisateur fluide. De plus, je maîtrise le contrôle de version via Git et j'utilise Power BI pour l'analyse des données, ce qui me permet de prendre des décisions éclairées basées sur des métriques.",
-      "ABOUT_EXPIRENCE": [
-        {
-          "EXPIRENCE": "Années",
-          "EXPIRENCE_ABOUT": "d'expérience"
-        },
-        {
-          "PROJECTS": "Projets",
-          "PROJECTS_ABOUT": "complétés"
-        },
-        {
-          "WORKING": "Travaillant",
-          "WORKING_ABOUT": "dans des entreprises"
-        }
-      ],
-      "ABOUT_DOWNLOAD_CV": "Voir CV"
-    },
-    "SKILLS": {
-      "SKILLS_TITLE": "Compétences"
-    },
-    "PROJECTS": {
-      "PROJECTS_TITLE": "Projets",
-      "PROJECTS_VIEW": "Voir le projet"
-    },
-    "CONTACT": {
-      "CONTACT_TITLE": "Contact"
-    },
-    "FOOTER": {
-      "FOOTER_MAKE": "Fait avec",
-      "FOOTER_SEPARATOR": "et",
-      "FOOTER_DESCRIPTION": "Projet développé avec Astro",
-      "FOOTER_ALL_RIGHT": "Tous droits réservés"
-    },
-    "THEME": {
-      "BUTTON_LABEL": "Thèmes"
-    },
-    "LANGUAGES": {
-      "BUTTON_LABEL": "Langues"
-    },
-    "VERSION": {
-      "BUTTON_LABEL": "Version",
-      "VERSION_CURRENT": "Actuelle"
-    },
-    "TOAST": {
-      "TOAST_TITLE": "Version préliminaire",
-      "TOAST_BODY": "La version 1.0.1 est déployée mais il y aura des changements futurs dans les prochains mois",
-      "TOAST_BUTTON": "Accepter"
-    }
+  "HEADER": {
+    "HEADER_TITLE": "Bonjour, je suis",
+    "HEADER_NAME": "Erick González",
+    "HEADER_ABOUT": "Expérience dans la conception et le développement d'applications web, englobant à la fois le frontend et le backend, ainsi qu'une solide maîtrise de l'analyse des données et des bases de données.",
+    "HEADER_BUTTON": "À propos de moi"
+  },
+  "ABOUTME": {
+    "ABOUT_TITLE": "À propos de moi",
+    "ABOUT_ABOUT_DESCRIPTION": "Je suis un développeur web spécialisé dans la création d'applications complètes, de la conception d'interfaces à la mise en œuvre de la logique sur le serveur. J'ai de l'expérience dans les bases de données et le déploiement d'applications, garantissant des performances optimales et une expérience utilisateur fluide. De plus, je maîtrise le contrôle de version via Git et j'utilise Power BI pour l'analyse des données, ce qui me permet de prendre des décisions éclairées basées sur des métriques.",
+    "ABOUT_EXPIRENCE": [
+      {
+        "EXPIRENCE": "Années",
+        "EXPIRENCE_ABOUT": "d'expérience"
+      },
+      {
+        "PROJECTS": "Projets",
+        "PROJECTS_ABOUT": "complétés"
+      },
+      {
+        "WORKING": "Travaillant",
+        "WORKING_ABOUT": "dans des entreprises"
+      }
+    ],
+    "ABOUT_DOWNLOAD_CV": "Voir CV"
+  },
+  "SKILLS": {
+    "SKILLS_TITLE": "Compétences"
+  },
+  "PROJECTS": {
+    "PROJECTS_TITLE": "Projets",
+    "PROJECTS_VIEW": "Voir le projet"
+  },
+  "CONTACT": {
+    "CONTACT_TITLE": "Contact"
+  },
+  "FOOTER": {
+    "FOOTER_MAKE": "Fait avec",
+    "FOOTER_SEPARATOR": "et",
+    "FOOTER_DESCRIPTION": "Projet développé avec Astro",
+    "FOOTER_ALL_RIGHT": "Tous droits réservés"
+  },
+  "THEME": {
+    "BUTTON_LABEL": "Thèmes"
+  },
+  "LANGUAGES": {
+    "BUTTON_LABEL": "Langues"
+  },
+  "VERSION": {
+    "BUTTON_LABEL": "Version",
+    "VERSION_CURRENT": "Actuelle"
+  },
+  "TOAST": {
+    "TOAST_TITLE": "Version préliminaire",
+    "TOAST_BODY": "La version 1.0.1 est déployée mais il y aura des changements futurs dans les prochains mois",
+    "TOAST_BUTTON": "Accepter"
   }
-  
+}

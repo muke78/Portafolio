@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { reposDeseados } from '../../utils/dataRepoPinned';
+import { useEffect, useState } from "react";
+
+import { reposDeseados } from "../../utils/dataRepoPinned";
 
 const GITHUB_API_URL = "https://api.github.com/users/muke78/repos";
 
@@ -18,7 +19,7 @@ interface FetchReposResponse {
 
 export const useFetchRepos = (): FetchReposResponse => {
   const [repos, setRepos] = useState<FetchReposResponse>({
-    data: null
+    data: null,
   });
 
   const getFetch = async () => {
@@ -27,22 +28,23 @@ export const useFetchRepos = (): FetchReposResponse => {
 
       if (!response.ok) {
         setRepos({
-          data: null
+          data: null,
         });
         return;
       }
 
       const reposData: Repo[] = await response.json();
-      const filteredRepos = reposData.filter((repo) => reposDeseados.includes(repo.name));
+      const filteredRepos = reposData.filter((repo) =>
+        reposDeseados.includes(repo.name),
+      );
 
       setRepos({
-        data: filteredRepos
+        data: filteredRepos,
       });
-
     } catch (error) {
-      console.error('Error fetching repos:', error);
+      console.error("Error fetching repos:", error);
       setRepos({
-        data: null
+        data: null,
       });
     }
   };
@@ -52,6 +54,6 @@ export const useFetchRepos = (): FetchReposResponse => {
   }, [GITHUB_API_URL]);
 
   return {
-    data: repos.data
+    data: repos.data,
   };
 };

@@ -7,7 +7,6 @@
 - Agregar la memoria de rutas para que se quede donde estab aunque cambie de idioma
 - Quitar el # de las rutas cuando se maneje la navegacion del portafolio
 
-
 ## Cambios que se pueden ir haciendo para despues
 
 - Mejorando el responsive y los stacks de proyectos
