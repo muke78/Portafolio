@@ -3,6 +3,7 @@ import ThemeButton from './theme/ThemeButton.astro';
 import ItemsNavbar from './ItemsNavbar.astro';
 import LangPicker from '../components/LangPicker.astro';
 import { VersionSelect } from './version/ButtonVersion.tsx';
+import { ImageContrast } from './ImageContrast.tsx';
 
 const { currentLocale } = Astro;
 ---
@@ -13,12 +14,7 @@ const { currentLocale } = Astro;
   <div class="flex-grow">
     <div class="avatar flex items-center justify-center gap-4">
       <a href="#inicio" class="w-12 rounded">
-        <img
-          src="/kdl.webp"
-          alt="kdl"
-          aria-label="Logotipo perosnal de Erick Gonzalez"
-          loading="lazy"
-        />
+        <ImageContrast client:load />
       </a>
       <VersionSelect currentLocale={currentLocale} client:load />
     </div>
@@ -61,9 +57,10 @@ const { currentLocale } = Astro;
   <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content"></div>
   <div class="drawer-side">
-    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"
+    ></label>
     <ul
-      class="menu backdrop-blur-[30px] backdrop-saturate-[180%]  text-base min-h-full min-w-2.5 w-80 p-4 z-50 relative"
+      class="menu backdrop-blur-[30px] backdrop-saturate-[180%] text-base min-h-full min-w-2.5 w-80 p-4 z-50 relative"
     >
       <label
         for="my-drawer-4"
@@ -87,7 +84,7 @@ const { currentLocale } = Astro;
     if (savedTheme) {
       document.documentElement.setAttribute('data-theme', savedTheme);
     }
-    document.querySelectorAll('[data-set-theme]').forEach(button => {
+    document.querySelectorAll('[data-set-theme]').forEach((button) => {
       button.addEventListener('click', () => {
         const theme = button.getAttribute('data-set-theme');
         localStorage.setItem('theme', theme);

@@ -27,7 +27,7 @@ const i18n = getI18N({ currentLocale });
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
           repos.map((repo) => (
-            <div class="backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card shadow-md p-4">
+            <div class="backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card shadow-md p-4 flex flex-col justify-between h-full">
               <div class="flex items-center mb-2">
                 <div class="avatar w-9 h-9 mr-2">
                   <svg
@@ -67,14 +67,15 @@ const i18n = getI18N({ currentLocale });
                   <p class="text-gray-500">No topics available.</p>
                 )}
               </div>
-
-              <a
-                class="mt-4 btn btn-neutral backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg flex justify-center items-center"
-                href={repo.html_url}
-                target="_blank"
-              >
-                {i18n.PROJECTS.PROJECTS_VIEW}
-              </a>
+              <div class="mt-4">
+                <a
+                  class="btn btn-neutral backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg flex justify-center items-center"
+                  href={repo.html_url}
+                  target="_blank"
+                >
+                  {i18n.PROJECTS.PROJECTS_VIEW}
+                </a>
+              </div>
             </div>
           ))
         }

@@ -25,7 +25,7 @@ dataChange = currentLocale === 'es' ? dataContacto : dataContactoEN;
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
           dataChange.map(({ area, img, title, url, text }) => (
-            <div class="backdrop-blur-[19px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8">
+            <div class="backdrop-blur-[19px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8 flex flex-col justify-between">
               <div class="flex items-center mb-2">
                 <div class="avatar w-9 h-9 mr-2">
                   <img
