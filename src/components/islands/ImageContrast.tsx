@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import kdl from '../../img/kdl.webp'
 import kdlWhite from '../../img/kdlWhite.webp'
-import { darkThemes } from '../../utils/dataDarkThemes.astro'
+import { darkThemes } from '../../utils/dataDarkThemes'
 
 export const ImageContrast = () => {
     const [currentTheme, setCurrentTheme] = useState<string>('light');

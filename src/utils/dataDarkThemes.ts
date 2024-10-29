@@ -1,4 +1,3 @@
----
 export const darkThemes = [
   'dark',
   'synthwave',
@@ -13,4 +12,3 @@ export const darkThemes = [
   'dim',
   'sunset',
 ];
----

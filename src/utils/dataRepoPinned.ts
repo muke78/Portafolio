@@ -1,4 +1,4 @@
----
+
 export const reposDeseados = [
   'CerdynOS',
   'Backend_RESTFULL',
@@ -6,9 +6,7 @@ export const reposDeseados = [
   'khelde.io',
   'Sistema_Numerico',
   'HeroApp',
-  // 'Custom-hooks',
   'Portafolio',
   'Comandos-Git',
   'BackendTask'
 ];
----
