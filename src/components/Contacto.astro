@@ -1,13 +1,11 @@
 ---
 import { getI18N } from '../i18n';
-import { dataContacto } from '../utils/dataContacto.astro';
-import { dataContactoEN } from '../utils/dataContactoEN.astro';
+
 import Bubble from './Bubble.astro';
+import ItemsContacto from './items/ItemsContacto.astro';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
-let dataChange;
-dataChange = currentLocale === 'es' ? dataContacto : dataContactoEN;
 ---
 
 <div class="hero bg-base-200 min-h-screen">
@@ -23,35 +21,7 @@ dataChange = currentLocale === 'es' ? dataContacto : dataContactoEN;
       </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {
-          dataChange.map(({ area, img, title, url, text }) => (
-            <div class="backdrop-blur-[19px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8 flex flex-col justify-between">
-              <div class="flex items-center mb-2">
-                <div class="avatar w-9 h-9 mr-2">
-                  <img
-                    src={img}
-                    alt={title}
-                    class="rounded-full"
-                    loading="lazy"
-                  />
-                </div>
-                <h2 class="font-semibold text-xl">{area}</h2>
-              </div>
-              <p class="text-base-content">{text}</p>
-              <div class="mt-4">
-                <a
-                  class="mt-4 btn btn-neutral backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg flex justify-center items-center"
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={title}
-                >
-                  {title}
-                </a>
-              </div>
-            </div>
-          ))
-        }
+        <ItemsContacto />
       </div>
     </div>
   </div>
