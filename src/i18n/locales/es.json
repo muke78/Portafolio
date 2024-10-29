@@ -1,25 +1,25 @@
 {
   "HEADER": {
-    "HEADER_TITLE": "Hola soy",
+    "HEADER_TITLE": "Hola, soy",
     "HEADER_NAME": "Erick González",
-    "HEADER_ABOUT": "Experiencia en el diseño y desarrollo de aplicaciones web, abarcando tanto el frontend como el backend, además de un sólido manejo de análisis de datos y bases de datos.",
-    "HEADER_BUTTON": "Acerca de mi"
+    "HEADER_ABOUT": "Experiencia en el diseño y desarrollo de aplicaciones web, abarcando tanto el frontend como el backend, además de un sólido manejo en el análisis de datos y bases de datos.",
+    "HEADER_BUTTON": "Acerca de mí"
   },
   "ABOUTME": {
     "ABOUT_TITLE": "Acerca de mí",
-    "ABOUT_ABOUT_DESCRIPTION": "Soy un desarrollador web especializado en la creación de aplicaciones completas desde el diseño de interfaces hasta la implementación de lógica en el servidor. Tengo experiencia en bases de datos y en el despliegue de aplicaciones, asegurando un rendimiento óptimo y una experiencia de usuario fluida. Además, domino el control de versiones a través de Git y utilizo Power BI para el análisis de datos, lo que me permite tomar decisiones informadas basadas en métricas.",
+    "ABOUT_ABOUT_DESCRIPTION": "Soy un desarrollador web especializado en la creación de aplicaciones completas, desde el diseño de interfaces hasta la implementación de lógica en el servidor. Tengo experiencia en bases de datos y en el despliegue de aplicaciones, asegurando un rendimiento óptimo y una experiencia de usuario fluida. Además, domino el control de versiones a través de Git y utilizo Power BI para el análisis de datos, lo que me permite tomar decisiones informadas basadas en métricas.",
     "ABOUT_EXPIRENCE": [
       {
-        "EXPIRENCE": "Años",
-        "EXPIRENCE_ABOUT": "de experiencia"
+        "EXPERIENCE": "Años",
+        "EXPERIENCE_ABOUT": "de experiencia"
       },
       {
         "PROJECTS": "Proyectos",
         "PROJECTS_ABOUT": "completados"
       },
       {
-        "WORKING": "Trabjando",
-        "WORKING_ABOUT": "en compañias"
+        "WORKING": "Trabajando",
+        "WORKING_ABOUT": "en compañías"
       }
     ],
     "ABOUT_DOWNLOAD_CV": "Ver CV"
@@ -47,12 +47,12 @@
     "BUTTON_LABEL": "Idiomas"
   },
   "VERSION": {
-    "BUTTON_LABEL": "Version",
+    "BUTTON_LABEL": "Versión",
     "VERSION_CURRENT": "Actual"
   },
   "TOAST": {
-    "TOAST_TITLE": "Version preliminar",
-    "TOAST_BODY": "La version 1.0.1 esta desplegada pero habran futuros cambios en los proximos meses",
+    "TOAST_TITLE": "Versión preliminar",
+    "TOAST_BODY": "La versión 1.0.1 está desplegada, pero habrá futuros cambios en los próximos meses",
     "TOAST_BUTTON": "Aceptar"
   }
 }
