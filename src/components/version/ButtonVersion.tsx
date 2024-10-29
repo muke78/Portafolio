@@ -5,6 +5,7 @@ interface VersionSelectProps {
   currentLocale: string;
 }
 
+
 export const VersionSelect: React.FC<VersionSelectProps> = ({ currentLocale }) => {
   const [selectedVersion, setSelectedVersion] = useState<string>('');
 
@@ -31,15 +32,8 @@ export const VersionSelect: React.FC<VersionSelectProps> = ({ currentLocale }) =
   }, [selectedVersion]);
 
   return (
-    <>
-      <button
-        id="dropdownDefaultButton"
-        data-dropdown-toggle="dropdownVersion"
-        className="btn btn-sm btn-ghost hover:btn-outline px-3"
-        type="button"
-        aria-label="Boton de temas"
-      >
-
+    <details className="dropdown">
+      <summary className="btn btn-sm btn-ghost hover:btn-outline px-3">
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
@@ -66,25 +60,21 @@ export const VersionSelect: React.FC<VersionSelectProps> = ({ currentLocale }) =
             strokeLinejoin="round"
             strokeWidth="2" d="m1 1 4 4 4-4" />
         </svg>
-      </button>
-
-
-      <div id="dropdownVersion" className="z-10 hidden bg-base-content rounded-lg shadow w-32">
-        <ul className="py-2 text-base-300" aria-labelledby="dropdownDefaultButton">
-          <li
-            className="flex items-center justify-center text-base font-semibold cursor-pointer"
-            onClick={() => handleVersionSelect('v1.0.1')}
-          >
-            v1.0.1 ({i18n.VERSION.VERSION_CURRENT})
-          </li>
-          <li
-            className="flex items-center justify-center text-base font-semibold cursor-pointer"
-            onClick={() => handleVersionSelect('v1.0.0')}
-          >
-            v1.0.0
-          </li>
-        </ul>
-      </div>
-    </>
+      </summary>
+      <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+        <li
+          className="flex items-center justify-center text-base font-semibold cursor-pointer"
+          onClick={() => handleVersionSelect('v1.0.1')}
+        >
+          v1.0.1 ({i18n.VERSION.VERSION_CURRENT})
+        </li>
+        <li
+          className="flex items-center justify-center text-base font-semibold cursor-pointer"
+          onClick={() => handleVersionSelect('v1.0.0')}
+        >
+          v1.0.0
+        </li>
+      </ul>
+    </details>
   );
 };
