@@ -7,7 +7,7 @@ const GITHUB_API_URL = "https://api.github.com/users/muke78/repos";
 interface Repo {
   id: number;
   name: string;
-  description: string;
+  description: string | null;
   topics: string[];
   fork: boolean;
   html_url: string;
@@ -17,12 +17,20 @@ interface FetchReposResponse {
   data: Repo[] | null;
 }
 
+const localCache: Record<string, Repo[]> = {};
+
 export const useFetchRepos = (): FetchReposResponse => {
   const [repos, setRepos] = useState<FetchReposResponse>({
     data: null,
   });
 
   const getFetch = async () => {
+    if (localCache[GITHUB_API_URL]) {
+      setRepos({
+        data: localCache[GITHUB_API_URL],
+      });
+      return;
+    }
     try {
       const response = await fetch(GITHUB_API_URL);
 
@@ -41,6 +49,8 @@ export const useFetchRepos = (): FetchReposResponse => {
       setRepos({
         data: filteredRepos,
       });
+
+      localCache[GITHUB_API_URL] = filteredRepos;
     } catch (error) {
       console.error("Error fetching repos:", error);
       setRepos({
@@ -51,7 +61,7 @@ export const useFetchRepos = (): FetchReposResponse => {
 
   useEffect(() => {
     getFetch();
-  }, [GITHUB_API_URL]);
+  }, []);
 
   return {
     data: repos.data,
