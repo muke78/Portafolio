@@ -34,8 +34,12 @@ export const VersionSelect: React.FC<VersionSelectProps> = ({
   }, [selectedVersion]);
 
   return (
-    <details className="dropdown">
-      <summary className="btn btn-sm btn-ghost hover:btn-outline px-3">
+    <div className="dropdown">
+      <div
+        tabIndex={0}
+        role="button"
+        className="btn btn-sm btn-ghost hover:btn-outline px-3"
+      >
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
@@ -67,8 +71,11 @@ export const VersionSelect: React.FC<VersionSelectProps> = ({
             d="m1 1 4 4 4-4"
           />
         </svg>
-      </summary>
-      <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+      </div>
+      <ul
+        tabIndex={0}
+        className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+      >
         <li
           className="flex items-center justify-center text-base font-semibold cursor-pointer"
           onClick={() => handleVersionSelect("v1.0.1")}
@@ -82,6 +89,6 @@ export const VersionSelect: React.FC<VersionSelectProps> = ({
           v1.0.0
         </li>
       </ul>
-    </details>
+    </div>
   );
 };
