@@ -7,6 +7,7 @@
 - Agregar la memoria de rutas para que se quede donde estab aunque cambie de idioma
 - Quitar el # de las rutas cuando se maneje la navegacion del portafolio
 - Agregar un tooltip a cada habilidad para que sepan cual es
+- Agregar el cv a S3 bucket para que lo puedan ver en internet
 
 ## Cambios que se pueden ir haciendo para despues
 
