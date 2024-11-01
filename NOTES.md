@@ -8,6 +8,7 @@
 - Quitar el # de las rutas cuando se maneje la navegacion del portafolio
 - Agregar un tooltip a cada habilidad para que sepan cual es
 - Agregar el cv a desde la ruta global de el dominio de vercel:
+
 ```bash
     https://portafolio-vercel-deploy.vercel.app/CV_Erick_Miguel_Gonzalez_Rivera.pdf
 ```
