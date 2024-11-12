@@ -62,7 +62,7 @@ export const Repositorios: React.FC<PropsRepositorios> = ({
             </div>
             <div className="mt-4">
               <a
-                className="btn btn-neutral backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg flex justify-center items-center"
+                className="btn btn-primary backdrop-blur-[19px] backdrop-saturate-[180%] flex justify-center items-center"
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
