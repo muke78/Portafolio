@@ -23,7 +23,7 @@ export const dataExperiencia = [
     title: "Desarrollador bases de datos",
     subtitle: "RIMAC (Risk Management) ICBA México · Jornada completa",
     time: "oct. 2023 - abr. 2024 · 7 meses",
-    location: "Alvaro Obregon, Cuidad de México, México, Prsencial",
+    location: "Álvaro Obregón , Cuidad de México, México, Prsencial",
     experience: [
       "Re estructuración de la base de datos, para poder llevar un mejor control de las tablas, mejorando un rendimiento en las consultas de 30%",
       "Administración de RDS para la base de datos en Aurora MySQL.",

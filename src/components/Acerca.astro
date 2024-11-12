@@ -101,7 +101,7 @@ const i18n = getI18N({ currentLocale });
               </div>
             </div>
             <div class="stat p-1">
-               <ModalWork client:load/>
+               <ModalWork currentLocale={currentLocale} client:load/>
               <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING}</div>
               <div class="stat-desc">
                 {i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING_ABOUT}

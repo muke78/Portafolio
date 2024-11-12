@@ -22,7 +22,8 @@
         "WORKING_ABOUT": "dans des entreprises"
       }
     ],
-    "ABOUT_DOWNLOAD_CV": "Voir cv"
+    "ABOUT_DOWNLOAD_CV": "Voir cv",
+    "EXPERIENCE": "Expérience"
   },
   "SKILLS": {
     "SKILLS_TITLE": "Compétences"

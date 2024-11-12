@@ -1,6 +1,26 @@
-import { dataExperiencia } from "../../utils/es/dataExperiencia";
+import type React from "react";
 
-export const ModalWork = () => {
+import { getI18N } from "../../i18n";
+import { experienceDataEN } from "../../utils/en/dataExperienciaEN";
+import { dataExperiencia } from "../../utils/es/dataExperiencia";
+import { dataExperienceFR } from "../../utils/fr/dataExperienciaFR";
+
+interface ModalWorkProps {
+  currentLocale: string;
+}
+export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
+  const i18n = getI18N({ currentLocale });
+
+  let dataChange;
+
+  if (currentLocale === "es") {
+    dataChange = dataExperiencia;
+  } else if (currentLocale === "fr") {
+    dataChange = dataExperienceFR;
+  } else {
+    dataChange = experienceDataEN;
+  }
+
   const handleOpenModal = () => {
     const modal = document.getElementById("my_modal_3") as HTMLDialogElement;
     modal.showModal();
@@ -24,7 +44,7 @@ export const ModalWork = () => {
           {/* <!-- Modal header --> */}
           <div className="w-full flex sticky top-0 items-center justify-between bg-current z-10 p-4 md:p-5 border-b rounded-t">
             <h3 className="text-2xl font-semibold text-base-100">
-              Experiencia
+              {i18n.ABOUTME.EXPERIENCE}
             </h3>
             <form method="dialog">
               <button className="btn btn-sm btn-circle rounded-lg text-sm ms-auto inline-flex justify-center items-center">
@@ -50,7 +70,7 @@ export const ModalWork = () => {
           {/* <!-- Modal body --> */}
           <div className="p-4 md:p-5 overflow-y-auto max-h-full">
             <ol className="relative border-s ms-3.5 mb-4 md:mb-5">
-              {dataExperiencia.map(
+              {dataChange.map(
                 ({
                   id,
                   img,
