@@ -6,10 +6,7 @@
 - Agregar framer motion para animaciones para la experiencia de usuario
 - Agregar la memoria de rutas para que se quede donde estab aunque cambie de idioma
 - Quitar el # de las rutas cuando se maneje la navegacion del portafolio
-
-```bash
-    https://portafolio-vercel-deploy.vercel.app/CV_Erick_Miguel_Gonzalez_Rivera.pdf
-```
+- Cambiar a rutas absolutas el proyecto
 
 ## Cambios que se pueden ir haciendo para despues
 

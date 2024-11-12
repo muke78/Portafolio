@@ -1,11 +1,14 @@
+import daisyui from "daisyui";
+import flowbite from "flowbite/plugin";
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
     "./node_modules/flowbite/**/*.js",
   ],
   // add daisyUI plugin
-  plugins: [require("daisyui"), require("flowbite/plugin")],
+  plugins: [daisyui, flowbite],
 
   // daisyUI config (optional - here are the default values)
   daisyui: {

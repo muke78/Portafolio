@@ -8,10 +8,22 @@ import { dataExperienceFR } from "../../utils/fr/dataExperienciaFR";
 interface ModalWorkProps {
   currentLocale: string;
 }
+
+interface Experience {
+  id: string;
+  img: string;
+  experience: string[];
+  location: string;
+  subtitle: string;
+  time: string;
+  title: string;
+  work?: string;
+}
+
 export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
   const i18n = getI18N({ currentLocale });
 
-  let dataChange;
+  let dataChange: Experience[];
 
   if (currentLocale === "es") {
     dataChange = dataExperiencia;
