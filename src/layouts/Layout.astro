@@ -86,22 +86,6 @@ const { currentLocale } = Astro;
     }
   }
 
-/* En tu archivo styles.css o el archivo global de estilos */
-@keyframes glow {
-  0% {
-    box-shadow: 0 0 5px var(--tw-color-primary), 
-                0 0 10px var(--tw-color-primary);
-  }
-  50% {
-    box-shadow: 0 0 20px var(--tw-color-primary), 
-                0 0 30px var(--tw-color-primary);
-  }
-  100% {
-    box-shadow: 0 0 5px var(--tw-color-primary), 
-                0 0 10px var(--tw-color-primary);
-  }
-}
-
 .animate-glow {
   animation: glow 1.5s infinite ease-in-out;
 }
