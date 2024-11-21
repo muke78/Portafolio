@@ -34,19 +34,24 @@ export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
   }
 
   const handleOpenModal = () => {
-    const modal = document.getElementById("my_modal_3") as HTMLDialogElement;
+    const modal = document.getElementById(
+      "modalExperience",
+    ) as HTMLDialogElement;
     modal.showModal();
   };
 
   return (
     <>
-      <button className="btn btn-primary stat-value" onClick={handleOpenModal}>
+      <button
+        className="btn btn-primary bg-gradient-to-l from-primary to-secondary border-none stat-value"
+        onClick={handleOpenModal}
+      >
         +4
       </button>
 
       {/* Modal */}
       <dialog
-        id="my_modal_3"
+        id="modalExperience"
         className="modal z-50 fixed inset-0 flex items-center justify-center"
       >
         {/* <!-- Filtro tipo vidrio --> */}
