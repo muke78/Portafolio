@@ -18,7 +18,7 @@ if (currentLocale === 'es') {
 {
   dataChange.map((list) => (
     <li>
-      <a href={list.to}> {list.label} </a>
+      <a href={list.to} aria-label={`Ir a ${list.label}`}> {list.label} </a>
     </li>
   ))
 }

@@ -39,7 +39,8 @@
     "FOOTER_MAKE": "Hecho con",
     "FOOTER_SEPARATOR": "y",
     "FOOTER_DESCRIPTION": "Proyecto desarrollado con Astro",
-    "FOOTER_ALL_RIGHT": "Todos los derechos reservados"
+    "FOOTER_ALL_RIGHT": "Todos los derechos reservados",
+    "FOOTER_ECOLOGICAL_FOOTPRINT": "Huella Ecologica - Calificacion"
   },
   "THEME": {
     "BUTTON_LABEL": "Temas"
