@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { getI18N } from "@/i18n";
 
-import { getI18N } from "../../i18n";
+import React, { useEffect, useState } from "react";
 
 interface VersionSelectProps {
   currentLocale: string;

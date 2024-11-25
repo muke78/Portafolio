@@ -1,15 +1,15 @@
 ---
-import ThemeButton from './theme/ThemeButton.astro';
-import ItemsNavbar from './items/ItemsNavbar.astro';
-import LangPicker from '../components/LangPicker.astro';
-import { VersionSelect } from './version/ButtonVersion.tsx';
-import { ImageContrast } from './islands/ImageContrast.tsx';
+import ThemeButton from '@/components/theme/ThemeButton.astro';
+import ItemsNavbar from '@/components/items/ItemsNavbar.astro';
+import LangPicker from '@/components/LangPicker.astro';
+import { VersionSelect } from '@/components/version/ButtonVersion';
+import { ImageContrast } from '@/components/islands/ImageContrast';
 
 const { currentLocale } = Astro;
 ---
 
 <div
-  class="navbar backdrop-blur-[8px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-10"
+  class="navbar backdrop-blur-[80px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-10"
 >
   <div class="flex-grow">
     <div class="avatar flex items-center justify-center gap-4">

@@ -1,6 +1,6 @@
-import fr from "../img/france.png";
-import mxm from "../img/mxm.png";
-import usa from "../img/usa.png";
+import fr from "@/img/france.png";
+import mxm from "@/img/mxm.png";
+import usa from "@/img/usa.png";
 
 export const languages = {
   es: {

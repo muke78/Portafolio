@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { getI18N } from "@/i18n";
 
-import { getI18N } from "../../i18n";
+import { useEffect, useState } from "react";
 
 interface ToastProps {
   currentLocale: string;

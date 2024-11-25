@@ -1,7 +1,7 @@
-import React from "react";
+import { useFetchRepos } from "@/components/hooks/useRepoGithub";
+import { getI18N } from "@/i18n";
 
-import { getI18N } from "../../i18n";
-import { useFetchRepos } from "../hooks/useRepoGithub";
+import React from "react";
 
 interface PropsRepositorios {
   currentLocale: string;
@@ -19,7 +19,7 @@ export const Repositorios: React.FC<PropsRepositorios> = ({
         data.map((repo) => (
           <div
             key={repo.id}
-            className="backdrop-blur-[19px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card shadow-md p-4 flex flex-col justify-between h-full"
+            className="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card shadow-md p-4 flex flex-col justify-between h-full"
           >
             <div className="flex items-center mb-2">
               <div className="avatar w-9 h-9 mr-2">
@@ -62,7 +62,7 @@ export const Repositorios: React.FC<PropsRepositorios> = ({
             </div>
             <div className="mt-4">
               <a
-                className="btn btn-primary backdrop-blur-[19px] backdrop-saturate-[180%] flex justify-center items-center"
+                className="btn backdrop-blur-[100px] backdrop-saturate-[180%] flex justify-center items-center"
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"

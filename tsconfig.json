@@ -6,19 +6,14 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"]
+      "@/*": ["./src/*"]
     },
-    "types": ["astro/client"],  // Asegúrate de incluir esta línea
+    "types": ["astro/client"], // Asegúrate de incluir esta línea
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
-      },
-    ],
+      }
+    ]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.astro"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"]
 }

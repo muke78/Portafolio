@@ -1,9 +1,10 @@
-import type React from "react";
+import { getI18N } from "@/i18n";
+import { experienceDataEN } from "@/utils/en/dataExperienciaEN";
+import { dataExperiencia } from "@/utils/es/dataExperiencia";
+import { dataExperienceFR } from "@/utils/fr/dataExperienciaFR";
 
-import { getI18N } from "../../i18n";
-import { experienceDataEN } from "../../utils/en/dataExperienciaEN";
-import { dataExperiencia } from "../../utils/es/dataExperiencia";
-import { dataExperienceFR } from "../../utils/fr/dataExperienciaFR";
+
+import type React from "react";
 
 interface ModalWorkProps {
   currentLocale: string;
@@ -57,7 +58,7 @@ export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
         {/* <!-- Filtro tipo vidrio --> */}
         <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm z-40"></div>
 
-        <div className="modal-box max-w-2xl backdrop-blur-[30px] backdrop-saturate-[180%] rounded-b-lg p-0 bg-transparent bg-opacity-40 border border-neutral-500 z-50">
+        <div className="modal-box max-w-2xl backdrop-blur-[30px] backdrop-saturate-[180%] rounded-b-lg p-0 bg-transparent bg-opacity-40 border border-neutral-700 z-50">
           {/* <!-- Modal header --> */}
           <div className="w-full flex sticky top-0 items-center justify-between bg-current z-10 p-4 md:p-5 border-b rounded-t">
             <h3 className="text-2xl font-semibold text-base-100">

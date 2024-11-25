@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { reposDeseados } from "@/utils/dataRepoPinned";
 
-import { reposDeseados } from "../../utils/dataRepoPinned";
+import { useEffect, useState } from "react";
 
 const GITHUB_API_URL = "https://api.github.com/users/muke78/repos";
 

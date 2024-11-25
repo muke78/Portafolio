@@ -1,7 +1,7 @@
 ---
-import { dataContacto } from '../../utils/es/dataContacto.astro';
-import { dataContactoEN } from '../../utils/en/dataContactoEN.astro';
-import { dataContactoFR } from '../../utils/fr/dataContactoFR.astro';
+import { dataContacto } from '@/utils/es/dataContacto.astro';
+import { dataContactoEN } from '@/utils/en/dataContactoEN.astro';
+import { dataContactoFR } from '@/utils/fr/dataContactoFR.astro';
 
 const { currentLocale } = Astro;
 
@@ -18,7 +18,7 @@ if (currentLocale === 'es') {
 
 {
   dataChange.map(({ area, img, title, url, text }) => (
-    <div class="backdrop-blur-[19px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8 flex flex-col justify-between">
+    <div class="backdrop-blur-[100px] backdrop-saturate-[180%]  border border-neutral-700 rounded-lg shadow-md p-8 flex flex-col justify-between">
       <div class="flex items-center mb-2">
         <div class="avatar w-9 h-9 mr-2">
           <img src={img} alt={title} class="rounded-full" loading="lazy" />

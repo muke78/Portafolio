@@ -1,6 +1,6 @@
-import english from "../i18n/locales/en.json";
-import spanish from "../i18n/locales/es.json";
-import france from "../i18n/locales/fr.json";
+import english from "@/i18n/locales/en.json";
+import spanish from "@/i18n/locales/es.json";
+import france from "@/i18n/locales/fr.json";
 
 const LANG = {
   ENGLISH: "en",
