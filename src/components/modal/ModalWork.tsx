@@ -3,7 +3,6 @@ import { experienceDataEN } from "@/utils/en/dataExperienciaEN";
 import { dataExperiencia } from "@/utils/es/dataExperiencia";
 import { dataExperienceFR } from "@/utils/fr/dataExperienciaFR";
 
-
 import type React from "react";
 
 interface ModalWorkProps {

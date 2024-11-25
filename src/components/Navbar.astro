@@ -4,6 +4,7 @@ import ItemsNavbar from '@/components/items/ItemsNavbar.astro';
 import LangPicker from '@/components/LangPicker.astro';
 import { VersionSelect } from '@/components/version/ButtonVersion';
 import { ImageContrast } from '@/components/islands/ImageContrast';
+import ItemsNavrbarDrawer from './items/ItemsNavrbarDrawer.astro';
 
 const { currentLocale } = Astro;
 ---
@@ -60,20 +61,18 @@ const { currentLocale } = Astro;
     <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"
     ></label>
     <ul
-      class="menu backdrop-blur-[30px] backdrop-saturate-[180%] text-base min-h-full min-w-2.5 w-80 p-4 z-50 relative"
+      class="menu flex justify-center items-center backdrop-blur-[30px] backdrop-saturate-[180%] min-h-screen w-full p-4 z-50 relative"
     >
       <label
         for="my-drawer-4"
-        class="absolute top-4 right-4 text-4xl cursor-pointer z-50"
+        class="absolute top-20 right-9 text-4xl cursor-pointer z-50"
         aria-label="Close"
       >
         &times;
       </label>
-      <div class="flex flex-col mt-10">
-        <ul>
-          <ItemsNavbar />
+        <ul class="flex items-center flex-col w-full">
+          <ItemsNavrbarDrawer />
         </ul>
-      </div>
     </ul>
   </div>
 </div>

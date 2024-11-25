@@ -8,20 +8,16 @@ const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 
-<div class="hero bg-base-200 min-h-screen">
+<div class="hero min-h-screen">
   <div class="hero-content text-center">
-    <Bubble
-      class="top-40 bg-primary sm:left-32"
-      classNameToBottom="bottom-36 right-20 bg-accent sm:right-72"
-    />
+    <!-- <Bubble
+      class="top-96 bg-primary sm:left-32"
+      classNameToBottom="bottom-92 right-20 bg-accent sm:right-72"
+    /> -->
     <div class="max-w-5xl">
-      <div>
-        <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold mt-20 mb-36">
-          {i18n.SKILLS.SKILLS_TITLE}
-        </h2>
-      </div>
+      <div class="bg-base-content bg-opacity-10 backdrop-blur-[16px] backdrop-saturate-[180%] border border-base-content rounded-xl shadow-base-content py-5 px-5 card shadow__cardPulse">
       <div
-        class="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700  rounded-lg py-5 card"
+        class="bg-base-200 rounded-xl shadow-base-content py-5 card"
       >
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
           <div
@@ -31,6 +27,7 @@ const i18n = getI18N({ currentLocale });
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>
