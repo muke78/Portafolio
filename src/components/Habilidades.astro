@@ -1,7 +1,5 @@
 ---
 import { getI18N } from '@/i18n';
-
-import Bubble from '@/components/Bubble.astro';
 import ItemsHabilidades from '@/components/items/ItemsHabilidades.astro';
 
 const { currentLocale } = Astro;
@@ -10,11 +8,7 @@ const i18n = getI18N({ currentLocale });
 
 <div class="hero min-h-screen">
   <div class="hero-content p-0 text-center">
-    <!-- <Bubble
-      class="top-96 bg-primary sm:left-32"
-      classNameToBottom="bottom-92 right-20 bg-accent sm:right-72"
-    /> -->
-    <div class="max-w-5xl">
+    <div class="max-w-5xl pb-10">
       <div class="bg-base-content bg-opacity-10 backdrop-blur-[16px] backdrop-saturate-[180%] border border-base-content rounded-xl shadow-base-content py-5 px-5 card shadow__cardPulse">
       <div
         class="bg-base-200 rounded-xl shadow-base-content py-5 card"

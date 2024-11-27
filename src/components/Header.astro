@@ -1,20 +1,18 @@
 ---
 import { getI18N } from '@/i18n';
-import Bubble from '@/components/Bubble.astro';
-import { Toast } from '@/components/islands/Toast';
+// import { Toast } from '@/components/islands/Toast';
 import Parabola from './Parabola.astro';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 
-<div class="hero bg-base-300 min-h-[80vh] py-8">
+<div class="hero bg-base-300 min-h-[70vh] py-8">
   <div class="hero-content text-center">
       <Parabola
       class="top-60 lg:left-[25rem] bg-gradient-to-t from-base-content via-secondary skew-x-[35deg] rotate-[30deg] shadow__skew"
       classNameToBottom="top-60 lg:right-[25rem] bg-gradient-to-t from-base-content via-primary -skew-x-[35deg] rotate-[-30deg] shadow__skew"/>
-    <div class="max-w-lg">
-    <div class="max-w-lg">
+      <div id="scrolling-element" class="max-w-lg fixed">
       <!-- <Toast currentLocale={currentLocale} client:load /> -->
       
         <h1 class="text-6xl xl:text-8xl lg:text-8x1 md:text-8xl font-bold">
@@ -47,7 +45,48 @@ const i18n = getI18N({ currentLocale });
             stroke-width="2"
             d="m19 9l-7 6l-7-6"></path>
         </svg>
-        {i18n.HEADER.HEADER_BUTTON}</a>
+        {i18n.HEADER.HEADER_BUTTON}
+      </a>
     </div>
   </div>
 </div>
+
+<style>
+  #scrolling-element, #scroll__prbla, #scroll_prbla {
+    opacity: 0.6; 
+    transition: opacity 0.1s ease-in-out; 
+  }
+</style>
+
+<script>
+  // Seleccionamos los elementos
+  const element = document.getElementById('scrolling-element');
+  const prbla1 = document.getElementById('scroll__prbla');
+  const prbla2 = document.getElementById('scroll_prbla');
+  
+  prbla1.style.opacity = '0.6';
+  prbla2.style.opacity = '0.6';
+  prbla1.style.transform = 'scale(1) skewX(35deg) rotate(30deg)';
+  prbla2.style.transform = 'scale(1) skewX(-35deg) rotate(-30deg)';
+  prbla1.style.transition = 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out';
+  prbla2.style.transition = 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out';
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const windowHeight = document.documentElement.scrollHeight + window.innerHeight; 
+
+    const maxOpacity = 0.7;
+    const minOpacity = 0;
+    const opacity = Math.max(maxOpacity - (scrollTop / 100) * (maxOpacity - minOpacity), minOpacity);
+    const scale = Math.max(1 - scrollTop / (windowHeight * 2), 0.7);
+
+    element.style.opacity = opacity.toString();
+    element.style.transform = `scale(${scale})`;
+
+    prbla1.style.opacity = opacity.toString();
+    prbla1.style.transform = `scale(${scale}) skewX(35deg) rotate(30deg)`;
+
+    prbla2.style.opacity = opacity.toString();
+    prbla2.style.transform = `scale(${scale}) skewX(-35deg) rotate(-30deg)`;
+  });
+</script>
