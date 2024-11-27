@@ -67,15 +67,25 @@ const { currentLocale } = Astro;
   }
 
   .shadow__cardPulse {
-    box-shadow: 0px -20px 200px -200px;
+    box-shadow: 0px -20px 200px -400px;
     filter: drop-shadow(0 0 0.75rem);
-    animation: pulsate 7s infinite ease-in-out;
-    transition: box-shadow 1s ease-in-out;
+    transition: box-shadow 3s ease-in-out;
 }
 
-.parallax-section {
-      position: relative;
-      overflow: hidden;
+.shadow__skew {
+  animation: uppcolor 4s ease-in-out;
+}
+
+@keyframes uppcolor {
+    0% {
+        filter: blur(15rem); /* Empieza con un desenfoque alto */
     }
+    50% {
+        filter: blur(-20rem); /* Desenfoque moderado al llegar a la mitad */
+    }
+    100% {
+        filter: blur(4rem); /* Llega a 0 de desenfoque al final */
+    }
+}
 
 </style>
