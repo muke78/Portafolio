@@ -2,7 +2,8 @@
 
 ![Astro](https://astro.build/assets/press/astro-icon-light-gradient.svg)
 
-Se realizo el porttafolio con la tecnoligia de [Astro](https://astro.build/) y con la libreria de [React](https://es.react.dev/) montada a astro, con [Tailwind](https://tailwindui.com/) 5 en su interfaz
+Se realizo el porttafolio con la tecnoligia de [Astro](https://astro.build/) y con la libreria de [React](https://es.react.dev/) montada a astro, con [Tailwind](https://tailwindui.com/) 5.1.2 en su interfaz desde @astrojs/tailwind
+con tailwindcss 3.4.13
 
 - Se monto [Daisyui](https://daisyui.com/) sobre tailwind para manejar los temas de la apliacion
 - Se monto [Flowbite](https://flowbite.com/) sobre tailwind para darle funcionalidad a los componentes y ahorrar lineas de javascript
