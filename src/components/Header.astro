@@ -54,7 +54,7 @@ const i18n = getI18N({ currentLocale });
 <style>
   #scrolling-element, #scroll__prbla, #scroll_prbla {
     opacity: 0.6; 
-    transition: opacity 0.1s ease-in-out; 
+    transition: opacity 0.1s ease-in-out, transform 0.5s ease-in-out;
   }
 </style>
 
@@ -63,7 +63,7 @@ const i18n = getI18N({ currentLocale });
   const element = document.getElementById('scrolling-element');
   const prbla1 = document.getElementById('scroll__prbla');
   const prbla2 = document.getElementById('scroll_prbla');
-  
+
   prbla1.style.opacity = '0.6';
   prbla2.style.opacity = '0.6';
   prbla1.style.transform = 'scale(1) skewX(35deg) rotate(30deg)';
@@ -73,13 +73,35 @@ const i18n = getI18N({ currentLocale });
 
   window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const windowHeight = document.documentElement.scrollHeight + window.innerHeight; 
 
-    const maxOpacity = 0.7;
+    const maxOpacity = 0.6;
     const minOpacity = 0;
-    const opacity = Math.max(maxOpacity - (scrollTop / 100) * (maxOpacity - minOpacity), minOpacity);
-    const scale = Math.max(1 - scrollTop / (windowHeight * 2), 0.7);
+    const fadeStart = 200; 
+    const fadeEnd = 600; 
 
+  
+    const maxScale = 1;
+    const minScale = 0.7;
+    const scaleStart = 1; 
+    const scaleEnd = 600;   
+
+    // Calcular la opacidad
+    const opacity = scrollTop < fadeStart
+      ? maxOpacity
+      : Math.max(
+          maxOpacity - ((scrollTop - fadeStart) / (fadeEnd - fadeStart)) * (maxOpacity - minOpacity),
+          minOpacity
+        );
+
+    // Calcular la escala
+    const scale = scrollTop < scaleStart
+      ? maxScale
+      : Math.max(
+          maxScale - ((scrollTop - scaleStart) / (scaleEnd - scaleStart)) * (maxScale - minScale),
+          minScale
+        );
+
+    // Aplicar los valores calculados a los elementos
     element.style.opacity = opacity.toString();
     element.style.transform = `scale(${scale})`;
 
