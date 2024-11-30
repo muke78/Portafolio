@@ -28,26 +28,27 @@ if (currentLocale === 'es') {
         <h3 class="mt-3 text-lg font-semibold leading-6">
           <span class="text-lg text-base-content">{title}</span>
         </h3>
-        {images.map((image) => {
-  const techNames = image.split("?i=")[1].split(",");
-
-  return (
-    <div class="flex flex-wrap gap-4 justify-center mt-5">
-      {techNames.map((tech) => (
-        <div class="flex flex-col items-center">
-          <img
-            class="leading-6"
-            src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
-            alt={`Icon for ${tech}`}
-            loading="lazy"
-          />
-          <span class="text-xs mt-1 text-base-content">{tech}</span>
-        </div>
-      ))}
-    </div>
-  );
-})}
+          {images.map((image) => {
+          const techNames = image.split("?i=")[1].split(",");
+          return (
+          <div class="flex flex-wrap gap-4 justify-center mt-5">
+            {techNames.map((tech) => (
+              <div class="flex flex-col items-center">
+                <img
+                  class="leading-6"
+                  src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
+                  alt={`Icon for ${tech}`}
+                  loading="lazy"
+                />
+                <span class="text-xs mt-1 text-base-content">{tech}</span>
+              </div>
+            ))}
+          </div>
+          );
+        })}
       </div>
+      
     </article>
   ))
 }
+

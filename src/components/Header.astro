@@ -7,7 +7,7 @@ const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 
-<div class="hero bg-base-300 min-h-[70vh] py-8">
+<div class="hero min-h-[70vh] py-8">
   <div class="hero-content text-center">
       <Parabola
       class="top-60 lg:left-[25rem] bg-gradient-to-t from-base-content via-secondary skew-x-[35deg] rotate-[30deg] shadow__skew"
@@ -25,7 +25,7 @@ const i18n = getI18N({ currentLocale });
         </span>
       <p class="py-5 font-medium text-md">{i18n.HEADER.HEADER_ABOUT}</p>
       <a
-        href="#about"
+        href=`projects`
         class="btn btn-primary border-none bg-gradient-to-r from-primary to-accent"
       >
         <svg
@@ -43,7 +43,7 @@ const i18n = getI18N({ currentLocale });
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="m19 9l-7 6l-7-6"></path>
+            d="m10 16 4-4-4-4"></path>
         </svg>
         {i18n.HEADER.HEADER_BUTTON}
       </a>
