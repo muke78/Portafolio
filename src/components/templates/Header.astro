@@ -1,7 +1,7 @@
 ---
 import { getI18N } from '@/i18n';
 // import { Toast } from '@/components/islands/Toast';
-import Parabola from './Parabola.astro';
+import Parabola from '@/components/atomos/Parabola.astro';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
@@ -23,8 +23,11 @@ const i18n = getI18N({ currentLocale });
         >
           {i18n.HEADER.HEADER_NAME}
         </span>
-      <p class="py-5 font-medium text-md">{i18n.HEADER.HEADER_ABOUT}</p>
-      <a
+      <p class="py-5 text-lg font-medium text-base-content">{i18n.HEADER.HEADER_ABOUT}</p>
+
+      <!-- Se deshabilitó el botón de proyectos por el momento para modificacion de la página -->
+       
+      <!-- <a
         href=`projects`
         class="btn btn-primary border-none bg-gradient-to-r from-primary to-accent"
       >
@@ -46,7 +49,7 @@ const i18n = getI18N({ currentLocale });
             d="m10 16 4-4-4-4"></path>
         </svg>
         {i18n.HEADER.HEADER_BUTTON}
-      </a>
+      </a> -->
     </div>
   </div>
 </div>

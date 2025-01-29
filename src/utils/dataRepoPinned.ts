@@ -8,4 +8,5 @@ export const reposDeseados = [
   "Portafolio",
   "Comandos-Git",
   "BackendTask",
+  "Inventario-kinder"
 ];

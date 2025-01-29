@@ -8,7 +8,7 @@ con tailwindcss 3.4.13
 - Se monto [Daisyui](https://daisyui.com/) sobre tailwind para manejar los temas de la apliacion
 - Se monto [Flowbite](https://flowbite.com/) sobre tailwind para darle funcionalidad a los componentes y ahorrar lineas de javascript
 - Version estable v1.0.1 release, proximas y futuras actualizaciones
-- Proxima actualiacion 1.0.2 
+- Proxima actualiacion 1.0.2
 - Se ocupa la herramienta de reenvio de puertos desde host de tunel para revisar los cambios de el servidor en tiempo real desde un celular
 
 ### Lighthouse testeo desde Escritorio

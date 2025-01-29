@@ -8,22 +8,16 @@ const LANG = {
   FRANCE: "fr",
 };
 
+const locales = {
+  [LANG.ENGLISH]: english,
+  [LANG.SPANISH]: spanish,
+  [LANG.FRANCE]: france,
+};
+
 export const getI18N = ({
-  currentLocale = "es",
+  currentLocale = LANG.SPANISH,
 }: {
   currentLocale: string | undefined;
 }) => {
-  // if (currentLocale === LANG.ENGLISH) return { ...spanish, ...english, ...france };
-  // return spanish;
-  if (currentLocale === LANG.ENGLISH) {
-    return { ...english };
-  }
-
-  if (currentLocale === LANG.SPANISH) {
-    return { ...spanish };
-  }
-
-  if (currentLocale === LANG.FRANCE) {
-    return { ...france };
-  }
+  return locales[currentLocale] || locales[LANG.SPANISH];
 };
