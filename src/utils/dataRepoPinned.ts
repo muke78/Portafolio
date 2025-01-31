@@ -8,5 +8,6 @@ export const reposDeseados = [
   "Portafolio",
   "Comandos-Git",
   "BackendTask",
-  "Inventario-kinder"
+  "Inventario-kinder",
+  "task-tracker-cli"
 ];
