@@ -4,7 +4,7 @@ import { darkThemes } from "@/utils/dataDarkThemes";
 
 import { useEffect, useState } from "react";
 
-export const ImageContrast = () => {
+export const ImageContrast = ({ width }) => {
   const [currentTheme, setCurrentTheme] = useState<string>("light");
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export const ImageContrast = () => {
   const imageSrc = darkThemes.includes(currentTheme) ? kdlWhite : kdl;
 
   return (
-    <div className="w-12 ">
+    <div className={width}>
       <img
         src={imageSrc.src}
         alt="Logotipo personal de Erick Gonzalez"

@@ -15,7 +15,7 @@ const { currentLocale } = Astro;
   <div class="flex-grow">
     <div class="avatar flex items-center justify-center gap-4">
       <a href="#inicio" class="w-12 rounded">
-        <ImageContrast client:load />
+        <ImageContrast client:load width="w-12"/>
       </a>
       <VersionSelect currentLocale={currentLocale} client:load />
     </div>

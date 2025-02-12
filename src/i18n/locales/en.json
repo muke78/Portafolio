@@ -36,10 +36,7 @@
     "CONTACT_TITLE": "Contact"
   },
   "FOOTER": {
-    "FOOTER_MAKE": "Make with",
-    "FOOTER_SEPARATOR": "and",
-    "FOOTER_DESCRIPTION": "Project developed with Astro",
-    "FOOTER_ALL_RIGHT": "All right reserved",
+    "FOOTER_MAKE": "Designed and Built with",
     "FOOTER_ECOLOGICAL_FOOTPRINT": "Ecological Footprint - Rating"
   },
   "THEME": {
