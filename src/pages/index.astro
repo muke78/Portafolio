@@ -1,4 +1,12 @@
 ---
+import { getI18N } from "@/i18n/index"
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
+---
+
+<meta http-equiv="refresh" content={`0;url=/${i18n}/`} />
+
+<!-- ---
 import Layout from '@/layouts/Layout.astro';
 import Navbar from '@/components/organismos/Navbar.astro';
 import Header from '@/components/templates/Header.astro';
@@ -17,4 +25,6 @@ import Footer from '@/components/templates/Footer.astro';
     </div>
     <Footer />
   </header>
-</Layout>
+</Layout> -->
+
+

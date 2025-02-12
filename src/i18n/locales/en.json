@@ -56,5 +56,8 @@
     "TOAST_TITLE": "Preliminary version",
     "TOAST_BODY": "Version 1.0.1 is deployed, but there will be future changes in the coming months",
     "TOAST_BUTTON": "Accept"
+  },
+  "404": {
+    "404_BODY": "Oops! The page you're looking for doesn't exist."
   }
 }

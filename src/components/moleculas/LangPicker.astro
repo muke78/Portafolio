@@ -4,6 +4,9 @@ import { languages } from '@/i18n/ui';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
+const url = Astro.url
+const origin = url.origin
+const [, lang, ...slug] = url.pathname.split("/")
 ---
 
 <button
@@ -54,7 +57,9 @@ const i18n = getI18N({ currentLocale });
     {
       Object.entries(languages).map(([code, { label, img }]) => (
         <li>
-          <a href={`/${code}/`} class="block px-4 py-2 text-base font-semibold">
+        
+        <a
+          href={`${origin}/${code}/${slug.join("/")}`} class="block px-4 py-2 text-base font-semibold">
             <img
               src={`${img.src}`}
               alt={`${label} flag`}
@@ -63,6 +68,7 @@ const i18n = getI18N({ currentLocale });
             />
             {label}
           </a>
+         
         </li>
       ))
     }

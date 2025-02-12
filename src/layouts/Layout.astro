@@ -1,48 +1,50 @@
 ---
-const { currentLocale } = Astro;
+// Extraer valores de la URL
+const { currentLocale, url } = Astro;
+const [, lang, slug = ''] = url.pathname.split('/'); // Asignar un valor por defecto a slug
+const title = slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : '';
+
+// Constantes para URLs y títulos
+const baseUrl = 'https://portafolio-vercel-deploy.vercel.app/';
+const siteTitle = 'Web developer JR - IT Engineer';
+const siteDescription = 'Portafolio de Erick Gonzalez';
+const imageUrl = `${baseUrl}kdl.webp`;
 ---
 
 <!doctype html>
-<html lang={currentLocale} class="scroll-smooth ">
+<html lang={currentLocale} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portafolio</title>
-    <meta name="description" content="Portafolio muke78" />
+    <title>{title}</title>
+    <meta name="description" content={siteDescription} />
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content="https://portafolio-vercel-deploy.vercel.app/"
-    />
-    <meta property="og:title" content="Web developer JR - IT Engineer" />
-    <meta
-      property="og:description"
-      content="Portafolio de Erick Gonzalez"
-    />
-    <meta property="og:image" content="https://portafolio-vercel-deploy.vercel.app/kdl.webp">
-    <meta property="og:site_name" content="Portafolio">
+    <meta property="og:url" content={baseUrl} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={siteDescription} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:site_name" content="Portafolio" />
+    
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta
-      property="twitter:url"
-      content="https://portafolio-vercel-deploy.vercel.app/"
-    />
-    <meta property="twitter:title" content="Porafolio" />
-    <meta
-      property="twitter:image"
-      content="https://portafolio-vercel-deploy.vercel.app/kdl.webp"
-    />
-   
+    <meta property="twitter:url" content={baseUrl} />
+    <meta property="twitter:title" content={siteTitle} />
+    <meta property="twitter:description" content={siteDescription} />
+    <meta property="twitter:image" content={imageUrl} />
+    
+    <!-- Metadatos adicionales -->
     <meta name="theme-color" content="#6f37cf" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="muke78" />
     <meta name="copyright" content="Copyright © 2024" />
     <link rel="icon" type="image/svg+xml" href="/kdl.webp" />
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://portafolio-vercel-deploy.vercel.app/" />
+    <link rel="canonical" href={baseUrl} />
+    
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
   </head>
   <body class="bg-base-300">
     <slot />
@@ -64,21 +66,21 @@ const { currentLocale } = Astro;
     box-shadow: 0px -20px 200px -400px;
     filter: drop-shadow(0 0 0.75rem);
     transition: box-shadow 10s ease-in-out;
-}
+  }
 
-.shadow__skew {
-  animation: uppcolor 4s ease-in-out;
-}
+  .shadow__skew {
+    animation: uppcolor 4s ease-in-out;
+  }
 
-@keyframes uppcolor {
+  @keyframes uppcolor {
     0% {
-        filter: blur(15rem); /* Empieza con un desenfoque alto */
+      filter: blur(15rem);
     }
     50% {
-        filter: blur(-20rem); /* Desenfoque moderado al llegar a la mitad */
+      filter: blur(-20rem);
     }
     100% {
-        filter: blur(4rem); /* Llega a 0 de desenfoque al final */
+      filter: blur(4rem);
     }
-}
+  }
 </style>

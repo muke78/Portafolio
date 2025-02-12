@@ -1,0 +1,22 @@
+---
+import Navbar from "@/components/organismos/Navbar.astro"
+import { getI18N } from "@/i18n";
+import Layout from "@/layouts/Layout.astro"
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
+---
+
+<Layout title="404">
+    <Navbar />
+    <div class="hero bg-base-200 min-h-screen">
+      <div class="hero-content text-center">
+        <div class="max-w-md">
+          <h1 class="text-9xl font-bold">404</h1>
+          <p class="py-6 text-2xl text-base-content">
+          {i18n[404]["404_BODY"]}
+          </p>
+        </div>
+      </div>
+    </div>
+</Layout>
