@@ -9,5 +9,5 @@ export const reposDeseados = [
   "Comandos-Git",
   "BackendTask",
   "Inventario-kinder",
-  "task-tracker-cli"
+  "task-tracker-cli",
 ];
