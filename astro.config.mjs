@@ -3,7 +3,6 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import { defineConfig } from "astro/config";
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), react()],
   compressHTML: true,
@@ -16,10 +15,10 @@ export default defineConfig({
     mode: "standalone",
   }),
   i18n: {
-    defaultLocale: "es",
-    locales: ["es", "en", "fr"],
+    defaultLocale: "es", // Idioma por defecto
+    locales: ["es", "en", "fr"], // Idiomas soportados
     routing: {
-      prefixDefaultLocale: true,
+      prefixDefaultLocale: true, // Añade el prefijo del idioma por defecto
     },
   },
 });
