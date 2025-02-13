@@ -61,10 +61,9 @@ const imageUrl = `${baseUrl}kdl.webp`;
     top: 0;
     height: 3px;
   }
-
   .shadow__cardPulse {
-    box-shadow: 0px -20px 200px -400px;
-    filter: drop-shadow(0 0 0.75rem);
+    backdrop-filter: blur(200px) saturate(180%);
+    filter: drop-shadow(0 0 1rem);
     transition: box-shadow 10s ease-in-out;
   }
 

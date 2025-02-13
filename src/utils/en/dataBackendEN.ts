@@ -1,24 +1,24 @@
-export const dataBackend = [
+export const dataBackendEN = [
   {
-    time: "Más de 3 años",
+    time: "More than 3 years",
     area: "Backend",
-    title: "Lenguajes y frameworks",
+    title: "Languages and Frameworks",
     images: [
       "https://go-skill-icons.vercel.app/api/icons?i=java,nodejs,python,anaconda,express",
     ],
   },
   {
-    time: "Más de 1 año",
+    time: "More than 1 year",
     area: "Testing",
-    title: "Pruebas y testing",
+    title: "Testing and Tests",
     images: [
       "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary",
     ],
   },
   {
-    time: "Más de 2 años",
+    time: "More than 2 years",
     area: "Database and Tools",
-    title: "Bases de datos y herramientas",
+    title: "Databases and Tools",
     images: [
       "https://go-skill-icons.vercel.app/api/icons?i=postman,supabase,postgres,reactquery,mysql",
       "https://go-skill-icons.vercel.app/api/icons?i=sqlserver,git,authjs,zustand,swagger",
