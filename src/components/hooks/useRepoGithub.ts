@@ -2,7 +2,7 @@ import { reposDeseados } from "@/utils/dataRepoPinned";
 
 import { useEffect, useState } from "react";
 
-const GITHUB_API_URL = "https://api.github.com/users/muke78/repos";
+const GITHUB_API_URL = "https://api.github.com/users/muke78/repos?per_page=60";
 
 interface Repo {
   id: number;

@@ -6,8 +6,9 @@ export const reposDeseados = [
   "Sistema_Numerico",
   "HeroApp",
   "Portafolio",
-  "Comandos-Git",
   "BackendTask",
   "Inventario-kinder",
   "task-tracker-cli",
+  "expense-tracker-cli",
+  "Mathgame",
 ];
