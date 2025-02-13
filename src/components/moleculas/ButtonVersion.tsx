@@ -74,16 +74,16 @@ export const VersionSelect: React.FC<VersionSelectProps> = ({
       </div>
       <ul
         tabIndex={0}
-        className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+        className="menu dropdown-content bg-base-content rounded-box z-[1] w-40 p-2 shadow"
       >
         <li
-          className="flex items-center justify-center text-base font-semibold cursor-pointer"
+          className="flex items-center justify-center text-base-300 font-semibold  cursor-pointer p-1"
           onClick={() => handleVersionSelect("v1.0.1")}
         >
           v1.0.1 ({i18n.VERSION.VERSION_CURRENT})
         </li>
         <li
-          className="flex items-center justify-center text-base font-semibold cursor-pointer"
+          className="flex items-center justify-center  text-base-300 font-semibold cursor-pointer p-1"
           onClick={() => handleVersionSelect("v1.0.0")}
         >
           v1.0.0
