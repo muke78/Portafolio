@@ -5,7 +5,7 @@ export const dataExperienceFR = [
     work: "Actuel",
     title: "Développeur Full Stack",
     subtitle: "sleeplesscofi · Freelance",
-    time: "Avr. 2024 · 8 mois",
+    time: "Avr. 2024 · 11 mois",
     location: "Lima, Pérou · À distance",
     experience: [
       "Organisation autonome sur GitHub pour développer des applications web complètes.",
@@ -22,7 +22,7 @@ export const dataExperienceFR = [
     work: "",
     title: "Développeur de bases de données",
     subtitle: "RIMAC (Risk Management) ICBA Mexique · Temps plein",
-    time: "Oct. 2023 - Avr. 2024 · 7 mois",
+    time: "Nov. 2023 - Juil. 2024 · 7 mois",
     location: "Álvaro Obregón, Mexico, Mexique · Sur site",
     experience: [
       "Restructuration de la base de données pour améliorer la gestion des tables et optimiser les performances des requêtes de 30%.",
@@ -40,7 +40,7 @@ export const dataExperienceFR = [
     work: "",
     title: "Développeur d'applications web",
     subtitle: "Grupo Constructor Pirámide · Temps plein",
-    time: "Fév. 2023 - Sept. 2023 · 8 mois",
+    time: "Janv. 2023 - Nov. 2023 · 11 mois",
     location: "Gustavo A. Madero, Mexico, Mexique · Sur site",
     experience: [
       "Migration de bases de données avec des bases de données relationnelles.",
@@ -61,27 +61,15 @@ export const dataExperienceFR = [
     id: "4",
     img: "/rutopia.webp",
     work: "",
-    title: "Assistant systèmes",
+    title: "Apprenti développeur",
     subtitle: "Rutopía · Temps plein",
-    time: "Août 2022 - Oct. 2022 · 3 mois",
+    time: "Oct 2021 - Oct. 2022 · 1 an",
     location: "Coyoacán, Mexico, Mexique · Sur site",
     experience: [
       "Création de rapports sur la plateforme Tourplan.",
       "Gestion des activités sur Monday.com.",
       "Développement de rapports dynamiques.",
       "Utilisation de base de GraphQL pour compiler des informations et consommer des API.",
-    ],
-  },
-  {
-    id: "5",
-    img: "/hitech.webp",
-    work: "",
-    title: "Spécialiste en maintenance",
-    subtitle: "SISTEMAS INTEGRALES HI-TECH · Temps plein",
-    time: "Juil. 2021 - Oct. 2021 · 4 mois",
-    location: "Tultitlán de Mariano Escobedo, Mexique · Sur site",
-    experience: [
-      "Gestion des composants électroniques tels que l'inventaire interne des ordinateurs, l'inventaire des réseaux, les tests des équipements informatiques, nettoyage des équipements informatiques, configuration des imprimantes et maintenance d'un serveur pour Hyundai Camiones Y Buses Perinorte.",
     ],
   },
 ];

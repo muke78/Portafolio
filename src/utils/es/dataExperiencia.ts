@@ -5,7 +5,7 @@ export const dataExperiencia = [
     work: "Actual",
     title: "Desarrollador full stack",
     subtitle: "sleeplesscofi · Autónomo",
-    time: "abr. 2024 · 8 meses",
+    time: "Abr. 2024 · 11 meses",
     location: "Lima, Perú · En remoto",
     experience: [
       "Organización autónoma en GitHub para desarrollar aplicaciones completas web",
@@ -22,7 +22,7 @@ export const dataExperiencia = [
     work: "",
     title: "Desarrollador bases de datos",
     subtitle: "RIMAC (Risk Management) ICBA México · Jornada completa",
-    time: "oct. 2023 - abr. 2024 · 7 meses",
+    time: "Nov. 2023 - Jul. 2024 · 7 meses",
     location: "Álvaro Obregón , Cuidad de México, México, Prsencial",
     experience: [
       "Re estructuración de la base de datos, para poder llevar un mejor control de las tablas, mejorando un rendimiento en las consultas de 30%",
@@ -40,7 +40,7 @@ export const dataExperiencia = [
     work: "",
     title: "Desarrollador de aplicaciones web",
     subtitle: "Grupo Constructor Pirámide · Jornada completa",
-    time: "feb. 2023 - sept. 2023 · 8 meses",
+    time: "Ene. 2023 - Nov. 2023 · 11 meses",
     location: "Gustavo A. Madero, Ciudad de México, México · Presencial",
     experience: [
       "Migración de base de datos con base de datos relacional",
@@ -61,27 +61,15 @@ export const dataExperiencia = [
     id: "4",
     img: "/rutopia.webp",
     work: "",
-    title: "Auxiliar de sistemas",
+    title: "Desarrollador aprendiz",
     subtitle: "Rutopía · Jornada completa",
-    time: "ago. 2022 - oct. 2022 · 3 meses",
+    time: "Oct. 2021 - Oct. 2022 · 1 año",
     location: "Coyoacán, Ciudad de México, México · Presencial",
     experience: [
       "Creación de reportes en la plataforma Tourplan.",
       "Control de actividades en Monday.",
       "Desarrollo de reportes dinámicos.",
       "Uso básico de GraphQL para compilar información y consumir API.",
-    ],
-  },
-  {
-    id: "5",
-    img: "/hitech.webp",
-    work: "",
-    title: "Especialista en mantenimiento",
-    subtitle: "SISTEMAS INTEGRALES HI-TECH · Jornada completa",
-    time: "jul. 2021 - oct. 2021 · 4 meses",
-    location: "Tultitlan de Mariano Escobedo, México, México · Presencial",
-    experience: [
-      "Administración de componentes electrónicos como inventario interno de las computadoras, inventario de redes y prueba de equipos de cómputo, limpieza a equipos de cómputo configuración de impresoras y de un servidor en la empresa Hyundai Camiones Y Buses Perinorte.",
     ],
   },
 ];

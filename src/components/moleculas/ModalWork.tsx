@@ -43,7 +43,7 @@ export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
   return (
     <>
       <button
-        className="btn btn-primary bg-gradient-to-l from-primary to-secondary border-none stat-value"
+        className="btn btn-outline stat-value animate-bounce"
         onClick={handleOpenModal}
       >
         +4
@@ -110,7 +110,7 @@ export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
                     <h3 className="flex items-start mb-1 text-lg font-semibold text-white dark:text-gray-800">
                       {title}
                       {work && (
-                        <span className="bg-secondary text-sm font-medium mr-2 px-2.5 py-0.5 rounded ms-3">
+                        <span className="bg-base-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded ms-3">
                           {work}
                         </span>
                       )}

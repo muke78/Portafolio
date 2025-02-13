@@ -5,7 +5,7 @@ export const experienceDataEN = [
     work: "Current",
     title: "Full Stack Developer",
     subtitle: "sleeplesscofi · Freelance",
-    time: "Apr. 2024 · 8 months",
+    time: "Apr. 2024 · 11 months",
     location: "Lima, Peru · Remote",
     experience: [
       "Self-organization in GitHub to develop full web applications.",
@@ -22,7 +22,7 @@ export const experienceDataEN = [
     work: "",
     title: "Database Developer",
     subtitle: "RIMAC (Risk Management) ICBA Mexico · Full-time",
-    time: "Oct. 2023 - Apr. 2024 · 7 months",
+    time: "Nov. 2023 - Jul. 2024 · 7 months",
     location: "Álvaro Obregón, Mexico City, Mexico · On-site",
     experience: [
       "Restructured the database to improve table management and enhance query performance by 30%.",
@@ -40,7 +40,7 @@ export const experienceDataEN = [
     work: "",
     title: "Web Application Developer",
     subtitle: "Grupo Constructor Pirámide · Full-time",
-    time: "Feb. 2023 - Sept. 2023 · 8 months",
+    time: "Ene. 2023 - Nov. 2023 · 11 months",
     location: "Gustavo A. Madero, Mexico City, Mexico · On-site",
     experience: [
       "Database migration with relational databases.",
@@ -61,27 +61,15 @@ export const experienceDataEN = [
     id: "4",
     img: "/rutopia.webp",
     work: "",
-    title: "Systems Assistant",
+    title: "Developer trainee",
     subtitle: "Rutopía · Full-time",
-    time: "Aug. 2022 - Oct. 2022 · 3 months",
+    time: "Oct. 2021 - Oct. 2022 · 1 year",
     location: "Coyoacán, Mexico City, Mexico · On-site",
     experience: [
       "Created reports on the Tourplan platform.",
       "Managed activities on Monday.com.",
       "Developed dynamic reports.",
       "Basic use of GraphQL to compile information and consume APIs.",
-    ],
-  },
-  {
-    id: "5",
-    img: "/hitech.webp",
-    work: "",
-    title: "Maintenance Specialist",
-    subtitle: "SISTEMAS INTEGRALES HI-TECH · Full-time",
-    time: "Jul. 2021 - Oct. 2021 · 4 months",
-    location: "Tultitlán de Mariano Escobedo, Mexico · On-site",
-    experience: [
-      "Managed electronic components such as internal computer inventory, network inventory, computer equipment testing, cleaned computer equipment, configured printers, and maintained a server for Hyundai Trucks and Buses Perinorte.",
     ],
   },
 ];
