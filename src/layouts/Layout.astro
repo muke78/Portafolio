@@ -47,11 +47,14 @@ const imageUrl = `${baseUrl}kdl.webp`;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body class="bg-base-300">
-    <slot />
+    <div id="swup" class="transition-fade">
+      <slot />
+    </div>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
     ></script>
+    <script src="../js/swup-init.js"></script>
   </body>
 </html>
 
@@ -61,6 +64,7 @@ const imageUrl = `${baseUrl}kdl.webp`;
     top: 0;
     height: 3px;
   }
+
   .shadow__cardPulse {
     backdrop-filter: blur(200px) saturate(180%);
     filter: drop-shadow(0 0 1rem);
@@ -69,6 +73,17 @@ const imageUrl = `${baseUrl}kdl.webp`;
 
   .shadow__skew {
     animation: uppcolor 4s ease-in-out;
+  }
+
+  /* Transición de fade */
+  .transition-fade {
+    transition: opacity 0.7s ease-in-out;
+    opacity: 1;
+  }
+
+  html.is-animating .transition-fade {
+    transition: opacity 0.7s ease-in-out;
+    opacity: 0;
   }
 
   @keyframes uppcolor {

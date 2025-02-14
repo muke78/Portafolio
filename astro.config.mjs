@@ -1,10 +1,11 @@
 import node from "@astrojs/node";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
+import swup from "@swup/astro";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  integrations: [tailwind(), react()],
+  integrations: [tailwind(), react(), swup({ theme: false })],
   compressHTML: true,
   prefetch: true,
   devToolbar: {
