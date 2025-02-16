@@ -9,43 +9,16 @@ const i18n = getI18N({ currentLocale });
 
 <div class="hero min-h-[80vh] py-8">
   <div class="hero-content text-center">
-      <Parabola
-      class="top-60 lg:left-[25rem] bg-gradient-to-t from-base-content via-secondary skew-x-[35deg] rotate-[30deg] shadow__skew"
-      classNameToBottom="top-60 lg:right-[25rem] bg-gradient-to-t from-base-content via-primary -skew-x-[35deg] rotate-[-30deg] shadow__skew"/>
-      <div id="scrolling-element" class="max-w-lg fixed">
+    <Parabola class="top-60 lg:left-[25rem] bg-gradient-to-t from-base-content via-secondary skew-x-[35deg] rotate-[30deg] shadow__skew" classNameToBottom="top-60 lg:right-[25rem] bg-gradient-to-t from-base-content via-primary -skew-x-[35deg] rotate-[-30deg] shadow__skew" />
+    <div id="scrolling-element" class="max-w-md fixed">
       <!-- <Toast currentLocale={currentLocale} client:load /> -->
-      
-        <h1 class="text-6xl xl:text-8xl lg:text-8x1 md:text-8xl font-bold">
-          {i18n.HEADER.HEADER_TITLE}
-        </h1>
-        <span
-        class="text-7xl xl:text-8xl lg:text-8x1 md:text-8xl leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"
-      >
-        {i18n.HEADER.HEADER_NAME}
-      </span>
+      <h1 class="text-6xl xl:text-8xl lg:text-8x1 md:text-8xl font-bold"> {i18n.HEADER.HEADER_TITLE} </h1>
+      <span class="text-7xl xl:text-8xl lg:text-8x1 md:text-8xl leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> {i18n.HEADER.HEADER_NAME} </span>
       <p class="py-5 text-lg font-medium text-base-content">{i18n.HEADER.HEADER_ABOUT}</p>
-      <a
-        href="#habilidades"
-        class="btn btn-accent h-10 min-h-14 pl-6 pr-6 font-bold text-sm border-none z-50"
-      >
-        <svg 
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            style="--sl-icon-size: 0.5em;">
-          <path 
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-          d="M8.12 9.29L12 13.17l3.88-3.88a.996.996 0 1 1 1.41 1.41l-4.59 4.59a.996.996 0 0 1-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0"/>
-        </svg>
-        {i18n.HEADER.HEADER_BUTTON}
-      </a>
+      <a href="#habilidades" class="btn btn-accent h-10 min-h-14 pl-6 pr-6 font-bold text-sm border-none z-50">
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 0.5em;">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.12 9.29L12 13.17l3.88-3.88a.996.996 0 1 1 1.41 1.41l-4.59 4.59a.996.996 0 0 1-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0" />
+        </svg> {i18n.HEADER.HEADER_BUTTON} </a>
     </div>
   </div>
 </div>

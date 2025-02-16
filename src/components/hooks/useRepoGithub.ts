@@ -1,5 +1,4 @@
 import { reposDeseados } from "@/utils/dataRepoPinned";
-
 import { useEffect, useState } from "react";
 
 const GITHUB_API_URL = "https://api.github.com/users/muke78/repos?per_page=60";
@@ -17,20 +16,21 @@ interface FetchReposResponse {
   data: Repo[] | null;
 }
 
-const localCache: Record<string, Repo[]> = {};
-
 export const useFetchRepos = (): FetchReposResponse => {
   const [repos, setRepos] = useState<FetchReposResponse>({
     data: null,
   });
 
   const getFetch = async () => {
-    if (localCache[GITHUB_API_URL]) {
+    // Verificar si los datos están en el localStorage
+    const cachedRepos = localStorage.getItem(GITHUB_API_URL);
+    if (cachedRepos) {
       setRepos({
-        data: localCache[GITHUB_API_URL],
+        data: JSON.parse(cachedRepos),
       });
       return;
     }
+
     try {
       const response = await fetch(GITHUB_API_URL);
 
@@ -50,7 +50,8 @@ export const useFetchRepos = (): FetchReposResponse => {
         data: filteredRepos,
       });
 
-      localCache[GITHUB_API_URL] = filteredRepos;
+      // Guardar los datos en el localStorage
+      localStorage.setItem(GITHUB_API_URL, JSON.stringify(filteredRepos));
     } catch (error) {
       console.error("Error fetching repos:", error);
       setRepos({

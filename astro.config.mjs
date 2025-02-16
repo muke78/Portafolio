@@ -2,10 +2,11 @@ import node from "@astrojs/node";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import swup from "@swup/astro";
+import compress from "astro-compress";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  integrations: [tailwind(), react(), swup({ theme: false })],
+  integrations: [tailwind(), react(), swup({ theme: false }), compress()],
   compressHTML: true,
   prefetch: true,
   devToolbar: {
@@ -16,10 +17,15 @@ export default defineConfig({
     mode: "standalone",
   }),
   i18n: {
-    defaultLocale: "es", // Idioma por defecto
-    locales: ["es", "en", "fr"], // Idiomas soportados
+    defaultLocale: "es",
+    locales: ["es", "en", "fr"],
     routing: {
-      prefixDefaultLocale: true, // Añade el prefijo del idioma por defecto
+      prefixDefaultLocale: true,
+    },
+  },
+  vite: {
+    build: {
+      minify: true, 
     },
   },
 });
