@@ -53,7 +53,7 @@ const [, lang, ...slug] = url.pathname.split("/")
   id="dropdownTheme"
   class="z-10 hidden bg-base-content rounded-lg shadow w-44"
 >
-  <ul class="py-2 text-base-300" aria-labelledby="dropdownDefaultButton">
+  <ul class="py-2 text-base-300 animate__animated animate__fadeIn" aria-labelledby="dropdownDefaultButton">
     {
       Object.entries(languages).map(([code, { label, img }]) => (
         <li>

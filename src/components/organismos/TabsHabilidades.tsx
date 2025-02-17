@@ -49,7 +49,7 @@ export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
                 data-tabs-target={tab.target}
                 type="button"
                 role="tab"
-                aria-controls={tab.ariaControls}
+                aria-label={tab.ariaControls}
                 aria-selected={activeTab === tab.id}
                 onClick={() => setActiveTab(tab.id)}
               >
@@ -63,11 +63,11 @@ export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
       {/* // Tabs para la agrupacion de tecnologias */}
       <div className="bg-base-200 rounded-xl shadow-base-content py-5 card">
         <div
-          className="mx-auto max-w-7xl px-6 lg:px-8"
+          className="mx-auto max-w-7xl px-6 lg:px-8 "
           id="default-styled-tab-content"
         >
           <div
-            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2"
+            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 animate__animated animate__fadeIn"
             id="styled-profile"
             role="tabpanel"
             aria-labelledby="profile-tab"
@@ -75,7 +75,7 @@ export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
             <ItemDataFrontend currentLocale={currentLocale} />
           </div>
           <div
-            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden"
+            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden animate__animated animate__fadeIn"
             id="styled-dashboard"
             role="tabpanel"
             aria-labelledby="dashboard-tab"
@@ -83,7 +83,7 @@ export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
             <ItemDataBackend currentLocale={currentLocale} />
           </div>
           <div
-            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden"
+            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden animate__animated animate__fadeIn"
             id="styled-settings"
             role="tabpanel"
             aria-labelledby="settings-tab"

@@ -6,7 +6,19 @@ import compress from "astro-compress";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  integrations: [tailwind(), react(), swup({ theme: false }), compress()],
+  integrations: [
+    tailwind(),
+    react(),
+    swup({ theme: false }),
+    compress({
+      CSS: true,
+      JavaScript: true,
+      HTML: true,
+      Image: true,
+      SVG: true,
+      Logger: true,
+    }),
+  ],
   compressHTML: true,
   prefetch: true,
   devToolbar: {
@@ -25,7 +37,7 @@ export default defineConfig({
   },
   vite: {
     build: {
-      minify: true, 
+      minify: true,
     },
   },
 });

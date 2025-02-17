@@ -43,7 +43,7 @@ export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
   return (
     <>
       <button
-        className="btn btn-outline stat-value animate-bounce"
+        className="btn btn-outline stat-value animate__animated animate__pulse animate__infinite"
         onClick={handleOpenModal}
       >
         +4

@@ -9,5 +9,5 @@
 | Edge                  | :white_check_mark: |
 | Brave                 | :white_check_mark: |
 | Navegadores embebidos | :white_check_mark: |
-| Firefox               | :x:                |
+| Firefox               | :white_check_mark: |
 | Safari                | :x:                |

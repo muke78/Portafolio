@@ -10,7 +10,7 @@ const i18n = getI18N({ currentLocale });
 <div class="hero min-h-[80vh] py-8">
   <div class="hero-content text-center">
     <Parabola class="top-60 lg:left-[25rem] bg-gradient-to-t from-base-content via-secondary skew-x-[35deg] rotate-[30deg] shadow__skew" classNameToBottom="top-60 lg:right-[25rem] bg-gradient-to-t from-base-content via-primary -skew-x-[35deg] rotate-[-30deg] shadow__skew" />
-    <div id="scrolling-element" class="max-w-md fixed">
+    <div id="scrolling-element" class="max-w-md fixed animate__animated animate__fadeIn animate__delay-2s">
       <!-- <Toast currentLocale={currentLocale} client:load /> -->
       <h1 class="text-6xl xl:text-8xl lg:text-8x1 md:text-8xl font-bold"> {i18n.HEADER.HEADER_TITLE} </h1>
       <span class="text-7xl xl:text-8xl lg:text-8x1 md:text-8xl leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> {i18n.HEADER.HEADER_NAME} </span>
