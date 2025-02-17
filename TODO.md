@@ -12,6 +12,7 @@
 - Cambiar las banderas a webp para ocupar lo menor de espacio que se pueda
 - Agregar un modal para ver la galeria de fotos sobre el proyecto que se tiene
 - Terminar bien los proyectos empresariales
+- Arreglar las dimensionesenb el telefono para los Tabs de proyectos quitarles padding
 
 ## Cambios que se pueden ir haciendo para despues
 

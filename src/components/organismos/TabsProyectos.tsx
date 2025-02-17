@@ -66,7 +66,7 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
         >
           {/* Sección Proyectos */}
           <div
-            className="mt-10 grid max-w-7xl  gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
+            className=" grid max-w-7xl  gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
             id="styled-proyectos"
             role="tabpanel"
             aria-labelledby="proyectos-tab"

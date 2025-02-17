@@ -37,11 +37,9 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
       <Swiper
         slidesPerView={2}
         spaceBetween={20}
-        pagination={{
-          dynamicBullets: true,
-        }}
+        pagination={true}
         modules={[Pagination]}
-        className="mySwiper rounded-lg pb-5 card shadow-md"
+        className="mySwiper rounded-lg shadow-md"
         breakpoints={{
           300: {
             slidesPerView: 1,
@@ -64,8 +62,8 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
         }}
       >
         {dataChange.map((repo) => (
-          <SwiperSlide key={repo.id} className="flex flex-col">
-            <div className="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg p-4 shadow-md flex flex-col justify-between h-full">
+          <SwiperSlide key={repo.id} className="flex flex-col pb-8">
+            <div className="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg  md:p-3 lg:p-4 shadow-md flex justify-between flex-col h-full">
               <a href={repo.link} target="_blank" rel="noopener noreferrer">
                 <img
                   className="rounded-t-lg w-full object-cover"
@@ -111,9 +109,9 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
                   <p className="text-gray-500">No topics available.</p>
                 )}
               </div>
-              <div className="mt-4">
+              <div className="mt-2">
                 <a
-                  className="btn backdrop-blur-[100px] backdrop-saturate-[180%] flex justify-center items-center"
+                  className="btn btn-accent backdrop-blur-[100px] backdrop-saturate-[180%] flex justify-center items-center"
                   href={repo.link}
                   target="_blank"
                   rel="noopener noreferrer"
