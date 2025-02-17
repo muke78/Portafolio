@@ -1,4 +1,4 @@
-import { ItemsRepoNew } from "@/components/moleculas/ItemsRepoNew";
+import { ItemsRepoRepositorios } from "@/components/moleculas/ItemsRepositorios";
 import { tabsProyectosEN } from "@/utils/en/dataTabsproyectosEN";
 import { tabsProyectos } from "@/utils/es/dataTabsProyectos";
 import { tabsProyectosFR } from "@/utils/fr/dataTabsProyectosFR";
@@ -71,7 +71,7 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
             role="tabpanel"
             aria-labelledby="proyectos-tab"
           >
-            <ItemsRepoNew currentLocale={currentLocale} />
+            <ItemsRepoRepositorios currentLocale={currentLocale} />
           </div>
 
           {/* Sección Proyectos empresariales */}
