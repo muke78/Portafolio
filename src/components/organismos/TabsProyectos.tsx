@@ -1,30 +1,28 @@
-import { ItemDataBackend } from "@/components/moleculas/ItemDataBackend";
-import { ItemDataFrontend } from "@/components/moleculas/ItemDataFrontend";
-import { ItemDataOtros } from "@/components/moleculas/ItemDataOtros";
-import { tabsEN } from "@/utils/en/dataTabsHabilidadesEN";
-import { tabs } from "@/utils/es/dataTabsHabilidades";
-import { tabsFR } from "@/utils/fr/dataTabsHabilidadesFR";
+import { ItemsRepoNew } from "@/components/moleculas/ItemsRepoNew";
+import { tabsProyectosEN } from "@/utils/en/dataTabsproyectosEN";
+import { tabsProyectos } from "@/utils/es/dataTabsProyectos";
+import { tabsProyectosFR } from "@/utils/fr/dataTabsProyectosFR";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
-interface TabsHabilidadesProps {
+interface TabsproyectosProps {
   currentLocale: string;
 }
 
-export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
+export const TabsProyectos: React.FC<TabsproyectosProps> = ({
   currentLocale,
 }) => {
   const [activeTab, setActiveTab] = useState<string>("profile-styled-tab");
 
   let dataChange;
-
   if (currentLocale === "es") {
-    dataChange = tabs;
+    dataChange = tabsProyectos;
   } else if (currentLocale === "fr") {
-    dataChange = tabsFR;
+    dataChange = tabsProyectosFR;
   } else {
-    dataChange = tabsEN;
+    dataChange = tabsProyectosEN;
   }
+
   return (
     <>
       {/* // Tabs para cambiar de cuadricula */}
@@ -66,34 +64,24 @@ export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
           className="mx-auto max-w-7xl px-6 lg:px-8"
           id="default-styled-tab-content"
         >
-          {/* Sección Interfaz */}
+          {/* Sección Proyectos */}
           <div
-            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 animate__animated animate__fadeIn"
-            id="styled-interfaz"
+            className="mt-10 grid max-w-7xl  gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
+            id="styled-proyectos"
             role="tabpanel"
-            aria-labelledby="interfaz-tab"
+            aria-labelledby="proyectos-tab"
           >
-            <ItemDataFrontend currentLocale={currentLocale} />
+            <ItemsRepoNew currentLocale={currentLocale} />
           </div>
 
-          {/* Sección Logica */}
+          {/* Sección Proyectos empresariales */}
           <div
-            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden animate__animated animate__fadeIn"
-            id="styled-logica"
+            className="mt-10 grid max-w-7xl  gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
+            id="styled-proyectos-emp"
             role="tabpanel"
-            aria-labelledby="logica-tab"
+            aria-labelledby="proyectos-emp-tab"
           >
-            <ItemDataBackend currentLocale={currentLocale} />
-          </div>
-
-          {/* Sección Otros */}
-          <div
-            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden animate__animated animate__fadeIn"
-            id="styled-otros"
-            role="tabpanel"
-            aria-labelledby="otros-tab"
-          >
-            <ItemDataOtros currentLocale={currentLocale} />
+            {/* <ItemDataBackend currentLocale={currentLocale} /> */}
           </div>
         </div>
       </div>

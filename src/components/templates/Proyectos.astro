@@ -1,7 +1,9 @@
 ---
 import { getI18N } from '@/i18n';
 import Bubble from '@/components/atomos/Bubble.astro';
-import {Repositorios} from '@/components/moleculas/ItemsRepositorios'
+// import {Repositorios} from '@/components/moleculas/ItemsRepositorios'
+import { TabsProyectos } from '../organismos/TabsProyectos';
+
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
@@ -13,14 +15,15 @@ const i18n = getI18N({ currentLocale });
       class="lg:bottom-72 left-0 lg:left-28 bg-primary"
       classNameToBottom="top-80 right-0 lg:top-72 lg:right-24 bg-secondary"
     />
-    <div class="max-w-7xl animate__animated animate__fadeIn">
+    <div class="max-w-7xl ">
       <div>
         <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold mt-20 mb-36">
           {i18n.PROJECTS.PROJECTS_TITLE}
         </h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Repositorios currentLocale={currentLocale} client:load />
+      <div class="grid grid-cols-1 gap-6 animate__animated animate__zoomIn">
+        <!-- <Repositorios currentLocale={currentLocale} client:load /> -->
+         <TabsProyectos client:load currentLocale={currentLocale}/>
       </div>
     </div>
   </div>

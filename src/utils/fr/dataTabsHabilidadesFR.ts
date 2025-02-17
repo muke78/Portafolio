@@ -2,21 +2,21 @@ import type { Tab } from "@/types/typesHabilidades";
 
 export const tabsFR: Tab[] = [
   {
-    id: "profile-styled-tab",
+    id: "interfaz-tab",
     title: "Interface",
-    target: "#styled-profile",
-    ariaControls: "profile",
+    target: "#styled-interfaz",
+    ariaControls: "interfaz",
   },
   {
-    id: "dashboard-styled-tab",
+    id: "logica-tab",
     title: "Logique",
-    target: "#styled-dashboard",
-    ariaControls: "dashboard",
+    target: "#styled-logica",
+    ariaControls: "logica",
   },
   {
-    id: "settings-styled-tab",
+    id: "otros-tab",
     title: "Autres",
-    target: "#styled-settings",
-    ariaControls: "settings",
+    target: "#styled-otros",
+    ariaControls: "otros",
   },
 ];
