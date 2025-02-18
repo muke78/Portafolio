@@ -5,6 +5,7 @@ import calculadoraSistemaNumerico from "@/img/calculadoraSistemaNumerico.webp";
 import cashBank from "@/img/cashBank.webp";
 import expenseTracker from "@/img/expense-tracker-cli.webp";
 import inventarioKinder from "@/img/inventarioKinder.webp";
+import cerdyn from "@/img/cerdyn.png";
 import kheldeIO from "@/img/kheldeio.webp";
 import mathGame from "@/img/mathgame.webp";
 import portafolio from "@/img/portafolio.webp";
@@ -96,7 +97,7 @@ export const dataProyectosEN: DataProjects[] = [
       "zustand",
     ],
     link: "https://control-gastos-b1017.web.app/login",
-    img: "../../img/yop.webp",
+    img: cerdyn.src,
     fork: false,
   },
   {

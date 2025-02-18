@@ -3,42 +3,68 @@ import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
 import { dataProyectos } from "@/utils/es/dataProyectos";
 import { dataProyectosFR } from "@/utils/fr/dataProyectosFR";
 
-import React from "react";
+import React, { memo, useMemo, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css";
+import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import required modules
-import { Pagination } from "swiper/modules";
-// Import Swiper React components
+import "../../styles/styles.css";
+import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import { IconModal } from "../atomos/IconModal";
+import { ModalGalery } from "./ModalGalery";
 
 interface PropsRepositorios {
   currentLocale: string;
 }
 
+interface Repo {
+  id: string;
+  title: string;
+  description?: string;
+  img: string;
+  topics?: string[];
+  fork?: boolean;
+  link: string;
+}
+
+const langTraduceData = (currentLocale: string) => {
+  if (currentLocale === "es") return dataProyectos;
+  if (currentLocale === "fr") return dataProyectosFR;
+  return dataProyectosEN;
+};
+
 export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
   currentLocale,
 }) => {
+  const [selectedItem, setSelectedItem] = useState<Repo | null>(null);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  const memorization = useMemo(
+    () => langTraduceData(currentLocale),
+    [currentLocale],
+  );
+
+  const handleOpenModal = (repo: Repo): void => {
+    setSelectedItem(repo);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const i18n = getI18N({ currentLocale });
-
-  let dataChange;
-
-  if (currentLocale === "es") {
-    dataChange = dataProyectos;
-  } else if (currentLocale === "fr") {
-    dataChange = dataProyectosFR;
-  } else {
-    dataChange = dataProyectosEN;
-  }
-
   return (
     <>
       <Swiper
         slidesPerView={2}
-        spaceBetween={20}
+        spaceBetween={5}
+        navigation={true}
         pagination={true}
-        modules={[Pagination]}
+        modules={[Navigation, Pagination]}
         className="mySwiper rounded-lg shadow-md"
         breakpoints={{
           300: {
@@ -61,17 +87,21 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
           },
         }}
       >
-        {dataChange.map((repo) => (
+        {memorization.map((repo) => (
           <SwiperSlide key={repo.id} className="flex flex-col pb-8">
-            <div className="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg  md:p-3 lg:p-4 shadow-md flex justify-between flex-col h-full">
-              <a href={repo.link} target="_blank" rel="noopener noreferrer">
-                <img
-                  className="rounded-t-lg w-full object-cover"
-                  src={repo.img}
-                  alt={repo.title}
-                  aria-label={repo.title}
-                />
-              </a>
+            <div className="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg  md:p-8 lg:p-9 shadow-md flex justify-between flex-col h-full">
+              <div>
+                <a target="_blank" rel="noopener noreferrer">
+                  <img
+                    className="rounded-t-lg w-full object-cover"
+                    src={repo.img}
+                    alt={repo.title}
+                    aria-label={repo.title}
+                  />
+                </a>
+                {/* Pasa los datos al IconModal */}
+                <IconModal onClick={() => handleOpenModal(repo)} />
+              </div>
               <div className="flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -122,6 +152,14 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
             </div>
           </SwiperSlide>
         ))}
+        {/* Modal único */}
+        {isModalOpen && selectedItem && (
+          <ModalGalery
+            data={selectedItem}
+            isModalOpen={isModalOpen}
+            closeModal={closeModal}
+          />
+        )}
       </Swiper>
     </>
   );

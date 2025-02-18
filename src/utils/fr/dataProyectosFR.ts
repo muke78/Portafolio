@@ -3,6 +3,7 @@ import backendREST from "@/img/Backend_RESTFULL.webp";
 import heroApp from "@/img/HeroApp.webp";
 import calculadoraSistemaNumerico from "@/img/calculadoraSistemaNumerico.webp";
 import cashBank from "@/img/cashBank.webp";
+import cerdyn from "@/img/cerdyn.png";
 import expenseTracker from "@/img/expense-tracker-cli.webp";
 import inventarioKinder from "@/img/inventarioKinder.webp";
 import kheldeIO from "@/img/kheldeio.webp";
@@ -96,7 +97,7 @@ export const dataProyectosFR: DataProjects[] = [
       "zustand",
     ],
     link: "https://control-gastos-b1017.web.app/login",
-    img: "../../img/yop.webp",
+    img: cerdyn.src,
     fork: false,
   },
   {
@@ -166,7 +167,8 @@ export const dataProyectosFR: DataProjects[] = [
   {
     id: "landing-page-cash-bank-con-astro",
     title: "Landing-Page-Cash-Bank-con-Astro",
-    description: "Page de destination de Cash Bank créée avec Astro 4 et Tailwind",
+    description:
+      "Page de destination de Cash Bank créée avec Astro 4 et Tailwind",
     topics: [
       "@astrojs/check",
       "@astrojs/tailwind",
@@ -181,7 +183,8 @@ export const dataProyectosFR: DataProjects[] = [
   {
     id: "math-game",
     title: "Mathgame",
-    description: "Jeu de mathématiques avec des additions, soustractions et multiplications",
+    description:
+      "Jeu de mathématiques avec des additions, soustractions et multiplications",
     topics: ["css", "html", "javascript", "javascript-game"],
     link: "https://mathgame-khelde.netlify.app/",
     img: mathGame.src,

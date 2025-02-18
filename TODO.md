@@ -13,6 +13,7 @@
 - Agregar un modal para ver la galeria de fotos sobre el proyecto que se tiene
 - Terminar bien los proyectos empresariales
 - Arreglar las dimensionesenb el telefono para los Tabs de proyectos quitarles padding
+- Agregar animaciones a la parte de acerca de mi a las cajas
 
 ## Cambios que se pueden ir haciendo para despues
 

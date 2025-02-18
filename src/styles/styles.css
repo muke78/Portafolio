@@ -1,0 +1,36 @@
+  .swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cambiar el color de las flechas de navegación */
+.swiper-button-next,
+.swiper-button-prev {
+  padding: -150px;
+  color: currentColor; /* Usa el color actual del texto */
+}
+
+/* Cambiar el color de la paginación */
+.swiper-pagination-bullet {
+  background-color: currentColor; /* Usa el color actual del texto */
+}
+
+.swiper-pagination-bullet-active {
+  background-color: currentColor; /* Usa el color actual del texto */
+}

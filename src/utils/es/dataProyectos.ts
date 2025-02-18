@@ -3,6 +3,7 @@ import backendREST from "@/img/Backend_RESTFULL.webp";
 import heroApp from "@/img/HeroApp.webp";
 import calculadoraSistemaNumerico from "@/img/calculadoraSistemaNumerico.webp";
 import cashBank from "@/img/cashBank.webp";
+import cerdyn from "@/img/cerdyn.png";
 import expenseTracker from "@/img/expense-tracker-cli.webp";
 import inventarioKinder from "@/img/inventarioKinder.webp";
 import kheldeIO from "@/img/kheldeio.webp";
@@ -96,7 +97,7 @@ export const dataProyectos: DataProjects[] = [
       "zustand",
     ],
     link: "https://control-gastos-b1017.web.app/login",
-    img: "../../img/yop.webp",
+    img: cerdyn.src,
     fork: false,
   },
   {
