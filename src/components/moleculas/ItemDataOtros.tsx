@@ -3,28 +3,29 @@ import { dataOtrosEN } from "@/utils/en/dataOtrosEN";
 import { dataOtros } from "@/utils/es/dataOtros";
 import { dataOtrosFR } from "@/utils/fr/dataOtrosFR";
 
-import React from "react";
+import React, { useMemo } from "react";
 
-type ItemDataFrontendProps = {
+interface ItemDataFrontendProps {
   currentLocale: string;
+}
+
+const langTraduceData = (currentLocale: string) => {
+  if (currentLocale === "es") return dataOtros;
+  if (currentLocale === "fr") return dataOtrosFR;
+  return dataOtrosEN;
 };
 
 export const ItemDataOtros: React.FC<ItemDataFrontendProps> = ({
   currentLocale,
 }) => {
-  let dataChange: DataItemTabs[];
-
-  if (currentLocale === "es") {
-    dataChange = dataOtros;
-  } else if (currentLocale === "fr") {
-    dataChange = dataOtrosFR;
-  } else {
-    dataChange = dataOtrosEN;
-  }
+  const memorization = useMemo(
+    () => langTraduceData(currentLocale),
+    [currentLocale],
+  );
 
   return (
     <>
-      {dataChange.map(({ time, area, title, images }, index) => (
+      {memorization.map(({ time, area, title, images }, index) => (
         <article key={index} className="flex flex-col max-w-xl">
           <div className="flex justify-center items-center gap-x-4 text-xs">
             <time>{time}</time>

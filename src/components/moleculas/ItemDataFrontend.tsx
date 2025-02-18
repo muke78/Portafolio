@@ -3,27 +3,29 @@ import { dataFrontendEN } from "@/utils/en/dataFrontendEN";
 import { dataFrontend } from "@/utils/es/dataFrontend";
 import { dataFrontendFR } from "@/utils/fr/dataFrontendFR";
 
-import React from "react";
+import React, { useMemo } from "react";
 
-type ItemDataFrontendProps = {
+interface ItemDataFrontendProps {
   currentLocale: string;
+}
+
+const langTraduceData = (currentLocale: string) => {
+  if (currentLocale === "es") return dataFrontend;
+  if (currentLocale === "fr") return dataFrontendFR;
+  return dataFrontendEN;
 };
 
 export const ItemDataFrontend: React.FC<ItemDataFrontendProps> = ({
   currentLocale,
 }) => {
-  let dataChange: DataItemTabs[];
+  const memorization = useMemo(
+    () => langTraduceData(currentLocale),
+    [currentLocale],
+  );
 
-  if (currentLocale === "es") {
-    dataChange = dataFrontend;
-  } else if (currentLocale === "fr") {
-    dataChange = dataFrontendFR;
-  } else {
-    dataChange = dataFrontendEN;
-  }
   return (
     <>
-      {dataChange.map(({ time, area, title, images }, index) => (
+      {memorization.map(({ time, area, title, images }, index) => (
         <article key={index} className="flex flex-col max-w-xl">
           <div className="flex justify-center items-center gap-x-4 text-xs">
             <time>{time}</time>

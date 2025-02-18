@@ -89,7 +89,7 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
       >
         {memorization.map((repo) => (
           <SwiperSlide key={repo.id} className="flex flex-col pb-8">
-            <div className="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg  md:p-8 lg:p-9 shadow-md flex justify-between flex-col h-full">
+            <div className="border border-neutral-700 rounded-lg  md:p-8 lg:p-9 shadow-md flex justify-between flex-col h-full">
               <div>
                 <a target="_blank" rel="noopener noreferrer">
                   <img
@@ -158,6 +158,7 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
             data={selectedItem}
             isModalOpen={isModalOpen}
             closeModal={closeModal}
+            currentLocale={currentLocale}
           />
         )}
       </Swiper>

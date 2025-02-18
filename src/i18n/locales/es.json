@@ -30,10 +30,8 @@
   },
   "PROJECTS": {
     "PROJECTS_TITLE": "Proyectos",
-    "PROJECTS_VIEW": "Ver proyecto"
-  },
-  "CONTACT": {
-    "CONTACT_TITLE": "Contacto"
+    "PROJECTS_VIEW": "Ver proyecto",
+    "PROJECTS_MODAL_TITLE": "Galeria de imagenes"
   },
   "FOOTER": {
     "FOOTER_MAKE": "Diseñado y Construido con",

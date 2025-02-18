@@ -3,25 +3,27 @@ import { tabsProyectosEN } from "@/utils/en/dataTabsproyectosEN";
 import { tabsProyectos } from "@/utils/es/dataTabsProyectos";
 import { tabsProyectosFR } from "@/utils/fr/dataTabsProyectosFR";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface TabsproyectosProps {
   currentLocale: string;
 }
+
+const langTraduceData = (currentLocale: string) => {
+  if (currentLocale === "es") return tabsProyectos;
+  if (currentLocale === "fr") return tabsProyectosFR;
+  return tabsProyectosEN;
+};
 
 export const TabsProyectos: React.FC<TabsproyectosProps> = ({
   currentLocale,
 }) => {
   const [activeTab, setActiveTab] = useState<string>("profile-styled-tab");
 
-  let dataChange;
-  if (currentLocale === "es") {
-    dataChange = tabsProyectos;
-  } else if (currentLocale === "fr") {
-    dataChange = tabsProyectosFR;
-  } else {
-    dataChange = tabsProyectosEN;
-  }
+  const memorization = useMemo(
+    () => langTraduceData(currentLocale),
+    [currentLocale],
+  );
 
   return (
     <>
@@ -35,7 +37,7 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
           data-tabs-inactive-classes="text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
           role="tablist"
         >
-          {dataChange.map((tab) => (
+          {memorization.map((tab) => (
             <li key={tab.id} className="me-2" role="presentation">
               <button
                 className={`inline-block p-4 border-b-2 rounded-t-lg ${
@@ -59,14 +61,14 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
       </div>
 
       {/* // Tabs para la agrupacion de tecnologias */}
-      <div className="bg-base-200 rounded-xl shadow-base-content py-5 card">
+      <div className="rounded-xl shadow-base-content py-5 card">
         <div
           className="mx-auto max-w-7xl px-6 lg:px-8"
           id="default-styled-tab-content"
         >
           {/* Sección Proyectos */}
           <div
-            className=" grid max-w-7xl  gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
+            className=" grid max-w-7xl gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
             id="styled-proyectos"
             role="tabpanel"
             aria-labelledby="proyectos-tab"
