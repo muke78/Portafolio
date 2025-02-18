@@ -5,6 +5,8 @@ import { tabsProyectosFR } from "@/utils/fr/dataTabsProyectosFR";
 
 import React, { useMemo, useState } from "react";
 
+import { ItemRepositoriosEmpres } from "../moleculas/ItemRepositoriosEmpres";
+
 interface TabsproyectosProps {
   currentLocale: string;
 }
@@ -84,6 +86,7 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
             aria-labelledby="proyectos-emp-tab"
           >
             {/* <ItemDataBackend currentLocale={currentLocale} /> */}
+            <ItemRepositoriosEmpres currentLocale={currentLocale} />
           </div>
         </div>
       </div>

@@ -1,11 +1,25 @@
-export const dataProyectos = [
+import backendERP from "@/img/BackeENDPir.png";
+import frontendERP from "@/img/FRntERP.webp";
+import type { DataProjects } from "@/types/typesDataproyectos";
+
+export const dataProyectosEmpresariales: DataProjects[] = [
   {
     id: "erp-obra",
     title: "FrontEnd Obra",
     description:
       "Panel de administracion para un control de obras y de licitaciones por medio de un ERP",
     topics: [
+      "php",
+      "moment.js",
+      "dropzone.js",
+      "power BI",
+      "chart.js",
+      "datatables",
+      "sweetalert2",
+      "boostrap",
+      "leaflet",
       "aws-sdk",
+      "adminlte.js",
       "jwt-decode",
       "dotenv",
       "dotenv-webpack",
@@ -14,7 +28,7 @@ export const dataProyectos = [
       "webpack-dev-server",
     ],
     link: "Confidential",
-    img: "../../img/yop.webp",
+    img: frontendERP.src,
     fork: false,
   },
   {
@@ -42,7 +56,7 @@ export const dataProyectos = [
       "swagger-ui-express",
     ],
     link: "Confidential",
-    img: "../../img/yop.webp",
+    img: backendERP.src,
     fork: false,
   },
   {
@@ -61,7 +75,7 @@ export const dataProyectos = [
       "nodemon",
     ],
     link: "Confidential",
-    img: "../../img/yop.webp",
+    img: backendERP.src,
     fork: false,
   },
 ];

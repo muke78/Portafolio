@@ -18,7 +18,6 @@ const langTraduceData = (currentLocale: string) => {
 export const ItemDataBackend: React.FC<ItemDataFrontendProps> = ({
   currentLocale,
 }) => {
-  
   const memorization = useMemo(
     () => langTraduceData(currentLocale),
     [currentLocale],

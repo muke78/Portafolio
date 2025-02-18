@@ -1,3 +1,4 @@
+import { SwiperGalery } from "@/components/moleculas/SwiperGalery";
 import { getI18N } from "@/i18n";
 
 import React, { useEffect, useRef } from "react";
@@ -15,10 +16,9 @@ export const ModalGalery: React.FC<PropsDataModal> = ({
   closeModal,
   currentLocale,
 }) => {
-  console.log(data);
   const i18n = getI18N({ currentLocale });
   const modalRef = useRef<HTMLDialogElement>(null);
-
+  console.log(data);
   useEffect(() => {
     if (modalRef.current) {
       if (isModalOpen) {
@@ -35,7 +35,7 @@ export const ModalGalery: React.FC<PropsDataModal> = ({
       <dialog
         ref={modalRef}
         id="modalExperience"
-        className="modal z-50 fixed inset-0 flex items-center justify-center animate__animated animate__fadeIn"
+        className="modal z-50 fixed inset-0 flex items-center justify-center backdrop-blur-[30px] backdrop-saturate-[180%] animate__animated animate__fadeIn"
       >
         {/* Filtro tipo vidrio */}
         <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm z-40"></div>
@@ -74,6 +74,7 @@ export const ModalGalery: React.FC<PropsDataModal> = ({
           </div>
           {/* Modal body */}
           <div className="p-4 md:p-5 overflow-y-auto max-h-full">
+            {/* <SwiperGalery data={data} /> */}
             <img src={data.img} alt={data.title} />
           </div>
         </div>

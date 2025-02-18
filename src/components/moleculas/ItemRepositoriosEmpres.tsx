@@ -1,9 +1,6 @@
-import { getI18N } from "@/i18n";
-import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
-import { dataProyectos } from "@/utils/es/dataProyectos";
-import { dataProyectosFR } from "@/utils/fr/dataProyectosFR";
+import { dataProyectosEmpresariales } from "@/utils/es/dataProyectosEmpresa";
 
-import React, { memo, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -16,7 +13,7 @@ import "../../styles/styles.css";
 import { IconModal } from "../atomos/IconModal";
 import { ModalGalery } from "./ModalGalery";
 
-interface PropsRepositorios {
+interface PropsRepositoriosEmpresariales {
   currentLocale: string;
 }
 
@@ -31,14 +28,14 @@ interface Repo {
 }
 
 const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return dataProyectos;
-  if (currentLocale === "fr") return dataProyectosFR;
-  return dataProyectosEN;
+  if (currentLocale === "es") return dataProyectosEmpresariales;
+  if (currentLocale === "fr") return dataProyectosEmpresariales;
+  return dataProyectosEmpresariales;
 };
 
-export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
-  currentLocale,
-}) => {
+export const ItemRepositoriosEmpres: React.FC<
+  PropsRepositoriosEmpresariales
+> = ({ currentLocale }) => {
   const [selectedItem, setSelectedItem] = useState<Repo | null>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -55,8 +52,6 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
   const closeModal = () => {
     setModalOpen(false);
   };
-
-  const i18n = getI18N({ currentLocale });
   return (
     <>
       <Swiper
@@ -138,16 +133,6 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
                 ) : (
                   <p className="text-gray-500">No topics available.</p>
                 )}
-              </div>
-              <div className="mt-2">
-                <a
-                  className="btn btn-accent backdrop-blur-[100px] backdrop-saturate-[180%] flex justify-center items-center"
-                  href={repo.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {i18n.PROJECTS.PROJECTS_VIEW}
-                </a>
               </div>
             </div>
           </SwiperSlide>

@@ -3,9 +3,9 @@ import backendREST from "@/img/Backend_RESTFULL.webp";
 import heroApp from "@/img/HeroApp.webp";
 import calculadoraSistemaNumerico from "@/img/calculadoraSistemaNumerico.webp";
 import cashBank from "@/img/cashBank.webp";
+import cerdyn from "@/img/cerdyn.png";
 import expenseTracker from "@/img/expense-tracker-cli.webp";
 import inventarioKinder from "@/img/inventarioKinder.webp";
-import cerdyn from "@/img/cerdyn.png";
 import kheldeIO from "@/img/kheldeio.webp";
 import mathGame from "@/img/mathgame.webp";
 import portafolio from "@/img/portafolio.webp";
@@ -167,7 +167,8 @@ export const dataProyectosEN: DataProjects[] = [
   {
     id: "landing-page-cash-bank-con-astro",
     title: "Landing-Page-Cash-Bank-con-Astro",
-    description: "Landing Page for Cash Bank created with Astro 4 and Tailwind.",
+    description:
+      "Landing Page for Cash Bank created with Astro 4 and Tailwind.",
     topics: [
       "@astrojs/check",
       "@astrojs/tailwind",
