@@ -4,9 +4,9 @@ import { languages } from '@/i18n/ui';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
-const url = Astro.site; 
-const origin = url.origin; // Esto ahora debe ser confiable tanto en dev como en prod
-const [, lang, ...slug] = url.pathname.split("/");
+const url = Astro.url
+const origin = url.origin
+const [, lang, ...slug] = url.pathname.split("/")
 ---
 
 <button
@@ -57,7 +57,6 @@ const [, lang, ...slug] = url.pathname.split("/");
     {
       Object.entries(languages).map(([code, { label, img }]) => (
         <li>
-        
         <a
           href={`${origin}/${code}/${slug.join("/")}`} class="block px-4 py-2 text-base font-semibold">
             <img
@@ -68,9 +67,30 @@ const [, lang, ...slug] = url.pathname.split("/");
             />
             {label}
           </a>
-         
         </li>
       ))
     }
   </ul>
 </div>
+
+
+<script>
+  function optionsAsLinks(selector: string) {
+    const selectElem = document.querySelector(selector) as HTMLSelectElement
+
+    selectElem.addEventListener("change", () => {
+      const selectedIndex = selectElem.selectedIndex
+
+      if (selectElem.options[selectedIndex].value) {
+        const url = selectElem.options[selectedIndex].value
+        const lang = selectElem.options[selectedIndex].attributes.item(0)!.value
+        const aElem = document.createElement("a")
+        aElem.setAttribute("href", url)
+        aElem.setAttribute("hreflang", lang)
+        aElem.click()
+      }
+    })
+  }
+
+  optionsAsLinks("#dropdownTheme")
+</script>

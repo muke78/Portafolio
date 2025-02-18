@@ -1,6 +1,5 @@
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel";
 import swup from "@swup/astro";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";

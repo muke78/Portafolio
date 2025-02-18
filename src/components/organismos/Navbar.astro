@@ -14,7 +14,7 @@ const { currentLocale } = Astro;
 >
   <div class="flex-grow">
     <div class="avatar flex items-center justify-center gap-4">
-      <a href="#inicio" class="w-12 rounded">
+      <a class="w-12 rounded">
         <ImageContrast client:load width="w-12"/>
       </a>
       <!-- <VersionSelect currentLocale={currentLocale} client:load /> -->
@@ -28,9 +28,9 @@ const { currentLocale } = Astro;
     <div class="list-none">
       <ThemeButton />
     </div>
-    <div class="pl-2">
+    <!-- <div class="pl-2">
       <LangPicker />
-    </div>
+    </div> -->
     <label
       for="my-drawer-4"
       class="btn btn-ghost min-[980px]:hidden drawer-button"
