@@ -213,7 +213,7 @@ export const dataProyectosFR: DataProjects[] = [
       "tailwindcss",
       "prettier",
     ],
-    link: "",
+    link: "https://khelde.vercel.app/",
     img: portafolio.src,
     fork: false,
   },
