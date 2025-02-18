@@ -1,6 +1,6 @@
-import node from "@astrojs/node";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
+import vercel from "@astrojs/vercel";
 import swup from "@swup/astro";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
@@ -24,10 +24,6 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
-  output: "server",
-  adapter: node({
-    mode: "standalone",
-  }),
   i18n: {
     defaultLocale: "es",
     locales: ["es", "en", "fr"],
@@ -40,4 +36,5 @@ export default defineConfig({
       minify: true,
     },
   },
+  site: 'https://khelde.vercel.app/es/home',
 });

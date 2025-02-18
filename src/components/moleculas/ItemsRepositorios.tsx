@@ -3,7 +3,7 @@ import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
 import { dataProyectos } from "@/utils/es/dataProyectos";
 import { dataProyectosFR } from "@/utils/fr/dataProyectosFR";
 
-import React, { memo, useMemo, useState } from "react";
+import React, {useMemo, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css";

@@ -4,9 +4,9 @@ import { languages } from '@/i18n/ui';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
-const url = Astro.url
-const origin = url.origin
-const [, lang, ...slug] = url.pathname.split("/")
+const url = Astro.url || new URL(Astro.site); // Usa Astro.site como respaldo
+const origin = url.origin; // Esto ahora debe ser confiable tanto en dev como en prod
+const [, lang, ...slug] = url.pathname.split("/");
 ---
 
 <button
