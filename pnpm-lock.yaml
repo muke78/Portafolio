@@ -15,7 +15,7 @@ importers:
         version: 8.3.4(astro@4.16.18(@types/node@22.10.5)(lightningcss@1.28.2)(rollup@2.79.2)(terser@5.39.0)(typescript@4.9.5))
       "@astrojs/react":
         specifier: ^3.6.3
-        version: 3.6.3(@types/node@22.10.5)(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(lightningcss@1.28.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.39.0)
+        version: 3.6.3(@types/node@22.10.5)(@types/react-dom@19.0.4(@types/react@18.3.18))(@types/react@18.3.18)(lightningcss@1.28.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.39.0)
       "@astrojs/tailwind":
         specifier: ^5.1.5
         version: 5.1.5(astro@4.16.18(@types/node@22.10.5)(lightningcss@1.28.2)(rollup@2.79.2)(terser@5.39.0)(typescript@4.9.5))(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.10.5)(typescript@4.9.5)))(ts-node@10.9.1(@types/node@22.10.5)(typescript@4.9.5))
@@ -29,8 +29,8 @@ importers:
         specifier: ^18.3.18
         version: 18.3.18
       "@types/react-dom":
-        specifier: ^18.3.5
-        version: 18.3.5(@types/react@18.3.18)
+        specifier: ^19.0.4
+        version: 19.0.4(@types/react@18.3.18)
       animate.css:
         specifier: ^4.1.1
         version: 4.1.1
@@ -50,7 +50,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       swiper:
         specifier: ^11.2.4
@@ -2223,13 +2223,13 @@ packages:
         integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==,
       }
 
-  "@types/react-dom@18.3.5":
+  "@types/react-dom@19.0.4":
     resolution:
       {
-        integrity: sha512-P4t6saawp+b/dFrUr2cvkVsfvPguwsxtH6dNIYRllMsefqFzkZk5UIjzyDOv5g1dXIPdG4Sp1yCR4Z6RCUsG/Q==,
+        integrity: sha512-4fSQ8vWFkg+TGhePfUzVmat3eC14TXYSsiiDSLI0dVLsrm9gZFABjPy/Qu6TKgl1tq1Bu1yDsuQgY3A3DOjCcg==,
       }
     peerDependencies:
-      "@types/react": ^18.0.0
+      "@types/react": ^19.0.0
 
   "@types/react@18.3.18":
     resolution:
@@ -7695,10 +7695,10 @@ snapshots:
     dependencies:
       prismjs: 1.29.0
 
-  "@astrojs/react@3.6.3(@types/node@22.10.5)(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(lightningcss@1.28.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.39.0)":
+  "@astrojs/react@3.6.3(@types/node@22.10.5)(@types/react-dom@19.0.4(@types/react@18.3.18))(@types/react@18.3.18)(lightningcss@1.28.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.39.0)":
     dependencies:
       "@types/react": 18.3.18
-      "@types/react-dom": 18.3.5(@types/react@18.3.18)
+      "@types/react-dom": 19.0.4(@types/react@18.3.18)
       "@vitejs/plugin-react": 4.3.4(vite@5.4.14(@types/node@22.10.5)(lightningcss@1.28.2)(terser@5.39.0))
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9158,7 +9158,7 @@ snapshots:
 
   "@types/prop-types@15.7.14": {}
 
-  "@types/react-dom@18.3.5(@types/react@18.3.18)":
+  "@types/react-dom@19.0.4(@types/react@18.3.18)":
     dependencies:
       "@types/react": 18.3.18
 

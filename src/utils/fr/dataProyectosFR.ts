@@ -3,7 +3,7 @@ import backendREST from "@/img/Backend_RESTFULL.webp";
 import heroApp from "@/img/HeroApp.webp";
 import calculadoraSistemaNumerico from "@/img/calculadoraSistemaNumerico.webp";
 import cashBank from "@/img/cashBank.webp";
-import cerdyn from "@/img/cerdyn.png";
+import cerdyn from "@/img/cerdyn.webp";
 import expenseTracker from "@/img/expense-tracker-cli.webp";
 import inventarioKinder from "@/img/inventarioKinder.webp";
 import kheldeIO from "@/img/kheldeio.webp";

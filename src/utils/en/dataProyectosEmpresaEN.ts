@@ -2,12 +2,12 @@ import backendERP from "@/img/BackeENDPir.webp";
 import frontendERP from "@/img/FRntERP.webp";
 import type { DataProjects } from "@/types/typesDataproyectos";
 
-export const dataProyectosEmpresariales: DataProjects[] = [
+export const dataProyectosEmpresarialesEN: DataProjects[] = [
   {
     id: "erp-obra",
-    title: "FrontEnd Obra",
+    title: "Frontend Obra",
     description:
-      "Panel de administracion para un control de obras y de licitaciones por medio de un ERP",
+      "Administration panel for control of works and tenders through an ERP",
     topics: [
       "php",
       "moment.js",
@@ -35,7 +35,7 @@ export const dataProyectosEmpresariales: DataProjects[] = [
     id: "backend-obra",
     title: "BackEnd-ERP",
     description:
-      "Parte logica del sistema para consumo desde el ERP por medio de API RESTFULL",
+      "Logical part of the system for consumption from the ERP through the RESTFULL API",
     topics: [
       "async",
       "await",
@@ -63,7 +63,7 @@ export const dataProyectosEmpresariales: DataProjects[] = [
     id: "backEnd-aseguradora",
     title: "BackEnd Aseguradora",
     description:
-      "Logica de un panel administrativo para riesgos de seguros financieros",
+      "Logic of an administrative panel for financial insurance risks",
     topics: [
       "cors",
       "dotenv",

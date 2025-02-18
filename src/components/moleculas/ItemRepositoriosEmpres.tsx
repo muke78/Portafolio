@@ -1,4 +1,6 @@
+import { dataProyectosEmpresarialesEN } from "@/utils/en/dataProyectosEmpresaEN";
 import { dataProyectosEmpresariales } from "@/utils/es/dataProyectosEmpresa";
+import { dataProyectosEmpresarialesFR } from "@/utils/fr/dataProyectosEmpresaFR";
 
 import React, { useMemo, useState } from "react";
 
@@ -29,8 +31,8 @@ interface Repo {
 
 const langTraduceData = (currentLocale: string) => {
   if (currentLocale === "es") return dataProyectosEmpresariales;
-  if (currentLocale === "fr") return dataProyectosEmpresariales;
-  return dataProyectosEmpresariales;
+  if (currentLocale === "fr") return dataProyectosEmpresarialesFR;
+  return dataProyectosEmpresarialesEN;
 };
 
 export const ItemRepositoriosEmpres: React.FC<
