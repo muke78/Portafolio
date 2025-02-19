@@ -3,7 +3,7 @@ import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
 import { dataProyectos } from "@/utils/es/dataProyectos";
 import { dataProyectosFR } from "@/utils/fr/dataProyectosFR";
 
-import React, {useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -89,7 +89,7 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
       >
         {memorization.map((repo) => (
           <SwiperSlide key={repo.id} className="flex flex-col pb-8">
-            <div className="border border-neutral-700 rounded-lg  md:p-8 lg:p-9 shadow-md flex justify-between flex-col h-full">
+            <div className="rounded-lg md:p-8 lg:p-9 shadow-2xl drop-shadow-2xl flex flex-col md:justify-between lg:justify-between sm:justify-start sm:h-full md:h-full lg:h-full">
               <div>
                 <a target="_blank" rel="noopener noreferrer">
                   <img
