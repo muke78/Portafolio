@@ -35,5 +35,5 @@ export default defineConfig({
       minify: true,
     },
   },
-  site: 'https://khelde.vercel.app/es/home',
+  site: "https://khelde.vercel.app/es/home",
 });

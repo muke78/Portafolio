@@ -16,7 +16,7 @@
 
 - Arreglar el menu lateral de navbar, de quita la información si bajas o te sales haciendo un link
 
-- Arreglar el idioma y colocarlo de nuevo hasta que migre la version de test-i18n a el portafolio 
+- Arreglar el idioma y colocarlo de nuevo hasta que migre la version de test-i18n a el portafolio
 
 - Arreglar el script de inicio para que el texto se desaparezca cuando baje sin ocupar js
 
