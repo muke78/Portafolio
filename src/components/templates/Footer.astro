@@ -8,14 +8,12 @@ const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 
-<footer class="footer footer-center bg-base-300 backdrop-blur-[30px] backdrop-saturate-[180%] rounded-t-lg text-base-content p-7 absolute z-0">
+<footer class="footer footer-center rounded-t-lg text-base-content p-7 ">
   <aside>
     <ImageContrast client:load width="w-24" />
     <p class="text-base flex items-center justify-center"> {i18n.FOOTER.FOOTER_MAKE} <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24">
         <path fill="#d22d2d" d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.53z"></path>
-      </svg>
-      🇲🇽
-      <br />
+      </svg> 🇲🇽 <br />
     </p>
     <nav>
       <div class="grid grid-flow-col gap-4">
@@ -41,10 +39,9 @@ const i18n = getI18N({ currentLocale });
         </a>
       </div>
     </nav>
-    <span class="font-semibold text-1xl mt-4">{i18n.FOOTER.FOOTER_ECOLOGICAL_FOOTPRINT} <a type="button" class="btn btn-primary btn-square btn-sm" target="_blank" aria-label="Huella ecologica de la pagina" href="https://www.websitecarbon.com/website/portafolio-vercel-deploy-vercel-app/">B</a>
+    <span class="font-semibold text-1xl mt-4">{i18n.FOOTER.FOOTER_ECOLOGICAL_FOOTPRINT} <a type="button" class="btn bg-green-500 text-white btn-square btn-sm" target="_blank" aria-label="Huella ecologica de la pagina" href="https://www.websitecarbon.com/website/khelde-vercel-app-es-home/">A+</a>
     </span>
     <div id="wcb" class="carbonbadge wcb-d"></div>
   </aside>
 </footer>
 <script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer></script>
-

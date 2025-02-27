@@ -8,7 +8,7 @@ const i18n = getI18N({ currentLocale });
 ---
 
 <div class="hero min-h-screen">
-  <div class="hero-content text-center">
+  <div class="hero-content text-center ">
     <Bubble
       class="top-40 lg:top-72 left-0 bg-primary"
       classNameToBottom="bottom-80 right-36 bg-accent"
@@ -20,7 +20,7 @@ const i18n = getI18N({ currentLocale });
         </h2>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-4 animate__animated animate__zoomIn">
+      <div class="grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-4 sm:p-0 md:p-1 lg:p-4 animate__animated animate__zoomIn">
         <div class="lg:col-span-2 lg:row-span-3">
           <div class="avatar px-3">
             <div
@@ -72,7 +72,7 @@ const i18n = getI18N({ currentLocale });
 
         <div class="lg:col-span-2 lg:col-start-3">
           <div
-            class="backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 card"
+            class="rounded-lg py-5 card"
           >
             <div class="card-body">
               <p class="font-medium">
@@ -84,7 +84,7 @@ const i18n = getI18N({ currentLocale });
 
         <div class="lg:col-span-2 lg:col-start-3 lg:row-start-2">
           <div
-            class="bg-transparent stats stats-horizontal backdrop-blur-[100px] backdrop-saturate-[180%] border border-neutral-700 rounded-lg py-5 w-full"
+            class="bg-transparent stats stats-horizontal rounded-lg py-5 w-full"
           >
             <div class="stat p-1">
               <div class="stat-value">+2</div>

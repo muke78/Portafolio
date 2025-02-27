@@ -63,7 +63,7 @@ export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
       </div>
 
       {/* // Tabs para la agrupacion de tecnologias */}
-      <div className="bg-base-200 rounded-xl shadow-base-content py-5 card">
+      <div className="rounded-xl shadow-base-content py-5 card">
         <div
           className="mx-auto max-w-7xl px-6 lg:px-8"
           id="default-styled-tab-content"

@@ -1,6 +1,5 @@
 ---
 import { getI18N } from '@/i18n';
-// import { Toast } from '@/components/islands/Toast';
 import Parabola from '@/components/atomos/Parabola.astro';
 
 const { currentLocale } = Astro;
@@ -11,14 +10,13 @@ const i18n = getI18N({ currentLocale });
   <div class="hero-content text-center">
     <Parabola class="top-60 lg:left-[25rem] bg-gradient-to-t from-base-content via-secondary skew-x-[35deg] rotate-[2deg] shadow__skew" 
     classNameToBottom="top-60 lg:right-[25rem] bg-gradient-to-t from-base-content via-primary -skew-x-[35deg] rotate-[-2deg] shadow__skew" />
-    <div id="scrolling-element" class="max-w-md fixed animate__animated animate__zoomIn">
-      <!-- <Toast currentLocale={currentLocale} client:load /> -->
+    <div id="scrolling-element" class="max-w-md fixed">
       <h1 class="text-6xl xl:text-8xl lg:text-8x1 md:text-8xl font-bold text-nowrap"> {i18n.HEADER.HEADER_TITLE} </h1>
       <span class="text-7xl xl:text-8xl lg:text-8x1 md:text-8xl leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> 
         {i18n.HEADER.HEADER_NAME} 
       </span>
-      <p class="py-5 text-lg font-medium text-base-content">{i18n.HEADER.HEADER_ABOUT}</p>
-      <a href="#habilidades" class="btn btn-accent h-10 min-h-14 pl-6 pr-6 font-bold text-sm border-none z-50">
+      <p class="py-5 text-lg font-medium text-base-content animate__animated animate__fadeIn">{i18n.HEADER.HEADER_ABOUT}</p>
+      <a href="#habilidades" class="btn btn-accent h-10 min-h-14 pl-6 pr-6 font-bold text-sm border-none z-50 animate__animated animate__fadeIn">
         <svg 
             aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" 
@@ -40,63 +38,27 @@ const i18n = getI18N({ currentLocale });
 </div>
 
 <style>
-  #scrolling-element, #scroll__prbla, #scroll_prbla {
-    opacity: 0.6; 
+  /* Animación basada en el scroll */
+  @keyframes scroll-effect {
+    0% {
+      opacity: 0.6;
+      transform: scale(1); 
+    }
+    100% {
+      opacity: 0; 
+      transform: scale(0.7); 
+    }
+  }
+
+  #scrolling-element {
+    animation: scroll-effect linear forwards;
+    animation-timeline: scroll(root); 
+    animation-range: 0vh 60vh;
+  }
+
+  /* Estilos adicionales */
+  #scrolling-element {
+    opacity: 0.6;
     transition: opacity 0.1s ease-in-out, transform 0.5s ease-in-out;
   }
 </style>
-
-<!-- <script>
-  // Seleccionamos los elementos
-  const element = document.getElementById('scrolling-element');
-  const prbla1 = document.getElementById('scroll__prbla');
-  const prbla2 = document.getElementById('scroll_prbla');
-
-  prbla1.style.opacity = '0.6';
-  prbla2.style.opacity = '0.6';
-  prbla1.style.transform = 'scale(1) skewX(35deg) rotate(30deg)';
-  prbla2.style.transform = 'scale(1) skewX(-35deg) rotate(-30deg)';
-  prbla1.style.transition = 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out';
-  prbla2.style.transition = 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out';
-
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    const maxOpacity = 0.6;
-    const minOpacity = 0;
-    const fadeStart = 200; 
-    const fadeEnd = 600; 
-
-  
-    const maxScale = 1;
-    const minScale = 0.7;
-    const scaleStart = 1; 
-    const scaleEnd = 600;   
-
-    // Calcular la opacidad
-    const opacity = scrollTop < fadeStart
-      ? maxOpacity
-      : Math.max(
-          maxOpacity - ((scrollTop - fadeStart) / (fadeEnd - fadeStart)) * (maxOpacity - minOpacity),
-          minOpacity
-        );
-
-    // Calcular la escala
-    const scale = scrollTop < scaleStart
-      ? maxScale
-      : Math.max(
-          maxScale - ((scrollTop - scaleStart) / (scaleEnd - scaleStart)) * (maxScale - minScale),
-          minScale
-        );
-
-    // Aplicar los valores calculados a los elementos
-    element.style.opacity = opacity.toString();
-    element.style.transform = `scale(${scale})`;
-
-    prbla1.style.opacity = opacity.toString();
-    prbla1.style.transform = `scale(${scale}) skewX(35deg) rotate(30deg)`;
-
-    prbla2.style.opacity = opacity.toString();
-    prbla2.style.transform = `scale(${scale}) skewX(-35deg) rotate(-30deg)`;
-  });
-</script> -->
