@@ -16,7 +16,7 @@
 
 - Arreglar el idioma y colocarlo de nuevo hasta que migre la version de test-i18n a el portafolio
 
-- Cambiar la estructura de carpetas a arquitectura de carpetas por modulo 
+- Cambiar la estructura de carpetas a arquitectura de carpetas por modulo
 
 ## Cambios que se pueden ir haciendo para despues
 

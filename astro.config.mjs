@@ -1,4 +1,5 @@
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import swup from "@swup/astro";
 import compress from "astro-compress";
@@ -9,6 +10,16 @@ export default defineConfig({
     tailwind(),
     react(),
     swup({ theme: false }),
+    sitemap({
+      i18n: {
+        defaultLocale: "es",
+        locales: {
+          en: "en-US",
+          es: "es-ES",
+          fr: "fr-CA",
+        },
+      },
+    }),
     compress({
       CSS: true,
       JavaScript: true,
@@ -35,5 +46,5 @@ export default defineConfig({
       minify: true,
     },
   },
-  site: "https://khelde.vercel.app/es/home",
+  site: "https://khelde.vercel.app/",
 });

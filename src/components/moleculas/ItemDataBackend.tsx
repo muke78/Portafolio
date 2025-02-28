@@ -34,9 +34,9 @@ export const ItemDataBackend: React.FC<ItemDataFrontendProps> = ({
             </span>
           </div>
           <div className="group relative flex flex-col items-center justify-center">
-            <h3 className="mt-3 text-lg font-semibold leading-6">
+            <p className="mt-3 text-lg font-semibold leading-6">
               <span className="text-lg text-base-content">{title}</span>
-            </h3>
+            </p>
             {images.map((image, imgIndex) => {
               const techNames = image.split("?i=")[1].split(",");
               return (

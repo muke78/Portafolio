@@ -15,12 +15,19 @@ const i18n = getI18N({ currentLocale });
       <span class="text-7xl xl:text-8xl lg:text-8x1 md:text-8xl leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> 
         {i18n.HEADER.HEADER_NAME} 
       </span>
-      <p class="py-5 text-lg font-medium text-base-content animate__animated animate__fadeIn">{i18n.HEADER.HEADER_ABOUT}</p>
-      <a href="#habilidades" class="btn btn-accent h-10 min-h-14 pl-6 pr-6 font-bold text-sm border-none z-50 animate__animated animate__fadeIn">
+      <p class="py-5 text-xl font-semibold text-base-content z-50">
+        {i18n.HEADER.HEADER_ABOUT}
+      </p>
+      <a 
+      type="button" 
+      href="#habilidades" 
+      aria-label="Ir a la sección de habilidades" 
+      class="btn btn-accent h-10 min-h-14 pl-6 pr-6 border-none ring-2 ring-offset-2 ring-offset-base-100 ring-accent"
+    >
         <svg 
             aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" 
-            width="16" 
+            width="16"  
             height="16" 
             viewBox="0 0 24 24" 
             fill="currentColor" 
@@ -32,7 +39,9 @@ const i18n = getI18N({ currentLocale });
             stroke-linejoin="round" 
             stroke-width="2" 
             d="M8.12 9.29L12 13.17l3.88-3.88a.996.996 0 1 1 1.41 1.41l-4.59 4.59a.996.996 0 0 1-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0" />
-          </svg> {i18n.HEADER.HEADER_BUTTON} </a>
+          </svg> 
+          {i18n.HEADER.HEADER_BUTTON} 
+        </a>
     </div>
   </div>
 </div>
