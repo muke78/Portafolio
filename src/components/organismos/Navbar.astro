@@ -9,7 +9,7 @@ import ItemsNavrbarDrawer from '@/components/moleculas/ItemsNavrbarDrawer.astro'
 const { currentLocale } = Astro;
 ---
 
-<div class="navbar backdrop-blur-[20px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-10">
+<div class="navbar backdrop-blur-[40px] backdrop-saturate-[180%] rounded-b-lg py-5 px-5 sticky-navbar z-10">
   <div class="flex-grow">
     <div class="avatar flex items-center justify-center gap-4">
       <!-- <a class="w-12 rounded"> -->
@@ -49,17 +49,16 @@ const { currentLocale } = Astro;
 <div class="drawer drawer-end z-10">
   <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content"></div>
-  <div class="drawer-side">
+  <div class="drawer-side h-full">
     <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
     <ul class="menu flex justify-center items-center bg-primary backdrop-blur-[100px] backdrop-brightness-200 min-h-screen w-full p-4 z-50 relative dark:text-white text-white">
       <li class="absolute top-3 right-6">
-        <label for="my-drawer-4" class="text-4xl cursor-pointer z-50" aria-label="Close">
+        <label for="my-drawer-4" class="text-4xl flex place-items-center cursor-pointer z-50" aria-label="Close">
           &times;
         </label>
       </li>
       <ItemsNavrbarDrawer />
     </ul>
-    
   </div>
 </div>
 

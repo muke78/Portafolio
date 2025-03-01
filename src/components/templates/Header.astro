@@ -7,7 +7,7 @@ const i18n = getI18N({ currentLocale });
 ---
 
 <div class="hero min-h-[80vh] py-8">
-  <div class="hero-content text-center">
+  <div  class="hero-content text-center">
     <Parabola class="top-60 lg:left-[25rem] bg-gradient-to-t from-base-content via-secondary skew-x-[35deg] rotate-[2deg] shadow__skew" 
     classNameToBottom="top-60 lg:right-[25rem] bg-gradient-to-t from-base-content via-primary -skew-x-[35deg] rotate-[-2deg] shadow__skew" />
     <div id="scrolling-element" class="max-w-md fixed">
@@ -67,6 +67,17 @@ const i18n = getI18N({ currentLocale });
 
   /* Estilos adicionales */
   #scrolling-element {
+    opacity: 0.6;
+    transition: opacity 0.1s ease-in-out, transform 0.5s ease-in-out;
+  }
+
+  #scroll__prbla {
+    animation: scroll-effect linear forwards;
+    animation-timeline: scroll(root); 
+    animation-range: 0vh 60vh;
+  }
+
+  #scroll__prbla {
     opacity: 0.6;
     transition: opacity 0.1s ease-in-out, transform 0.5s ease-in-out;
   }

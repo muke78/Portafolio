@@ -1,11 +1,11 @@
-import { ItemsRepoRepositorios } from "@/components/moleculas/ItemsRepositorios";
+import ItemsRepoRepositorios from "@/components/moleculas/ItemsRepositorios";
 import { tabsProyectosEN } from "@/utils/en/dataTabsproyectosEN";
 import { tabsProyectos } from "@/utils/es/dataTabsProyectos";
 import { tabsProyectosFR } from "@/utils/fr/dataTabsProyectosFR";
 
 import React, { useMemo, useState } from "react";
 
-import { ItemRepositoriosEmpres } from "../moleculas/ItemRepositoriosEmpres";
+import ItemRepositoriosEmpres from "../moleculas/ItemRepositoriosEmpres";
 
 interface TabsproyectosProps {
   currentLocale: string;
@@ -36,16 +36,16 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
           id="default-styled-tab"
           data-tabs-toggle="#default-styled-tab-content"
           data-tabs-active-classes="text-primary border-primary"
-          data-tabs-inactive-classes="text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+          data-tabs-inactive-classes="text-base-content border-base-300 hover:text-primary hover:border-primary"
           role="tablist"
         >
           {memorization.map((tab) => (
             <li key={tab.id} className="me-2" role="presentation">
               <button
-                className={`inline-block p-4 border-b-2 rounded-t-lg ${
+                className={`inline-block p-4 border-b-2 rounded-t-lg transition-all ${
                   activeTab === tab.id
                     ? "text-primary border-primary"
-                    : "text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+                    : "text-base-content border-base-300 hover:text-primary hover:border-primary"
                 }`}
                 id={tab.id}
                 data-tabs-target={tab.target}
@@ -85,7 +85,6 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
             role="tabpanel"
             aria-labelledby="proyectos-emp-tab"
           >
-            {/* <ItemDataBackend currentLocale={currentLocale} /> */}
             <ItemRepositoriosEmpres currentLocale={currentLocale} />
           </div>
         </div>
