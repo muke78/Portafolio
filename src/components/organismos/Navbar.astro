@@ -13,22 +13,22 @@ const { currentLocale } = Astro;
   <div class="flex-grow">
     <div class="avatar flex items-center justify-center gap-4">
       <!-- <a class="w-12 rounded"> -->
-        <ImageContrast client:load width="w-12" />
+        <ImageContrast client:load width="w-28" />
       <!-- </a> -->
       <!-- <VersionSelect currentLocale={currentLocale} client:load /> -->
     </div>
   </div>
   <div class="flex-none">
-    <ul class="menu menu-horizontal min-[547px]:flex hidden">
+    <ul class="menu menu-horizontal min-[547px]:flex hidden ">
       <ItemsNavbar />
     </ul>
     <div class="list-none">
       <ThemeButton />
     </div>
-    <div class="md:w-0 sm:w-0 xl:w-8"></div>
-    <!-- <div class="pl-2">
+    <!-- <div class="md:w-0 sm:w-0 xl:w-8"></div> -->
+    <div class="pl-2">
       <LangPicker />
-    </div> -->
+    </div>
     <label for="my-drawer-4" class="btn btn-ghost min-[547px]:hidden drawer-button" aria-label="label">
       <svg 
       aria-hidden="true"
