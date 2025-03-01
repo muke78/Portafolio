@@ -8,7 +8,7 @@ const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 
-<footer class="footer footer-center backdrop-blur-[100px] backdrop-saturate-[130%] rounded-t-lg text-base-content p-7">
+<footer class="footer footer-center rounded-t-lg text-base-content p-7 z-50">
   <aside>
     <ImageContrast client:load width="w-24" />
     <p class="text-base flex items-center justify-center"> {i18n.FOOTER.FOOTER_MAKE} <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24">
