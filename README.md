@@ -9,16 +9,47 @@ con tailwindcss 3.4.17
 - Proxima actualizacion `v.1.4.2`
 - Se ocupa la herramienta de reenvio de puertos desde host de tunel para revisar los cambios de el servidor en tiempo real desde un celular
 
-### Lighthouse testeo desde Escritorio
+# Estructura del proyecto
 
-> [!NOTE]
-> Se aumenta el rendimeinto de la pagina al realizar pruebas de Rendimiento en Webs de escritorio
+Se hizo el cambio a arquitectura por funcionalidad para llevar un mejor cambio de los archivos y este mas organizado, un ejemplo como este
 
-![Captura de pantalla 2024-10-27 053622](https://i.imgur.com/l9htu3c.png)
-
-### Lighthouse testeo desde Mobile
-
-> [!NOTE]
-> Se aumenta el rendimeinto de la pagina al realizar pruebas de Rendimiento en web en formato mobile
-
-![Captura de pantalla 2024-10-27 200403](https://i.imgur.com/5TjKipr.png)
+```txt
+src/
+|-- components/
+|	 |- atoms/
+|  |  |-- Button/
+|	 |  |   |-- Button.jsx
+|	 |  |   |-- Button.test.js
+|  |- molecules
+|  |- organisms
+|  |- templates
+|-- contexts/
+|   |-- UserContext/
+|   |   |-- UserContext.js
+|-- hooks/
+|   |-- useMediaQuery/
+|   |   |-- useMediaQuery.js
+|-- features/
+|   |-- Home/
+|   |   |-- atoms/
+|   |   |-- molecules/
+|   |   |-- organisms/
+|   |   |-- utils/
+|   |   |-- services/
+|   |   |-- hooks/
+|   |   |-- contexts/
+|   |   |-- pages/
+|   |   |   |-- HomePage.jsx
+|   |-- index.js
+|-- utils/
+|   |-- some-common-util/
+|   |   |-- index.js/
+|   |   |-- index.test.js
+|-- services/
+|   |-- some-common-service/
+|   |   |-- index.js/
+|   |   |-- some-common-service.js/
+|   |   |-- index.test.js
+|-- App.jsx
+|-- index.js
+```

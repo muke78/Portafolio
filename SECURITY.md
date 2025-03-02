@@ -1,7 +1,7 @@
 ## Navegadores compatibles
 
 > [!IMPORTANT]
-> En el proyecto se ocupan estilos experimentales que son soportados por los siguientes navegadores
+> En el proyecto se ocupan componenetes nativos, haciendo ya facil su lectura en la mayotia de navegadores
 
 | Navegador             | Supported          |
 | --------------------- | ------------------ |
@@ -10,4 +10,4 @@
 | Brave                 | :white_check_mark: |
 | Navegadores embebidos | :white_check_mark: |
 | Firefox               | :white_check_mark: |
-| Safari                | :x:                |
+| Safari                | :white_check_mark: |
