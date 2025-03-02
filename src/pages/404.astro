@@ -1,5 +1,5 @@
 ---
-import Navbar from "@/components/organismos/Navbar.astro"
+import Navbar from "@/components/organisms/Navbar.astro"
 import { getI18N } from "@/i18n";
 import Layout from "@/layouts/Layout.astro"
 
@@ -9,7 +9,7 @@ const i18n = getI18N({ currentLocale });
 
 <Layout title="404">
     <Navbar />
-    <div class="hero bg-base-200 min-h-screen">
+    <div class="hero backdrop-blur-[100px] backdrop-saturate-[180%] min-h-screen">
       <div class="hero-content text-center">
         <div class="max-w-md">
           <h1 class="text-9xl font-bold">404</h1>

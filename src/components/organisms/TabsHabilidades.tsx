@@ -1,23 +1,23 @@
-import ItemsRepoRepositorios from "@/components/moleculas/ItemsRepositorios";
-import { tabsProyectosEN } from "@/utils/en/dataTabsproyectosEN";
-import { tabsProyectos } from "@/utils/es/dataTabsProyectos";
-import { tabsProyectosFR } from "@/utils/fr/dataTabsProyectosFR";
+import { ItemDataBackend } from "@/components/features/home/ItemDataBackend";
+import { ItemDataFrontend } from "@/components/features/home/ItemDataFrontend";
+import { ItemDataOtros } from "@/components/features/home/ItemDataOtros";
+import { tabsEN } from "@/utils/en/dataTabsHabilidadesEN";
+import { tabs } from "@/utils/es/dataTabsHabilidades";
+import { tabsFR } from "@/utils/fr/dataTabsHabilidadesFR";
 
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-import ItemRepositoriosEmpres from "../moleculas/ItemRepositoriosEmpres";
-
-interface TabsproyectosProps {
+interface TabsHabilidadesProps {
   currentLocale: string;
 }
 
 const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return tabsProyectos;
-  if (currentLocale === "fr") return tabsProyectosFR;
-  return tabsProyectosEN;
+  if (currentLocale === "es") return tabs;
+  if (currentLocale === "fr") return tabsFR;
+  return tabsEN;
 };
 
-export const TabsProyectos: React.FC<TabsproyectosProps> = ({
+export const TabsHabilidades: React.FC<TabsHabilidadesProps> = ({
   currentLocale,
 }) => {
   const [activeTab, setActiveTab] = useState<string>("profile-styled-tab");
@@ -68,24 +68,34 @@ export const TabsProyectos: React.FC<TabsproyectosProps> = ({
           className="mx-auto max-w-7xl px-6 lg:px-8"
           id="default-styled-tab-content"
         >
-          {/* Sección Proyectos */}
+          {/* Sección Interfaz */}
           <div
-            className=" grid max-w-7xl gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
-            id="styled-proyectos"
+            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 animate__animated animate__fadeIn"
+            id="styled-interfaz"
             role="tabpanel"
-            aria-labelledby="proyectos-tab"
+            aria-labelledby="interfaz-tab"
           >
-            <ItemsRepoRepositorios currentLocale={currentLocale} />
+            <ItemDataFrontend currentLocale={currentLocale} />
           </div>
 
-          {/* Sección Proyectos empresariales */}
+          {/* Sección Logica */}
           <div
-            className="mt-10 grid max-w-7xl  gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
-            id="styled-proyectos-emp"
+            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden animate__animated animate__fadeIn"
+            id="styled-logica"
             role="tabpanel"
-            aria-labelledby="proyectos-emp-tab"
+            aria-labelledby="logica-tab"
           >
-            <ItemRepositoriosEmpres currentLocale={currentLocale} />
+            <ItemDataBackend currentLocale={currentLocale} />
+          </div>
+
+          {/* Sección Otros */}
+          <div
+            className="mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 hidden animate__animated animate__fadeIn"
+            id="styled-otros"
+            role="tabpanel"
+            aria-labelledby="otros-tab"
+          >
+            <ItemDataOtros currentLocale={currentLocale} />
           </div>
         </div>
       </div>

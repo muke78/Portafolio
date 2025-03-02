@@ -1,3 +1,4 @@
+import { IconModal } from "@/components/atoms/IconModal";
 import { getI18N } from "@/i18n";
 import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
 import { dataProyectos } from "@/utils/es/dataProyectos";
@@ -12,8 +13,7 @@ import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import "../../styles/styles.css";
-import { IconModal } from "../atomos/IconModal";
+import "../../../styles/styles.css";
 import { ModalGalery } from "./ModalGalery";
 
 interface PropsRepositorios {

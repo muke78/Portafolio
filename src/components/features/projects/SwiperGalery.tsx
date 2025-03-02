@@ -1,3 +1,5 @@
+import "@/styles/styles.css";
+
 import React from "react";
 
 // Import Swiper styles
@@ -6,8 +8,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-import "../../styles/styles.css";
 
 interface PropSwiperModalGalery {
   data: string;

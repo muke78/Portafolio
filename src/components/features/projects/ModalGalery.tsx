@@ -1,4 +1,4 @@
-import { SwiperGalery } from "@/components/moleculas/SwiperGalery";
+import { SwiperGalery } from "@/components/features/projects/SwiperGalery";
 import { getI18N } from "@/i18n";
 
 import React, { useEffect, useRef } from "react";
