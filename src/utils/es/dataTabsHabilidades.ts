@@ -9,7 +9,7 @@ export const tabs: Tab[] = [
   },
   {
     id: "logica-tab",
-    title: "Logica",
+    title: "Lógica",
     target: "#styled-logica",
     ariaControls: "logica",
   },
