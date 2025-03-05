@@ -1,20 +1,21 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Navbar from '@/components/organisms/Navbar.astro';
 import Header from '@/components/templates/Header.astro';
 import Habilidades from '@/components/templates/Habilidades.astro';
 import Footer from '@/components/templates/Footer.astro';
+import { Nav } from '@/components/organisms/Nav';
 ---
 
 <Layout>
-  <header class="relative w-full">
-    <Navbar />
+  <header class="relative w-full"> 
+    <Nav client:load />
     <div id="header">
       <Header />
     </div>
     <div id="habilidades">
       <Habilidades />
     </div>
-    <Footer />
   </header>
+  <Footer />
 </Layout>
+

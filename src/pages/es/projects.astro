@@ -1,13 +1,13 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Navbar from '@/components/organisms/Navbar.astro';
 import Proyectos from '@/components/templates/Proyectos.astro';
 import Footer from '@/components/templates/Footer.astro';
+import { Nav } from '@/components/organisms/Nav';
 ---
 
 <Layout>
   <header class="relative w-full">
-    <Navbar />
+    <Nav client:load />
     <div>
       <Proyectos />
     </div>
