@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 import { ItemsNav } from "../features/navbar/ItemsNav";
+import { ThemeDrop } from "../features/navbar/ThemeDrop";
 import { ImageContrast } from "../utils/ImageContrast";
 
 export const Nav = () => {
@@ -38,7 +39,7 @@ export const Nav = () => {
   }, []);
 
   return (
-    <nav className="navbar bg-base-100 rounded-b-lg py-5 px-5 sticky top-0 left-0 w-full z-50  shadow-md flex items-center">
+    <nav className="navbar bg-base-100 rounded-b-lg py-3 px-5 sticky top-0 left-0 w-full z-50 flex items-center">
       {/* Logo */}
       <div className="flex-grow items-center gap-4">
         <ImageContrast width="w-24" />
@@ -49,11 +50,11 @@ export const Nav = () => {
           <ItemsNav currentLocale={"es"} />
         </ul>
 
-        {/* Botón para Cambiar Tema */}
-        <button className="btn btn-ghost">Theme</button>
-
         {/* Selector de Idioma */}
         <button className="btn btn-ghost">Lang</button>
+
+        {/* Botón para Cambiar Tema */}
+        <ThemeDrop />
 
         {/* Botón Menú para Mobile */}
         <button
@@ -77,7 +78,7 @@ export const Nav = () => {
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? 0 : "100%" }}
         transition={{ type: "tween", duration: 0.3 }}
-        className={`fixed top-0 right-0 h-full w-64 bg-primary shadow-lg z-50 p-4 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed top-0 right-0 h-full w-72 bg-primary shadow-lg z-50 p-4 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
       >
         {/* Botón para cerrar */}
         <button

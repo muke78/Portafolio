@@ -16,13 +16,12 @@ const i18n = getI18N({ currentLocale });
     />
     <div class="max-w-7xl pb-10">
       <div>
-        <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold mt-20 mb-20 animate__animated animate__zoomIn">
+        <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold mt-20 mb-20">
           {i18n.PROJECTS.PROJECTS_TITLE}
         </h2>
       </div>
-      <div class="grid grid-cols-1 gap-6 animate__animated animate__zoomIn backdrop-blur-[100px] backdrop-saturate-[180%] rounded-lg">
+      <div class="grid grid-cols-1 gap-6 animate__animated animate__zoomIn rounded-lg">
          <TabsProyectos client:load currentLocale={currentLocale}/>
-        <!-- <PruebaSwiper client:load/> -->
       </div>
     </div>
   </div>

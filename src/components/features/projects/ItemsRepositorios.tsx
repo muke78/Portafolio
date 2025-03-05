@@ -68,7 +68,7 @@ const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
             navigation={true}
             pagination={true}
             modules={[Navigation, Pagination]}
-            className="mySwiper rounded-lg shadow-md"
+            className="mySwiper rounded-lg"
             breakpoints={{
               768: {
                 slidesPerView: 1,
@@ -98,7 +98,7 @@ const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
                   {/* Pasa los datos al IconModal */}
                 </div>
                 <IconModal onClick={() => handleOpenModal(repo)} />
-                <div className="rounded-lg md:p-8 lg:p-9 shadow-2xl drop-shadow-2xl flex flex-col md:justify-between lg:justify-between sm:justify-start sm:h-full md:h-full lg:h-full">
+                <div className="rounded-lg md:p-8 lg:p-9 shadow-lg flex flex-col md:justify-between lg:justify-between sm:justify-start sm:h-full md:h-full lg:h-full">
                   <div className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
