@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 import { ItemsNav } from "../features/navbar/ItemsNav";
-import { ThemeDrop } from "../features/navbar/ThemeDrop";
+import { LangDrop } from "../features/navbar/LangDrop";
+import { ThemeDrop } from "../features/navbar/ThemeSwitch";
 import { ImageContrast } from "../utils/ImageContrast";
 
 export const Nav = () => {
@@ -46,12 +47,12 @@ export const Nav = () => {
       </div>
       <div className="flex gap-3">
         {/* Navbar Principal */}
-        <ul className="hidden min-[600px]:flex space-x-6">
+        <ul className="hidden min-[670px]:flex space-x-6">
           <ItemsNav currentLocale={"es"} />
         </ul>
 
         {/* Selector de Idioma */}
-        <button className="btn btn-ghost">Lang</button>
+        <LangDrop />
 
         {/* Botón para Cambiar Tema */}
         <ThemeDrop />
@@ -59,7 +60,7 @@ export const Nav = () => {
         {/* Botón Menú para Mobile */}
         <button
           onClick={toggleSidebar}
-          className="min-[600px]:hidden btn btn-ghost text-base"
+          className="min-[670px]:hidden btn btn-ghost text-base"
         >
           <Menu size={24} />
         </button>
@@ -89,7 +90,7 @@ export const Nav = () => {
         </button>
 
         {/* Contenido del Sidebar */}
-        <div className="w-full  text-3xl">
+        <div className="w-full text-3xl">
           <ul className="space-y-4 flex flex-col justify-center items-center gap-8 dark:text-white text-white">
             <ItemsNav currentLocale={"es"} />
           </ul>
