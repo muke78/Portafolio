@@ -10,8 +10,8 @@
 
 - Toda las data se van a pasar a ts para quitar astro como modulos de informacion
 
-- Arreglar y ordenar la utileria para los datos y data en duro, agregando la estructura de funcionalidad, por pagina para llevar un 
-mejor orden
+- Arreglar y ordenar la utileria para los datos y data en duro, agregando la estructura de funcionalidad, por pagina para llevar un
+  mejor orden
 
 - Arreglar el idioma y colocarlo de nuevo hasta que migre la version de test-i18n a el portafolio
 

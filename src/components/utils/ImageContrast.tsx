@@ -34,7 +34,7 @@ export const ImageContrast = ({ width }) => {
         alt="Logotipo personal de Erick Gonzalez"
         aria-label="Logotipo personal de Erick Gonzalez"
         loading="lazy"
-        className={`transition-all duration-300 rounded-sm ${darkThemes.includes(currentTheme) ? 'invert opacity-80 grayscale' : ''}`}
+        className={`transition-all duration-300 rounded-sm ${darkThemes.includes(currentTheme) ? "invert opacity-80 grayscale" : ""}`}
       />
     </div>
   );

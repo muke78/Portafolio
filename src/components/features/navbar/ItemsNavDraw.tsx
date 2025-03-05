@@ -24,10 +24,7 @@ export const ItemsNavDraw: React.FC<Props> = ({ currentLocale }) => {
     <>
       {dataChange.map((list) => (
         <li key={list.to}>
-          <a
-            href={list.to}
-            aria-label={`Ir a ${list.label}`}
-          >
+          <a href={list.to} aria-label={`Ir a ${list.label}`}>
             {" "}
             {list.label}{" "}
           </a>

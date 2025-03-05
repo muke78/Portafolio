@@ -23,7 +23,10 @@ export const LangDrop = () => {
           alt={languages[selectedLang].label}
           className="w-5 h-5 rounded-full"
         />
-        {languages[selectedLang].label}
+
+        <span className="hidden min-[440px]:inline">
+          {languages[selectedLang].label}
+        </span>
         <svg
           className="w-2.5 h-2.5 ms-1"
           aria-hidden="true"

@@ -45,7 +45,7 @@ export const Nav = () => {
       <div className="flex-grow items-center gap-4">
         <ImageContrast width="w-24" />
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-2">
         {/* Navbar Principal */}
         <ul className="hidden min-[670px]:flex space-x-6">
           <ItemsNav currentLocale={"es"} />
