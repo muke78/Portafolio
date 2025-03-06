@@ -3,11 +3,12 @@ import Layout from '@/layouts/Layout.astro';
 import Proyectos from '@/components/templates/Proyectos.astro';
 import Footer from '@/components/templates/Footer.astro';
 import { Nav } from '@/components/organisms/Nav';
+const {currentLocale} = Astro
 ---
 
 <Layout>
   <header class="relative w-full">
-    <Nav client:load />
+    <Nav client:load currentLocale={currentLocale}/>
     <div>
       <Proyectos />
     </div>

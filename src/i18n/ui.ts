@@ -17,8 +17,6 @@ export const languages = {
   },
 };
 
-export const defaultLang = "es";
-
 export const ui = {
   en: {},
   es: {},

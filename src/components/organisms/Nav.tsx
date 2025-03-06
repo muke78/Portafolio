@@ -8,51 +8,32 @@ import { LangDrop } from "../features/navbar/LangDrop";
 import { ThemeDrop } from "../features/navbar/ThemeSwitch";
 import { ImageContrast } from "../utils/ImageContrast";
 
-export const Nav = () => {
+interface NavProps {
+  currentLocale: string;
+}
+
+export const Nav: React.FC<NavProps> = ({ currentLocale }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      document.documentElement.setAttribute("data-theme", savedTheme);
-    }
-
-    const themeButtons = document.querySelectorAll("[data-set-theme]");
-
-    const handleThemeClick = (event: Event) => {
-      const button = event.currentTarget as HTMLElement;
-      const theme = button.getAttribute("data-set-theme");
-      localStorage.setItem("theme", theme || "");
-      document.documentElement.setAttribute("data-theme", theme || "");
-    };
-
-    themeButtons.forEach((button) => {
-      button.addEventListener("click", handleThemeClick);
-    });
-    return () => {
-      themeButtons.forEach((button) => {
-        button.removeEventListener("click", handleThemeClick);
-      });
-    };
-  }, []);
-
   return (
     <nav className="navbar bg-base-100 rounded-b-lg py-3 px-5 sticky top-0 left-0 w-full z-50 flex items-center">
       {/* Logo */}
       <div className="flex-grow items-center gap-4">
-        <ImageContrast width="w-24" />
+        <a href={`/${currentLocale}/home`}>
+          <ImageContrast width="w-24" />
+        </a>
       </div>
       <div className="flex gap-2">
         {/* Navbar Principal */}
         <ul className="hidden min-[670px]:flex space-x-6">
-          <ItemsNav currentLocale={"es"} />
+          <ItemsNav currentLocale={currentLocale} />
         </ul>
 
         {/* Selector de Idioma */}
-        <LangDrop />
+        <LangDrop currentLocale={currentLocale} />
 
         {/* Botón para Cambiar Tema */}
         <ThemeDrop />
@@ -84,6 +65,7 @@ export const Nav = () => {
         {/* Botón para cerrar */}
         <button
           onClick={closeSidebar}
+          aria-label="Cerrar menú"
           className="absolute top-4 right-4 btn btn-ghost dark:text-white text-white"
         >
           <X size={24} />
@@ -92,7 +74,7 @@ export const Nav = () => {
         {/* Contenido del Sidebar */}
         <div className="w-full text-3xl">
           <ul className="space-y-4 flex flex-col justify-center items-center gap-8 dark:text-white text-white">
-            <ItemsNav currentLocale={"es"} />
+            <ItemsNav currentLocale={currentLocale} />
           </ul>
         </div>
       </motion.div>

@@ -1,7 +1,5 @@
 ---
-import { getI18N } from "@/i18n/index";
-const currentLocale = "es"; // Define manualmente el idioma por defecto
-const i18n = getI18N({ currentLocale });
+const {currentLocale} = Astro;
 ---
 
 <meta http-equiv="refresh" content={`0;url=/${currentLocale}/home`} />

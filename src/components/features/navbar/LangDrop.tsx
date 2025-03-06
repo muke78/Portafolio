@@ -1,19 +1,58 @@
-import { defaultLang, languages } from "@/i18n/ui";
+import { getI18N } from "@/i18n";
+import { languages } from "@/i18n/ui";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export const LangDrop = () => {
-  const [selectedLang, setSelectedLang] = useState(defaultLang);
+interface langDropProps {
+  currentLocale: string;
+}
+
+export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
+  const [selectedLang, setSelectedLang] = useState<string>(currentLocale);
   const [isOpen, setIsOpen] = useState(false);
+  const [i18n, setI18n] = useState(() =>
+    getI18N({ currentLocale: currentLocale }),
+  );
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Obtener el idioma actual de la URL
+  useEffect(() => {
+    const langFromPath = window.location.pathname.split("/")[1];
+    const lang = Object.keys(languages).includes(langFromPath)
+      ? langFromPath
+      : currentLocale;
+
+    setSelectedLang(lang);
+    setI18n(getI18N({ currentLocale: lang }));
+  }, []);
+
+  // Cerrar dropdown si se hace click afuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
+
   const selectLanguage = (lang: string) => {
     setSelectedLang(lang);
     setIsOpen(false);
+    setI18n(getI18N({ currentLocale: lang }));
+
+    const newPath = `/${lang}/${window.location.pathname.split("/").slice(2).join("/")}`;
+    window.location.href = newPath;
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className="btn btn-ghost flex items-center gap-2"
@@ -49,10 +88,15 @@ export const LangDrop = () => {
           {Object.entries(languages).map(([key, { label, img }]) => (
             <button
               key={key}
+              aria-label="Boton para cambio de idiomas"
               onClick={() => selectLanguage(key)}
               className="flex items-center gap-2 w-full px-4 py-2 text-left rounded-md hover:bg-base-200"
             >
-              <img src={img.src} alt={label} className="w-5 h-5 rounded-full" />
+              <img
+                src={img.src}
+                alt="Banderas para idiomas"
+                className="w-5 h-5 rounded-full"
+              />
               {label}
             </button>
           ))}

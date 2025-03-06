@@ -26,7 +26,11 @@ export const ThemeDrop: React.FC = () => {
   if (!mounted) return null;
 
   return (
-    <button onClick={toggleTheme} className="swap swap-rotate btn btn-circle">
+    <button
+      onClick={toggleTheme}
+      className="swap swap-rotate btn btn-circle"
+      aria-label="Cambio de tema"
+    >
       {changeTheme === "dark" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

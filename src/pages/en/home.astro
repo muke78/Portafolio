@@ -4,11 +4,12 @@ import Header from '@/components/templates/Header.astro';
 import Habilidades from '@/components/templates/Habilidades.astro';
 import Footer from '@/components/templates/Footer.astro';
 import { Nav } from '@/components/organisms/Nav';
+const { currentLocale } = Astro;
 ---
 
 <Layout>
   <header class="relative w-full"> 
-    <Nav client:load />
+    <Nav client:load currentLocale={currentLocale}/>
     <div id="header">
       <Header />
     </div>

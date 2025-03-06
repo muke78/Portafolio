@@ -1,9 +1,28 @@
 ---
 import 'animate.css';
-// Extraer valores de la URL
-const { currentLocale, url } = Astro;
-const [, lang, slug = ''] = url.pathname.split('/'); // Asignar un valor por defecto a slug
-const title = slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : '';
+import {dataTitlePage, dataTitlePageEN, dataTitlePageFR}from '@/utils/dataTitlePage';
+
+
+const pathSegments = Astro.url.pathname.split("/");
+const {currentLocale} = Astro;
+
+const titles = currentLocale === 'en' ? dataTitlePageEN :
+               currentLocale === 'fr' ? dataTitlePageFR :
+               dataTitlePage; // Por defecto, español
+
+
+const pageIndex = pathSegments[2] === 'about' ? 1 :
+                  pathSegments[2] === 'projects' ? 2 :
+                  0;
+
+const titleLang = titles[pageIndex];
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const capitalizedTitle = capitalizeFirstLetter(titleLang);
+
 
 // Constantes para URLs y títulos
 const baseUrl = 'https://khelde.vercel.app/';
@@ -17,7 +36,8 @@ const imageUrl = `${baseUrl}kdl.webp`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <!-- <title>{lang === "es" ? "Inicio" : "Home"}</title> -->
+     <title>{capitalizedTitle}</title>
     <meta name="description" content={siteDescription} />
     
     <!-- Open Graph / Facebook -->
