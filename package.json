@@ -9,7 +9,7 @@
     "check": "astro check",
     "preview": "astro preview",
     "astro": "astro",
-    "format": "prettier . --write"
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -26,6 +26,7 @@
     "daisyui": "^4.12.23",
     "flowbite": "^2.5.2",
     "framer-motion": "^12.4.10",
+    "husky": "^9.1.7",
     "lucide-react": "^0.477.0",
     "react": "^18.3.1",
     "react-dom": "18.3.1",
