@@ -22,13 +22,6 @@ function capitalizeFirstLetter(string) {
 }
 
 const capitalizedTitle = capitalizeFirstLetter(titleLang);
-
-
-// Constantes para URLs y títulos
-const baseUrl = 'https://khelde.vercel.app/';
-const siteTitle = 'Web developer JR - IT Engineer';
-const siteDescription = 'Portafolio de Erick Gonzalez, desarrollador web junior con experiencia en frontend y backend. Mira mis proyectos y habilidades.';
-const imageUrl = `${baseUrl}kdl.webp`;
 ---
 
 <!doctype html>
@@ -36,68 +29,72 @@ const imageUrl = `${baseUrl}kdl.webp`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <title>{lang === "es" ? "Inicio" : "Home"}</title> -->
-     <title>{capitalizedTitle}</title>
-    <meta name="description" content={siteDescription} />
     
-    <!-- Open Graph / Facebook -->
+    <title>{capitalizedTitle}</title>
+    <meta name="description" content="Web developer JR - IT Engineer" />
+    <!-- Open Graph Meta Tags (para Facebook, LinkedIn, y otras redes) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={baseUrl} />
-    <meta property="og:title" content={siteTitle} />
-    <meta property="og:description" content={siteDescription} />
-    <meta property="og:image" content={imageUrl} />
-    <meta property="og:site_name" content="Portafolio" />
-    
-    <!-- Twitter -->
+    <meta property="og:url" content="https://khelde.vercel.app/es/home" />
+    <meta property="og:title" content="Portafolio de Erick Gonzalez" />
+    <meta property="og:description" content="Portafolio de Erick Gonzalez, desarrollador web junior con experiencia en frontend y backend. Mira mis proyectos y habilidades." />
+    <meta property="og:image" content="https://khelde.vercel.app/kdl.webp" />
+    <meta property="og:image:alt" content="Logo de Erick Gonzalez, desarrollador web." />
+    <meta property="og:site_name" content="Portafolio Erick Gonzalez" />
+    <!-- Twitter Meta Tags -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={baseUrl} />
-    <meta property="twitter:title" content={siteTitle} />
-    <meta property="twitter:description" content={siteDescription} />
-    <meta property="twitter:image" content={imageUrl} />
-    
+    <meta property="twitter:url" content="https://khelde.vercel.app/es/home" />
+    <meta property="twitter:title" content="Portafolio de Erick Gonzalez" />
+    <meta property="twitter:description" content="Portafolio de Erick Gonzalez, desarrollador web junior con experiencia en frontend y backend. Mira mis proyectos y habilidades." />
+    <meta property="twitter:image" content="https://khelde.vercel.app/kdl.webp" />
+    <meta property="twitter:image:alt" content="Logo de Erick Gonzalez, desarrollador web." />
+    <!-- Metadatos para WhatsApp (Usa los mismos que para Open Graph) -->
+    <meta property="og:image" content="https://khelde.vercel.app/kdl.webp" />
+    <meta property="og:title" content="Portafolio de Erick Gonzalez" />
+    <meta property="og:description" content="Portafolio de Erick Gonzalez, desarrollador web junior con experiencia en frontend y backend. Mira mis proyectos y habilidades." />
+    <!-- Metadatos personalizados para IA u otras plataformas -->
+    <meta property="ia:markup_url" content="https://khelde.vercel.app/markup" />
+    <meta property="ia:markup_url_dev" content="https://khelde.vercel.app/markup_dev" />
+    <meta property="ia:rules_url" content="https://khelde.vercel.app/rules" />
+    <meta property="ia:rules_url_dev" content="https://khelde.vercel.app/rules_dev" />
     <!-- Metadatos adicionales -->
     <meta name="theme-color" content="#6f37cf" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="muke78" />
     <meta name="copyright" content="Copyright © 2025" />
     <link rel="icon" type="image/svg+xml" href="/kdl.webp" />
-    <link rel="canonical" href={baseUrl} />
-
+    <link rel="canonical" href="https://khelde.vercel.app/" />
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
-    
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-  <body>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />undefined
+  </head>undefined<body>
     <div id="swup" class="transition-fade ">
       <slot />
     </div>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"
-    ></script>
-    <script src="../js/swup-init.js"></script>
-  </body>
-</html>
-
-<style is:global>
+    <script defer src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="../js/swup-init.js"></script>undefined
+  </body>undefined
+</html>undefined<style is:global>
   .sticky-navbar {
     position: sticky;
     top: 0;
     height: 3px;
   }
+
   .shadow__skew {
     animation: uppcolor 4s ease-in-out;
   }
+
   @keyframes uppcolor {
     0% {
       filter: blur(15rem);
     }
+
     50% {
       filter: blur(-20rem);
     }
+
     100% {
       filter: blur(4rem);
     }

@@ -20,6 +20,12 @@ const locales = {
 };
 
 // Función para obtener las traducciones
-export const getI18N = ({ currentLocale = LANG.SPANISH }: { currentLocale?: string }) => {
-  return locales[currentLocale as keyof typeof locales] || locales[LANG.SPANISH];
+export const getI18N = ({
+  currentLocale = LANG.SPANISH,
+}: {
+  currentLocale?: string;
+}) => {
+  return (
+    locales[currentLocale as keyof typeof locales] || locales[LANG.SPANISH]
+  );
 };
