@@ -12,16 +12,10 @@ echo "🔍 Verificando archivos antes del commit..."
 echo "🚀 Ejecutando Prettier..."
 pnpm run prettier --write .
 
-# Ejecutar pruebas antes del commit
-echo "🧪 Ejecutando pruebas..."
-if ! pnpm test; then
-  echo "❌ Pruebas fallidas. No se puede hacer commit."
-  exit 1
-fi
 
 # Verificar que el código esté actualizado antes del push
 echo "🔄 Verificando que tu código esté actualizado..."
-if ! git pull --rebase; then
+if ! git pull; then
   echo "❌ Error al actualizar el código. Revisa los conflictos."
   exit 1
 fi

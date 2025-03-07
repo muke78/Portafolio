@@ -9,6 +9,7 @@
     "check": "astro check",
     "preview": "astro preview",
     "astro": "astro",
+    "prettier": "prettier --write .",
     "prepare": "husky"
   },
   "dependencies": {
