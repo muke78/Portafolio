@@ -7,7 +7,7 @@ export const dataProyectosEmpresariales: DataProjects[] = [
     id: "erp-obra",
     title: "FrontEnd Obra",
     description:
-      "Panel de administracion para un control de obras y de licitaciones por medio de un ERP",
+      "Panel de administración para un control de obras y de licitaciones por medio de un ERP",
     topics: [
       "php",
       "moment.js",
@@ -35,7 +35,7 @@ export const dataProyectosEmpresariales: DataProjects[] = [
     id: "backend-obra",
     title: "BackEnd-ERP",
     description:
-      "Parte logica del sistema para consumo desde el ERP por medio de API RESTFULL",
+      "Parte lógica para un sistema ERP hecho con php y doble backend usando el modelo MVC",
     topics: [
       "async",
       "await",
@@ -63,7 +63,7 @@ export const dataProyectosEmpresariales: DataProjects[] = [
     id: "backEnd-aseguradora",
     title: "BackEnd Aseguradora",
     description:
-      "Logica de un panel administrativo para riesgos de seguros financieros",
+      "Lógica de un panel administrativo para riesgos de seguros financieros",
     topics: [
       "cors",
       "dotenv",

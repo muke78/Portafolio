@@ -17,7 +17,7 @@ export const dataProyectos: DataProjects[] = [
     id: "backend-task",
     title: "BackendTask",
     description:
-      "Backend My Task Board devchallenges.io con CRUD en mysql y postgresql completo de tareas y obtencion de estados segun la tarea",
+      "Backend My Task Board devchallenges.io con CRUD en mysql y postgresql completo de tareas y obtención de estados según la tarea",
     topics: [
       "backend-api",
       "crud-application",
@@ -68,7 +68,7 @@ export const dataProyectos: DataProjects[] = [
     id: "cerdyn-os",
     title: "CerdynOS",
     description:
-      "Sistema de control de gastos hecho con Tanstack Query, Zustand, React, Styled Components, como cartera de los gastos que llevas dia a dia",
+      "Sistema de control de gastos hecho con Tanstack Query, Zustand, React, Styled Components, como cartera de los gastos que llevas día a día",
     topics: [
       "@emotion/react",
       "@emotion/styled",
@@ -103,7 +103,7 @@ export const dataProyectos: DataProjects[] = [
   {
     id: "expense-tracker-cli",
     title: "expense-tracker-cli",
-    description: "Aplicacion desde CLI para tener un registro de gastos",
+    description: "Aplicación desde CLI para tener un registro de gastos",
     topics: [
       "chalk-cli",
       "cli",
@@ -122,7 +122,7 @@ export const dataProyectos: DataProjects[] = [
     id: "hero-app",
     title: "HeroApp",
     description:
-      "Aplicacion muestra de como hacer una pagina funcional frontend sin backend ocupando react",
+      "Aplicación muestra de cómo hacer una página funcional frontend sin backend ocupando react",
     topics: [
       "chartjs",
       "framer-motion",
@@ -142,7 +142,7 @@ export const dataProyectos: DataProjects[] = [
     id: "inventario-kinder",
     title: "Kindergarten-inventory",
     description:
-      "Filtrado de un inventario por medio de un csv para sacar una proporcion precisa de el numero de activos que ya estas en deshuso",
+      "Filtrado de un inventario por medio de un CSV para sacar una proporción precisa del número de activos que ya estás en desuso",
     topics: [
       "inventory-management",
       "jupyter-notebook",
@@ -158,16 +158,16 @@ export const dataProyectos: DataProjects[] = [
     id: "khelde-io",
     title: "khelde.io",
     description:
-      "Primer desarrollo con api de clima mas primer portafolio hecho con html, css y javascript",
+      "Primer desarrollo con api de clima más primer portafolio hecho con html, css y javascript",
     topics: ["css", "html", "javascript", "scrollreveal-js", "unicons"],
-    link: "https://muke78.github.io/khelde.io/",
+    link: "https://muke78.github.io/khelde.io/personal.html",
     img: kheldeIO.src,
     fork: false,
   },
   {
     id: "landing-page-cash-bank-con-astro",
     title: "Landing-Page-Cash-Bank-con-Astro",
-    description: "Landing Page de Cash Bank Creada con Astro 4 y Tailwind",
+    description: "Landing Page de Cash Bank creada con Astro 4 y Tailwind",
     topics: [
       "@astrojs/check",
       "@astrojs/tailwind",
@@ -182,7 +182,7 @@ export const dataProyectos: DataProjects[] = [
   {
     id: "math-game",
     title: "Mathgame",
-    description: "Juego de suma de numeros y restas y multiplicacion",
+    description: "Juego de suma de números y restas y multiplicación",
     topics: ["css", "html", "javascript", "javascript-game"],
     link: "https://mathgame-khelde.netlify.app/",
     img: mathGame.src,
@@ -192,7 +192,7 @@ export const dataProyectos: DataProjects[] = [
     id: "portafolio",
     title: "Portafolio",
     description:
-      "Portafolio creado con astro 4 con react soporte para typescript con dynamic-islands y con la libreria de @astrojs/tailwind en su version 5.1.5",
+      "Portafolio creado con astro 4 con react soporte para typescript con dynamic-islands y con la librería de @astrojs/tailwind en su versión 5.1.5",
     topics: [
       "@astrojs/check",
       "@astrojs/node",
@@ -219,7 +219,7 @@ export const dataProyectos: DataProjects[] = [
     id: "sistema_numerico",
     title: "Number_System",
     description:
-      "Pequeña calculadora para poder pasar de una base numerica a otra, del sistema numerico informatico",
+      "Pequeña calculadora para poder pasar de una base numérica a otra, del sistema numérico informático",
     topics: [
       "binary",
       "calculator",
