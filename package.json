@@ -24,7 +24,7 @@
     "animate.css": "^4.1.1",
     "astro": "4.0.7",
     "astro-compress": "^2.3.6",
-    "daisyui": "^4.12.23",
+    "daisyui": "4.12.23",
     "flowbite": "^2.5.2",
     "framer-motion": "^12.4.10",
     "husky": "^9.1.7",

@@ -63,7 +63,7 @@ export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
           className="w-5 h-5 rounded-full"
         />
 
-        <span className="hidden min-[440px]:inline">
+        <span className="hidden min-[440px]:inline text-lg">
           {languages[selectedLang].label}
         </span>
         <svg
@@ -90,7 +90,7 @@ export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
               key={key}
               aria-label="Boton para cambio de idiomas"
               onClick={() => selectLanguage(key)}
-              className="flex items-center gap-2 w-full px-4 py-2 text-left rounded-md hover:bg-base-200"
+              className="flex items-center gap-2 w-full px-4 py-2 text-left text-lg rounded-md hover:bg-base-200"
             >
               <img
                 src={img.src}

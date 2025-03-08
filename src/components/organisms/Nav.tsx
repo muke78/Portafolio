@@ -10,26 +10,27 @@ import { ImageContrast } from "../utils/ImageContrast";
 
 interface NavProps {
   currentLocale: string;
+  currentPath: string;
 }
 
-export const Nav: React.FC<NavProps> = ({ currentLocale }) => {
+export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
 
   return (
-    <nav className="navbar bg-base-100 rounded-b-lg py-3 px-5 sticky top-0 left-0 w-full z-50 flex items-center">
+    <nav className="navbar bg-base-300 rounded-b-lg py-3 px-5 sticky top-0 left-0 w-full z-50 flex items-center">
       {/* Logo */}
       <div className="flex-grow items-center gap-4">
         <a href={`/${currentLocale}/home`}>
-          <ImageContrast width="w-24" />
+          <ImageContrast width="w-28" />
         </a>
       </div>
       <div className="flex gap-2">
         {/* Navbar Principal */}
-        <ul className="hidden min-[670px]:flex space-x-6">
-          <ItemsNav currentLocale={currentLocale} />
+        <ul className="hidden min-[670px]:flex space-x-6 text-lg">
+          <ItemsNav currentLocale={currentLocale} currentPath={currentPath} />
         </ul>
 
         {/* Selector de Idioma */}
@@ -60,21 +61,21 @@ export const Nav: React.FC<NavProps> = ({ currentLocale }) => {
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? 0 : "100%" }}
         transition={{ type: "tween", duration: 0.3 }}
-        className={`fixed top-0 right-0 h-full w-72 bg-primary shadow-lg z-50 p-4 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed top-0 right-0 h-full w-72 bg-base-300 shadow-lg z-50 p-4 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
       >
         {/* Botón para cerrar */}
         <button
           onClick={closeSidebar}
           aria-label="Cerrar menú"
-          className="absolute top-4 right-4 btn btn-ghost dark:text-white text-white"
+          className="absolute top-4 right-4 btn btn-ghost"
         >
           <X size={24} />
         </button>
 
         {/* Contenido del Sidebar */}
         <div className="w-full text-3xl">
-          <ul className="space-y-4 flex flex-col justify-center items-center gap-8 dark:text-white text-white">
-            <ItemsNav currentLocale={currentLocale} />
+          <ul className="space-y-4 flex flex-col justify-center items-center gap-8">
+            <ItemsNav currentLocale={currentLocale} currentPath={currentPath} />
           </ul>
         </div>
       </motion.div>

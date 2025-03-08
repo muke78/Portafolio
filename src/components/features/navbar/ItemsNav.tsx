@@ -4,8 +4,6 @@ import { dataListNavbarFR } from "@/utils/fr/dataNavbarFR.astro";
 
 import React from "react";
 
-import { ThemeDrop } from "./ThemeSwitch";
-
 interface NavbarItem {
   to: string;
   label: string;
@@ -13,9 +11,12 @@ interface NavbarItem {
 
 interface Props {
   currentLocale: string;
+  currentPath: string;
 }
 
-export const ItemsNav: React.FC<Props> = ({ currentLocale }) => {
+export const ItemsNav: React.FC<Props> = ({ currentLocale, currentPath }) => {
+  const path = currentPath.slice(4);
+
   const dataChange: NavbarItem[] =
     currentLocale === "es"
       ? dataListNavbar
@@ -25,20 +26,24 @@ export const ItemsNav: React.FC<Props> = ({ currentLocale }) => {
 
   return (
     <>
-      {dataChange.map((list) => (
-        <li
-          key={list.to}
-          className="
-        relative transition-all w-min-content p-1
-        before:w-0 before:h-1 before:absolute before:bottom-0 before:right-0 before:bg-neutral before:transition-all before:duration-500
-        hover:before:w-full hover:before:left-0 hover:before:bg-secondary before:rounded-full
-        "
-        >
-          <a href={list.to} aria-label={`Ir a ${list.label}`}>
-            {list.label}
-          </a>
-        </li>
-      ))}
+      {dataChange.map((list) => {
+        const isActive = path === list.to; // Compara con la URL actual
+        return (
+          <li
+            key={list.to}
+            className={`
+              relative transition-all w-min-content p-1
+              before:w-0 before:h-1 before:absolute before:bottom-0 before:right-0 before:bg-neutral before:transition-all before:duration-500
+              hover:before:w-full hover:before:left-0 before:rounded-full
+              ${isActive ? "text-primary font-bold before:w-full before:bg-primary" : ""}
+            `}
+          >
+            <a href={list.to} aria-label={`Ir a ${list.label}`}>
+              {list.label}
+            </a>
+          </li>
+        );
+      })}
     </>
   );
 };

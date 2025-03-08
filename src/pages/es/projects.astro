@@ -4,11 +4,12 @@ import Proyectos from '@/components/templates/Proyectos.astro';
 import Footer from '@/components/templates/Footer.astro';
 import { Nav } from '@/components/organisms/Nav';
 const {currentLocale} = Astro;
+const currentPath = Astro.url.pathname;
 ---
 
 <Layout>
   <header class="relative w-full">
-    <Nav client:load currentLocale={currentLocale}/>
+    <Nav client:load currentLocale={currentLocale} currentPath={currentPath}/>
     <div>
       <Proyectos />
     </div>
