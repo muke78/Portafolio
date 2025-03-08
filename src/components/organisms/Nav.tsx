@@ -61,7 +61,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
         initial={{ x: "100%" }}
         animate={{ x: isOpen ? 0 : "100%" }}
         transition={{ type: "tween", duration: 0.3 }}
-        className={`fixed top-0 right-0 h-full w-72 bg-base-300 shadow-lg z-50 p-4 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed top-0 right-0 h-full w-3/4 bg-base-300 rounded-xl shadow-lg z-50 p-4 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
       >
         {/* Botón para cerrar */}
         <button

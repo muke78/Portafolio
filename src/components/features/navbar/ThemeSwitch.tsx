@@ -18,9 +18,7 @@ export const ThemeDrop: React.FC = () => {
   }, [changeTheme, mounted]);
 
   const toggleTheme = () => {
-    setChangeTheme((prevTheme) =>
-      prevTheme === "nord" ? "dark" : "nord",
-    );
+    setChangeTheme((prevTheme) => (prevTheme === "nord" ? "dark" : "nord"));
   };
 
   if (!mounted) return null;
