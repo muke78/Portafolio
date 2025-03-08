@@ -8,7 +8,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["astro/client"], // Asegúrate de incluir esta línea
+    "types": ["astro/client"],
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"

@@ -1,4 +1,4 @@
-export type DataItemTabs = {
+export type DataItemsHabilidades = {
   time: string;
   area: string;
   title: string;

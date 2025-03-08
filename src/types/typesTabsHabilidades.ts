@@ -1,4 +1,4 @@
-export type Tab = {
+export type TabHabilidades = {
   id: string;
   title: string;
   target: string;

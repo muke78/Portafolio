@@ -1,4 +1,6 @@
-export const dataFrontendFR = [
+import type { DataItemsHabilidades } from "@/types/typesDataHabilidades";
+
+export const dataFrontendFR: DataItemsHabilidades[] = [
   {
     time: "Plus de 4 ans",
     area: "Structure",

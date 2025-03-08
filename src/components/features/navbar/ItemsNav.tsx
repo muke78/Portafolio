@@ -1,6 +1,6 @@
-import { dataListNavbarEN } from "@/utils/en/dataNavbarEN.astro";
-import { dataListNavbar } from "@/utils/es/dataNavbar.astro";
-import { dataListNavbarFR } from "@/utils/fr/dataNavbarFR.astro";
+import { dataListNavbarEN } from "@/utils/en/dataNavbarEN";
+import { dataListNavbar } from "@/utils/es/dataNavbar";
+import { dataListNavbarFR } from "@/utils/fr/dataNavbarFR";
 
 import React from "react";
 

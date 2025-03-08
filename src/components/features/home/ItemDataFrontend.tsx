@@ -1,4 +1,4 @@
-import type { DataItemTabs } from "@/types/typesDataHabilidades";
+
 import { dataFrontendEN } from "@/utils/en/dataFrontendEN";
 import { dataFrontend } from "@/utils/es/dataFrontend";
 import { dataFrontendFR } from "@/utils/fr/dataFrontendFR";

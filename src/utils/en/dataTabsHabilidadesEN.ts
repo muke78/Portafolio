@@ -1,6 +1,6 @@
-import type { Tab } from "@/types/typesHabilidades";
+import type { TabHabilidades } from "@/types/typesTabsHabilidades";
 
-export const tabsEN: Tab[] = [
+export const tabsEN: TabHabilidades[] = [
   {
     id: "interfaz-tab",
     title: "Frontend",
