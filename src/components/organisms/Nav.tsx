@@ -20,7 +20,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
   const closeSidebar = () => setIsOpen(false);
 
   return (
-    <nav className="navbar bg-base-300 rounded-b-lg py-3 px-5 sticky top-0 left-0 w-full z-50 flex items-center">
+    <nav className="navbar bg-base-300 rounded-b-lg py-3 px-5 sticky md:sticky lg:absolute top-0 left-0 w-full z-50 flex items-center">
       {/* Logo */}
       <div className="flex-grow items-center gap-4">
         <a href={`/${currentLocale}/home`}>
@@ -29,7 +29,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
       </div>
       <div className="flex gap-2">
         {/* Navbar Principal */}
-        <ul className="hidden min-[670px]:flex space-x-6 text-lg">
+        <ul className="hidden min-[777px]:flex space-x-6 text-lg">
           <ItemsNav currentLocale={currentLocale} currentPath={currentPath} />
         </ul>
 
@@ -42,7 +42,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
         {/* Botón Menú para Mobile */}
         <button
           onClick={toggleSidebar}
-          className="min-[670px]:hidden btn btn-ghost text-base"
+          className="min-[777px]:hidden btn btn-ghost text-base"
         >
           <Menu size={24} />
         </button>

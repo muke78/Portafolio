@@ -1,9 +1,10 @@
 {
   "HEADER": {
     "HEADER_TITLE": "Hello there",
+    "HEADER_SUBTITLE": "Full-stack Developer",
     "HEADER_NAME": "Erick Gonzalez",
-    "HEADER_ABOUT": "Experience in the design and development of web applications, covering both frontend and backend, as well as solid knowledge of data analysis and databases.",
-    "HEADER_BUTTON": "See skills"
+    "HEADER_ABOUT": "Information Technology Engineer, specialized in FullStack development, data analysis and databases. With more than two years of experience creating efficient, scalable and well-structured applications.",
+    "HEADER_BUTTON": "See Projects"
   },
   "ABOUTME": {
     "ABOUT_TITLE": "About me",
