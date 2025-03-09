@@ -10,7 +10,7 @@ export default defineConfig({
   integrations: [
     tailwind(),
     react(),
-    swup({ theme: false }),
+    // swup({ theme: false }),
     sitemap({
       i18n: {
         defaultLocale: "es",
@@ -25,7 +25,7 @@ export default defineConfig({
       CSS: true,
       JavaScript: true,
       HTML: true,
-      Image: true,
+      Image: false,
       SVG: true,
       Logger: true,
     }),
@@ -43,10 +43,6 @@ export default defineConfig({
     },
   },
   vite: {
-    optimizeDeps: {
-      noDiscovery: true,
-      include: [],
-    },
     build: {
       minify: true,
     },

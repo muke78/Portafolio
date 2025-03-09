@@ -5,8 +5,8 @@ con tailwindcss 3.4.17
 
 - Se monto [Daisyui](https://daisyui.com/) sobre tailwind para manejar los temas de la apliacion
 - Se monto [Flowbite](https://flowbite.com/) sobre tailwind para darle funcionalidad a los componentes y ahorrar lineas de javascript
-- Version estable `v.1.3.2` release, proximas y futuras actualizaciones
-- Proxima actualizacion `v.1.4.2`
+- Version estable `v.1.5.2` release, proximas y futuras actualizaciones
+- Proxima actualizacion `v.1.6.2`
 - Se ocupa la herramienta de reenvio de puertos desde host de tunel para revisar los cambios de el servidor en tiempo real desde un celular
 
 # Estructura del proyecto

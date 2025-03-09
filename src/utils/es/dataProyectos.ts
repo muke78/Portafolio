@@ -192,7 +192,7 @@ export const dataProyectos: DataProjects[] = [
     id: "portafolio",
     title: "Portafolio",
     description:
-      "Portafolio creado con astro 4 con react soporte para typescript con dynamic-islands y con la librería de @astrojs/tailwind en su versión 5.1.5",
+      "Portafolio creado con astro 5.4.2 con react soporte para typescript con dynamic-islands y con la librería de @astrojs/tailwind en su versión 5.1.5",
     topics: [
       "@astrojs/check",
       "@astrojs/node",
