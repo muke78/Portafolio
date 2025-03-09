@@ -6,6 +6,7 @@ import compress from "astro-compress";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
+  site: "https://khelde.vercel.app/es/home",
   integrations: [
     tailwind(),
     react(),
@@ -42,9 +43,12 @@ export default defineConfig({
     },
   },
   vite: {
+    optimizeDeps: {
+      noDiscovery: true,
+      include: [],
+    },
     build: {
       minify: true,
     },
   },
-  site: "https://khelde.vercel.app/",
 });

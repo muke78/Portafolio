@@ -1,4 +1,3 @@
-
 import { dataBackendEN } from "@/utils/en/dataBackendEN";
 import { dataBackend } from "@/utils/es/dataBackend";
 import { dataBackendFR } from "@/utils/fr/dataBackendFR";

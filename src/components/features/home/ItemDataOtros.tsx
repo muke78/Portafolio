@@ -1,4 +1,3 @@
-
 import { dataOtrosEN } from "@/utils/en/dataOtrosEN";
 import { dataOtros } from "@/utils/es/dataOtros";
 import { dataOtrosFR } from "@/utils/fr/dataOtrosFR";
