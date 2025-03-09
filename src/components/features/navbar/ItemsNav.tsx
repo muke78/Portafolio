@@ -2,7 +2,7 @@ import { dataListNavbarEN } from "@/utils/en/dataNavbarEN";
 import { dataListNavbar } from "@/utils/es/dataNavbar";
 import { dataListNavbarFR } from "@/utils/fr/dataNavbarFR";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface NavbarItem {
   to: string;
@@ -15,7 +15,12 @@ interface Props {
 }
 
 export const ItemsNav: React.FC<Props> = ({ currentLocale, currentPath }) => {
-  const path = currentPath.slice(4);
+  const path = currentPath.length >= 4 ? currentPath.slice(4) : currentPath;
+  const [pathIsActive, setPathIsActive] = useState<string>("");
+
+  useEffect(() => {
+    setPathIsActive(path);
+  }, [path]);
 
   const dataChange: NavbarItem[] =
     currentLocale === "es"
@@ -27,7 +32,7 @@ export const ItemsNav: React.FC<Props> = ({ currentLocale, currentPath }) => {
   return (
     <>
       {dataChange.map((list) => {
-        const isActive = path === list.to; // Compara con la URL actual
+        const isActive = pathIsActive === list.to;
         return (
           <li
             key={list.to}
