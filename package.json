@@ -22,7 +22,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^19.0.4",
     "animate.css": "^4.1.1",
-    "astro": "5.4.2",
+    "astro": "^5.4.2",
     "astro-compress": "^2.3.6",
     "daisyui": "4.12.23",
     "flowbite": "^2.5.2",
