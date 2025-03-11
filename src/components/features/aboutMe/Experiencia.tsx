@@ -1,14 +1,13 @@
-import React from "react";
+import { getI18N } from "@/i18n";
 
-export const Experiencia = () => {
+import { ModalWork } from "./ModalWork";
+
+export const Experiencia = ({ currentLocale }) => {
+  const i18n = getI18N({ currentLocale });
   return (
-    <>
-      <span className="font-bold text-5xl">Experiencia</span>
-      <div className="py-5">
-        <p className="font-medium text-base/8">
-          {/* {i18n.ABOUTME.ABOUT_ABOUT_DESCRIPTION} */}
-        </p>
-      </div>
-    </>
+    <div className="flex flex-col justify-center gap-4">
+      <span className="font-bold text-5xl"> {i18n.ABOUTME.EXPERIENCE}</span>
+      <ModalWork currentLocale={currentLocale} />
+    </div>
   );
 };

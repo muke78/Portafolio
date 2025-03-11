@@ -29,6 +29,9 @@
   "SKILLS": {
     "SKILLS_TITLE": "Skills"
   },
+  "EDUCATION": {
+    "EDUCATION_TITLE": "Education"
+  },
   "PROJECTS": {
     "PROJECTS_TITLE": "Projects",
     "PROJECTS_VIEW": "See project",
@@ -55,5 +58,11 @@
   },
   "404": {
     "404_BODY": "Oops! The page you're looking for doesn't exist."
+  },
+  "UNIVERSITY": {
+    "UNIVERSITY_TITLE": "Polytechnic University of the Valley of Mexico (UPVM)",
+    "UNIVERSITY_SUBTITLE": "Information Technology Engineering",
+    "UNIVERSITY_TEXT": "During my time at university, I learned about various areas of IT such as equipment maintenance, networking, object-oriented programming, mobile development with Xamarin, cybersecurity, requirements engineering, and databases. I also worked with Arduino in robotics. However, what interested me the most was web development. Although I only learned basic jQuery concepts, I always had the desire to continue learning about this topic. Currently, I am self-taught and strive to learn something new every day."
+
   }
 }

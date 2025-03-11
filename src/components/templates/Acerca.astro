@@ -1,60 +1,8 @@
 ---
-import { getI18N } from '@/i18n';
-import Bubble from '@/components/atoms/Bubble.astro';
-import { ModalWork } from '@/components/features/aboutMe/ModalWork';
-
+import { TabsAcerca } from '@/components/organisms/TabsAcerca'
 const { currentLocale } = Astro;
-const i18n = getI18N({ currentLocale });
 ---
 
-
-  <div class="hero-content text-center">
-    <!-- <Bubble
-      class="top-40 lg:top-72 left-0 bg-primary"
-      classNameToBottom="bottom-80 right-36 bg-accent"
-    /> -->
-    <div class="max-w-7xl ">
-      <div class="grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-4 sm:p-0 md:p-1 lg:p-4">
-        
-        <div class="lg:col-span-2 lg:col-start-3 animate__animated animate__fadeIn">
-          <div
-            class="rounded-lg py-5 card"
-          >
-            <div class="card-body">
-              <p class="font-medium">
-                {i18n.ABOUTME.ABOUT_ABOUT_DESCRIPTION}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="lg:col-span-2 lg:col-start-3 lg:row-start-2 animate__animated animate__fadeIn">
-          <div
-            class="bg-transparent stats stats-horizontal rounded-lg py-5 w-full"
-          >
-            <div class="stat p-1">
-              <div class="stat-value">+2</div>
-              <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[0].EXPIRENCE}</div>
-              <div class="stat-desc">
-                {i18n.ABOUTME.ABOUT_EXPIRENCE[0].EXPIRENCE_ABOUT}
-              </div>
-            </div>
-            <div class="stat p-1">
-              <div class="stat-value">+7</div>
-              <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[1].PROJECTS}</div>
-              <div class="stat-desc">
-                {i18n.ABOUTME.ABOUT_EXPIRENCE[1].PROJECTS_ABOUT}
-              </div>
-            </div>
-            <div class="stat p-1 flex items-center justify-center flex-col">
-               <ModalWork currentLocale={currentLocale} client:load/>
-              <div class="">{i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING}</div>
-              <div class="stat-desc">
-                {i18n.ABOUTME.ABOUT_EXPIRENCE[2].WORKING_ABOUT}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="hero-content flex w-full lg:mt-36">
+    <TabsAcerca client:load currentLocale={currentLocale}/>
+</div>
