@@ -10,7 +10,7 @@ export const SobreMi: React.FC<Langprops> = ({ currentLocale }) => {
   const i18n = getI18N({ currentLocale });
 
   return (
-    <>
+    <div className="animate__animated animate__zoomIn">
       <span className="font-bold text-5xl"> {i18n.ABOUTME.ABOUT_TITLE}</span>
       <div className="flex flex-col justify-center items-center gap-4">
         <div className="py-5">
@@ -19,6 +19,6 @@ export const SobreMi: React.FC<Langprops> = ({ currentLocale }) => {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };

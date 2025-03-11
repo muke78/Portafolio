@@ -14,7 +14,7 @@ interface Langprops {
 export const Habilidades: React.FC<Langprops> = ({ currentLocale }) => {
   const i18n = getI18N({ currentLocale });
   return (
-    <div className="w-full">
+    <div className="w-full animate__animated animate__zoomIn">
       <span className="font-bold text-4xl md:text-5xl">
         {" "}
         {i18n.SKILLS.SKILLS_TITLE}

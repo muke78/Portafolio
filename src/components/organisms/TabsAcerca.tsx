@@ -27,7 +27,7 @@ export const TabsAcerca = ({ currentLocale }) => {
   return (
     <div className="flex flex-col lg:flex-row w-5/6 lg:w-full h-1/2">
       {/* Contenedor de los botones con un ancho fijo */}
-      <div className="flex flex-col gap-4 w-full h-full lg:w-1/3 lg:pl-20">
+      <div className="flex flex-col gap-4 w-full h-full lg:w-1/3 lg:pl-20 animate__animated animate__fadeIn">
         <button
           className={`btn ${activeTab === "experiencia" ? "btn-primary" : "btn-neutral"}  text-lg w-full`}
           onClick={() => setActiveTab("experiencia")}
@@ -56,7 +56,7 @@ export const TabsAcerca = ({ currentLocale }) => {
       {/* Separador solo visible en pantallas grandes */}
       <div className="divider divider-vertical lg:divider-horizontal"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
-      <div className="flex-1 w-full">
+      <div className="flex-1 w-full animate__animated animate__zoomIn">
         {activeTab === "experiencia" && (
           <Experiencia currentLocale={currentLocale} />
         )}

@@ -2,16 +2,12 @@
 
 echo "🔍 Verificando archivos antes del commit..."
 
-# # Bloquear commits de archivos .env
-# if git diff --cached --name-only | grep -q ".env"; then
-#   echo "❌ No puedes hacer commit de archivos .env"
-#   exit 1
-# fi
-
 # Formatear código antes del commit
 echo "🚀 Ejecutando Prettier..."
 pnpm run prettier --write .
 
+# Agregar los archivos modificados después de formatear
+git add .
 
 # Verificar que el código esté actualizado antes del push
 echo "🔄 Verificando que tu código esté actualizado..."

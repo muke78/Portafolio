@@ -6,7 +6,10 @@ export const Educacion = ({ currentLocale }) => {
   const i18n = getI18N({ currentLocale });
   return (
     <>
-      <div className="grid grid-cols-1 w-full bg-base-100 rounded-lg shadow-sm">
+      <span className="font-bold text-5xl">
+        {i18n.EDUCATION.EDUCATION_TITLE}
+      </span>
+      <div className="grid grid-cols-1 w-full bg-base-100 rounded-lg mt-4 shadow-sm animate__animated animate__zoomIn">
         <img className="rounded-t-lg w-full" src="/UPVM.jpg" alt="" />
         <div className="p-5">
           <div className="flex justify-between">
