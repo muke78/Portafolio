@@ -18,7 +18,6 @@ export const SobreMi: React.FC<Langprops> = ({ currentLocale }) => {
             {i18n.ABOUTME.ABOUT_ABOUT_DESCRIPTION}
           </p>
         </div>
-       
       </div>
     </>
   );
