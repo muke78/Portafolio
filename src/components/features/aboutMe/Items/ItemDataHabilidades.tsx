@@ -1,6 +1,6 @@
-import { dataAlojamientoEN } from "@/utils/en/dataAlojamientoEN";
-import { dataAlojamiento } from "@/utils/es/dataAlojamiento";
-import { dataAlojamientoFR } from "@/utils/fr/dataAlojamientoFR";
+import { dataTabsAcercaDeEN } from "@/utils/en/dataTabsAcercaDeEN";
+import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercade";
+import { dataTabsAcercaDeFR } from "@/utils/fr/dataTabsAcercaDeFR";
 
 import React, { useMemo } from "react";
 
@@ -8,23 +8,29 @@ interface ItemDataFrontendProps {
   currentLocale: string;
 }
 
-const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return dataAlojamiento;
-  if (currentLocale === "fr") return dataAlojamientoFR;
-  return dataAlojamientoEN;
+const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
+  es: dataTabsAcercaDe,
+  en: dataTabsAcercaDeEN,
+  fr: dataTabsAcercaDeFR,
 };
-export const ItemDataAlojamiento: React.FC<ItemDataFrontendProps> = ({
+
+export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
   currentLocale,
 }) => {
   const memorization = useMemo(
-    () => langTraduceData(currentLocale),
+    () => langTraduceData[currentLocale] || dataTabsAcercaDe,
     [currentLocale],
   );
 
   return (
     <>
       {memorization.map(({ title, images }, index) => (
-        <div key={index} className="bg-base-100 p-8 rounded-xl">
+        <div
+          key={index}
+          className={`bg-base-100 shadow-lg p-8 rounded-xl ${
+            index === memorization.length - 1 ? "lg:col-span-2" : ""
+          }`}
+        >
           <div className="flex flex-col justify-start items-start gap-2">
             <span className="text-2xl font-semibold">{title}</span>
             {images.map((image, imgIndex) => {

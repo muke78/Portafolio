@@ -9,16 +9,16 @@ export const Educacion = ({ currentLocale }) => {
       <span className="font-bold text-5xl">
         {i18n.EDUCATION.EDUCATION_TITLE}
       </span>
-      <div className="grid grid-cols-1 w-full bg-base-100 rounded-lg mt-4 shadow-sm animate__animated animate__zoomIn">
-        <img className="rounded-t-lg w-full" src="/UPVM.jpg" alt="" />
+      <div className="grid grid-cols-1 w-full bg-base-100 rounded-lg mt-4 shadow-lg animate__animated animate__zoomIn">
+        <img className="rounded-t-lg w-full" src="/UPVM.webp" alt="" />
         <div className="p-5">
           <div className="flex justify-between">
             <span className="text-2xl">{i18n.UNIVERSITY.UNIVERSITY_TITLE}</span>
-            <p className="flex place-items-center text-right text-nowrap font-medium text-gray-600">
+            <p className="flex place-items-center text-right text-nowrap font-medium text-primary">
               2019 - 2022
             </p>
           </div>
-          <p className="text-lg font-medium text-gray-600">
+          <p className="text-lg font-medium text-primary">
             {" "}
             {i18n.UNIVERSITY.UNIVERSITY_SUBTITLE}
           </p>
