@@ -1,12 +1,12 @@
+import { ItemsNav } from "@/components/features/navbar/ItemsNav";
+import { LangDrop } from "@/components/features/navbar/LangDrop";
+import { ThemeDrop } from "@/components/features/navbar/ThemeSwitch";
+import { ImageContrast } from "@/components/utils/ImageContrast";
+
 import React, { useState } from "react";
 
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-
-import { ItemsNav } from "../features/navbar/ItemsNav";
-import { LangDrop } from "../features/navbar/LangDrop";
-import { ThemeDrop } from "../features/navbar/ThemeSwitch";
-import { ImageContrast } from "../utils/ImageContrast";
 
 interface NavProps {
   currentLocale: string;

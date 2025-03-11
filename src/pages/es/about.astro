@@ -1,8 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Acerca from '@/components/templates/Acerca.astro';
-import Footer from '@/components/templates/Footer.astro';
 import { Nav } from '@/components/organisms/Nav';
+import Acerca from '@/components/templates/Acerca.astro';
 const {currentLocale} = Astro;
 const currentPath = Astro.url.pathname;
 ---
@@ -10,9 +9,10 @@ const currentPath = Astro.url.pathname;
 <Layout>
   <header class="relative w-full">
     <Nav client:load currentLocale={currentLocale} currentPath={currentPath}/>
-    <div>
-      <Acerca />
-    </div>
-    <Footer />
+      <section class="w-full h-full">
+        <div class="hero bg-base-300 min-h-screen flex justify-center items-start">
+          <Acerca />
+        </div>
+      </section>
   </header>
 </Layout>

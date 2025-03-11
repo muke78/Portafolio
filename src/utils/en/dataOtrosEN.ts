@@ -2,27 +2,9 @@ import type { DataItemsHabilidades } from "@/types/typesDataHabilidades";
 
 export const dataOtrosEN: DataItemsHabilidades[] = [
   {
-    time: "In progress",
-    area: "Learning",
-    title: "Study",
+    title: "More skills",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=nestjs,typescript,nextjs,vue,angular,prisma,redis,kubernetes",
-      "https://go-skill-icons.vercel.app/api/icons?i=docker,mongodb,graphql,apollo,dotnet,bun",
+      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop",
     ],
-  },
-  {
-    time: "More than 2 years",
-    area: "Cloud services",
-    title: "Web hosting",
-    images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=aws,github,firebase",
-      "https://go-skill-icons.vercel.app/api/icons?i=netlify,vercel",
-    ],
-  },
-  {
-    time: "More than 2 years",
-    area: "Packages",
-    title: "Package managers",
-    images: ["https://go-skill-icons.vercel.app/api/icons?i=pnpm,npm,yarn"],
   },
 ];

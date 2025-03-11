@@ -1,8 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Header from '@/components/templates/Header.astro';
-import Habilidades from '@/components/templates/Habilidades.astro';
-import Footer from '@/components/templates/Footer.astro';
 import { Nav } from '@/components/organisms/Nav';
 const {currentLocale} = Astro;
 const currentPath = Astro.url.pathname;
@@ -11,13 +9,11 @@ const currentPath = Astro.url.pathname;
 <Layout>
   <header class="relative w-full"> 
     <Nav client:load currentLocale={currentLocale} currentPath={currentPath}/>
-    <div id="header">
-      <Header />
-    </div>
-    <div id="habilidades">
-      <Habilidades />
-    </div>
+    <section class="w-full h-full">
+      <div class="hero bg-base-300 min-h-screen">
+        <Header />
+      </div>
+    </section>
   </header>
-  <Footer />
 </Layout>
 

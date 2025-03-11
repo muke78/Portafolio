@@ -3,7 +3,7 @@
     "HEADER_TITLE": "Hola soy",
     "HEADER_SUBTITLE": "Desarrollador Full-Stack",
     "HEADER_NAME": "Erick González",
-    "HEADER_ABOUT": "Ingeniero en Tecnologías de la Información titulado, especializado en desarrollo FullStack, análisis de datos y bases de datos. Con más de dos años de experiencia creando aplicaciones eficientes, escalables y bien estructuradas.",
+    "HEADER_ABOUT": "Ingeniero en Tecnologías de la Información titulado, especializado en desarrollo FullStack y análisis de datos. Con más de dos años de experiencia creando aplicaciones eficientes, escalables y bien estructuradas.",
     "HEADER_BUTTON": "Ver proyectos"
   },
   "ABOUTME": {
@@ -28,6 +28,9 @@
   },
   "SKILLS": {
     "SKILLS_TITLE": "Habilidades"
+  },
+  "EDUCATION": {
+    "EDUCATION_TITLE": "Educación"
   },
   "PROJECTS": {
     "PROJECTS_TITLE": "Proyectos",
@@ -55,5 +58,10 @@
   },
   "404": {
     "404_BODY": "¡Ups! La página que estás buscando no existe."
+  },
+  "UNIVERSITY": {
+    "UNIVERSITY_TITLE": "Universidad Politécnica del Valle de México (UPVM)",
+    "UNIVERSITY_SUBTITLE": "Ingeniería en Tecnologías de la Información",
+    "UNIVERSITY_TEXT": "Durante mi tiempo en la universidad, aprendí sobre diversas áreas de TI, como mantenimiento de equipos, redes, programación orientada a objetos, desarrollo móvil con Xamarin, ciberseguridad, ingeniería de requisitos y bases de datos. También trabajé con Arduino en robótica. Sin embargo, lo que más me interesó fue el desarrollo web. Aunque solo aprendí conceptos básicos de jQuery, siempre tuve el deseo de seguir aprendiendo sobre este tema. Actualmente, soy autodidacta y me esfuerzo por aprender algo nuevo cada día."
   }
 }
