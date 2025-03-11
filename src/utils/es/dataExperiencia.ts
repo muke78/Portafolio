@@ -1,4 +1,6 @@
-export const dataExperiencia = [
+import type { DataItemsExperiencia } from "@/types/typesDataExperiencia";
+
+export const dataExperiencia: DataItemsExperiencia[] = [
   {
     id: "1",
     work: "Actual",
