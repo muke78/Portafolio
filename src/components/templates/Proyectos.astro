@@ -1,28 +1,14 @@
 ---
 import { getI18N } from '@/i18n';
-import Bubble from '@/components/atoms/Bubble.astro';
 import { TabsProyectos } from '@/components/organisms/TabsProyectos';
+
 
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
-
-<div class="hero min-h-screen">
-  <div class="hero-content p-0 text-center">
-    <Bubble
-      class="lg:bottom-72 left-0 lg:left-28 bg-primary"
-      classNameToBottom="top-80 right-0 lg:top-72 lg:right-24 bg-secondary"
-    />
-    <div class="max-w-7xl pb-10">
-      <div>
-        <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold mt-20 mb-20">
-          {i18n.PROJECTS.PROJECTS_TITLE}
-        </h2>
+  <div class="lg:w-5/6 w-full flex-col lg:flex-row-reverse">
+      <div class="grid grid-cols-1 w-full gap-6 animate__animated animate__zoomIn rounded-lg">
+          <TabsProyectos client:load currentLocale={currentLocale}/>
       </div>
-      <div class="grid grid-cols-1 gap-6 animate__animated animate__zoomIn rounded-lg">
-         <TabsProyectos client:load currentLocale={currentLocale}/>
-      </div>
-    </div>
   </div>
-</div>

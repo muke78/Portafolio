@@ -15,8 +15,6 @@
 
 .swiper-slide img {
   display: block;
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 }
 
@@ -30,6 +28,8 @@
 /* Cambiar el color de la paginación */
 .swiper-pagination-bullet {
   background-color: currentColor; /* Usa el color actual del texto */
+  width: 12px;
+  height: 12px;
 }
 
 .swiper-pagination-bullet-active {
