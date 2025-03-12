@@ -6,7 +6,11 @@ import { getI18N } from "@/i18n";
 
 import React, { useEffect, useState } from "react";
 
-export const TabsAcerca = ({ currentLocale }) => {
+interface PropsLang {
+  currentLocale: string;
+}
+
+export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
   const [activeTab, setActiveTab] = useState<string>("");
   const [mounted, setMounted] = useState<boolean>(false);
 

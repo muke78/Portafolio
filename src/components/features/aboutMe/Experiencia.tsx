@@ -1,6 +1,6 @@
 import { getI18N } from "@/i18n";
 
-import { ModalWork } from "./ModalWork";
+import { ModalWork } from "./Items/ItemDataExperiencia";
 
 export const Experiencia = ({ currentLocale }) => {
   const i18n = getI18N({ currentLocale });

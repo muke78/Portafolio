@@ -8,7 +8,7 @@ const {currentLocale} = Astro;
 
 const titles = currentLocale === 'en' ? dataTitlePageEN :
                currentLocale === 'fr' ? dataTitlePageFR :
-               dataTitlePage; // Por defecto, español
+               dataTitlePage;
 
 
 const pageIndex = pathSegments[2] === 'about' ? 1 :

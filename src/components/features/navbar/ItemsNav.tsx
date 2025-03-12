@@ -2,7 +2,7 @@ import { dataListNavbarEN } from "@/utils/en/dataNavbarEN";
 import { dataListNavbar } from "@/utils/es/dataNavbar";
 import { dataListNavbarFR } from "@/utils/fr/dataNavbarFR";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 interface NavbarItem {
   to: string;
@@ -14,6 +14,12 @@ interface Props {
   currentPath: string;
 }
 
+const dataByLocale = {
+  es: dataListNavbar,
+  fr: dataListNavbarFR,
+  en: dataListNavbarEN,
+};
+
 export const ItemsNav: React.FC<Props> = ({ currentLocale, currentPath }) => {
   const path = currentPath.length >= 4 ? currentPath.slice(4) : currentPath;
   const [pathIsActive, setPathIsActive] = useState<string>("");
@@ -22,12 +28,9 @@ export const ItemsNav: React.FC<Props> = ({ currentLocale, currentPath }) => {
     setPathIsActive(path);
   }, [path]);
 
-  const dataChange: NavbarItem[] =
-    currentLocale === "es"
-      ? dataListNavbar
-      : currentLocale === "fr"
-        ? dataListNavbarFR
-        : dataListNavbarEN;
+  const dataChange: NavbarItem[] = useMemo(() => {
+    return dataByLocale[currentLocale] || dataListNavbarEN;
+  }, [currentLocale]);
 
   return (
     <>
