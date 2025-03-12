@@ -1,5 +1,5 @@
 import { dataTabsAcercaDeEN } from "@/utils/en/dataTabsAcercaDeEN";
-import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercade";
+import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercaDe";
 import { dataTabsAcercaDeFR } from "@/utils/fr/dataTabsAcercaDeFR";
 
 import React, { useMemo } from "react";

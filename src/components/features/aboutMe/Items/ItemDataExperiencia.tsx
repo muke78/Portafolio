@@ -1,4 +1,3 @@
-import { getI18N } from "@/i18n";
 import { experienceDataEN } from "@/utils/en/dataExperienciaEN";
 import { dataExperiencia } from "@/utils/es/dataExperiencia";
 import { dataExperienceFR } from "@/utils/fr/dataExperienciaFR";
@@ -16,7 +15,9 @@ const langTraduceData = (currentLocale: string) => {
   return experienceDataEN;
 };
 
-export const ModalWork: React.FC<ModalWorkProps> = ({ currentLocale }) => {
+export const ItemDataExperiencia: React.FC<ModalWorkProps> = ({
+  currentLocale,
+}) => {
   const memorization = useMemo(
     () => langTraduceData(currentLocale),
     [currentLocale],

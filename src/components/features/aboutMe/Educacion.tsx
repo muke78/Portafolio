@@ -2,7 +2,11 @@ import { getI18N } from "@/i18n";
 
 import React from "react";
 
-export const Educacion = ({ currentLocale }) => {
+interface PropsLang {
+  currentLocale: string;
+}
+
+export const Educacion: React.FC<PropsLang> = ({ currentLocale }) => {
   const i18n = getI18N({ currentLocale });
   return (
     <>
