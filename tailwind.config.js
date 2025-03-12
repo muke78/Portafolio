@@ -8,7 +8,7 @@ export default {
     "./node_modules/flowbite/**/*.js",
   ],
   // add daisyUI plugin
-  plugins: [daisyui, flowbite],
+  plugins: [daisyui],
 
   // daisyUI config (optional - here are the default values)
   daisyui: {

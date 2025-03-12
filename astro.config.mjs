@@ -1,7 +1,6 @@
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import swup from "@swup/astro";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
 
@@ -10,7 +9,6 @@ export default defineConfig({
   integrations: [
     tailwind(),
     react(),
-    // swup({ theme: false }),
     sitemap({
       i18n: {
         defaultLocale: "es",
