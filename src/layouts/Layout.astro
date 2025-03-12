@@ -69,11 +69,10 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body class="bg-base-300">
-    <div id="swup" class="transition-fade ">
+    <div>
       <slot />
     </div>
     <script defer src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-    <script src="../js/swup-init.js"></script>
     <script>
       (function() {
         const theme = localStorage.getItem("theme") || "nord";
