@@ -64,5 +64,20 @@
     "UNIVERSITY_TITLE": "Université Polytechnique de la Vallée de Mexico (UPVM)",
     "UNIVERSITY_SUBTITLE": "Ingénierie en Technologies de l'Information",
     "UNIVERSITY_TEXT": "Au cours de mes études universitaires, j'ai découvert divers domaines de l'informatique, tels que la maintenance des équipements, la mise en réseau, la programmation orientée objet, le développement mobile avec Xamarin, la cybersécurité, l'ingénierie des exigences et les bases de données. J'ai également travaillé avec Arduino en robotique. Cependant, ce qui m'intéressait le plus était le développement web. Même si je n'ai appris que les bases de jQuery, j'ai toujours eu l'envie de continuer à apprendre sur ce sujet. Actuellement, je suis autodidacte et je m'efforce d'apprendre quelque chose de nouveau chaque jour."
+  },
+  "FORM": {
+    "FORM_TITLE": "Contact",
+    "FORM_DESCRIPTION": "Je suis disponible pour des travaux freelance. Contactez-moi par email.",
+    "INPUT_NAME": "Prénom",
+    "INPUT_LAST_NAME": "Nom de famille",
+    "INPUT_EMAIL": "Email",
+    "INPUT_PHONE": "Téléphone",
+    "INPUT_SERVICES": "Services",
+    "DEVELOPMENT_WEB": "Développement web",
+    "DEVELOPMENT_API": "Développement d'API",
+    "CONSULT": "Consultation",
+    "INPUT_MORE_INFORMATION": "Plus d'informations",
+    "INPUT_MORE_INFORMATION_TEXT": "Écrivez votre message ici",
+    "BUTTON_LABEL": "Envoyer le message"
   }
 }
