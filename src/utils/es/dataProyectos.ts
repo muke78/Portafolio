@@ -166,6 +166,8 @@ export const dataProyectos: DataProjects[] = [
       "Swup",
       "Tailwindcss",
       "Prettier",
+      "react-hook-form",
+      "react-hot-toast",
     ],
     link: "https://khelde.vercel.app/",
     img: portafolio.src,

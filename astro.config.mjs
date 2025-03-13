@@ -2,7 +2,7 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import compress from "astro-compress";
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 
 export default defineConfig({
   site: "https://khelde.vercel.app/es/home",
@@ -43,6 +43,12 @@ export default defineConfig({
   vite: {
     build: {
       minify: true,
+    },
+  },
+  env: {
+    schema: {
+      VITE_BOT_TOKEN: envField.string({ context: "client", access: "public" }),
+      VITE_CHAT_ID: envField.string({ context: "client", access: "public" }),
     },
   },
 });

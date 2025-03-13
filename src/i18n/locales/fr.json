@@ -67,10 +67,10 @@
   },
   "FORM": {
     "FORM_TITLE": "Contact",
-    "FORM_DESCRIPTION": "Je suis disponible pour des travaux freelance. Contactez-moi par email.",
+    "FORM_DESCRIPTION": "Je suis disponible pour des travaux freelance. Connectez-vous avec moi via Telegram, il sera envoyé via un ChatBot.",
     "INPUT_NAME": "Prénom",
     "INPUT_LAST_NAME": "Nom de famille",
-    "INPUT_EMAIL": "Email",
+    "INPUT_EMAIL": "Adresse e-mail",
     "INPUT_PHONE": "Téléphone",
     "INPUT_SERVICES": "Services",
     "DEVELOPMENT_WEB": "Développement web",
@@ -78,6 +78,10 @@
     "CONSULT": "Consultation",
     "INPUT_MORE_INFORMATION": "Plus d'informations",
     "INPUT_MORE_INFORMATION_TEXT": "Écrivez votre message ici",
-    "BUTTON_LABEL": "Envoyer le message"
+    "BUTTON_LABEL": "Envoyer le message",
+    "FORM_VALID_INFORMATION": "Ce champ est obligatoire",
+    "FORM_INVALID_EMAIL": "Format d'e-mail invalide",
+    "FORM_SEND_INFORMATION_CORRECT": "Les informations ont été envoyées avec succès !",
+    "FORM_SEND_INFORMATION_INCORRECT": "Une erreur s'est produite lors de l'envoi du message"
   }
 }

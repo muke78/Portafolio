@@ -67,7 +67,7 @@
   },
   "FORM": {
     "FORM_TITLE": "Contacto",
-    "FORM_DESCRIPTION": "Estoy disponible para trabajos freelance. Conéctate conmigo a través del correo electrónico.",
+    "FORM_DESCRIPTION": "Estoy disponible para trabajos freelance. Conéctate conmigo a través de Telegram, se enviará a través de un ChatBot.",
     "INPUT_NAME": "Nombre",
     "INPUT_LAST_NAME": "Apellido",
     "INPUT_EMAIL": "Correo electrónico",
@@ -78,6 +78,10 @@
     "CONSULT": "Consultoría",
     "INPUT_MORE_INFORMATION": "Más información",
     "INPUT_MORE_INFORMATION_TEXT": "Escribe tu mensaje aquí",
-    "BUTTON_LABEL": "Enviar mensaje"
+    "BUTTON_LABEL": "Enviar mensaje",
+    "FORM_VALID_INFORMATION": "Este campo es obligatorio",
+    "FORM_INVALID_EMAIL": "Formato de correo inválido",
+    "FORM_SEND_INFORMATION_CORRECT": "¡Se ha enviado correctamente la información!",
+    "FORM_SEND_INFORMATION_INCORRECT": "Hubo un error al enviar el mensaje"
   }
 }
