@@ -14,4 +14,8 @@ export const dataListNavbar: DataNavbar[] = [
     label: "Proyectos",
     to: "projects",
   },
+  {
+    label: "Contacto",
+    to: "contact",
+  },
 ];
