@@ -18,7 +18,7 @@ export const ThemeDrop: React.FC = () => {
   }, [changeTheme, mounted]);
 
   const toggleTheme = () => {
-    setChangeTheme((prevTheme) => (prevTheme === "nord" ? "dark" : "nord"));
+    setChangeTheme((prevTheme) => (prevTheme === "nord" ? "night" : "nord"));
   };
 
   if (!mounted) return null;
@@ -29,7 +29,7 @@ export const ThemeDrop: React.FC = () => {
       className="swap swap-rotate btn btn-circle"
       aria-label="Cambio de tema"
     >
-      {changeTheme === "dark" ? (
+      {changeTheme === "night" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

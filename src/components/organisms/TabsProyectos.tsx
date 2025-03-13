@@ -1,93 +1,64 @@
 import ItemRepositoriosEmpres from "@/components/features/projects/ItemRepositoriosEmpres";
-import ItemsRepoRepositorios from "@/components/features/projects/ItemsRepositorios";
-import { tabsProyectosEN } from "@/utils/en/dataTabsproyectosEN";
-import { tabsProyectos } from "@/utils/es/dataTabsProyectos";
-import { tabsProyectosFR } from "@/utils/fr/dataTabsProyectosFR";
+import ItemsRepositorios from "@/components/features/projects/ItemsRepositorios";
+import { getI18N } from "@/i18n";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-interface TabsproyectosProps {
+interface PropsLang {
   currentLocale: string;
 }
 
-const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return tabsProyectos;
-  if (currentLocale === "fr") return tabsProyectosFR;
-  return tabsProyectosEN;
-};
+export const TabsProyectos: React.FC<PropsLang> = ({ currentLocale }) => {
+  const [activeTab, setActiveTab] = useState<string>("proyectos");
+  const [mounted, setMounted] = useState<boolean>(false);
 
-export const TabsProyectos: React.FC<TabsproyectosProps> = ({
-  currentLocale,
-}) => {
-  const [activeTab, setActiveTab] = useState<string>("profile-styled-tab");
+  const i18n = getI18N({ currentLocale });
 
-  const memorization = useMemo(
-    () => langTraduceData(currentLocale),
-    [currentLocale],
-  );
+  useEffect(() => {
+    const savedTab = localStorage.getItem("activeProjectTab");
+    if (savedTab) {
+      setActiveTab(savedTab);
+    }
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("activeProjectTab", activeTab);
+    }
+  }, [activeTab, mounted]);
+
+  if (!mounted) {
+    return <span className="loading loading-ring loading-xl"></span>;
+  }
 
   return (
-    <>
-      {/* // Tabs para cambiar de cuadricula */}
-      <div className="flex items-center justify-center mt-4">
-        <ul
-          className="flex flex-wrap -mb-px text-sm font-medium text-center"
-          id="default-styled-tab"
-          data-tabs-toggle="#default-styled-tab-content"
-          data-tabs-active-classes="text-primary border-primary"
-          data-tabs-inactive-classes="text-base-content border-base-300 hover:text-primary hover:border-primary"
-          role="tablist"
+    <div className="flex flex-col w-full h-1/2 mx-auto p-4">
+      {/* Buttons at the top */}
+      <div className="lg:flex lg:justify-center lg:items-center grid grid-cols-1 gap-4 w-full justify-center sm:justify-start animate__animated animate__fadeIn">
+        <button
+          className={`btn btn-sm sm:w-auto ${activeTab === "proyectos" ? "btn-primary" : "btn-neutral btn-outline"} text-md lg:text-lg`}
+          onClick={() => setActiveTab("proyectos")}
         >
-          {memorization.map((tab) => (
-            <li key={tab.id} className="me-2" role="presentation">
-              <button
-                className={`inline-block p-4 border-b-2 rounded-t-lg transition-all ${
-                  activeTab === tab.id
-                    ? "text-primary border-primary"
-                    : "text-base-content border-base-300 hover:text-primary hover:border-primary"
-                }`}
-                id={tab.id}
-                data-tabs-target={tab.target}
-                type="button"
-                role="tab"
-                aria-label={tab.ariaControls}
-                aria-selected={activeTab === tab.id}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                {tab.title}
-              </button>
-            </li>
-          ))}
-        </ul>
+          {i18n.PROJECTS.PROJECTS_TITLE}
+        </button>
+        <button
+          className={`btn btn-sm sm:w-auto ${activeTab === "proyectosEmpres" ? "btn-primary" : "btn-neutral btn-outline"} text-md lg:text-lg`}
+          onClick={() => setActiveTab("proyectosEmpres")}
+        >
+          {i18n.PROJECTS.PROJECTS_TITLE_BUSIN}
+        </button>
       </div>
 
-      {/* // Tabs para la agrupacion de tecnologias */}
-      <div className="rounded-xl shadow-base-content py-5 card">
-        <div
-          className="mx-auto max-w-7xl px-6 lg:px-8"
-          id="default-styled-tab-content"
-        >
-          {/* Sección Proyectos */}
-          <div
-            className=" grid max-w-7xl gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
-            id="styled-proyectos"
-            role="tabpanel"
-            aria-labelledby="proyectos-tab"
-          >
-            <ItemsRepoRepositorios currentLocale={currentLocale} />
-          </div>
-
-          {/* Sección Proyectos empresariales */}
-          <div
-            className="mt-10 grid max-w-7xl  gap-x-8 gap-y-16 lg:mx-0 hidden animate__animated animate__fadeIn"
-            id="styled-proyectos-emp"
-            role="tabpanel"
-            aria-labelledby="proyectos-emp-tab"
-          >
-            <ItemRepositoriosEmpres currentLocale={currentLocale} />
-          </div>
-        </div>
+      {/* Content below */}
+      <div className="pt-4 w-full">
+        {activeTab === "proyectos" && (
+          <ItemsRepositorios currentLocale={currentLocale} />
+        )}
+        {activeTab === "proyectosEmpres" && (
+          <ItemRepositoriosEmpres currentLocale={currentLocale} />
+        )}
       </div>
-    </>
+    </div>
   );
 };

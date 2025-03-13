@@ -11,14 +11,16 @@ interface PropsLang {
 }
 
 export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
-  const [activeTab, setActiveTab] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<string>("experiencia");
   const [mounted, setMounted] = useState<boolean>(false);
 
   const i18n = getI18N({ currentLocale });
 
   useEffect(() => {
     const savedTab = localStorage.getItem("activeTab");
-    setActiveTab(savedTab);
+    if (savedTab) {
+      setActiveTab(savedTab);
+    }
     setMounted(true);
   }, []);
 
@@ -27,6 +29,10 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
       localStorage.setItem("activeTab", activeTab);
     }
   }, [activeTab, mounted]);
+
+  if (!mounted) {
+    return <span className="loading loading-ring loading-xl"></span>;
+  }
 
   return (
     <div className="flex flex-col lg:flex-row w-5/6 lg:w-full h-1/2">
