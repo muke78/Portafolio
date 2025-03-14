@@ -43,6 +43,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
         <button
           onClick={toggleSidebar}
           className="min-[777px]:hidden btn btn-ghost text-base"
+          aria-label="Sidebar"
         >
           <Menu size={24} />
         </button>
