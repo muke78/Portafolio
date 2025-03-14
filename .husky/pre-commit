@@ -1,19 +1,19 @@
-# #!/bin/sh
+#!/bin/sh
 
-# echo "🔍 Verificando archivos antes del commit..."
+echo "🔍 Verificando archivos antes del commit..."
 
-# # Formatear código antes del commit
-# echo "🚀 Ejecutando Prettier..."
-# pnpm run prettier --write .
+# Formatear código antes del commit
+echo "🚀 Ejecutando Prettier..."
+pnpm run prettier --write .
 
-# # Agregar los archivos modificados después de formatear
-# git add .
+# Agregar los archivos modificados después de formatear
+git add .
 
-# # Verificar que el código esté actualizado antes del push
-# echo "🔄 Verificando que tu código esté actualizado..."
-# if ! git pull; then
-#   echo "❌ Error al actualizar el código. Revisa los conflictos."
-#   exit 1
-# fi
+# Verificar que el código esté actualizado antes del push
+echo "🔄 Verificando que tu código esté actualizado..."
+if ! git pull; then
+  echo "❌ Error al actualizar el código. Revisa los conflictos."
+  exit 1
+fi
 
-# echo "✅ Código actualizado. Todo listo para el commit."
+echo "✅ Código actualizado. Todo listo para el commit."
