@@ -59,7 +59,7 @@ export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
       >
         <img
           src={languages[selectedLang].img.src}
-          alt={languages[selectedLang].label}
+          alt="Banderas"
           className="w-5 h-5 rounded-full"
         />
 
@@ -94,7 +94,7 @@ export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
             >
               <img
                 src={img.src}
-                alt="Banderas para idiomas"
+                alt="Banderas Drop"
                 className="w-5 h-5 rounded-full"
               />
               {label}
