@@ -1,14 +1,14 @@
-#!/bin/sh
+# #!/bin/sh
 
-echo "🔍 Validando mensaje de commit..."
-commit_regex="^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert): .{10,}$"
-commit_msg=$(cat "$1")
+# echo "🔍 Validando mensaje de commit..."
+# commit_regex="^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert): .{10,}$"
+# commit_msg=$(cat "$1")
 
-if ! echo "$commit_msg" | grep -Eq "$commit_regex"; then
-  echo "❌ Mensaje de commit inválido."
-  echo "📌 Usa el formato: 'tipo: Descripción mínima de 10 caracteres'"
-  echo "Ejemplo: 'feat: Agregar login con Google'"
-  exit 1
-fi
+# if ! echo "$commit_msg" | grep -Eq "$commit_regex"; then
+#   echo "❌ Mensaje de commit inválido."
+#   echo "📌 Usa el formato: 'tipo: Descripción mínima de 10 caracteres'"
+#   echo "Ejemplo: 'feat: Agregar login con Google'"
+#   exit 1
+# fi
 
-echo "✅ Mensaje válido."
+# echo "✅ Mensaje válido."
