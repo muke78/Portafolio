@@ -1,5 +1,5 @@
-import ItemRepositoriosEmpres from "@/components/features/projects/ItemRepositoriosEmpres";
-import ItemsRepositorios from "@/components/features/projects/ItemsRepositorios";
+import { ItemRepositoriosEmpres } from "@/components/features/projects/ItemRepositoriosEmpres";
+import { ItemsRepoRepositorios } from "@/components/features/projects/ItemsRepositorios";
 import { getI18N } from "@/i18n";
 
 import React, { useEffect, useState } from "react";
@@ -53,7 +53,7 @@ export const TabsProyectos: React.FC<PropsLang> = ({ currentLocale }) => {
       {/* Content below */}
       <div className="pt-4 w-full">
         {activeTab === "proyectos" && (
-          <ItemsRepositorios currentLocale={currentLocale} />
+          <ItemsRepoRepositorios currentLocale={currentLocale} />
         )}
         {activeTab === "proyectosEmpres" && (
           <ItemRepositoriosEmpres currentLocale={currentLocale} />
