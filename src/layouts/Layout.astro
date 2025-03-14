@@ -1,7 +1,7 @@
 ---
 import 'animate.css';
-import "swiper/swiper-bundle.css";
 import "../styles/styles.css";
+import "swiper/swiper-bundle.css";
 import {dataTitlePage, dataTitlePageEN, dataTitlePageFR}from '@/utils/dataTitlePage';
 
 
@@ -74,7 +74,6 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     <div id="swup" class="transition-fade ">
       <slot />
     </div>
-    <script defer src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script>
       (function() {
         const theme = localStorage.getItem("theme") || "nord";
