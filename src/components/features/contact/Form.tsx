@@ -1,3 +1,4 @@
+import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 
 import React, { useEffect, useState } from "react";
@@ -20,8 +21,7 @@ interface FormData {
 }
 
 export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
-  const [changeTheme, setChangeTheme] = useState<string>("");
-  const [mounted, setMounted] = useState<boolean>(false);
+  const { changeTheme } = useTheme();
 
   const i18n = getI18N({ currentLocale });
   const inputErrorText = `${i18n.FORM.FORM_VALID_INFORMATION}`;
@@ -35,19 +35,6 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
     formState: { errors },
     reset,
   } = useForm<FormData>();
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    setChangeTheme(storedTheme);
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      document.documentElement.setAttribute("data-theme", changeTheme);
-      localStorage.setItem("theme", changeTheme);
-    }
-  }, [changeTheme, mounted]);
 
   const onSubmit = async (data: FormData) => {
     const botToken = VITE_BOT_TOKEN;

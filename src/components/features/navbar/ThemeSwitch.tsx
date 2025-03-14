@@ -1,21 +1,9 @@
+import { useTheme } from "@/hooks/useTheme";
+
 import { useEffect, useState } from "react";
 
 export const ThemeDrop: React.FC = () => {
-  const [changeTheme, setChangeTheme] = useState<string>("");
-  const [mounted, setMounted] = useState<boolean>(false);
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    setChangeTheme(storedTheme);
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      document.documentElement.setAttribute("data-theme", changeTheme);
-      localStorage.setItem("theme", changeTheme);
-    }
-  }, [changeTheme, mounted]);
+  const { changeTheme, setChangeTheme, mounted } = useTheme();
 
   const toggleTheme = () => {
     setChangeTheme((prevTheme) => (prevTheme === "nord" ? "night" : "nord"));
