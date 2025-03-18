@@ -25,6 +25,7 @@
     "astro": "^5.4.2",
     "astro-compress": "^2.3.6",
     "daisyui": "4.12.23",
+    "figlet": "^1.8.0",
     "framer-motion": "^12.4.10",
     "husky": "^9.1.7",
     "lucide-react": "^0.477.0",
