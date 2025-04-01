@@ -34,33 +34,51 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
     return <span className="loading loading-ring loading-xl"></span>;
   }
 
+  const getShortText = (text: string) => {
+    return text.slice(0, 3);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row w-5/6 lg:w-full h-1/2">
       {/* Contenedor de los botones con un ancho fijo */}
-      <div className="flex flex-col gap-4 w-full h-full lg:w-1/3 lg:pl-20 animate__animated animate__fadeIn">
+      <div className="flex flex-row justify-center lg:flex-col gap-4 w-full h-full lg:w-1/3 lg:pl-20 animate__animated animate__fadeIn">
         <button
-          className={`btn ${activeTab === "experiencia" ? "btn-primary" : "btn-neutral"}  text-lg w-full`}
+          className={`btn ${activeTab === "experiencia" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("experiencia")}
         >
-          {i18n.ABOUTME.EXPERIENCE}
+          <span className="lg:hidden">
+            {getShortText(i18n.ABOUTME.EXPERIENCE)}
+          </span>
+          <span className="hidden lg:inline">{i18n.ABOUTME.EXPERIENCE}</span>
         </button>
         <button
-          className={`btn ${activeTab === "educacion" ? "btn-primary" : "btn-neutral"} text-lg w-full`}
+          className={`btn ${activeTab === "educacion" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("educacion")}
         >
-          {i18n.EDUCATION.EDUCATION_TITLE}
+          <span className="lg:hidden">
+            {getShortText(i18n.EDUCATION.EDUCATION_TITLE)}
+          </span>
+          <span className="hidden lg:inline">
+            {i18n.EDUCATION.EDUCATION_TITLE}
+          </span>
         </button>
         <button
-          className={`btn ${activeTab === "habilidades" ? "btn-primary" : "btn-neutral"} text-lg w-full `}
+          className={`btn ${activeTab === "habilidades" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("habilidades")}
         >
-          {i18n.SKILLS.SKILLS_TITLE}
+          <span className="lg:hidden">
+            {getShortText(i18n.SKILLS.SKILLS_TITLE)}
+          </span>
+          <span className="hidden lg:inline">{i18n.SKILLS.SKILLS_TITLE}</span>
         </button>
         <button
-          className={`btn ${activeTab === "sobreMi" ? "btn-primary" : "btn-neutral"} text-lg w-full`}
+          className={`btn ${activeTab === "sobreMi" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("sobreMi")}
         >
-          {i18n.ABOUTME.ABOUT_TITLE}
+          <span className="lg:hidden">
+            {getShortText(i18n.ABOUTME.ABOUT_TITLE)}
+          </span>
+          <span className="hidden lg:inline">{i18n.ABOUTME.ABOUT_TITLE}</span>
         </button>
       </div>
       {/* Separador solo visible en pantallas grandes */}

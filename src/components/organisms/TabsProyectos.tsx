@@ -33,7 +33,7 @@ export const TabsProyectos: React.FC<PropsLang> = ({ currentLocale }) => {
   }
 
   return (
-    <div className="flex flex-col w-full h-1/2 mx-auto p-4">
+    <div className="flex flex-col w-full h-1/2 mx-auto p-4 mt-16">
       {/* Buttons at the top */}
       <div className="lg:flex lg:justify-center lg:items-center grid grid-cols-1 gap-4 w-full justify-center sm:justify-start animate__animated animate__fadeIn">
         <button

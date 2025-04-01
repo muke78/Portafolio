@@ -4,7 +4,7 @@ export const dataTabsAcercaDe: DataItemsHabilidades[] = [
   {
     title: "Desarrollador Frontend",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=html,js,css,react,astro",
+      "https://go-skill-icons.vercel.app/api/icons?i=html,js,ts,css,react,astro",
     ],
   },
   {
@@ -28,7 +28,7 @@ export const dataTabsAcercaDe: DataItemsHabilidades[] = [
   {
     title: "Mas habilidades",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop",
+      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,npm,yarn,pnpm,bun,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop",
     ],
   },
 ];

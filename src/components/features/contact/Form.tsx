@@ -83,7 +83,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-base-200 p-8 rounded-lg">
+    <div className="flex flex-col gap-4 bg-base-200 p-8 mt-16 rounded-lg">
       <div className="flex justify-between items-center w-full">
         <span className="font-bold text-5xl">{i18n.FORM.FORM_TITLE}</span>
         <div>

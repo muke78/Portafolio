@@ -21,7 +21,8 @@ const dataByLocale = {
 };
 
 export const ItemsNav: React.FC<Props> = ({ currentLocale, currentPath }) => {
-  const path = currentPath.length >= 4 ? currentPath.slice(4) : currentPath;
+  const pathSegments = currentPath.split("/").filter(Boolean);
+  const path = pathSegments.length > 1 ? pathSegments[1] : pathSegments[0];
   const [pathIsActive, setPathIsActive] = useState<string>("");
 
   useEffect(() => {
