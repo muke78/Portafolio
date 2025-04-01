@@ -1,7 +1,6 @@
 import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 
-import React, { useEffect, useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 

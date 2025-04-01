@@ -16,7 +16,7 @@ export const dataTabsAcercaDeFR: DataItemsHabilidades[] = [
   {
     title: "Outils d'interface utilisateur",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=mui,bootstrap,tailwindcss",
+      "https://go-skill-icons.vercel.app/api/icons?i=mui,bootstrap,tailwindcss,daisyui,styledcomponents",
     ],
   },
   {
@@ -28,7 +28,7 @@ export const dataTabsAcercaDeFR: DataItemsHabilidades[] = [
   {
     title: "Plus de compétences",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,npm,yarn,pnpm,bun,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop",
+      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,jwt,npm,yarn,pnpm,bun,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop",
     ],
   },
 ];
