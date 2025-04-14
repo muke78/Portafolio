@@ -112,15 +112,10 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {repo.fork && (
-                    <span className="px-4 rounded-lg bg-base-300 font-medium">
-                      PR
-                    </span>
+                    <span className="badge badge-ghost badge-lg">PR</span>
                   )}
                   {repo.topics?.map((topic) => (
-                    <span
-                      key={topic}
-                      className="bg-gray-800 text-white text-sm px-3 py-1 rounded-lg"
-                    >
+                    <span key={topic} className="badge badge-neutral badge-lg">
                       {topic}
                     </span>
                   ))}

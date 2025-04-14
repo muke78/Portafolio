@@ -1,13 +1,12 @@
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import compress from "astro-compress";
 import { defineConfig, envField } from "astro/config";
 
 export default defineConfig({
   site: "https://khelde.vercel.app/es/home",
   integrations: [
-    tailwind(),
     react(),
     sitemap({
       i18n: {
@@ -44,6 +43,7 @@ export default defineConfig({
     build: {
       minify: true,
     },
+    plugins: [tailwindcss()],
   },
   env: {
     schema: {

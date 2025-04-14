@@ -1,12 +1,12 @@
 import { useTheme } from "@/hooks/useTheme";
 
-import { useEffect, useState } from "react";
-
 export const ThemeDrop: React.FC = () => {
   const { changeTheme, setChangeTheme, mounted } = useTheme();
 
   const toggleTheme = () => {
-    setChangeTheme((prevTheme) => (prevTheme === "nord" ? "night" : "nord"));
+    setChangeTheme((prevTheme) =>
+      prevTheme === "winter" ? "night" : "winter",
+    );
   };
 
   if (!mounted) return null;
