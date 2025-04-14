@@ -18,7 +18,6 @@ export const ModalGalery: React.FC<PropsDataModal> = ({
 }) => {
   const i18n = getI18N({ currentLocale });
   const modalRef = useRef<HTMLDialogElement>(null);
-  console.log(data);
   useEffect(() => {
     if (modalRef.current) {
       if (isModalOpen) {
