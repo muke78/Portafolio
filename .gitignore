@@ -7,11 +7,6 @@ dist/
 # dependencies
 node_modules/
 
-# environment variables
-.env
-.env.local
-.env.development.local
-
 # logs
 npm-debug.log*
 yarn-debug.log*
