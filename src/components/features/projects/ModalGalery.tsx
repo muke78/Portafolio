@@ -1,5 +1,6 @@
 import { SwiperGalery } from "@/components/features/projects/SwiperGalery";
 import { getI18N } from "@/i18n";
+import { v } from "@/styles/variables";
 
 import React, { useEffect, useRef } from "react";
 
@@ -50,21 +51,7 @@ export const ModalGalery: React.FC<PropsDataModal> = ({
                 onClick={closeModal}
                 className="btn btn-sm btn-circle rounded-lg text-sm ms-auto inline-flex justify-center items-center"
               >
-                <svg
-                  className="w-3 h-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 14"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                  />
-                </svg>
+                <span>{v.iconoCerrar && <v.iconoCerrar />}</span>
                 <span onClick={closeModal} className="sr-only">
                   Cerrar modal
                 </span>

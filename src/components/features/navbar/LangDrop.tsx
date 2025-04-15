@@ -1,5 +1,6 @@
 import { getI18N } from "@/i18n";
 import { languages } from "@/i18n/ui";
+import { v } from "@/styles/variables";
 
 import React, { useEffect, useRef, useState } from "react";
 
@@ -66,21 +67,9 @@ export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
         <span className="hidden min-[440px]:inline text-lg">
           {languages[selectedLang].label}
         </span>
-        <svg
-          className="w-2.5 h-2.5 ms-1"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 10 6"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="m1 1 4 4 4-4"
-          />
-        </svg>
+        <span className="text-xl">
+          {v.iconoFelchaAbajo && <v.iconoFelchaAbajo />}
+        </span>
       </button>
 
       {isOpen && (
