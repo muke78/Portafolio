@@ -20,13 +20,16 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
   const closeSidebar = () => setIsOpen(false);
 
   return (
-    <nav className="navbar bg-base-300 rounded-b-lg py-3 px-5 sticky md:sticky lg:absolute top-0 left-0 w-full z-50 flex items-center">
+    <nav className="navbar bg-base-300 rounded-b-lg py-3 px-5 sticky md:sticky lg:absolute top-0 left-0 w-full z-50 flex items-center justify-center gap-4">
       {/* Logo */}
-      <div className="flex-grow items-center gap-4">
-        <a href={`/${currentLocale}/home`}>
-          <ImageContrast width="w-28" />
-        </a>
+      <div className="flex-grow">
+        <div className="w-32">
+          <a href={`/${currentLocale}/home`}>
+            <ImageContrast width="w-28" />
+          </a>
+        </div>
       </div>
+
       <div className="flex gap-2">
         {/* Navbar Principal */}
         <ul className="hidden min-[777px]:flex space-x-6 text-lg">

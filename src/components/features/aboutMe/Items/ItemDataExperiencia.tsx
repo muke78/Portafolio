@@ -1,3 +1,4 @@
+import { v } from "@/styles/variables";
 import { experienceDataEN } from "@/utils/en/dataExperienciaEN";
 import { dataExperiencia } from "@/utils/es/dataExperiencia";
 import { dataExperienceFR } from "@/utils/fr/dataExperienciaFR";
@@ -37,9 +38,19 @@ export const ItemDataExperiencia: React.FC<ModalWorkProps> = ({
                   </span>
                 )}
               </h3>
-              <p className="text-sm text-gray-400">{subtitle}</p>
-              <time className="text-sm text-primary">{time}</time>
-              <p className="text-sm text-gray-500">{location}</p>
+              <span className="flex justify-center items-center gap-2 text-sm text-gray-300">
+                <span>{v.iconoEmpresa && <v.iconoEmpresa />}</span>
+                {subtitle}
+              </span>
+
+              <span className="flex justify-center items-center gap-2 text-sm text-gray-500">
+                <span>{v.iconoReloj && <v.iconoReloj />}</span>
+                {time}
+              </span>
+              <span className="flex justify-center items-center gap-2 text-sm text-gray-500">
+                <span>{v.iconoUbicacion && <v.iconoUbicacion />}</span>
+                {location}
+              </span>
             </div>
           </div>
         ))}
