@@ -32,7 +32,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
 
       <div className="flex gap-2">
         {/* Navbar Principal */}
-        <ul className="hidden min-[777px]:flex space-x-6 text-lg">
+        <ul className="hidden min-[820px]:flex space-x-6 text-lg">
           <ItemsNav currentLocale={currentLocale} currentPath={currentPath} />
         </ul>
 
@@ -45,7 +45,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
         {/* Botón Menú para Mobile */}
         <button
           onClick={toggleSidebar}
-          className="min-[777px]:hidden btn btn-ghost text-base"
+          className="min-[820px]:hidden btn btn-ghost text-base"
           aria-label="Sidebar"
         >
           <Menu size={24} />
