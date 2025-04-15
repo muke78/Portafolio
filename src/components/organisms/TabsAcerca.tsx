@@ -35,8 +35,8 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
     return <span className="loading loading-ring loading-xl"></span>;
   }
 
-  const getShortText = (text: string) => {
-    return text.slice(0, 3);
+  const getShortText = (text: string, length: number) => {
+    return text.slice(0, length);
   };
 
   return (
@@ -47,22 +47,33 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
           className={`btn ${activeTab === "experiencia" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("experiencia")}
         >
-          <span className="lg:hidden">
-            {getShortText(i18n.ABOUTME.EXPERIENCE)}
+          <span className=" sm:inline md:inline lg:inline">
+            {v.iconoExperiencia && <v.iconoExperiencia />}
           </span>
-          <span>{v.iconoExperiencia && <v.iconoExperiencia />}</span>
-          <span className="hidden lg:inline">{i18n.ABOUTME.EXPERIENCE}</span>
+
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText(i18n.ABOUTME.EXPERIENCE, 5)}
+          </span>
+
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">
+            {i18n.ABOUTME.EXPERIENCE}
+          </span>
         </button>
         <button
           className={`btn ${activeTab === "educacion" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("educacion")}
         >
-          {" "}
-          <span>{v.iconoEducacion && <v.iconoEducacion />}</span>
-          <span className="lg:hidden">
-            {getShortText(i18n.EDUCATION.EDUCATION_TITLE)}
+          <span className=" sm:inline md:inline lg:inline">
+            {v.iconoEducacion && <v.iconoEducacion />}
           </span>
-          <span className="hidden lg:inline">
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText(i18n.EDUCATION.EDUCATION_TITLE, 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">
             {i18n.EDUCATION.EDUCATION_TITLE}
           </span>
         </button>
@@ -70,21 +81,33 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
           className={`btn ${activeTab === "habilidades" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("habilidades")}
         >
-          <span>{v.iconoHabilidades && <v.iconoHabilidades />}</span>
-          <span className="lg:hidden">
-            {getShortText(i18n.SKILLS.SKILLS_TITLE)}
+          <span className=" sm:inline md:inline lg:inline">
+            {v.iconoHabilidades && <v.iconoHabilidades />}
           </span>
-          <span className="hidden lg:inline">{i18n.SKILLS.SKILLS_TITLE}</span>
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText(i18n.SKILLS.SKILLS_TITLE, 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">
+            {i18n.SKILLS.SKILLS_TITLE}
+          </span>
         </button>
         <button
           className={`btn ${activeTab === "sobreMi" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("sobreMi")}
         >
-          <span>{v.iconoAcercaDeMi && <v.iconoAcercaDeMi />}</span>
-          <span className="lg:hidden">
-            {getShortText(i18n.ABOUTME.ABOUT_TITLE)}
+          <span className=" sm:inline md:inline lg:inline">
+            {v.iconoAcercaDeMi && <v.iconoAcercaDeMi />}
           </span>
-          <span className="hidden lg:inline">{i18n.ABOUTME.ABOUT_TITLE}</span>
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText(i18n.ABOUTME.ABOUT_TITLE, 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">
+            {i18n.ABOUTME.ABOUT_TITLE}
+          </span>
         </button>
       </div>
       {/* Separador solo visible en pantallas grandes */}

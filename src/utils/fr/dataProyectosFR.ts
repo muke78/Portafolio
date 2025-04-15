@@ -55,7 +55,7 @@ export const dataProyectosFR: DataProjects[] = [
     id: "frontend-kindergarden",
     title: "Frontend Kindergarden",
     description:
-      "CRM avec React et Zustand pour la gestion des utilisateurs, des enseignants, des parents et des élèves avec un tableau de bord de graphiques et de statistiques pour un jardin d'enfants.",
+      "Développement d'un CRM avec React et Zustand pour une gestion complète des utilisateurs (enseignants, parents et élèves) dans une école maternelle. Comprend un tableau de bord avec des graphiques et des statistiques, et offre une authentification standard et Google.",
     topics: [
       "CRM",
       "Trivago/prettier-plugin-sort-imports",
