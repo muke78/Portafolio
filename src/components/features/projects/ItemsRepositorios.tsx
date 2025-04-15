@@ -1,5 +1,6 @@
 import { IconModal } from "@/components/atoms/IconModal";
 import { getI18N } from "@/i18n";
+import { v } from "@/styles/variables";
 import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
 import { dataProyectos } from "@/utils/es/dataProyectos";
 import { dataProyectosFR } from "@/utils/fr/dataProyectosFR";
@@ -128,6 +129,9 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
                     rel="noopener noreferrer"
                   >
                     {i18n.PROJECTS.PROJECTS_VIEW}
+                    <span className="text-xl">
+                      {v.iconoAbrir && <v.iconoAbrir />}
+                    </span>
                   </a>
                 </div>
               </div>
@@ -145,17 +149,4 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
       </Swiper>
     </>
   );
-
-  // return (
-  //   <>
-  //     {isModalOpen && selectedItem && (
-  //       <ModalGalery
-  //         data={selectedItem}
-  //         isModalOpen={isModalOpen}
-  //         closeModal={closeModal}
-  //         currentLocale={currentLocale}
-  //       />
-  //     )}
-  //   </>
-  // );
 };

@@ -8,6 +8,9 @@ import { FaPencilRuler } from "react-icons/fa";
 import { FaServer } from "react-icons/fa";
 import { FaLaptopCode } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
+import { FaClock } from "react-icons/fa";
+import { FaBuilding } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 import { IoSchool } from "react-icons/io5";
 import { LuExpand } from "react-icons/lu";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -36,4 +39,7 @@ export const v = {
   iconoModalExpand: LuExpand,
   iconoFelchaAbajo: MdKeyboardArrowDown,
   iconoCerrar: FaTimes,
+  iconoUbicacion: FaLocationDot,
+  iconoReloj: FaClock,
+  iconoEmpresa: FaBuilding,
 };

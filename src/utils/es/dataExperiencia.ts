@@ -6,7 +6,7 @@ export const dataExperiencia: DataItemsExperiencia[] = [
     work: "Actual",
     title: "Desarrollador full stack",
     subtitle: "sleeplesscofi · Autónomo",
-    time: "Abr. 2024 · 11 meses",
+    time: "Jul. 2024 · 10 meses",
     location: "Lima, Perú · En remoto",
   },
   {
@@ -14,7 +14,7 @@ export const dataExperiencia: DataItemsExperiencia[] = [
     work: "",
     title: "Desarrollador bases de datos",
     subtitle: "RIMAC (Risk Management) ICBA México · Jornada completa",
-    time: "Nov. 2023 - Jul. 2024 · 7 meses",
+    time: "Nov. 2023 - Jul. 2024 · 9 meses",
     location: "Álvaro Obregón , Cuidad de México, México · Presencial",
   },
   {
