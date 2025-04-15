@@ -32,7 +32,7 @@ export const ItemDataExperiencia: React.FC<ModalWorkProps> = ({
               <h3 className="flex items-start mb-1 text-xl font-semibold">
                 {title}
                 {work && (
-                  <span className="btn btn-primary btn-sm rounded-full text-sm font-medium mr-2 px-2.5 py-0.5 ms-3">
+                  <span className="badge badge-primary rounded-full text-sm font-medium mr-2 px-2.5 py-0.5 ms-3">
                     {work}
                   </span>
                 )}

@@ -3,6 +3,7 @@ import { Experiencia } from "@/components/features/aboutMe/Experiencia";
 import { Habilidades } from "@/components/features/aboutMe/Habilidades";
 import { SobreMi } from "@/components/features/aboutMe/SobreMi";
 import { getI18N } from "@/i18n";
+import { v } from "@/styles/variables";
 
 import React, { useEffect, useState } from "react";
 
@@ -49,12 +50,15 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
           <span className="lg:hidden">
             {getShortText(i18n.ABOUTME.EXPERIENCE)}
           </span>
+          <span>{v.iconoExperiencia && <v.iconoExperiencia />}</span>
           <span className="hidden lg:inline">{i18n.ABOUTME.EXPERIENCE}</span>
         </button>
         <button
           className={`btn ${activeTab === "educacion" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("educacion")}
         >
+          {" "}
+          <span>{v.iconoEducacion && <v.iconoEducacion />}</span>
           <span className="lg:hidden">
             {getShortText(i18n.EDUCATION.EDUCATION_TITLE)}
           </span>
@@ -66,6 +70,7 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
           className={`btn ${activeTab === "habilidades" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("habilidades")}
         >
+          <span>{v.iconoHabilidades && <v.iconoHabilidades />}</span>
           <span className="lg:hidden">
             {getShortText(i18n.SKILLS.SKILLS_TITLE)}
           </span>
@@ -75,6 +80,7 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
           className={`btn ${activeTab === "sobreMi" ? "btn-primary" : "btn-neutral"} text-lg`}
           onClick={() => setActiveTab("sobreMi")}
         >
+          <span>{v.iconoAcercaDeMi && <v.iconoAcercaDeMi />}</span>
           <span className="lg:hidden">
             {getShortText(i18n.ABOUTME.ABOUT_TITLE)}
           </span>
