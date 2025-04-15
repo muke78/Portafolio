@@ -56,17 +56,17 @@ export const ItemRepositoriosEmpres: React.FC<
     <>
       <Swiper
         slidesPerView={1}
-        spaceBetween={30}
+        spaceBetween={0}
         pagination={{
           clickable: true,
         }}
         autoplay={{
-          delay: 5000,
+          delay: 8000,
           disableOnInteraction: false,
         }}
         effect="coverflow"
         coverflowEffect={{
-          rotate: 50,
+          rotate: 42,
           stretch: 0,
           depth: 100,
           modifier: 1,
@@ -77,15 +77,15 @@ export const ItemRepositoriosEmpres: React.FC<
         breakpoints={{
           768: {
             slidesPerView: 1,
-            spaceBetween: 30,
+            spaceBetween: 0,
           },
           992: {
             slidesPerView: 2,
-            spaceBetween: 30,
+            spaceBetween: 0,
           },
           1200: {
             slidesPerView: 3,
-            spaceBetween: 20,
+            spaceBetween: 0,
           },
         }}
       >

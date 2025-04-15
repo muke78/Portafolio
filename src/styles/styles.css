@@ -1,11 +1,13 @@
 .swiper {
   width: 100%;
   height: 100%;
+  cursor: grab;
 }
 
 .swiper-slide {
   text-align: center;
   font-size: 18px;
+  cursor: grab;
 
   /* Center slide text vertically */
   display: flex;
