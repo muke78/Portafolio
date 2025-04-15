@@ -38,16 +38,16 @@ export const ItemDataExperiencia: React.FC<ModalWorkProps> = ({
                   </span>
                 )}
               </h3>
-              <span className="flex justify-center items-center gap-2 text-sm text-gray-300">
+              <span className="flex justify-center items-center gap-2 text-sm text-base-content/90">
                 <span>{v.iconoEmpresa && <v.iconoEmpresa />}</span>
                 {subtitle}
               </span>
 
-              <span className="flex justify-center items-center gap-2 text-sm text-gray-500">
+              <span className="flex justify-center items-center gap-2 text-sm text-base-content/60">
                 <span>{v.iconoReloj && <v.iconoReloj />}</span>
                 {time}
               </span>
-              <span className="flex justify-center items-center gap-2 text-sm text-gray-500">
+              <span className="flex justify-center items-center gap-2 text-sm text-base-content/60">
                 <span>{v.iconoUbicacion && <v.iconoUbicacion />}</span>
                 {location}
               </span>
