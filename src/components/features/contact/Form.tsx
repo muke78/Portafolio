@@ -82,7 +82,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-base-200 p-8 mt-16 rounded-lg">
+    <div className="flex flex-col gap-4 bg-base-200/40 p-8 mt-16 rounded-lg">
       <div className="flex justify-between items-center w-full">
         <span className="font-bold text-5xl">{i18n.FORM.FORM_TITLE}</span>
         <div>
@@ -202,15 +202,16 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
           </div>
           <div className="col-span-2">
             <fieldset className="fieldset ">
-              <label>{i18n.FORM.INPUT_SERVICES}</label>
+              <label htmlFor="services">{i18n.FORM.INPUT_SERVICES}</label>
               <select
+                id="services"
                 defaultValue="Pick a browser"
                 className="select w-full"
                 {...register("services", {
                   required: inputErrorText,
                 })}
               >
-                <option disabled={true}>{i18n.FORM.INPUT_SERVICES}</option>
+                <option disabled={true}>Selecciona un servicio</option>
                 <option>{i18n.FORM.DEVELOPMENT_WEB}</option>
                 <option>{i18n.FORM.DEVELOPMENT_API}</option>
                 <option>{i18n.FORM.CONSULT}</option>

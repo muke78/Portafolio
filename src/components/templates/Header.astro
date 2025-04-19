@@ -11,11 +11,14 @@ const i18n = getI18N({ currentLocale });
   class="top-40 lg:top-72 left-0 bg-primary"
   classNameToBottom="bottom-80 right-36 bg-accent"
 />
-  <div class="avatar animate__animated animate__fadeIn">
-      <div class="ring-primary ring-offset-base-100 w-[250px] md:w-[450px] rounded-full ring-4 border-dashed ring-offset-8">
-          <img src="/yop.webp" alt="muke78" />
-      </div>
+<div class="avatar animate__animated animate__fadeIn">
+  <div class="ring-primary ring-offset-base-100 w-[250px] md:w-[450px] rounded-full ring-4 border-dashed ring-offset-8">
+    <picture>
+      <source media="(min-width: 768px)" srcset="/yop_450.webp"/>
+      <img src="/yop_250.webp" alt="muke78" />
+    </picture>
   </div>
+</div>
   <div class="flex flex-col justify-evenly lg:p-14 md:p-8 p-4 animate__animated animate__zoomIn">
       <span class="text-3xl font-light block text-center md:text-center lg:text-start">{i18n.HEADER.HEADER_SUBTITLE}</span>
       <h1 class="text-6xl xl:text-8xl md:text-8xl font-bold text-nowrap text-center md:text-center lg:text-start"> {i18n.HEADER.HEADER_TITLE} </h1>

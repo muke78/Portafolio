@@ -9,5 +9,9 @@ const i18n = getI18N({ currentLocale });
 ---
 
 <div class="hero-content flex-col">
+  <Bubble
+  class="top-40 lg:top-72 left-0 bg-primary"
+  classNameToBottom="bottom-80 right-36 bg-accent"
+/>
   <Form client:load currentLocale={currentLocale}/>
 </div>
