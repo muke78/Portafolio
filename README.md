@@ -4,9 +4,13 @@ Se realizo el porttafolio con la tecnoligia de [Astro](https://astro.build/) y c
 con tailwindcss 4.1.3
 
 - Se monto [Daisyui](https://daisyui.com/) sobre tailwind para manejar los temas de la apliacion 5.0.6
-- Version estable `v.2.1.1` release, proximas y futuras actualizaciones
-- Proxima actualizacion `v.2.2.2`
+- Version estable `v.2.3.2` release, proximas y futuras actualizaciones
+- Proxima actualizacion `v.2.3.3` o `v.2.4.2`
 - Se ocupa la herramienta de reenvio de puertos desde host de tunel para revisar los cambios de el servidor en tiempo real desde un celular
+
+## 🏯 Lighthouse y optimizacion de la pagina
+
+![alt text](image.png)
 
 ## 🛠 Tecnologías Utilizadas
 

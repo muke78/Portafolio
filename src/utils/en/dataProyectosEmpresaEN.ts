@@ -5,7 +5,7 @@ import type { DataProjects } from "@/types/typesDataproyectos";
 export const dataProyectosEmpresarialesEN: DataProjects[] = [
   {
     id: "erp-obra",
-    title: "Frontend Obra",
+    title: "Frontend ERP Obra",
     description:
       "Administration panel for control of works and tenders through an ERP",
     topics: [
@@ -33,7 +33,7 @@ export const dataProyectosEmpresarialesEN: DataProjects[] = [
   },
   {
     id: "backend-obra",
-    title: "BackEnd-ERP",
+    title: "Backend ERP Obra",
     description:
       "Logical part of the system for consumption from the ERP through the RESTFULL API",
     topics: [
@@ -61,7 +61,7 @@ export const dataProyectosEmpresarialesEN: DataProjects[] = [
   },
   {
     id: "backEnd-aseguradora",
-    title: "BackEnd Aseguradora",
+    title: "Backend Aseguradora",
     description:
       "Logic of an administrative panel for financial insurance risks",
     topics: [

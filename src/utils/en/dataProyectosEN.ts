@@ -222,7 +222,7 @@ export const dataProyectosEN: DataProjects[] = [
     id: "task-tracker-cli",
     title: "Task Tracker CLI",
     description: "CLI application for task tracking, inspired by roadmap.sh",
-    topics: ["CLI", "Cli-app", "Fs", "Javascript", "Path", "Todolist"],
+    topics: ["CLI", "Fs", "Javascript", "Path", "Todolist"],
     link: "https://github.com/muke78/task-tracker-cli",
     img: taskTracker.src,
     fork: false,

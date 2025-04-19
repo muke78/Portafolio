@@ -43,7 +43,6 @@ export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
                         className="leading-6"
                         src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
                         alt={`Icon for ${tech}`}
-                        width="50"
                       />
                       <span className="text-xs mt-1 text-base-content">
                         {tech}
