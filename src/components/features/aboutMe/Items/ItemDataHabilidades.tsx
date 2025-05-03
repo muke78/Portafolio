@@ -2,7 +2,7 @@ import { dataTabsAcercaDeEN } from "@/utils/en/dataTabsAcercaDeEN";
 import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercaDe";
 import { dataTabsAcercaDeFR } from "@/utils/fr/dataTabsAcercaDeFR";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 interface ItemDataFrontendProps {
   currentLocale: string;
@@ -17,10 +17,16 @@ const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
 export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
   currentLocale,
 }) => {
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+
   const memorization = useMemo(
     () => langTraduceData[currentLocale] || dataTabsAcercaDe,
     [currentLocale],
   );
+
+  const handleImageLoad = (tech: string) => {
+    setLoadedImages((prev) => ({ ...prev, [tech]: true }));
+  };
 
   return (
     <>
@@ -39,11 +45,20 @@ export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
                 <div key={imgIndex} className="flex flex-wrap gap-2 mt-5">
                   {techNames.map((tech, techIndex) => (
                     <div key={techIndex} className="flex flex-col items-center">
+                      {!loadedImages[tech] && (
+                        <div className="skeleton h-12 w-12"></div>
+                      )}
                       <img
-                        className="leading-6"
+                        className={`leading-6 transition-opacity duration-300 ${
+                          loadedImages[tech]
+                            ? "opacity-100"
+                            : "opacity-0 absolute"
+                        }`}
                         src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
                         alt={`Icon for ${tech}`}
+                        onLoad={() => handleImageLoad(tech)}
                       />
+
                       <span className="text-xs mt-1 text-base-content">
                         {tech}
                       </span>

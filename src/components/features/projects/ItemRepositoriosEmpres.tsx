@@ -3,7 +3,7 @@ import { dataProyectosEmpresarialesEN } from "@/utils/en/dataProyectosEmpresaEN"
 import { dataProyectosEmpresariales } from "@/utils/es/dataProyectosEmpresa";
 import { dataProyectosEmpresarialesFR } from "@/utils/fr/dataProyectosEmpresaFR";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css/pagination";
@@ -37,6 +37,7 @@ export const ItemRepositoriosEmpres: React.FC<
 > = ({ currentLocale }) => {
   const [selectedItem, setSelectedItem] = useState<Repo | null>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const swiperRef = useRef<any>(null);
 
   const memorization = useMemo(
     () => langTraduceData(currentLocale),
@@ -46,17 +47,21 @@ export const ItemRepositoriosEmpres: React.FC<
   const handleOpenModal = (repo: Repo): void => {
     setSelectedItem(repo);
     setModalOpen(true);
+    swiperRef.current?.swiper.autoplay.stop();
   };
 
   const closeModal = () => {
     setModalOpen(false);
+    swiperRef.current?.swiper.autoplay.start();
   };
 
   return (
     <>
       <Swiper
+        ref={swiperRef}
         slidesPerView={1}
-        spaceBetween={0}
+        spaceBetween={30}
+        loop={true}
         pagination={{
           clickable: true,
         }}
@@ -66,7 +71,7 @@ export const ItemRepositoriosEmpres: React.FC<
         }}
         effect="coverflow"
         coverflowEffect={{
-          rotate: 42,
+          rotate: 12,
           stretch: 0,
           depth: 100,
           modifier: 1,
