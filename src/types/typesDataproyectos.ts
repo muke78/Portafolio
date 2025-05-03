@@ -5,5 +5,7 @@ export type DataProjects = {
   topics: string[];
   link: string;
   img: string;
+  label: string;
+  type: string;
   fork: boolean;
 };

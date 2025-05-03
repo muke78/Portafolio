@@ -29,6 +29,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://github.com/muke78/BackendTask",
     img: backendTask.src,
+    label: "Afficher le référentiel",
+    type: "github",
     fork: false,
   },
   {
@@ -49,6 +51,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://github.com/muke78/Backend_RESTFULL",
     img: backendREST.src,
+    label: "Afficher le référentiel",
+    type: "github",
     fork: false,
   },
   {
@@ -76,6 +80,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://github.com/muke78/Frontend-Kindergarden",
     img: CRM.src,
+    label: "Afficher le référentiel",
+    type: "github",
     fork: false,
   },
   // {
@@ -115,6 +121,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://heroappmkkh78.netlify.app/",
     img: heroApp.src,
+    label: "Voir le projet",
+    type: "web",
     fork: false,
   },
   {
@@ -131,6 +139,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://github.com/muke78/Inventario-kinder",
     img: inventarioKinder.src,
+    label: "Afficher le référentiel",
+    type: "github",
     fork: false,
   },
   {
@@ -141,6 +151,8 @@ export const dataProyectosFR: DataProjects[] = [
     topics: ["HTML", "CSS", "Javascript", "Scrollreveal-js", "Unicons"],
     link: "https://muke78.github.io/khelde.io/personal.html",
     img: kheldeIO.src,
+    label: "Voir le projet",
+    type: "web",
     fork: false,
   },
   {
@@ -156,6 +168,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://cash-bank.pages.dev/",
     img: cashBank.src,
+    label: "Voir le projet",
+    type: "web",
     fork: true,
   },
   {
@@ -180,6 +194,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://khelde.vercel.app/",
     img: portafolio.src,
+    label: "Voir le projet",
+    type: "web",
     fork: false,
   },
   {
@@ -197,6 +213,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://github.com/muke78/Sistema_Numerico",
     img: calculadoraSistemaNumerico.src,
+    label: "Afficher le référentiel",
+    type: "github",
     fork: false,
   },
   {
@@ -216,6 +234,8 @@ export const dataProyectosFR: DataProjects[] = [
     ],
     link: "https://github.com/muke78/expense-tracker-cli",
     img: expenseTracker.src,
+    label: "Afficher le référentiel",
+    type: "github",
     fork: false,
   },
   {
@@ -226,6 +246,8 @@ export const dataProyectosFR: DataProjects[] = [
     topics: ["CLI", "Fs", "Javascript", "Path", "Todolist"],
     link: "https://github.com/muke78/task-tracker-cli",
     img: taskTracker.src,
+    label: "Afficher le référentiel",
+    type: "github",
     fork: false,
   },
 ];

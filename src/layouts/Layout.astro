@@ -19,8 +19,7 @@ const titles =
       ? dataTitlePageFR
       : dataTitlePage;
 
-const pageIndex =
-  pathSegments[2] === "about" ? 1 : pathSegments[2] === "projects" ? 2 : 0;
+const pageIndex = pathSegments[2] === "about" ? 1 : pathSegments[2] === "projects" ? 2 : pathSegments[2] === "contact" ? 3 : 0;
 
 const titleLang = titles[pageIndex];
 

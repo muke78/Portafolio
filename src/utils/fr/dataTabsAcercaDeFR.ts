@@ -22,13 +22,13 @@ export const dataTabsAcercaDeFR: DataItemsHabilidades[] = [
   {
     title: "Hébergement Web",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=aws,github,firebase,netlify,vercel",
+      "https://go-skill-icons.vercel.app/api/icons?i=aws,githubpages,firebase,netlify,vercel",
     ],
   },
   {
     title: "Plus de compétences",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,jwt,npm,yarn,pnpm,bun,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop",
+      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,jwt,npm,yarn,pnpm,bun,github,git,jupyter,lighthouse,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop,framer",
     ],
   },
 ];

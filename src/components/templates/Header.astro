@@ -25,29 +25,29 @@ const i18n = getI18N({ currentLocale });
       <span class="text-7xl xl:text-8xl md:text-8xl text-center md:text-center lg:text-start leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> {i18n.HEADER.HEADER_NAME} </span>
       <p class="text-xl font-semibold text-base-content text-center md:text-center lg:text-start my-8"> {i18n.HEADER.HEADER_ABOUT} </p>
       <!-- Botones -->
-      <div class="flex flex-col md:flex-row justify-center md:justify-around gap-2 mt-2">
+      <div class="flex flex-col md:flex-row justify-center items-center md:justify-around gap-2 mt-2">
           <div class="flex justify-center items-center w-full md:w-1/2">
-              <a href={`/${currentLocale}/projects`} class="btn btn-primary text-lg w-full">{i18n.HEADER.HEADER_BUTTON} <span class="text-xl">{v.iconoAbrir && <v.iconoAbrir/>}</span></a>
+              <a href={`/${currentLocale}/projects`} class="btn btn-primary text-lg w-full">{i18n.HEADER.HEADER_BUTTON} <span class="text-xl">{v.iconoFlechaDerecha && <v.iconoFlechaDerecha/>}</span></a>
           </div>
-          <div class="w-full md:w-1/2">
+          <div class="flex justify-center items-center w-full md:w-1/2">
               <a 
               href="https://docs.google.com/viewer?url=https://khelde.vercel.app/CV_Erick_Miguel_Gonzalez_Rivera.pdf" 
               target="_blank" class="btn btn-primary btn-outline text-lg w-full" 
-              aria-label="Ver cv para saber mas acerca de mi"> {i18n.ABOUTME.ABOUT_DOWNLOAD_CV}</a>
+              aria-label="Ver cv para saber mas acerca de mi"> {i18n.ABOUTME.ABOUT_DOWNLOAD_CV} <span class="text-xl">{v.iconoAbrir && <v.iconoAbrir/>}</span></a>
           </div>
       </div>
       <div class="flex justify-center md:justify-center lg:justify-start mt-4 gap-4">
-          <a href="https://github.com/muke78" target="_blank" aria-label="Saber mas acerca de mis repositorios y lo que he hecho">
-              <span class="text-4xl">{v.iconoGithub && <v.iconoGithub/>}</span>
+          <a href="https://github.com/muke78" target="_blank" aria-label="Saber mas acerca de mis repositorios y lo que he hecho" class="hover:scale-110 transition-transform">
+              <span class="text-4xl hover:text-primary duration-300">{v.iconoGithub && <v.iconoGithub/>}</span>
           </a>
-          <a href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/" target="_blank" aria-label="Saber mas acerca de experiencia">
-            <span class="text-4xl">{v.iconoLinkedin && <v.iconoLinkedin/>}</span>
+          <a href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/" target="_blank" aria-label="Saber mas acerca de experiencia" class="hover:scale-110 transition-transform">
+            <span class="text-4xl hover:text-primary duration-300">{v.iconoLinkedin && <v.iconoLinkedin/>}</span>
           </a>
-          <a href="https://wa.me/+527203966119" target="_blank" aria-label="Número de teléfono">
-            <span class="text-4xl">{v.iconoWhatsApp && <v.iconoWhatsApp/>}</span>
+          <a href="https://wa.me/+527203966119" target="_blank" aria-label="Número de teléfono" class="hover:scale-110 transition-transform">
+            <span class="text-4xl hover:text-primary duration-300">{v.iconoWhatsApp && <v.iconoWhatsApp/>}</span>
           </a>
-          <a href="mailto:erickm.gonzalez.rivera@gmail.com" target="_blank" aria-label="Correo electrónico">
-            <span class="text-4xl">{v.iconoGmail && <v.iconoGmail/>}</span>
+          <a href="mailto:erickm.gonzalez.rivera@gmail.com" target="_blank" aria-label="Correo electrónico" class="hover:scale-110 transition-transform">
+            <span class="text-4xl hover:text-primary duration-300">{v.iconoGmail && <v.iconoGmail/>}</span>
           </a>
       </div>
   </div>
