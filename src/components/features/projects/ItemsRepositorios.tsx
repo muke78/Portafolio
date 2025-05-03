@@ -5,7 +5,7 @@ import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
 import { dataProyectos } from "@/utils/es/dataProyectos";
 import { dataProyectosFR } from "@/utils/fr/dataProyectosFR";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css/pagination";
@@ -22,10 +22,12 @@ interface Repo {
   id: string;
   title: string;
   description?: string;
-  img: string;
   topics?: string[];
-  fork?: boolean;
   link: string;
+  img: string;
+  label: string;
+  type: string;
+  fork?: boolean;
 }
 
 const langTraduceData = (currentLocale: string) => {
@@ -39,6 +41,8 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
 }) => {
   const [selectedItem, setSelectedItem] = useState<Repo | null>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+  const swiperRef = useRef<any>(null);
 
   const memorization = useMemo(
     () => langTraduceData(currentLocale),
@@ -48,19 +52,25 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
   const handleOpenModal = (repo: Repo): void => {
     setSelectedItem(repo);
     setModalOpen(true);
+    swiperRef.current?.swiper.autoplay.stop();
   };
 
   const closeModal = () => {
     setModalOpen(false);
+    swiperRef.current?.swiper.autoplay.start();
   };
 
-  const i18n = getI18N({ currentLocale });
+  const handleImageLoad = (imgUrl: string) => {
+    setLoadedImages((prev) => ({ ...prev, [imgUrl]: true }));
+  };
 
   return (
     <>
       <Swiper
+        ref={swiperRef}
         slidesPerView={1}
-        spaceBetween={0}
+        spaceBetween={30}
+        loop={true}
         pagination={{
           clickable: true,
         }}
@@ -70,7 +80,7 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
         }}
         effect="coverflow"
         coverflowEffect={{
-          rotate: 42,
+          rotate: 12,
           stretch: 0,
           depth: 100,
           modifier: 1,
@@ -96,11 +106,15 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
         {memorization.map((repo) => (
           <SwiperSlide key={repo.id} className="pb-12">
             <div className="flex flex-col w-full bg-base-100 rounded-lg mt-4 shadow-lg animate__animated animate__fadeIn h-full">
+              {!loadedImages[repo.img] && (
+                <div className="skeleton w-full"></div>
+              )}
               <img
-                className="rounded-t-lg w-full"
+                className={`rounded-t-lg w-full ${loadedImages[repo.img] ? "opacity-100" : "opacity-0"}`}
                 src={repo.img}
                 alt={repo.title}
                 aria-label={repo.title}
+                onLoad={() => handleImageLoad(repo.img)}
               />
               {/* Pasa los datos al IconModal */}
               <IconModal onClick={() => handleOpenModal(repo)} />
@@ -128,9 +142,14 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {i18n.PROJECTS.PROJECTS_VIEW}
+                    {repo.label}
+                    {/* {i18n.PROJECTS.PROJECTS_VIEW} */}
                     <span className="text-xl">
-                      {v.iconoAbrir && <v.iconoAbrir />}
+                      {repo.type === "web" ? (
+                        <> {v.iconoAbrir && <v.iconoAbrir />}</>
+                      ) : (
+                        <>{v.iconoGithub && <v.iconoGithub />}</>
+                      )}
                     </span>
                   </a>
                 </div>
