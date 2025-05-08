@@ -10,10 +10,16 @@ interface Langprops {
 export const Habilidades: React.FC<Langprops> = ({ currentLocale }) => {
   const i18n = getI18N({ currentLocale });
   return (
-    <div className="w-full animate__animated animate__zoomIn">
-      <span className="font-bold text-5xl"> {i18n.SKILLS.SKILLS_TITLE}</span>
-      <div className="grid lg:grid-cols-2 lg:grid-rows-3 grid-cols-1 gap-4 pt-4">
-        <ItemDataHabilidades currentLocale={currentLocale} />
+    <div className="w-full animate__animated animate__zoomIn flex flex-col">
+      <span className="font-bold text-5xl mb-4">
+        {" "}
+        {i18n.SKILLS.SKILLS_TITLE}
+      </span>
+
+      <div className="lg:max-h-[65vh] md:max-h-[60vh] sm:max-h-[50vh] lg:overflow-y-auto pr-2 md:pr-4">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 pb-4">
+          <ItemDataHabilidades currentLocale={currentLocale} />
+        </div>
       </div>
     </div>
   );
