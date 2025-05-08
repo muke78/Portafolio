@@ -5,7 +5,7 @@ con tailwindcss 4.1.3
 
 - Se monto [Daisyui](https://daisyui.com/) sobre tailwind para manejar los temas de la apliacion 5.0.6
 - Version estable `v.2.3.2` release, proximas y futuras actualizaciones
-- Proxima actualizacion `v.2.3.3` o `v.2.4.2`
+- Proxima actualizacion `v.2.4.3` o `v.2.5.x` o `v.2.x.x`
 - Se ocupa la herramienta de reenvio de puertos desde host de tunel para revisar los cambios de el servidor en tiempo real desde un celular
 
 ## 🏯 Lighthouse y optimizacion de la pagina

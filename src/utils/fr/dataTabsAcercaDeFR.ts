@@ -10,7 +10,7 @@ export const dataTabsAcercaDeFR: DataItemsHabilidades[] = [
   {
     title: "Développeur back-end",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=js,nodejs,express,sqlserver,swagger",
+      "https://go-skill-icons.vercel.app/api/icons?i=js,nodejs,express,sqlserver,mysql,swagger",
     ],
   },
   {
@@ -26,9 +26,19 @@ export const dataTabsAcercaDeFR: DataItemsHabilidades[] = [
     ],
   },
   {
+    title: "DevOps et gestion des versions",
+    images: [
+      "https://go-skill-icons.vercel.app/api/icons?i=git,github,postman,jupyter",
+    ],
+  },
+  {
+    title: "Gestionnaires de paquets",
+    images: ["https://go-skill-icons.vercel.app/api/icons?i=npm,yarn,pnpm,bun"],
+  },
+  {
     title: "Plus de compétences",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,jwt,npm,yarn,pnpm,bun,github,git,jupyter,lighthouse,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop,framer",
+      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,jwt,lighthouse,zustand,supabase,reactquery,chartjs,leaflet,pbi,photoshop,framer",
     ],
   },
 ];
