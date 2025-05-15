@@ -10,8 +10,13 @@ import { FaLaptopCode } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import { FaClock } from "react-icons/fa";
 import { FaBuilding } from "react-icons/fa";
+import { FaPaperPlane } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FaBriefcase } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
+import { FaMessage } from "react-icons/fa6";
 import { IoSchool } from "react-icons/io5";
 import { LuExpand } from "react-icons/lu";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -44,4 +49,10 @@ export const v = {
   iconoReloj: FaClock,
   iconoEmpresa: FaBuilding,
   iconoFlechaDerecha: FaArrowRightLong,
+  iconoBotonEnviar: FaPaperPlane,
+
+  iconoCorreo: FaEnvelope,
+  iconoTelefono: FaPhoneAlt,
+  iconoMaletin: FaBriefcase,
+  iconoMensajeCubo: FaMessage,
 };
