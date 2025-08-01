@@ -1,15 +1,17 @@
 #!/bin/sh
 echo "🔍 Validando mensaje de commit..."
 
-# Expresión regular del formato: tipo: descripción mínima de 10 caracteres
-commit_regex="^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert): .{10,}$"
+# Expresión regular mejorada:
+# tipo(scope opcional): descripción mínima de 10 caracteres
+# git commit -m "feat(funcionalidad): "Nueva funcionalidad para el sistema"
+commit_regex="^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(\([a-zA-Z0-9_-]+\))?: ?.{10,}$"
 commit_msg=$(cat "$1")
 
 if ! echo "$commit_msg" | grep -Eq "$commit_regex"; then
   echo ""
   echo "❌ Mensaje de commit inválido."
   echo "--------------------------------------------------"
-  echo "📌 Formato esperado: 'tipo: descripción de al menos 10 caracteres'"
+  echo "📌 Formato esperado: 'tipo(scope opcional): descripción de al menos 10 caracteres'"
   echo "🔧 Tipos válidos:"
   echo "   feat     → Nueva funcionalidad"
   echo "   fix      → Corrección de errores"
@@ -23,8 +25,9 @@ if ! echo "$commit_msg" | grep -Eq "$commit_regex"; then
   echo "   build    → Cambios que afectan el build"
   echo "   revert   → Revertir un commit"
   echo ""
-  echo "📝 Ejemplo válido:"
+  echo "📝 Ejemplos válidos:"
   echo "   feat: Agregar login con Google"
+  echo "   fix(auth): Corregir error al refrescar token"
   echo "--------------------------------------------------"
   exit 1
 fi

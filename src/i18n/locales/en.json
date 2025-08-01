@@ -86,9 +86,11 @@
     "FORM_VALID_EMAIL": "Invalid email format",
     "FORM_VALID_PHONE_MIN": "The number must have at least 7 digits",
     "FORM_VALID_PHONE_MAX": "The number is too long",
+    "FORM_VALID_INFORMATION": "This field is required",
     "FORM_VALID_PHONE_REGEX": "The number must contain only digits and valid symbols (+, -, spaces, parentheses)",
     "FORM_VALID_MORE_INFORMATION_MIN": "The description must be longer than 7 characters",
     "FORM_VALID_MORE_INFORMATION_MAX": "Character limit reached, only 260 characters allowed",
+    "FORM_INVALID_EMAIL": "Invalid email format",
 
     "FORM_SEND_INFORMATION_CORRECT": "The information has been successfully sent!",
     "FORM_SEND_INFORMATION_INCORRECT": "There was an error sending the message"
