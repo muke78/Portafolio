@@ -40,25 +40,6 @@
     "PROJECTS_VIEW": "Voir le projet",
     "PROJECTS_MODAL_TITLE": "Galerie d'images"
   },
-  "FOOTER": {
-    "FOOTER_MAKE": "Conçu et construit avec",
-    "FOOTER_ECOLOGICAL_FOOTPRINT": "🌱 Ce site Web est durable - Évaluation"
-  },
-  "THEME": {
-    "BUTTON_LABEL": "Thèmes"
-  },
-  "LANGUAGES": {
-    "BUTTON_LABEL": "Langues"
-  },
-  "VERSION": {
-    "BUTTON_LABEL": "Version",
-    "VERSION_CURRENT": "Actuelle"
-  },
-  "TOAST": {
-    "TOAST_TITLE": "Version préliminaire",
-    "TOAST_BODY": "La version 1.0.1 est déployée mais il y aura des changements futurs dans les prochains mois",
-    "TOAST_BUTTON": "Accepter"
-  },
   "404": {
     "404_BODY": "Oups ! La page que vous recherchez n'existe pas."
   },
@@ -69,31 +50,35 @@
   },
   "FORM": {
     "FORM_TITLE": "Contact",
-    "FORM_DESCRIPTION": "Je suis disponible pour des travaux freelance. Connectez-vous avec moi via Telegram, il sera envoyé via un ChatBot.",
-    "INPUT_NAME": "Prénom",
-    "INPUT_LAST_NAME": "Nom de famille",
-    "INPUT_EMAIL": "Adresse e-mail",
+    "FORM_DESCRIPTION": "Je suis disponible pour des missions freelance. Contactez-moi via Telegram, le message sera envoyé par un ChatBot.",
+    "INPUT_NAME": "Nom",
+    "INPUT_EMAIL": "Email",
     "INPUT_PHONE": "Téléphone",
-    "INPUT_SERVICES": "Services",
-    "DEVELOPMENT_WEB": "Développement web",
-    "DEVELOPMENT_API": "Développement d'API",
-    "CONSULT": "Consultation",
-    "INPUT_MORE_INFORMATION": "Plus d'informations",
+
+    "INPUT_MORE_INFORMATION": "Informations supplémentaires",
     "INPUT_MORE_INFORMATION_TEXT": "Écrivez votre message ici",
     "BUTTON_LABEL": "Envoyer le message",
 
-    "FORM_VALID_NAME": "Le prénom doit contenir plus de 4 lettres",
-    "FORM_VALID_LASTNAME": "Le nom de famille doit contenir plus de 4 lettres",
-    "FORM_VALID_EMAIL": "Format d'e-mail invalide",
+    "FORM_TITLE_SMALL_SUBHEADER": "JE SUIS LÀ POUR VOUS AIDER, N'HÉSITEZ PAS À ME CONTACTER",
+    "FORM_TITLE_HEAD_STRONG": "Parlons",
+    "FORM_TITLE_HEAD_STRONG_SECOND": "de",
+    "FORM_TITLE_HEAD_STRONG_THRID": "vos besoins en solutions informatiques",
+    "FORM_SUBTITLE_SUBHEAD": "Vous recherchez des solutions informatiques de haute qualité adaptées à vos besoins ? Contactez-moi.",
+    "FORM_OPTIONS_CONTACT_EMAIL": "Email",
+    "FORM_OPTIONS_CONTACT_PHONE": "Téléphone",
+
+    "FORM_VALID_NAME": "Le nom doit contenir plus de 4 lettres",
+    "FORM_VALID_LASTNAME": "Le prénom doit contenir plus de 4 lettres",
+    "FORM_VALID_EMAIL": "Format d'email invalide",
     "FORM_VALID_PHONE_MIN": "Le numéro doit comporter au moins 7 chiffres",
     "FORM_VALID_PHONE_MAX": "Le numéro est trop long",
     "FORM_VALID_INFORMATION": "Ce champ est obligatoire",
-    "FORM_VALID_PHONE_REGEX": "Le numéro doit contenir uniquement des chiffres et des symboles valides (+, -, espaces, parenthèses)",
+    "FORM_VALID_PHONE_REGEX": "Le numéro ne doit contenir que des chiffres et des symboles valides (+, -, espaces, parenthèses)",
     "FORM_VALID_MORE_INFORMATION_MIN": "La description doit contenir plus de 7 caractères",
-    "FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, seulement 260 caractères autorisés",
-    "FORM_INVALID_EMAIL": "Format d'e-mail invalide",
+    "FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, 260 caractères maximum autorisés",
+    "FORM_INVALID_EMAIL": "Format d'email invalide",
 
     "FORM_SEND_INFORMATION_CORRECT": "Les informations ont été envoyées avec succès !",
-    "FORM_SEND_INFORMATION_INCORRECT": "Une erreur s'est produite lors de l'envoi du message"
+    "FORM_SEND_INFORMATION_INCORRECT": "Une erreur est survenue lors de l'envoi du message"
   }
 }

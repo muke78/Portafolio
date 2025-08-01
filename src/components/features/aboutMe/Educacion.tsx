@@ -18,7 +18,7 @@ export const Educacion: React.FC<PropsLang> = ({ currentLocale }) => {
         <div className="p-5">
           <div className="flex justify-between">
             <span className="text-2xl">{i18n.UNIVERSITY.UNIVERSITY_TITLE}</span>
-            <p className="flex place-items-center text-right text-nowrap font-medium badge badge-primary">
+            <p className="flex place-items-center text-right text-base-200 text-nowrap font-medium badge badge-primary">
               2019 - 2022
             </p>
           </div>

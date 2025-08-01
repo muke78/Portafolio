@@ -22,11 +22,11 @@ export const SobreMi: React.FC<Langprops> = ({ currentLocale }) => {
           <div className="flex justify-between">
             <span className="text-2xl">{i18n.ABOUTME.ABOUT_TITLE_CARD}</span>
           </div>
-          <p className="text-lg font-medium text-primary">
+          <p className="badge badge-primary text-base-200 text-base font-medium my-2">
             {" "}
             {i18n.ABOUTME.ABOUT_SUBTITLE}
           </p>
-          <div className="pt-4">
+          <div>
             <p className="font-normal text-base/8">
               {i18n.ABOUTME.ABOUT_ABOUT_DESCRIPTION}
             </p>

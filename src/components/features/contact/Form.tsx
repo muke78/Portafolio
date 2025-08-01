@@ -1,6 +1,7 @@
 import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 import { contactSchema } from "@/schemas/contactSchema";
+import { v } from "@/styles/variables";
 
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -14,10 +15,8 @@ interface PropsLang {
 
 interface FormData {
   name: string;
-  lastName: string;
   email: string;
   phone: string;
-  services: string;
   moreInformation: string;
 }
 
@@ -37,10 +36,8 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
     resolver: zodResolver(contactSchema({ currentLocale })),
     defaultValues: {
       name: "",
-      lastName: "",
       email: "",
       phone: "",
-      services: i18n.FORM.DEVELOPMENT_WEB,
       moreInformation: "",
     },
   });
@@ -59,10 +56,8 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
 
     const message = `📩 *Nuevo formulario enviado*\n
   🔹 *Nombre:* ${data.name}
-  🔹 *Apellido:* ${data.lastName}
   🔹 *Email:* ${data.email}
   🔹 *Teléfono:* ${data.phone}
-  🔹 *Servicio:* ${data.services}
   🔹 *Más información:* ${data.moreInformation}`;
 
     const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
@@ -92,164 +87,159 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-base-200/40 p-8 mt-16 rounded-lg">
-      <div className="flex justify-between items-center w-full">
-        <span className="font-bold text-5xl">{i18n.FORM.FORM_TITLE}</span>
-        <div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="56"
-            height="56"
-            viewBox="0 0 256 256"
-          >
-            <defs>
-              <linearGradient
-                id="logosTelegram0"
-                x1="50%"
-                x2="50%"
-                y1="0%"
-                y2="100%"
+    <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-3 md:gap-3 p-4 lg:p-10 md:p-9 sm:p-8 mt-14 m-4">
+      <div className="col-start-1 row-start-1 md:col-span-1 md:row-span-1 rounded-md space-y-1 text-base-content">
+        <small className="block font-medium text-base-content/40">
+          {i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
+        </small>
+
+        <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
+          {i18n.FORM.FORM_TITLE_HEAD_STRONG}{" "}
+          <span className="text-4xl lg:text-6xl font-light">
+            {" "}
+            {i18n.FORM.FORM_TITLE_HEAD_STRONG_SECOND}
+          </span>
+          <span className="block text-4xl lg:text-6xl font-light">
+            {i18n.FORM.FORM_TITLE_HEAD_STRONG_THRID}
+          </span>
+        </h2>
+
+        <p className="text-base leading-relaxed text-base-content/70 my-8">
+          {i18n.FORM.FORM_SUBTITLE_SUBHEAD}
+        </p>
+
+        <ul className="space-y-2">
+          <li className="flex items-center gap-4">
+            <span className="text-3xl text-primary ">
+              {v.iconoCorreo && <v.iconoCorreo />}
+            </span>
+            <span>
+              <strong className="text-sm text-base-content/50">
+                {i18n.FORM.FORM_OPTIONS_CONTACT_EMAIL}
+              </strong>{" "}
+              <a
+                href="mailto:erickm.gonzalez.rivera@gmail.com"
+                target="_blank"
+                aria-label="Correo electrónico"
+                className="flex"
               >
-                <stop offset="0%" stopColor="#2aabee" />
-                <stop offset="100%" stopColor="#229ed9" />
-              </linearGradient>
-            </defs>
-            <path
-              fill="url(#logosTelegram0)"
-              d="M128 0C94.06 0 61.48 13.494 37.5 37.49A128.04 128.04 0 0 0 0 128c0 33.934 13.5 66.514 37.5 90.51C61.48 242.506 94.06 256 128 256s66.52-13.494 90.5-37.49c24-23.996 37.5-56.576 37.5-90.51s-13.5-66.514-37.5-90.51C194.52 13.494 161.94 0 128 0"
-            />
-            <path
-              fill="#fff"
-              d="M57.94 126.648q55.98-24.384 74.64-32.152c35.56-14.786 42.94-17.354 47.76-17.441c1.06-.017 3.42.245 4.96 1.49c1.28 1.05 1.64 2.47 1.82 3.467c.16.996.38 3.266.2 5.038c-1.92 20.24-10.26 69.356-14.5 92.026c-1.78 9.592-5.32 12.808-8.74 13.122c-7.44.684-13.08-4.912-20.28-9.63c-11.26-7.386-17.62-11.982-28.56-19.188c-12.64-8.328-4.44-12.906 2.76-20.386c1.88-1.958 34.64-31.748 35.26-34.45c.08-.338.16-1.598-.6-2.262c-.74-.666-1.84-.438-2.64-.258c-1.14.256-19.12 12.152-54 35.686c-5.1 3.508-9.72 5.218-13.88 5.128c-4.56-.098-13.36-2.584-19.9-4.708c-8-2.606-14.38-3.984-13.82-8.41c.28-2.304 3.46-4.662 9.52-7.072"
-            />
-          </svg>
-        </div>
+                muke7881@gmail.com
+              </a>
+            </span>
+          </li>
+          <li className="flex items-center gap-4">
+            <span className="text-3xl text-primary">
+              {v.iconoTelefono && <v.iconoTelefono />}
+            </span>
+            <span>
+              <strong className="text-sm text-base-content/50">
+                {i18n.FORM.FORM_OPTIONS_CONTACT_PHONE}
+              </strong>{" "}
+              <a
+                href="https://wa.me/+527203966119"
+                target="_blank"
+                aria-label="Número de teléfono"
+                className="flex"
+              >
+                +52-551-190 9105
+              </a>
+            </span>
+          </li>
+        </ul>
       </div>
-      <p className="w-5/6 text-md">{i18n.FORM.FORM_DESCRIPTION}</p>
-      <form onSubmit={handleSubmit(onSubmit)} method="POST">
-        <div className="grid grid-cols-2 grid-rows-5 gap-4">
-          <div>
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">
-                {i18n.FORM.INPUT_NAME}
-              </legend>
-              <input
-                type="text"
-                className="input w-full"
-                placeholder={i18n.FORM.INPUT_NAME}
-                {...register("name")}
-              />
-              {errors.name && (
-                <p className="text-red-500">
-                  {(errors.name as FieldError)?.message}
-                </p>
-              )}
-            </fieldset>
+
+      <div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-100 p-5 lg:p-10 md:p-9 sm:p-8">
+        <form onSubmit={handleSubmit(onSubmit)} method="POST">
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">
+                  {i18n.FORM.INPUT_NAME} <span className="text-red-500">*</span>
+                </legend>
+                <input
+                  type="text"
+                  className="input w-full"
+                  placeholder={i18n.FORM.INPUT_NAME}
+                  {...register("name")}
+                />
+                {errors.name && (
+                  <p className="text-red-500">
+                    {(errors.name as FieldError)?.message}
+                  </p>
+                )}
+              </fieldset>
+            </div>
+            <div>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">
+                  {i18n.FORM.INPUT_EMAIL}{" "}
+                  <span className="text-red-500">*</span>
+                </legend>
+                <input
+                  type="email"
+                  className="input w-full"
+                  placeholder={i18n.FORM.INPUT_EMAIL}
+                  {...register("email")}
+                />
+                {errors.name && (
+                  <p className="text-red-500">
+                    {(errors.email as FieldError)?.message}
+                  </p>
+                )}
+              </fieldset>
+            </div>
+            <div>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">
+                  {i18n.FORM.INPUT_PHONE}{" "}
+                  <span className="text-red-500">*</span>
+                </legend>
+                <input
+                  type="number"
+                  className="input w-full"
+                  placeholder={i18n.FORM.INPUT_PHONE}
+                  {...register("phone")}
+                />
+                {errors.phone && (
+                  <p className="text-red-500">
+                    {(errors.phone as FieldError)?.message}
+                  </p>
+                )}
+              </fieldset>
+            </div>
+            <div>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">
+                  {i18n.FORM.INPUT_MORE_INFORMATION}
+                </legend>
+                <textarea
+                  className="textarea h-16 w-full"
+                  placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
+                  {...register("moreInformation")}
+                ></textarea>
+                {errors.moreInformation && (
+                  <p className="text-red-500">
+                    {(errors.moreInformation as FieldError)?.message}
+                  </p>
+                )}
+              </fieldset>
+            </div>
+            <button className="btn bg-gradient-to-r from-primary to-accent text-base-200 btn-wide max-w-full mt-2">
+              {i18n.FORM.BUTTON_LABEL}
+            </button>
           </div>
-          <div>
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">
-                {i18n.FORM.INPUT_LAST_NAME}
-              </legend>
-              <input
-                type="text"
-                className="input w-full"
-                placeholder={i18n.FORM.INPUT_LAST_NAME}
-                {...register("lastName")}
-              />
-              {errors.name && (
-                <p className="text-red-500">
-                  {(errors.lastName as FieldError)?.message}
-                </p>
-              )}
-            </fieldset>
-          </div>
-          <div className="row-start-2">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">
-                {i18n.FORM.INPUT_EMAIL}
-              </legend>
-              <input
-                type="email"
-                className="input w-full"
-                placeholder={i18n.FORM.INPUT_EMAIL}
-                {...register("email")}
-              />
-              {errors.name && (
-                <p className="text-red-500">
-                  {(errors.email as FieldError)?.message}
-                </p>
-              )}
-            </fieldset>
-          </div>
-          <div className="row-start-2">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">
-                {i18n.FORM.INPUT_PHONE}
-              </legend>
-              <input
-                type="number"
-                className="input w-full"
-                placeholder={i18n.FORM.INPUT_PHONE}
-                {...register("phone")}
-              />
-              {errors.phone && (
-                <p className="text-red-500">
-                  {(errors.phone as FieldError)?.message}
-                </p>
-              )}
-            </fieldset>
-          </div>
-          <div className="col-span-2">
-            <fieldset className="fieldset ">
-              <label htmlFor="services">{i18n.FORM.INPUT_SERVICES}</label>
-              <select
-                id="services"
-                defaultValue="Pick a browser"
-                className="select w-full"
-                {...register("services")}
-              >
-                <option disabled={true}>Selecciona un servicio</option>
-                <option>{i18n.FORM.DEVELOPMENT_WEB}</option>
-                <option>{i18n.FORM.DEVELOPMENT_API}</option>
-                <option>{i18n.FORM.CONSULT}</option>
-              </select>
-              {errors.services && (
-                <p className="text-red-500">
-                  {(errors.services as FieldError)?.message}
-                </p>
-              )}
-            </fieldset>
-          </div>
-          <div className="col-span-2 row-span-2 row-start-4">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">
-                {i18n.FORM.INPUT_MORE_INFORMATION}
-              </legend>
-              <textarea
-                className="textarea h-24 w-full"
-                placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
-                {...register("moreInformation")}
-              ></textarea>
-              {errors.moreInformation && (
-                <p className="text-red-500">
-                  {(errors.moreInformation as FieldError)?.message}
-                </p>
-              )}
-            </fieldset>
-          </div>
-        </div>
-        <button className="btn btn-primary">{i18n.FORM.BUTTON_LABEL}</button>
-        <Toaster
-          toastOptions={{
-            style: {
-              background: `${changeTheme === "night" ? "#0f172a" : changeTheme === "nord" ? "#2e3440" : "#eceff4"}`,
-              color: `${changeTheme === "night" ? "#eceff4" : changeTheme === "nord" ? "#eceff4" : "#0f172a"}`,
-            },
-          }}
-          reverseOrder={false}
-        />
-      </form>
+
+          <Toaster
+            toastOptions={{
+              style: {
+                background: `${changeTheme === "night" ? "#0f172a" : changeTheme === "nord" ? "#2e3440" : "#eceff4"}`,
+                color: `${changeTheme === "night" ? "#eceff4" : changeTheme === "nord" ? "#eceff4" : "#0f172a"}`,
+              },
+            }}
+            reverseOrder={false}
+          />
+        </form>
+      </div>
     </div>
   );
 };

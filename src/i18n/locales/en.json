@@ -40,25 +40,6 @@
     "PROJECTS_VIEW": "See project",
     "PROJECTS_MODAL_TITLE": "Image gallery"
   },
-  "FOOTER": {
-    "FOOTER_MAKE": "Designed and Built with",
-    "FOOTER_ECOLOGICAL_FOOTPRINT": "🌱 This website is sustainable - Rating"
-  },
-  "THEME": {
-    "BUTTON_LABEL": "Themes"
-  },
-  "LANGUAGES": {
-    "BUTTON_LABEL": "Languages"
-  },
-  "VERSION": {
-    "BUTTON_LABEL": "Version",
-    "VERSION_CURRENT": "Current"
-  },
-  "TOAST": {
-    "TOAST_TITLE": "Preliminary version",
-    "TOAST_BODY": "Version 1.0.1 is deployed, but there will be future changes in the coming months",
-    "TOAST_BUTTON": "Accept"
-  },
   "404": {
     "404_BODY": "Oops! The page you're looking for doesn't exist."
   },
@@ -69,30 +50,35 @@
   },
   "FORM": {
     "FORM_TITLE": "Contact",
-    "FORM_DESCRIPTION": "I am available for freelance work. Connect with me through Telegram, it will be sent through a ChatBot.",
-    "INPUT_NAME": "First Name",
-    "INPUT_LAST_NAME": "Last Name",
-    "INPUT_EMAIL": "Email Address",
+    "FORM_DESCRIPTION": "I'm available for freelance work. Connect with me via Telegram, the message will be sent through a ChatBot.",
+    "INPUT_NAME": "Name",
+    "INPUT_EMAIL": "Email",
     "INPUT_PHONE": "Phone",
-    "INPUT_SERVICES": "Services",
-    "DEVELOPMENT_WEB": "Web Development",
-    "DEVELOPMENT_API": "API Development",
-    "CONSULT": "Consulting",
-    "INPUT_MORE_INFORMATION": "More Information",
+
+    "INPUT_MORE_INFORMATION": "More information",
     "INPUT_MORE_INFORMATION_TEXT": "Write your message here",
-    "BUTTON_LABEL": "Send Message",
-    "FORM_VALID_NAME": "The name must be longer than 4 letters",
-    "FORM_VALID_LASTNAME": "The last name must be longer than 4 letters",
+    "BUTTON_LABEL": "Send message",
+
+    "FORM_TITLE_SMALL_SUBHEADER": "I'M HERE FOR WHATEVER YOU NEED AND YOU CAN CONTACT ME",
+    "FORM_TITLE_HEAD_STRONG": "Let's talk",
+    "FORM_TITLE_HEAD_STRONG_SECOND": "about",
+    "FORM_TITLE_HEAD_STRONG_THRID": "your system solutions needs",
+    "FORM_SUBTITLE_SUBHEAD": "Looking for high-quality system solutions tailored to your needs? Contact me.",
+    "FORM_OPTIONS_CONTACT_EMAIL": "Email",
+    "FORM_OPTIONS_CONTACT_PHONE": "Phone",
+
+    "FORM_VALID_NAME": "Name must be longer than 4 letters",
+    "FORM_VALID_LASTNAME": "Last name must be longer than 4 letters",
     "FORM_VALID_EMAIL": "Invalid email format",
-    "FORM_VALID_PHONE_MIN": "The number must have at least 7 digits",
+    "FORM_VALID_PHONE_MIN": "The number must be at least 7 digits",
     "FORM_VALID_PHONE_MAX": "The number is too long",
     "FORM_VALID_INFORMATION": "This field is required",
     "FORM_VALID_PHONE_REGEX": "The number must contain only digits and valid symbols (+, -, spaces, parentheses)",
-    "FORM_VALID_MORE_INFORMATION_MIN": "The description must be longer than 7 characters",
+    "FORM_VALID_MORE_INFORMATION_MIN": "The description must be more than 7 characters",
     "FORM_VALID_MORE_INFORMATION_MAX": "Character limit reached, only 260 characters allowed",
     "FORM_INVALID_EMAIL": "Invalid email format",
 
-    "FORM_SEND_INFORMATION_CORRECT": "The information has been successfully sent!",
+    "FORM_SEND_INFORMATION_CORRECT": "Information was sent successfully!",
     "FORM_SEND_INFORMATION_INCORRECT": "There was an error sending the message"
   }
 }
