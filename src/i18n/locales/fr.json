@@ -81,8 +81,18 @@
     "INPUT_MORE_INFORMATION": "Plus d'informations",
     "INPUT_MORE_INFORMATION_TEXT": "Écrivez votre message ici",
     "BUTTON_LABEL": "Envoyer le message",
+
+    "FORM_VALID_NAME": "Le prénom doit contenir plus de 4 lettres",
+    "FORM_VALID_LASTNAME": "Le nom de famille doit contenir plus de 4 lettres",
+    "FORM_VALID_EMAIL": "Format d'e-mail invalide",
+    "FORM_VALID_PHONE_MIN": "Le numéro doit comporter au moins 7 chiffres",
+    "FORM_VALID_PHONE_MAX": "Le numéro est trop long",
     "FORM_VALID_INFORMATION": "Ce champ est obligatoire",
+    "FORM_VALID_PHONE_REGEX": "Le numéro doit contenir uniquement des chiffres et des symboles valides (+, -, espaces, parenthèses)",
+    "FORM_VALID_MORE_INFORMATION_MIN": "La description doit contenir plus de 7 caractères",
+    "FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, seulement 260 caractères autorisés",
     "FORM_INVALID_EMAIL": "Format d'e-mail invalide",
+
     "FORM_SEND_INFORMATION_CORRECT": "Les informations ont été envoyées avec succès !",
     "FORM_SEND_INFORMATION_INCORRECT": "Une erreur s'est produite lors de l'envoi du message"
   }

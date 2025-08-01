@@ -1,9 +1,11 @@
 import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
+import { contactSchema } from "@/schemas/contactSchema";
 
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { VITE_BOT_TOKEN, VITE_CHAT_ID } from "astro:env/client";
 
 interface PropsLang {
@@ -23,8 +25,6 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
   const { changeTheme } = useTheme();
 
   const i18n = getI18N({ currentLocale });
-  const inputErrorText = `${i18n.FORM.FORM_VALID_INFORMATION}`;
-  const invalidPatterEmail = `${i18n.FORM.FORM_INVALID_EMAIL}`;
   const sendInformationValid = `${i18n.FORM.FORM_SEND_INFORMATION_CORRECT}`;
   const errorSendInformation = `${i18n.FORM.FORM_SEND_INFORMATION_INCORRECT}`;
 
@@ -33,7 +33,17 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: zodResolver(contactSchema({ currentLocale })),
+    defaultValues: {
+      name: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      services: i18n.FORM.DEVELOPMENT_WEB,
+      moreInformation: "",
+    },
+  });
 
   const onSubmit = async (data: FormData) => {
     const botToken = VITE_BOT_TOKEN;
@@ -127,7 +137,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                 type="text"
                 className="input w-full"
                 placeholder={i18n.FORM.INPUT_NAME}
-                {...register("name", { required: inputErrorText })}
+                {...register("name")}
               />
               {errors.name && (
                 <p className="text-red-500">
@@ -145,9 +155,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                 type="text"
                 className="input w-full"
                 placeholder={i18n.FORM.INPUT_LAST_NAME}
-                {...register("lastName", {
-                  required: inputErrorText,
-                })}
+                {...register("lastName")}
               />
               {errors.name && (
                 <p className="text-red-500">
@@ -165,13 +173,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                 type="email"
                 className="input w-full"
                 placeholder={i18n.FORM.INPUT_EMAIL}
-                {...register("email", {
-                  required: inputErrorText,
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: invalidPatterEmail,
-                  },
-                })}
+                {...register("email")}
               />
               {errors.name && (
                 <p className="text-red-500">
@@ -189,9 +191,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                 type="number"
                 className="input w-full"
                 placeholder={i18n.FORM.INPUT_PHONE}
-                {...register("phone", {
-                  required: inputErrorText,
-                })}
+                {...register("phone")}
               />
               {errors.phone && (
                 <p className="text-red-500">
@@ -207,9 +207,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                 id="services"
                 defaultValue="Pick a browser"
                 className="select w-full"
-                {...register("services", {
-                  required: inputErrorText,
-                })}
+                {...register("services")}
               >
                 <option disabled={true}>Selecciona un servicio</option>
                 <option>{i18n.FORM.DEVELOPMENT_WEB}</option>
@@ -231,9 +229,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
               <textarea
                 className="textarea h-24 w-full"
                 placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
-                {...register("moreInformation", {
-                  required: inputErrorText,
-                })}
+                {...register("moreInformation")}
               ></textarea>
               {errors.moreInformation && (
                 <p className="text-red-500">
