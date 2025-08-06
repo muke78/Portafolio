@@ -1,16 +1,38 @@
 ---
 import { getI18N } from '@/i18n';
 import { v } from "@/styles/variables"
-import Bubble from '@/components/atoms/Bubble.astro';
+import {Bubble }from '@/components/atoms/Bubble';
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 <div class="hero-content flex-col lg:flex-row-reverse">
-  <Bubble
-  class="top-40 lg:top-72 left-0 bg-primary"
-  classNameToBottom="bottom-80 right-36 bg-accent"
-/>
+   <!-- Burbuja 1 con client:load -->
+  <Bubble 
+    className="bg-accent" 
+    position="top-56 left-48" 
+    delay={3}
+    duration={17}
+    client:load 
+  />
+  
+  <!-- Burbuja 2 con client:load -->
+  <Bubble 
+    className="bg-primary" 
+    position="right-48" 
+    delay={1.5}
+    duration={19}
+    client:load
+  />
+  
+  <!-- Burbuja 3 con client:load -->
+  <Bubble 
+    className="bg-secondary" 
+     position="bottom-96" 
+    delay={0.5}
+    duration={26}
+    client:load
+  />
 <div class="avatar animate__animated animate__fadeIn">
   <div class="ring-primary ring-offset-base-100 w-[250px] md:w-[450px] rounded-full ring-4 border-dashed ring-offset-8">
     <picture>

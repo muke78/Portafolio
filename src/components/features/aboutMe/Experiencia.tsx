@@ -16,7 +16,7 @@ export const Experiencia: React.FC<PropsLang> = ({ currentLocale }) => {
         {i18n.ABOUTME.EXPERIENCE}
       </span>
 
-      <div className="lg:max-h-[65vh] md:max-h-[60vh] sm:max-h-[50vh] lg:overflow-y-auto pr-2 md:pr-4">
+      <div className="lg:max-h-[65vh] md:max-h-[70vh] sm:max-h-[70vh] sm:overflow-auto md:overflow-auto lg:overflow-y-auto pr-2 md:pr-4">
         <div className="flex flex-col gap-4 pb-4">
           <ItemDataExperiencia currentLocale={currentLocale} />
         </div>

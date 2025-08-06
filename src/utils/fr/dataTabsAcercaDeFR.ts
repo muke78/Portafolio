@@ -10,7 +10,7 @@ export const dataTabsAcercaDeFR: DataItemsHabilidades[] = [
   {
     title: "Développeur Backend",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=express,hono,js,nodejs,postgresql,prisma,sequelize,sqlserver,swagger,turso",
+      "https://go-skill-icons.vercel.app/api/icons?i=express,hono,js,nodejs,drizzle,prisma,sequelize,mysql,sqlserver,postgresql,turso",
     ],
   },
   {

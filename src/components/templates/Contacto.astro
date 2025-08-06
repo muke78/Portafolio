@@ -1,14 +1,11 @@
 ---
-import Bubble from '@/components/atoms/Bubble.astro';
+import {Bubble} from '@/components/atoms/Bubble';
 import { Form } from '@/components/features/contact/Form'
 
 const { currentLocale } = Astro;
 ---
 
 <div class="hero-content flex-col">
-  <Bubble
-  class="top-40 lg:top-72 left-0 bg-primary"
-  classNameToBottom="bottom-80 right-36 bg-accent"
-/>
+  
   <Form client:load currentLocale={currentLocale}/>
 </div>

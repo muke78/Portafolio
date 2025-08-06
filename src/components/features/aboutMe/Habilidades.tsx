@@ -16,7 +16,7 @@ export const Habilidades: React.FC<Langprops> = ({ currentLocale }) => {
         {i18n.SKILLS.SKILLS_TITLE}
       </span>
 
-      <div className="lg:max-h-[65vh] md:max-h-[60vh] sm:max-h-[50vh] lg:overflow-y-auto pr-2 md:pr-4">
+      <div className="lg:max-h-[65vh] md:max-h-[70vh] sm:max-h-[70vh] sm:overflow-auto md:overflow-auto lg:overflow-y-auto pr-2 md:pr-4">
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 pb-4">
           <ItemDataHabilidades currentLocale={currentLocale} />
         </div>
