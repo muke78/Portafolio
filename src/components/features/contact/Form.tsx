@@ -87,7 +87,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-3 md:gap-3 p-4 lg:p-10 md:p-9 sm:p-8 mt-14 m-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-3 md:gap-3 lg:p-9 md:p-8 p-4">
       <div className="col-start-1 row-start-1 md:col-span-1 md:row-span-1 rounded-md space-y-1 text-base-content">
         <small className="block font-medium text-base-content/40">
           {i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
@@ -148,7 +148,7 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
         </ul>
       </div>
 
-      <div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-100 p-5 lg:p-10 md:p-9 sm:p-8">
+      <div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-100 transition-all duration-400 ease-in-out p-5 lg:p-10 md:p-9 sm:p-8">
         <form onSubmit={handleSubmit(onSubmit)} method="POST">
           <div className="grid grid-cols-1 gap-4">
             <div>

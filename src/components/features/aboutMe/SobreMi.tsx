@@ -14,7 +14,7 @@ export const SobreMi: React.FC<Langprops> = ({ currentLocale }) => {
       <span className="font-bold text-5xl"> {i18n.ABOUTME.ABOUT_TITLE}</span>
       <div className="grid grid-cols-1 w-full bg-base-100 rounded-lg mt-4 shadow-lg animate__animated animate__zoomIn">
         <img
-          className="rounded-t-lg bg-cover bg-no-repeat w-full brightness-110"
+          className="rounded-t-lg bg-cover bg-no-repeat w-full"
           src="/Aboutme.webp"
           alt="Acerca de mí"
         />

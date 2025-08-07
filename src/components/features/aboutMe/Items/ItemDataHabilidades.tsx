@@ -33,7 +33,7 @@ export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
       {memorization.map(({ title, images }, index) => (
         <div
           key={index}
-          className={`bg-base-100 shadow-lg p-8 rounded-xl ${
+          className={`bg-base-100 shadow-md border border-transparent hover:border-secondary hover:bg-gradient-to-br from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out transform p-8 rounded-2xl ${
             index === memorization.length - 1 ? "lg:col-span-2" : ""
           }`}
         >

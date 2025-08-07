@@ -40,11 +40,45 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row w-5/6 lg:w-full h-1/2">
+    <div className="flex flex-col lg:flex-col w-5/6 lg:w-full h-1/2 lg:p-9 md:p-8 p-4">
       {/* Contenedor de los botones con un ancho fijo */}
-      <div className="flex flex-row justify-center lg:flex-col gap-4 w-full h-full lg:w-1/3 lg:pl-20 animate__animated animate__fadeIn">
+      <div className="flex gap-4">
         <button
-          className={`btn ${activeTab === "experiencia" ? "btn-primary" : "btn-neutral"} text-lg`}
+          className={`btn rounded-full ${activeTab === "sobreMi" ? "btn-primary " : "btn-outline"} text-lg`}
+          onClick={() => setActiveTab("sobreMi")}
+        >
+          <span className=" sm:inline md:inline lg:inline">
+            {v.iconoAcercaDeMi && <v.iconoAcercaDeMi />}
+          </span>
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText(i18n.ABOUTME.ABOUT_TITLE, 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">
+            {i18n.ABOUTME.ABOUT_TITLE}
+          </span>
+        </button>
+
+        <button
+          className={`btn rounded-full ${activeTab === "educacion" ? "btn-primary " : "btn-outline"} text-lg`}
+          onClick={() => setActiveTab("educacion")}
+        >
+          <span className=" sm:inline md:inline lg:inline">
+            {v.iconoEducacion && <v.iconoEducacion />}
+          </span>
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText(i18n.EDUCATION.EDUCATION_TITLE, 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">
+            {i18n.EDUCATION.EDUCATION_TITLE}
+          </span>
+        </button>
+
+        <button
+          className={`btn rounded-full ${activeTab === "experiencia" ? "btn-primary " : "btn-outline"} text-lg`}
           onClick={() => setActiveTab("experiencia")}
         >
           <span className=" sm:inline md:inline lg:inline">
@@ -61,24 +95,9 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
             {i18n.ABOUTME.EXPERIENCE}
           </span>
         </button>
+
         <button
-          className={`btn ${activeTab === "educacion" ? "btn-primary" : "btn-neutral"} text-lg`}
-          onClick={() => setActiveTab("educacion")}
-        >
-          <span className=" sm:inline md:inline lg:inline">
-            {v.iconoEducacion && <v.iconoEducacion />}
-          </span>
-          {/* Texto para pantallas pequeñas (sm) */}
-          <span className="hidden sm:inline md:hidden lg:hidden">
-            {getShortText(i18n.EDUCATION.EDUCATION_TITLE, 5)}
-          </span>
-          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
-          <span className="hidden md:inline lg:inline">
-            {i18n.EDUCATION.EDUCATION_TITLE}
-          </span>
-        </button>
-        <button
-          className={`btn ${activeTab === "habilidades" ? "btn-primary" : "btn-neutral"} text-lg`}
+          className={`btn rounded-full ${activeTab === "habilidades" ? "btn-primary " : "btn-outline"} text-lg`}
           onClick={() => setActiveTab("habilidades")}
         >
           <span className=" sm:inline md:inline lg:inline">
@@ -93,25 +112,9 @@ export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
             {i18n.SKILLS.SKILLS_TITLE}
           </span>
         </button>
-        <button
-          className={`btn ${activeTab === "sobreMi" ? "btn-primary" : "btn-neutral"} text-lg`}
-          onClick={() => setActiveTab("sobreMi")}
-        >
-          <span className=" sm:inline md:inline lg:inline">
-            {v.iconoAcercaDeMi && <v.iconoAcercaDeMi />}
-          </span>
-          {/* Texto para pantallas pequeñas (sm) */}
-          <span className="hidden sm:inline md:hidden lg:hidden">
-            {getShortText(i18n.ABOUTME.ABOUT_TITLE, 5)}
-          </span>
-          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
-          <span className="hidden md:inline lg:inline">
-            {i18n.ABOUTME.ABOUT_TITLE}
-          </span>
-        </button>
       </div>
       {/* Separador solo visible en pantallas grandes */}
-      <div className="divider divider-vertical lg:divider-horizontal"></div>
+      <div className="divider divider-vertical lg:divider-vertical"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
       <div className="flex-1 w-full animate__animated animate__zoomIn">
         {activeTab === "experiencia" && (

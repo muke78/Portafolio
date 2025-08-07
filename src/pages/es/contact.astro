@@ -7,12 +7,11 @@ const currentPath = Astro.url.pathname;
 ---
 
 <Layout>
-  <header class="relative w-full"> 
+  <header class="relative w-full "> 
     <Nav client:load currentLocale={currentLocale} currentPath={currentPath}/>
-    <section class="w-full h-full">
-      <div class="hero bg-base-300 min-h-screen">
+    <section class="w-full h-full ">
+      <div class="hero bg-base-300 min-h-screen ">
         <Contactos>
-       </div>
       </div>
     </section>
   </header>

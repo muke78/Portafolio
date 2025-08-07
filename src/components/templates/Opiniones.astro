@@ -1,0 +1,8 @@
+---
+import {Testimonials} from '@/components/features/opinions/Testimonials'
+const {currentLocale}  = Astro
+---
+
+<div class="hero-content mt-32">
+    <Testimonials client:load currentLocale={currentLocale}/>
+</div>

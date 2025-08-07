@@ -29,7 +29,10 @@ export const ItemDataExperiencia: React.FC<ModalWorkProps> = ({
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
         {memorization.map(
           ({ id, work, title, subtitle, img, alt, time, location }) => (
-            <div key={id} className="bg-base-100 shadow-lg p-8 rounded-xl">
+            <div
+              key={id}
+              className="bg-base-100 shadow-md border border-transparent hover:border-secondary hover:bg-gradient-to-br from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out transform p-8 rounded-2xl"
+            >
               <div className="flex items-center gap-4 mb-4">
                 <img
                   src={img}

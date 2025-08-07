@@ -5,12 +5,13 @@ import { Nav } from '@/components/organisms/Nav';
 import Acerca from '@/components/templates/Acerca.astro';
 import Contactos from '@/components/templates/Contacto.astro'
 import Proyectos from '@/components/templates/Proyectos.astro';
+import Opiniones from '@/components/templates/Opiniones.astro';
 const {currentLocale} = Astro;
 const currentPath = Astro.url.pathname;
 ---
 
 <Layout>
-  <header class="relative w-full"> 
+  <header class="relative w-full transition-all duration-500 ease-in-out"> 
     <div class="w-full lg:p-0 md:p-10 p-10">
       <Nav client:load currentLocale={currentLocale} currentPath={currentPath}/>
     </div>
@@ -19,14 +20,17 @@ const currentPath = Astro.url.pathname;
         <Header />
       </div>
       <div class="hero bg-base-300 min-h-screen flex justify-center items-start">
-          <Acerca />
+        <Acerca />
       </div>
       <div class="hero bg-base-300 min-h-screen">
         <Proyectos />
       </div>
-        <div class="hero bg-base-300 min-h-screen">
+      <div class="hero bg-base-300 min-h-screen">
+        <Opiniones />
+      </div>
+      <div class="hero bg-base-300 min-h-screen">
         <Contactos>
-       </div>
+      </div>
     </section>
   </header>
 </Layout>
