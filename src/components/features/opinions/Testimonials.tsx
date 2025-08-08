@@ -3,6 +3,7 @@ import { Quote } from "lucide-react";
 
 interface PropsLang {
   currentLocale: string;
+  data: Object;
 }
 
 const testimonials = [
@@ -317,7 +318,8 @@ const cardVariants = {
   },
 };
 
-export const Testimonials = ({ currentLocale }: PropsLang) => {
+export const Testimonials = ({ currentLocale, data }: PropsLang) => {
+  console.log(data);
   return (
     <div className="relative max-w-full overflow-hidden lg:p-9 md:p-8 p-4">
       <motion.div
