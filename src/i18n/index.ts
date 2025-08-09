@@ -10,8 +10,6 @@ const LANG = {
   FRENCH: "fr",
 } as const;
 
-type Language = keyof typeof LANG;
-
 // Objeto con los locales cargados
 const locales = {
   [LANG.ENGLISH]: en,

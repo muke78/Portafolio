@@ -3,15 +3,12 @@ import { Experiencia } from "@/components/features/aboutMe/Experiencia";
 import { Habilidades } from "@/components/features/aboutMe/Habilidades";
 import { SobreMi } from "@/components/features/aboutMe/SobreMi";
 import { getI18N } from "@/i18n";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 import { v } from "@/styles/variables";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-interface PropsLang {
-  currentLocale: string;
-}
-
-export const TabsAcerca: React.FC<PropsLang> = ({ currentLocale }) => {
+export const TabsAcerca = ({ currentLocale }: PropsLang) => {
   const [activeTab, setActiveTab] = useState<string>("experiencia");
   const [mounted, setMounted] = useState<boolean>(false);
 

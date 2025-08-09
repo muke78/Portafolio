@@ -30,7 +30,6 @@
     "astro": "^5.4.2",
     "astro-compress": "^2.3.6",
     "daisyui": "5.0.6",
-    "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.4",
     "framer-motion": "^12.4.10",
     "husky": "^9.1.7",
@@ -46,7 +45,6 @@
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.4",
-    "@types/node": "^24.2.0",
     "drizzle-kit": "^0.31.4",
     "prettier": "^3.5.1",
     "prettier-plugin-astro": "^0.14.1",

@@ -1,5 +1,6 @@
 import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
+import type { FormData, PropsLang } from "@/interfaces/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
 import { v } from "@/styles/variables";
 
@@ -8,19 +9,10 @@ import toast, { Toaster } from "react-hot-toast";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { VITE_BOT_TOKEN, VITE_CHAT_ID } from "astro:env/client";
+import { motion } from "framer-motion";
+import { Send } from "lucide-react";
 
-interface PropsLang {
-  currentLocale: string;
-}
-
-interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  moreInformation: string;
-}
-
-export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
+export const Form = ({ currentLocale }: PropsLang) => {
   const { changeTheme } = useTheme();
 
   const i18n = getI18N({ currentLocale });
@@ -156,16 +148,21 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                 <legend className="fieldset-legend">
                   {i18n.FORM.INPUT_NAME} <span className="text-red-500">*</span>
                 </legend>
-                <input
+                <motion.input
                   type="text"
                   className="input w-full"
                   placeholder={i18n.FORM.INPUT_NAME}
+                  whileFocus={{ scale: 1.02 }}
                   {...register("name")}
                 />
                 {errors.name && (
-                  <p className="text-red-500">
+                  <motion.p
+                    className="text-red-500"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
                     {(errors.name as FieldError)?.message}
-                  </p>
+                  </motion.p>
                 )}
               </fieldset>
             </div>
@@ -175,16 +172,21 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                   {i18n.FORM.INPUT_EMAIL}{" "}
                   <span className="text-red-500">*</span>
                 </legend>
-                <input
+                <motion.input
                   type="email"
                   className="input w-full"
                   placeholder={i18n.FORM.INPUT_EMAIL}
+                  whileFocus={{ scale: 1.02 }}
                   {...register("email")}
                 />
                 {errors.name && (
-                  <p className="text-red-500">
+                  <motion.p
+                    className="text-red-500"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
                     {(errors.email as FieldError)?.message}
-                  </p>
+                  </motion.p>
                 )}
               </fieldset>
             </div>
@@ -194,16 +196,21 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                   {i18n.FORM.INPUT_PHONE}{" "}
                   <span className="text-red-500">*</span>
                 </legend>
-                <input
+                <motion.input
                   type="number"
                   className="input w-full"
                   placeholder={i18n.FORM.INPUT_PHONE}
+                  whileFocus={{ scale: 1.02 }}
                   {...register("phone")}
                 />
                 {errors.phone && (
-                  <p className="text-red-500">
+                  <motion.p
+                    className="text-red-500"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
                     {(errors.phone as FieldError)?.message}
-                  </p>
+                  </motion.p>
                 )}
               </fieldset>
             </div>
@@ -212,21 +219,32 @@ export const Form: React.FC<PropsLang> = ({ currentLocale }) => {
                 <legend className="fieldset-legend">
                   {i18n.FORM.INPUT_MORE_INFORMATION}
                 </legend>
-                <textarea
+                <motion.textarea
                   className="textarea h-16 w-full"
                   placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
+                  whileFocus={{ scale: 1.02 }}
                   {...register("moreInformation")}
-                ></textarea>
+                ></motion.textarea>
                 {errors.moreInformation && (
-                  <p className="text-red-500">
+                  <motion.p
+                    className="text-red-500"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
                     {(errors.moreInformation as FieldError)?.message}
-                  </p>
+                  </motion.p>
                 )}
               </fieldset>
             </div>
-            <button className="btn bg-gradient-to-r from-primary to-accent text-base-200 btn-wide max-w-full mt-2">
+            <motion.button
+              type="submit"
+              className="btn bg-gradient-to-r from-primary to-accent text-base-200 btn-wide max-w-full mt-2"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Send className="w-5 h-5" />
               {i18n.FORM.BUTTON_LABEL}
-            </button>
+            </motion.button>
           </div>
 
           <Toaster

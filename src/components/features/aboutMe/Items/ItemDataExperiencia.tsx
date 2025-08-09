@@ -1,26 +1,20 @@
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 import { v } from "@/styles/variables";
 import { experienceDataEN } from "@/utils/en/dataExperienciaEN";
 import { dataExperiencia } from "@/utils/es/dataExperiencia";
 import { dataExperienceFR } from "@/utils/fr/dataExperienciaFR";
 
-import type React from "react";
 import { useMemo } from "react";
 
-interface ModalWorkProps {
-  currentLocale: string;
-}
-
-const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return dataExperiencia;
-  if (currentLocale === "fr") return dataExperienceFR;
-  return experienceDataEN;
+const langTraduceData: Record<string, typeof dataExperiencia> = {
+  es: dataExperiencia,
+  en: experienceDataEN,
+  fr: dataExperienceFR,
 };
 
-export const ItemDataExperiencia: React.FC<ModalWorkProps> = ({
-  currentLocale,
-}) => {
+export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
   const memorization = useMemo(
-    () => langTraduceData(currentLocale),
+    () => langTraduceData[currentLocale] || dataExperiencia,
     [currentLocale],
   );
 

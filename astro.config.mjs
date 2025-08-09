@@ -49,6 +49,14 @@ export default defineConfig({
     schema: {
       VITE_BOT_TOKEN: envField.string({ context: "client", access: "public" }),
       VITE_CHAT_ID: envField.string({ context: "client", access: "public" }),
+      TURSO_DATABASE_URL: envField.string({
+        context: "client",
+        access: "public",
+      }),
+      TURSO_AUTH_TOKEN: envField.string({
+        context: "client",
+        access: "public",
+      }),
     },
   },
 });

@@ -7,7 +7,7 @@ import { TabsProyectos } from '@/components/organisms/TabsProyectos';
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
-  <div class="hero-content lg:w-5/6 w-full flex-col lg:flex-row-reverse">
+  <div class="hero-content lg:w-5/6 w-full flex-col lg:flex-row-reverse mt-16">
       <div class="grid grid-cols-1 w-full gap-6 animate__animated animate__zoomIn rounded-lg">
           <TabsProyectos client:load currentLocale={currentLocale}/>
       </div>

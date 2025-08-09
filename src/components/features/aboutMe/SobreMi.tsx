@@ -1,12 +1,7 @@
 import { getI18N } from "@/i18n";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-import type React from "react";
-
-interface Langprops {
-  currentLocale: string;
-}
-
-export const SobreMi: React.FC<Langprops> = ({ currentLocale }) => {
+export const SobreMi = ({ currentLocale }: PropsLang) => {
   const i18n = getI18N({ currentLocale });
 
   return (

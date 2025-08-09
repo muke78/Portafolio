@@ -1,9 +1,8 @@
 ---
 import { TabsAcerca } from '@/components/organisms/TabsAcerca'
-import {Bubble} from '@/components/atoms/Bubble';
 const { currentLocale } = Astro;
 ---
 
-<div class="hero-content mt-32">
+<div class="hero-content mt-16">
     <TabsAcerca client:load currentLocale={currentLocale}/>
 </div>

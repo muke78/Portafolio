@@ -1,19 +1,14 @@
 import { ItemsNav } from "@/components/features/navbar/ItemsNav";
 import { LangDrop } from "@/components/features/navbar/LangDrop";
 import { ThemeDrop } from "@/components/features/navbar/ThemeSwitch";
-import { ImageContrast } from "@/components/utils/ImageContrast";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
-interface NavProps {
-  currentLocale: string;
-  currentPath: string;
-}
-
-export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
+export const Nav = ({ currentLocale }: PropsLang) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
@@ -28,6 +23,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
           animate={{ opacity: 1, x: 0 }}
           className="font-bold text-2xl text-base-content"
           href="home"
+          aria-label="Inicio del portafolio"
         >
           Khelde.
         </motion.a>
@@ -35,7 +31,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
         {/* Navegación Desktop */}
         <div className="hidden min-[900px]:flex items-center space-x-8">
           <ul className="flex items-center space-x-8">
-            <ItemsNav currentLocale={currentLocale} currentPath={currentPath} />
+            <ItemsNav currentLocale={currentLocale} />
           </ul>
 
           {/* Controles Desktop */}
@@ -114,10 +110,7 @@ export const Nav: React.FC<NavProps> = ({ currentLocale, currentPath }) => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1, staggerChildren: 0.05 }}
                 >
-                  <ItemsNav
-                    currentLocale={currentLocale}
-                    currentPath={currentPath}
-                  />
+                  <ItemsNav currentLocale={currentLocale} />
                 </motion.ul>
               </div>
 

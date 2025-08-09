@@ -5,11 +5,10 @@ import Layout from "@/layouts/Layout.astro"
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
-const currentPath = Astro.url.pathname;
 ---
 
-<Layout title="404">
-    <Nav client:load currentLocale={currentLocale} currentPath={currentPath}/>
+<Layout>
+    <Nav client:load currentLocale={currentLocale}/>
     <div class="hero backdrop-blur-[100px] backdrop-saturate-[180%] min-h-screen">
       <div class="hero-content text-center">
         <div class="max-w-md">

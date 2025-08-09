@@ -48,12 +48,37 @@
     "UNIVERSITY_SUBTITLE": "Information Technology Engineering",
     "UNIVERSITY_TEXT": "During my time at university, I learned about various areas of IT such as equipment maintenance, networking, object-oriented programming, mobile development with Xamarin, cybersecurity, requirements engineering, and databases. I also worked with Arduino in robotics. However, what interested me the most was web development. Although I only learned basic jQuery concepts, I always had the desire to continue learning about this topic. Currently, I am self-taught and strive to learn something new every day."
   },
+  "OPINIONS": {
+    "OPINIONS_SUBTITLE": "Be very patient with yourself and don't compare yourself too much with others.",
+    "OPINIONS_TITLE": "Opinions about my work",
+    "OPINIONS_SUB_SUBTILE": "Here are some comments!",
+
+    "OPINIONS_FORM_TITLE": "Write an opinion",
+    "OPINIONS_FORM_SUBTITLE": "Your feedback is valuable to keep growing as a developer",
+
+    "OPINIONS_FORM_NAME_PLACEHOLDER": "Your full name",
+    "OPINIONS_FORM_JOB_PLACEHOLDER": "e.g., Frontend Developer",
+    "OPINIONS_FORM_EXP_PLACEHOLDER": "Write your experience here",
+
+    "OPINIONS_LOAD_SEND_INFORMATION": "Sending...",
+    "OPINIONS_SEND_INFORMATION": "Send comment",
+
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "Experience must be longer than 7 characters",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Character limit reached, only 500 characters allowed",
+
+    "OPINIONS_SEND_SUCCESSFULL": "Thank you for your comment!",
+    "OPINIONS_SEND_SUCCESSFULL_INFORMATION": "Your response has been sent successfully. We appreciate your time and feedback.",
+    "OPINIONS_REDIRECT_COMMENTS": "Go to comments"
+  },
   "FORM": {
     "FORM_TITLE": "Contact",
-    "FORM_DESCRIPTION": "I'm available for freelance work. Connect with me via Telegram, the message will be sent through a ChatBot.",
+    "FORM_DESCRIPTION": "I am available for freelance work. Connect with me via Telegram, it will be sent through a ChatBot.",
     "INPUT_NAME": "Name",
     "INPUT_EMAIL": "Email",
     "INPUT_PHONE": "Phone",
+    "INPUT_JOB": "Position or specialty",
+    "INPUT_JOB_INPUT_OPTIONAL": "optional",
+    "INPUT_TELL_EXPERIENCE": "Tell experience",
 
     "INPUT_MORE_INFORMATION": "More information",
     "INPUT_MORE_INFORMATION_TEXT": "Write your message here",
@@ -62,23 +87,23 @@
     "FORM_TITLE_SMALL_SUBHEADER": "I'M HERE FOR WHATEVER YOU NEED AND YOU CAN CONTACT ME",
     "FORM_TITLE_HEAD_STRONG": "Let's talk",
     "FORM_TITLE_HEAD_STRONG_SECOND": "about",
-    "FORM_TITLE_HEAD_STRONG_THRID": "your system solutions needs",
+    "FORM_TITLE_HEAD_STRONG_THRID": "your system solution needs",
     "FORM_SUBTITLE_SUBHEAD": "Looking for high-quality system solutions tailored to your needs? Contact me.",
     "FORM_OPTIONS_CONTACT_EMAIL": "Email",
     "FORM_OPTIONS_CONTACT_PHONE": "Phone",
 
-    "FORM_VALID_NAME": "Name must be longer than 4 letters",
-    "FORM_VALID_LASTNAME": "Last name must be longer than 4 letters",
+    "FORM_VALID_NAME": "The name must be longer than 4 letters",
+    "FORM_VALID_LASTNAME": "The last name must be longer than 4 letters",
     "FORM_VALID_EMAIL": "Invalid email format",
-    "FORM_VALID_PHONE_MIN": "The number must be at least 7 digits",
+    "FORM_VALID_PHONE_MIN": "The number must have at least 7 digits",
     "FORM_VALID_PHONE_MAX": "The number is too long",
     "FORM_VALID_INFORMATION": "This field is required",
     "FORM_VALID_PHONE_REGEX": "The number must contain only digits and valid symbols (+, -, spaces, parentheses)",
-    "FORM_VALID_MORE_INFORMATION_MIN": "The description must be more than 7 characters",
+    "FORM_VALID_MORE_INFORMATION_MIN": "Description must be longer than 7 characters",
     "FORM_VALID_MORE_INFORMATION_MAX": "Character limit reached, only 260 characters allowed",
     "FORM_INVALID_EMAIL": "Invalid email format",
 
-    "FORM_SEND_INFORMATION_CORRECT": "Information was sent successfully!",
+    "FORM_SEND_INFORMATION_CORRECT": "Information sent successfully!",
     "FORM_SEND_INFORMATION_INCORRECT": "There was an error sending the message"
   }
 }

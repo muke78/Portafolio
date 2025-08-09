@@ -1,13 +1,8 @@
 import { ItemDataHabilidades } from "@/components/features/aboutMe/Items/ItemDataHabilidades";
 import { getI18N } from "@/i18n";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-import type React from "react";
-
-interface Langprops {
-  currentLocale: string;
-}
-
-export const Habilidades: React.FC<Langprops> = ({ currentLocale }) => {
+export const Habilidades = ({ currentLocale }: PropsLang) => {
   const i18n = getI18N({ currentLocale });
   return (
     <div className="w-full animate__animated animate__zoomIn flex flex-col">

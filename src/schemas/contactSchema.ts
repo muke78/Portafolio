@@ -1,10 +1,7 @@
 import { getI18N } from "@/i18n";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 
 import { z } from "zod";
-
-interface PropsLang {
-  currentLocale: string;
-}
 
 export const contactSchema = ({ currentLocale }: PropsLang) => {
   const i18n = getI18N({ currentLocale });
@@ -19,7 +16,8 @@ export const contactSchema = ({ currentLocale }: PropsLang) => {
     moreInformation: z
       .string()
       .min(7, i18n.FORM.FORM_VALID_MORE_INFORMATION_MIN)
-      .max(260, i18n.FORM.FORM_VALID_MORE_INFORMATION_MAX),
+      .max(260, i18n.FORM.FORM_VALID_MORE_INFORMATION_MAX)
+      .optional(),
   });
   return schema;
 };

@@ -1,17 +1,13 @@
 import { getI18N } from "@/i18n";
 import { languages } from "@/i18n/ui";
-import { v } from "@/styles/variables";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
-interface langDropProps {
-  currentLocale: string;
-}
-
-export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
+export const LangDrop = ({ currentLocale }: PropsLang) => {
   const [selectedLang, setSelectedLang] = useState<string>(currentLocale);
   const [isOpen, setIsOpen] = useState(false);
   const [i18n, setI18n] = useState(() =>
@@ -52,8 +48,8 @@ export const LangDrop: React.FC<langDropProps> = ({ currentLocale }) => {
     setSelectedLang(lang);
     setIsOpen(false);
     setI18n(getI18N({ currentLocale: lang }));
-
-    const newPath = `/${lang}/${window.location.pathname.split("/").slice(2).join("/")}`;
+    const currentHash = window.location.hash;
+    const newPath = `/${lang}/${window.location.pathname.split("/").slice(2).join("/")}${currentHash}`;
     window.location.href = newPath;
   };
 

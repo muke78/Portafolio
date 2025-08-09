@@ -1,12 +1,9 @@
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 import { dataTabsAcercaDeEN } from "@/utils/en/dataTabsAcercaDeEN";
 import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercaDe";
 import { dataTabsAcercaDeFR } from "@/utils/fr/dataTabsAcercaDeFR";
 
-import React, { useMemo, useState } from "react";
-
-interface ItemDataFrontendProps {
-  currentLocale: string;
-}
+import { useMemo, useState } from "react";
 
 const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
   es: dataTabsAcercaDe,
@@ -14,9 +11,7 @@ const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
   fr: dataTabsAcercaDeFR,
 };
 
-export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
-  currentLocale,
-}) => {
+export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
   const memorization = useMemo(

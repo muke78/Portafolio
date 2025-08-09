@@ -1,50 +1,35 @@
 import { IconModal } from "@/components/atoms/IconModal";
+import type { PropsLang, RepoEmpres } from "@/interfaces/currentLang.interface";
 import { dataProyectosEmpresarialesEN } from "@/utils/en/dataProyectosEmpresaEN";
 import { dataProyectosEmpresariales } from "@/utils/es/dataProyectosEmpresa";
 import { dataProyectosEmpresarialesFR } from "@/utils/fr/dataProyectosEmpresaFR";
 
-import React, { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css/pagination";
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ModalGalery } from "./ModalGalery";
+// import { ModalGalery } from "./ModalGalery";
 
-interface PropsRepositoriosEmpresariales {
-  currentLocale: string;
-}
-
-interface Repo {
-  id: string;
-  title: string;
-  description?: string;
-  img: string;
-  topics?: string[];
-  fork?: boolean;
-  link: string;
-}
-
-const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return dataProyectosEmpresariales;
-  if (currentLocale === "fr") return dataProyectosEmpresarialesFR;
-  return dataProyectosEmpresarialesEN;
+const langTraduceData: Record<string, typeof dataProyectosEmpresariales> = {
+  es: dataProyectosEmpresariales,
+  en: dataProyectosEmpresarialesEN,
+  fr: dataProyectosEmpresarialesFR,
 };
 
-export const ItemRepositoriosEmpres: React.FC<
-  PropsRepositoriosEmpresariales
-> = ({ currentLocale }) => {
-  const [selectedItem, setSelectedItem] = useState<Repo | null>(null);
+export const ItemRepositoriosEmpres = ({ currentLocale }: PropsLang) => {
+  const [selectedItem, setSelectedItem] = useState<RepoEmpres | null>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const swiperRef = useRef<any>(null);
 
   const memorization = useMemo(
-    () => langTraduceData(currentLocale),
+    () => langTraduceData[currentLocale] || dataProyectosEmpresariales,
     [currentLocale],
   );
 
-  const handleOpenModal = (repo: Repo): void => {
+  const handleOpenModal = (repo: RepoEmpres): void => {
     setSelectedItem(repo);
     setModalOpen(true);
     swiperRef.current?.swiper.autoplay.stop();
@@ -131,14 +116,14 @@ export const ItemRepositoriosEmpres: React.FC<
             </div>
           </SwiperSlide>
         ))}
-        {isModalOpen && selectedItem && (
+        {/* {isModalOpen && selectedItem && (
           <ModalGalery
             data={selectedItem}
             isModalOpen={isModalOpen}
             closeModal={closeModal}
             currentLocale={currentLocale}
           />
-        )}
+        )} */}
       </Swiper>
     </>
   );

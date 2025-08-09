@@ -48,12 +48,37 @@
     "UNIVERSITY_SUBTITLE": "Ingeniería en Tecnologías de la Información",
     "UNIVERSITY_TEXT": "Durante mi tiempo en la universidad, aprendí sobre diversas áreas de TI, como mantenimiento de equipos, redes, programación orientada a objetos, desarrollo móvil con Xamarin, ciberseguridad, ingeniería de requisitos y bases de datos. También trabajé con Arduino en robótica. Sin embargo, lo que más me interesó fue el desarrollo web. Aunque solo aprendí conceptos básicos de jQuery, siempre tuve el deseo de seguir aprendiendo sobre este tema. Actualmente, soy autodidacta y me esfuerzo por aprender algo nuevo cada día."
   },
+  "OPINIONS": {
+    "OPINIONS_SUBTITLE": "Ten mucha paciencia contigo mismo y no te compares demasiado con los demás.",
+    "OPINIONS_TITLE": "Opiniones sobre mi trabajo",
+    "OPINIONS_SUB_SUBTILE": "¡Aquí unos comentarios!",
+
+    "OPINIONS_FORM_TITLE": " Escribe una opinión",
+    "OPINIONS_FORM_SUBTITLE": "Tu feedback es valioso para seguir creciendo como desarrollador",
+
+    "OPINIONS_FORM_NAME_PLACEHOLDER": "Tu nombre completo",
+    "OPINIONS_FORM_JOB_PLACEHOLDER": "Ej: Desarrollador Frontend",
+    "OPINIONS_FORM_EXP_PLACEHOLDER": "Escribe tu experiencia aquí",
+
+    "OPINIONS_LOAD_SEND_INFORMATION": "Enviando...",
+    "OPINIONS_SEND_INFORMATION": "Enviar comentario",
+
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "La experiencia debe ser mas grande de 7 caracteres",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Limite de caracteres alcanzado, solo se permiten 500 caracteres",
+
+    "OPINIONS_SEND_SUCCESSFULL": " ¡Gracias por tu comentario!",
+    "OPINIONS_SEND_SUCCESSFULL_INFORMATION": "Tu respuesta se ha enviado correctamente. Apreciamos tu tiempo y retroalimentación.",
+    "OPINIONS_REDIRECT_COMMENTS": "Ir a los comentarios"
+  },
   "FORM": {
     "FORM_TITLE": "Contacto",
     "FORM_DESCRIPTION": "Estoy disponible para trabajos freelance. Conéctate conmigo a través de Telegram, se enviará a través de un ChatBot.",
     "INPUT_NAME": "Nombre",
     "INPUT_EMAIL": "Correo electrónico",
     "INPUT_PHONE": "Teléfono",
+    "INPUT_JOB": "Puesto o especialidad",
+    "INPUT_JOB_INPUT_OPTIONAL": "opcional",
+    "INPUT_TELL_EXPERIENCE": "Contar experiencia",
 
     "INPUT_MORE_INFORMATION": "Más información",
     "INPUT_MORE_INFORMATION_TEXT": "Escribe tu mensaje aquí",

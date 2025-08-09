@@ -3,23 +3,23 @@ import type { DataNavbar } from "@/types/typesNavbar";
 export const dataListNavbar: DataNavbar[] = [
   {
     label: "Inicio",
-    to: "home",
+    to: "#home",
   },
   {
     label: "Acerca de mí",
-    to: "about",
+    to: "#about",
   },
 
   {
     label: "Proyectos",
-    to: "projects",
+    to: "#projects",
   },
   {
     label: "Opiniones",
-    to: "opinions",
+    to: "#opinions",
   },
   {
     label: "Contacto",
-    to: "contact",
+    to: "#contact",
   },
 ];
