@@ -188,7 +188,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 </label>
                 <motion.input
                   type="text"
-                  placeholder={i18n.OPINIONS.OPINIONS_FORM_JOB_PLACEHOLDER}
+                  placeholder={i18n.OPINIONS.OPINIONS_FORM_NAME_PLACEHOLDER}
                   className="input input-lg w-full"
                   whileFocus={{ scale: 1.02 }}
                   {...register("name")}
