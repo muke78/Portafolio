@@ -1,42 +1,54 @@
+import type { NavbarItem, PropsLang } from "@/interfaces/currentLang.interface";
 import { dataListNavbarEN } from "@/utils/en/dataNavbarEN";
 import { dataListNavbar } from "@/utils/es/dataNavbar";
 import { dataListNavbarFR } from "@/utils/fr/dataNavbarFR";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-interface NavbarItem {
-  to: string;
-  label: string;
-}
-
-interface Props {
-  currentLocale: string;
-  currentPath: string;
-}
-
-const dataByLocale = {
+const langTraduceData: Record<string, typeof dataListNavbar> = {
   es: dataListNavbar,
-  fr: dataListNavbarFR,
   en: dataListNavbarEN,
+  fr: dataListNavbarFR,
 };
 
-export const ItemsNav: React.FC<Props> = ({ currentLocale, currentPath }) => {
-  const pathSegments = currentPath.split("/").filter(Boolean);
-  const path = pathSegments.length > 1 ? pathSegments[1] : pathSegments[0];
-  const [pathIsActive, setPathIsActive] = useState<string>("");
+export const ItemsNav = ({ currentLocale }: PropsLang) => {
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  const memorization: NavbarItem[] = useMemo(
+    () => langTraduceData[currentLocale] || dataListNavbar,
+    [currentLocale],
+  );
 
   useEffect(() => {
-    setPathIsActive(path);
-  }, [path]);
+    const handleScroll = () => {
+      let currentId = "";
 
-  const dataChange: NavbarItem[] = useMemo(() => {
-    return dataByLocale[currentLocale] || dataListNavbarEN;
-  }, [currentLocale]);
+      memorization.forEach((item) => {
+        const section = document.querySelector(item.to) as HTMLElement;
+        if (section) {
+          const sectionTop = section.offsetTop - 32; // margen superior
+          const sectionHeight = section.offsetHeight;
+          if (
+            window.scrollY >= sectionTop &&
+            window.scrollY < sectionTop + sectionHeight
+          ) {
+            currentId = item.to;
+          }
+        }
+      });
+
+      setActiveSection(currentId);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // ejecuta en el montaje
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [memorization]);
 
   return (
     <>
-      {dataChange.map((list) => {
-        const isActive = pathIsActive === list.to;
+      {memorization.map((list) => {
+        const isActive = activeSection === list.to;
         return (
           <li
             key={list.to}

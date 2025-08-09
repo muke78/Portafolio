@@ -1,12 +1,9 @@
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 import { dataTabsAcercaDeEN } from "@/utils/en/dataTabsAcercaDeEN";
 import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercaDe";
 import { dataTabsAcercaDeFR } from "@/utils/fr/dataTabsAcercaDeFR";
 
-import React, { useMemo, useState } from "react";
-
-interface ItemDataFrontendProps {
-  currentLocale: string;
-}
+import { useMemo, useState } from "react";
 
 const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
   es: dataTabsAcercaDe,
@@ -14,9 +11,7 @@ const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
   fr: dataTabsAcercaDeFR,
 };
 
-export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
-  currentLocale,
-}) => {
+export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
   const memorization = useMemo(
@@ -33,7 +28,7 @@ export const ItemDataHabilidades: React.FC<ItemDataFrontendProps> = ({
       {memorization.map(({ title, images }, index) => (
         <div
           key={index}
-          className={`bg-base-100 shadow-lg p-8 rounded-xl ${
+          className={`bg-base-100 shadow-md border border-transparent hover:border-secondary hover:bg-gradient-to-br from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out transform p-8 rounded-2xl ${
             index === memorization.length - 1 ? "lg:col-span-2" : ""
           }`}
         >

@@ -1,12 +1,7 @@
 import { getI18N } from "@/i18n";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-import React from "react";
-
-interface PropsLang {
-  currentLocale: string;
-}
-
-export const Educacion: React.FC<PropsLang> = ({ currentLocale }) => {
+export const Educacion = ({ currentLocale }: PropsLang) => {
   const i18n = getI18N({ currentLocale });
   return (
     <>
@@ -18,7 +13,7 @@ export const Educacion: React.FC<PropsLang> = ({ currentLocale }) => {
         <div className="p-5">
           <div className="flex justify-between">
             <span className="text-2xl">{i18n.UNIVERSITY.UNIVERSITY_TITLE}</span>
-            <p className="flex place-items-center text-right text-nowrap font-medium badge badge-primary">
+            <p className="flex place-items-center text-right text-base-200 text-nowrap font-medium badge badge-primary">
               2019 - 2022
             </p>
           </div>

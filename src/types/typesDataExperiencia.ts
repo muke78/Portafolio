@@ -3,6 +3,8 @@ export type DataItemsExperiencia = {
   work: string;
   title: string;
   subtitle: string;
+  img: string;
+  alt: string;
   time: string;
   location: string;
 };

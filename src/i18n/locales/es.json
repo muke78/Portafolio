@@ -40,47 +40,60 @@
     "PROJECTS_VIEW": "Ver proyecto",
     "PROJECTS_MODAL_TITLE": "Galeria de imagenes"
   },
-  "FOOTER": {
-    "FOOTER_MAKE": "Diseñado y Construido con",
-    "FOOTER_ECOLOGICAL_FOOTPRINT": "🌱 Este sitio web es sostenible - Calificacion"
-  },
-  "THEME": {
-    "BUTTON_LABEL": "Temas"
-  },
-  "LANGUAGES": {
-    "BUTTON_LABEL": "Idiomas"
-  },
-  "VERSION": {
-    "BUTTON_LABEL": "Versión",
-    "VERSION_CURRENT": "Actual"
-  },
-  "TOAST": {
-    "TOAST_TITLE": "Version preliminar",
-    "TOAST_BODY": "La version 1.0.1 esta desplegada pero habran futuros cambios en los próximos meses",
-    "TOAST_BUTTON": "Aceptar"
-  },
   "404": {
-    "404_BODY": "¡Ups! La página que estás buscando no existe."
+    "404_BODY": "¡Ups! La pagina que estas buscando aun no esta en orbita, regresa despues"
   },
   "UNIVERSITY": {
     "UNIVERSITY_TITLE": "Universidad Politécnica del Valle de México (UPVM)",
     "UNIVERSITY_SUBTITLE": "Ingeniería en Tecnologías de la Información",
     "UNIVERSITY_TEXT": "Durante mi tiempo en la universidad, aprendí sobre diversas áreas de TI, como mantenimiento de equipos, redes, programación orientada a objetos, desarrollo móvil con Xamarin, ciberseguridad, ingeniería de requisitos y bases de datos. También trabajé con Arduino en robótica. Sin embargo, lo que más me interesó fue el desarrollo web. Aunque solo aprendí conceptos básicos de jQuery, siempre tuve el deseo de seguir aprendiendo sobre este tema. Actualmente, soy autodidacta y me esfuerzo por aprender algo nuevo cada día."
   },
+  "OPINIONS": {
+    "OPINIONS_SUBTITLE": "Ten mucha paciencia contigo mismo y no te compares demasiado con los demás.",
+    "OPINIONS_TITLE": "Opiniones sobre mi trabajo",
+    "OPINIONS_SUB_SUBTILE": "¡Aquí unos comentarios!",
+
+    "OPINIONS_NOT_FOUND": "Aún no hay testimonios",
+    "OPINIONS_NOT_FOUND_DESCRIPTION": "Upps! aun no hay nada por aqui ni nada por alla, pronto veras algo aquí",
+
+    "OPINIONS_FORM_TITLE": " Escribe una opinión",
+    "OPINIONS_FORM_SUBTITLE": "Tu feedback es valioso para seguir creciendo como desarrollador",
+
+    "OPINIONS_FORM_NAME_PLACEHOLDER": "Tu nombre completo",
+    "OPINIONS_FORM_JOB_PLACEHOLDER": "Ej: Desarrollador Frontend",
+    "OPINIONS_FORM_EXP_PLACEHOLDER": "Escribe tu experiencia aquí",
+
+    "OPINIONS_LOAD_SEND_INFORMATION": "Enviando...",
+    "OPINIONS_SEND_INFORMATION": "Enviar comentario",
+
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "La experiencia debe ser mas grande de 7 caracteres",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Limite de caracteres alcanzado, solo se permiten 500 caracteres",
+
+    "OPINIONS_SEND_SUCCESSFULL": " ¡Gracias por tu comentario!",
+    "OPINIONS_SEND_SUCCESSFULL_INFORMATION": "Tu respuesta se ha enviado correctamente. Apreciamos tu tiempo y retroalimentación.",
+    "OPINIONS_REDIRECT_COMMENTS": "Ir a los comentarios"
+  },
   "FORM": {
     "FORM_TITLE": "Contacto",
     "FORM_DESCRIPTION": "Estoy disponible para trabajos freelance. Conéctate conmigo a través de Telegram, se enviará a través de un ChatBot.",
     "INPUT_NAME": "Nombre",
-    "INPUT_LAST_NAME": "Apellido",
     "INPUT_EMAIL": "Correo electrónico",
     "INPUT_PHONE": "Teléfono",
-    "INPUT_SERVICES": "Servicios",
-    "DEVELOPMENT_WEB": "Desarrollo web",
-    "DEVELOPMENT_API": "Desarrollo de API",
-    "CONSULT": "Consultoría",
+    "INPUT_JOB": "Puesto o especialidad",
+    "INPUT_JOB_INPUT_OPTIONAL": "opcional",
+    "INPUT_TELL_EXPERIENCE": "Contar experiencia",
+
     "INPUT_MORE_INFORMATION": "Más información",
     "INPUT_MORE_INFORMATION_TEXT": "Escribe tu mensaje aquí",
     "BUTTON_LABEL": "Enviar mensaje",
+
+    "FORM_TITLE_SMALL_SUBHEADER": "ESTOY PARA LO QUE NECESITE Y PUEDE CONTACTARME",
+    "FORM_TITLE_HEAD_STRONG": "Hablemos",
+    "FORM_TITLE_HEAD_STRONG_SECOND": "de",
+    "FORM_TITLE_HEAD_STRONG_THRID": "sus necesidades en soluciones de sistemas",
+    "FORM_SUBTITLE_SUBHEAD": "¿Busca soluciones de sistemas de alta calidad adaptadas a sus necesidades? Contáctame.",
+    "FORM_OPTIONS_CONTACT_EMAIL": "Correo",
+    "FORM_OPTIONS_CONTACT_PHONE": "Teléfono",
 
     "FORM_VALID_NAME": "El nombre debe ser mayor a 4 letras",
     "FORM_VALID_LASTNAME": "El apellido debe ser mayor a 4 letras",

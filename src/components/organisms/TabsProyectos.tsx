@@ -1,15 +1,12 @@
 import { ItemRepositoriosEmpres } from "@/components/features/projects/ItemRepositoriosEmpres";
 import { ItemsRepoRepositorios } from "@/components/features/projects/ItemsRepositorios";
 import { getI18N } from "@/i18n";
+import type { PropsLang } from "@/interfaces/currentLang.interface";
 import { v } from "@/styles/variables";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-interface PropsLang {
-  currentLocale: string;
-}
-
-export const TabsProyectos: React.FC<PropsLang> = ({ currentLocale }) => {
+export const TabsProyectos = ({ currentLocale }: PropsLang) => {
   const [activeTab, setActiveTab] = useState<string>("proyectos");
   const [mounted, setMounted] = useState<boolean>(false);
 
@@ -34,11 +31,11 @@ export const TabsProyectos: React.FC<PropsLang> = ({ currentLocale }) => {
   }
 
   return (
-    <div className="flex flex-col w-full h-1/2 mx-auto p-4 mt-16">
+    <div className="flex flex-col w-full h-1/2 mx-auto p-4">
       {/* Buttons at the top */}
       <div className="lg:flex lg:justify-center lg:items-center grid grid-cols-1 gap-4 w-full justify-center sm:justify-start animate__animated animate__fadeIn">
         <button
-          className={`btn btn-sm sm:w-auto ${activeTab === "proyectos" ? "btn-primary" : "btn-soft"} text-md lg:text-lg`}
+          className={`btn btn-sm sm:w-auto ${activeTab === "proyectos" ? "btn-primary" : "btn-neutral"} text-md lg:text-lg`}
           onClick={() => setActiveTab("proyectos")}
         >
           <span className="text-2xl">
@@ -47,7 +44,7 @@ export const TabsProyectos: React.FC<PropsLang> = ({ currentLocale }) => {
           {i18n.PROJECTS.PROJECTS_TITLE}
         </button>
         <button
-          className={`btn btn-sm sm:w-auto ${activeTab === "proyectosEmpres" ? "btn-primary" : "btn-soft"} text-md lg:text-lg`}
+          className={`btn btn-sm sm:w-auto ${activeTab === "proyectosEmpres" ? "btn-primary" : "btn-neutral"} text-md lg:text-lg`}
           onClick={() => setActiveTab("proyectosEmpres")}
         >
           <span className="text-2xl">

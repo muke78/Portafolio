@@ -1,0 +1,8 @@
+---
+import {SendOpinions} from '@/components/features/opinions/sendOpinions'
+const {currentLocale} = Astro;
+---
+
+<div class="hero-content w-full">
+    <SendOpinions client:load currentLocale={currentLocale}/>
+</div>

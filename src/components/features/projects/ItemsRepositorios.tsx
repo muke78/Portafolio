@@ -1,51 +1,33 @@
 import { IconModal } from "@/components/atoms/IconModal";
-import { getI18N } from "@/i18n";
+import type { PropsLang, Repo } from "@/interfaces/currentLang.interface";
 import { v } from "@/styles/variables";
 import { dataProyectosEN } from "@/utils/en/dataProyectosEN";
 import { dataProyectos } from "@/utils/es/dataProyectos";
 import { dataProyectosFR } from "@/utils/fr/dataProyectosFR";
 
-import React, { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 // Import Swiper styles
 import "swiper/css/pagination";
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ModalGalery } from "./ModalGalery";
+// import { ModalGalery } from "./ModalGalery";
 
-interface PropsRepositorios {
-  currentLocale: string;
-}
-
-interface Repo {
-  id: string;
-  title: string;
-  description?: string;
-  topics?: string[];
-  link: string;
-  img: string;
-  label: string;
-  type: string;
-  fork?: boolean;
-}
-
-const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return dataProyectos;
-  if (currentLocale === "fr") return dataProyectosFR;
-  return dataProyectosEN;
+const langTraduceData: Record<string, typeof dataProyectos> = {
+  es: dataProyectos,
+  en: dataProyectosEN,
+  fr: dataProyectosFR,
 };
 
-export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
-  currentLocale,
-}) => {
+export const ItemsRepoRepositorios = ({ currentLocale }: PropsLang) => {
   const [selectedItem, setSelectedItem] = useState<Repo | null>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const swiperRef = useRef<any>(null);
 
   const memorization = useMemo(
-    () => langTraduceData(currentLocale),
+    () => langTraduceData[currentLocale] || dataProyectos,
     [currentLocale],
   );
 
@@ -157,14 +139,14 @@ export const ItemsRepoRepositorios: React.FC<PropsRepositorios> = ({
             </div>
           </SwiperSlide>
         ))}
-        {isModalOpen && selectedItem && (
+        {/* {isModalOpen && selectedItem && (
           <ModalGalery
             data={selectedItem}
             isModalOpen={isModalOpen}
             closeModal={closeModal}
             currentLocale={currentLocale}
           />
-        )}
+        )} */}
       </Swiper>
     </>
   );
