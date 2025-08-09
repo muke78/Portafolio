@@ -41,7 +41,7 @@
     "PROJECTS_MODAL_TITLE": "Image gallery"
   },
   "404": {
-    "404_BODY": "Oops! The page you're looking for doesn't exist."
+    "404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later."
   },
   "UNIVERSITY": {
     "UNIVERSITY_TITLE": "Polytechnic University of the Valley of Mexico (UPVM)",
@@ -52,6 +52,9 @@
     "OPINIONS_SUBTITLE": "Be very patient with yourself and don't compare yourself too much with others.",
     "OPINIONS_TITLE": "Opinions about my work",
     "OPINIONS_SUB_SUBTILE": "Here are some comments!",
+
+    "OPINIONS_NOT_FOUND": "There are no testimonies yet.",
+    "OPINIONS_NOT_FOUND_DESCRIPTION": "Oops! Nothing here or there yet. You'll see something here soon.",
 
     "OPINIONS_FORM_TITLE": "Write an opinion",
     "OPINIONS_FORM_SUBTITLE": "Your feedback is valuable to keep growing as a developer",

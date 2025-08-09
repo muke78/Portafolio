@@ -41,7 +41,7 @@
     "PROJECTS_MODAL_TITLE": "Galeria de imagenes"
   },
   "404": {
-    "404_BODY": "¡Ups! La página que estás buscando no existe."
+    "404_BODY": "¡Ups! La pagina que estas buscando aun no esta en orbita, regresa despues"
   },
   "UNIVERSITY": {
     "UNIVERSITY_TITLE": "Universidad Politécnica del Valle de México (UPVM)",
@@ -52,6 +52,9 @@
     "OPINIONS_SUBTITLE": "Ten mucha paciencia contigo mismo y no te compares demasiado con los demás.",
     "OPINIONS_TITLE": "Opiniones sobre mi trabajo",
     "OPINIONS_SUB_SUBTILE": "¡Aquí unos comentarios!",
+
+    "OPINIONS_NOT_FOUND": "Aún no hay testimonios",
+    "OPINIONS_NOT_FOUND_DESCRIPTION": "Upps! aun no hay nada por aqui ni nada por alla, pronto veras algo aquí",
 
     "OPINIONS_FORM_TITLE": " Escribe una opinión",
     "OPINIONS_FORM_SUBTITLE": "Tu feedback es valioso para seguir creciendo como desarrollador",
