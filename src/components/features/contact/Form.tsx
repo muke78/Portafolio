@@ -2,7 +2,6 @@ import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 import type { FormData, PropsLang } from "@/interfaces/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
-import { v } from "@/styles/variables";
 
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,7 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { VITE_BOT_TOKEN, VITE_CHAT_ID } from "astro:env/client";
 import { motion } from "framer-motion";
-import { Send } from "lucide-react";
+import { Mail, Phone, Send } from "lucide-react";
 
 export const Form = ({ currentLocale }: PropsLang) => {
   const { changeTheme } = useTheme();
@@ -102,8 +101,8 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
         <ul className="space-y-2">
           <li className="flex items-center gap-4">
-            <span className="text-3xl text-primary ">
-              {v.iconoCorreo && <v.iconoCorreo />}
+            <span className="text-3xl text-secondary ">
+              {<Mail size={36} />}
             </span>
             <span>
               <strong className="text-sm text-base-content/50">
@@ -120,8 +119,8 @@ export const Form = ({ currentLocale }: PropsLang) => {
             </span>
           </li>
           <li className="flex items-center gap-4">
-            <span className="text-3xl text-primary">
-              {v.iconoTelefono && <v.iconoTelefono />}
+            <span className="text-3xl text-secondary">
+              {<Phone size={36} />}
             </span>
             <span>
               <strong className="text-sm text-base-content/50">

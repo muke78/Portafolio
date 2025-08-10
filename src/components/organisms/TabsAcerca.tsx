@@ -4,9 +4,10 @@ import { Habilidades } from "@/components/features/aboutMe/Habilidades";
 import { SobreMi } from "@/components/features/aboutMe/SobreMi";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
-import { v } from "@/styles/variables";
 
 import { useEffect, useState } from "react";
+
+import { Briefcase, GraduationCap, PencilRuler, UserRound } from "lucide-react";
 
 export const TabsAcerca = ({ currentLocale }: PropsLang) => {
   const [activeTab, setActiveTab] = useState<string>("experiencia");
@@ -37,15 +38,15 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-col w-5/6 lg:w-full h-1/2 lg:p-9 md:p-8 p-4">
+    <div className="flex flex-col lg:flex-col w-5/6 lg:w-full h-1/2">
       {/* Contenedor de los botones con un ancho fijo */}
       <div className="flex gap-4">
         <button
-          className={`btn rounded-full ${activeTab === "sobreMi" ? "btn-primary " : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "sobreMi" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("sobreMi")}
         >
           <span className=" sm:inline md:inline lg:inline">
-            {v.iconoAcercaDeMi && <v.iconoAcercaDeMi />}
+            {<UserRound />}
           </span>
           {/* Texto para pantallas pequeñas (sm) */}
           <span className="hidden sm:inline md:hidden lg:hidden">
@@ -58,11 +59,11 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
         </button>
 
         <button
-          className={`btn rounded-full ${activeTab === "educacion" ? "btn-primary " : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "educacion" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("educacion")}
         >
-          <span className=" sm:inline md:inline lg:inline">
-            {v.iconoEducacion && <v.iconoEducacion />}
+          <span className="sm:inline md:inline lg:inline">
+            {<GraduationCap />}
           </span>
           {/* Texto para pantallas pequeñas (sm) */}
           <span className="hidden sm:inline md:hidden lg:hidden">
@@ -75,11 +76,11 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
         </button>
 
         <button
-          className={`btn rounded-full ${activeTab === "experiencia" ? "btn-primary " : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "experiencia" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("experiencia")}
         >
           <span className=" sm:inline md:inline lg:inline">
-            {v.iconoExperiencia && <v.iconoExperiencia />}
+            {<Briefcase />}
           </span>
 
           {/* Texto para pantallas pequeñas (sm) */}
@@ -94,11 +95,11 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
         </button>
 
         <button
-          className={`btn rounded-full ${activeTab === "habilidades" ? "btn-primary " : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "habilidades" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("habilidades")}
         >
           <span className=" sm:inline md:inline lg:inline">
-            {v.iconoHabilidades && <v.iconoHabilidades />}
+            {<PencilRuler />}
           </span>
           {/* Texto para pantallas pequeñas (sm) */}
           <span className="hidden sm:inline md:hidden lg:hidden">

@@ -1,10 +1,11 @@
 import type { PropsLang } from "@/interfaces/currentLang.interface";
-import { v } from "@/styles/variables";
 import { experienceDataEN } from "@/utils/en/dataExperienciaEN";
 import { dataExperiencia } from "@/utils/es/dataExperiencia";
 import { dataExperienceFR } from "@/utils/fr/dataExperienciaFR";
 
 import { useMemo } from "react";
+
+import { Building, Clock, MapPin } from "lucide-react";
 
 const langTraduceData: Record<string, typeof dataExperiencia> = {
   es: dataExperiencia,
@@ -47,23 +48,17 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 
               <div className="text-sm space-y-2 text-base-content/80">
                 <div className="flex items-center gap-2">
-                  {v.iconoEmpresa && (
-                    <v.iconoEmpresa className="text-base-content/60" />
-                  )}
+                  <Building className="text-base-content/60" />
                   <span>{subtitle}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {v.iconoReloj && (
-                    <v.iconoReloj className="text-base-content/60" />
-                  )}
+                  <Clock className="text-base-content/60" />
                   <span>{time}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {v.iconoUbicacion && (
-                    <v.iconoUbicacion className="text-base-content/60" />
-                  )}
+                  <MapPin className="text-base-content/60" />
                   <span>{location}</span>
                 </div>
               </div>

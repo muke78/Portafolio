@@ -1,9 +1,9 @@
 import { useTheme } from "@/hooks/useTheme";
-import { v } from "@/styles/variables";
 
 import { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { MoonStar, Sun } from "lucide-react";
 
 export const ThemeDrop: React.FC = () => {
   const { changeTheme, setChangeTheme, mounted } = useTheme();
@@ -79,7 +79,7 @@ export const ThemeDrop: React.FC = () => {
                 }}
                 className="text-2xl text-indigo-400 drop-shadow-sm flex items-center justify-center"
               >
-                {v.iconoLuna && <v.iconoLuna />}
+                {<MoonStar />}
               </motion.span>
             ) : (
               <motion.span
@@ -99,7 +99,7 @@ export const ThemeDrop: React.FC = () => {
                 }}
                 className="text-2xl text-amber-500 drop-shadow-sm flex items-center justify-center"
               >
-                {v.iconoSol && <v.iconoSol />}
+                {<Sun />}
               </motion.span>
             )}
           </AnimatePresence>

@@ -21,7 +21,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
         <motion.a
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="font-bold text-2xl text-base-content"
+          className="font-semibold text-2xl text-base-content/90"
           href="home"
           aria-label="Inicio del portafolio"
         >

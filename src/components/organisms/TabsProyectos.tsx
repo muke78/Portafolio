@@ -40,11 +40,11 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-col w-5/6 lg:w-full h-1/2 lg:p-9 md:p-8 p-4">
+    <div className="flex flex-col lg:flex-col w-5/6 lg:w-full h-1/2">
       {/* Contenedor de los botones con un ancho fijo */}
       <div className="flex gap-4">
         <button
-          className={`btn rounded-full ${activeTab === "frontend" ? "btn-primary" : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "frontend" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("frontend")}
         >
           <span className="sm:inline md:inline lg:inline">
@@ -59,7 +59,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
         </button>
 
         <button
-          className={`btn rounded-full ${activeTab === "backend" ? "btn-primary" : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "backend" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("backend")}
         >
           <span className="sm:inline md:inline lg:inline">
@@ -74,7 +74,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
         </button>
 
         <button
-          className={`btn rounded-full ${activeTab === "companies" ? "btn-primary" : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "companies" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("companies")}
         >
           <span className="sm:inline md:inline lg:inline">
@@ -89,7 +89,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
         </button>
 
         <button
-          className={`btn rounded-full ${activeTab === "dataAnalyst" ? "btn-primary" : "btn-outline"} text-lg`}
+          className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "dataAnalyst" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("dataAnalyst")}
         >
           <span className="sm:inline md:inline lg:inline">

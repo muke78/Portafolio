@@ -1,76 +1,66 @@
 ---
 import { getI18N } from '@/i18n';
-import { v } from "@/styles/variables"
 import {Bubble }from '@/components/atoms/Bubble';
-
+import {Github, Linkedin, Mail, MessageCircle, MoveRight, SquareArrowOutUpRight} from 'lucide-react';
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 <div class="hero-content flex-col lg:flex-row-reverse mt-16">
-   <!-- Burbuja 1 con client:load -->
-  <Bubble 
-    className="bg-accent" 
-    position="top-56 left-48" 
-    delay={3}
-    duration={5}
-    client:load 
-  />
-  
-  <!-- Burbuja 2 con client:load -->
-  <Bubble 
-    className="bg-primary" 
-    position="right-48" 
-    delay={1.5}
-    duration={7}
-    client:load
-  />
-  
-  <!-- Burbuja 3 con client:load -->
-  <Bubble 
-    className="bg-secondary" 
-     position="bottom-96" 
-    delay={0.5}
-    duration={26}
-    client:load
-  />
-<div class="avatar animate__animated animate__fadeIn">
-  <div class="ring-primary ring-offset-base-100 w-[250px] md:w-[450px] rounded-full ring-4 border-dashed ring-offset-8">
-    <picture>
-      <source media="(min-width: 768px)" srcset="/yop_450.webp"/>
-      <img src="/yop_250.webp" alt="muke78" />
-    </picture>
-  </div>
-</div>
-  <div class="flex flex-col justify-evenly lg:p-9 md:p-8 p-4 animate__animated animate__zoomIn">
-      <span class="text-3xl font-light block text-center md:text-center lg:text-start">{i18n.HEADER.HEADER_SUBTITLE}</span>
-      <h1 class="text-6xl xl:text-8xl md:text-8xl font-bold text-nowrap text-center md:text-center lg:text-start"> {i18n.HEADER.HEADER_TITLE} </h1>
-      <span class="text-7xl xl:text-8xl md:text-8xl text-center md:text-center lg:text-start leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> {i18n.HEADER.HEADER_NAME} </span>
-      <p class="text-xl font-semibold text-base-content text-center md:text-center lg:text-start my-8"> {i18n.HEADER.HEADER_ABOUT} </p>
-      <!-- Botones -->
-      <div class="flex flex-col md:flex-row justify-center items-center md:justify-around gap-2 mt-2">
-          <div class="flex justify-center items-center w-full md:w-1/2">
-              <a href={`/${currentLocale}/projects`} class="btn btn-primary text-lg w-full">{i18n.HEADER.HEADER_BUTTON} <span class="text-xl">{v.iconoFlechaDerecha && <v.iconoFlechaDerecha/>}</span></a>
-          </div>
-          <div class="flex justify-center items-center w-full md:w-1/2">
-              <a 
-              href="https://docs.google.com/viewer?url=https://khelde.vercel.app/CV_Erick_Miguel_Gonzalez_Rivera.pdf" 
-              target="_blank" class="btn btn-neutral text-lg w-full" 
-              aria-label="Ver cv para saber mas acerca de mi"> {i18n.ABOUTME.ABOUT_DOWNLOAD_CV} <span class="text-xl">{v.iconoAbrir && <v.iconoAbrir/>}</span></a>
-          </div>
-      </div>
-      <div class="flex justify-center md:justify-center lg:justify-start mt-4 gap-4">
-          <a href="https://github.com/muke78" target="_blank" aria-label="Saber mas acerca de mis repositorios y lo que he hecho" class="hover:scale-110 transition-transform">
-              <span class="text-4xl hover:text-primary duration-300">{v.iconoGithub && <v.iconoGithub/>}</span>
-          </a>
-          <a href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/" target="_blank" aria-label="Saber mas acerca de experiencia" class="hover:scale-110 transition-transform">
-            <span class="text-4xl hover:text-primary duration-300">{v.iconoLinkedin && <v.iconoLinkedin/>}</span>
-          </a>
-          <a href="https://wa.me/+527203966119" target="_blank" aria-label="Número de teléfono" class="hover:scale-110 transition-transform">
-            <span class="text-4xl hover:text-primary duration-300">{v.iconoWhatsApp && <v.iconoWhatsApp/>}</span>
-          </a>
-          <a href="mailto:erickm.gonzalez.rivera@gmail.com" target="_blank" aria-label="Correo electrónico" class="hover:scale-110 transition-transform">
-            <span class="text-4xl hover:text-primary duration-300">{v.iconoGmail && <v.iconoGmail/>}</span>
-          </a>
-      </div>
-  </div>
+	<!-- Burbuja 1 con client:load -->
+	<Bubble className="bg-accent" position="top-56 left-48" delay={3} duration={5} client:load />
+	<!-- Burbuja 2 con client:load -->
+	<Bubble className="bg-primary" position="right-48" delay={1.5} duration={7} client:load />
+	<!-- Burbuja 3 con client:load -->
+	<Bubble className="bg-secondary" position="bottom-96" delay={0.5} duration={26} client:load />
+	<div class="avatar animate__animated animate__fadeIn">
+		<div class="ring-primary ring-offset-base-100 w-[250px] md:w-[450px] rounded-full ring-4 border-dashed ring-offset-8">
+			<picture>
+				<source media="(min-width: 768px)" srcset="/yop_450.webp" />
+				<img src="/yop_250.webp" alt="muke78" />
+			</picture>
+		</div>
+	</div>
+	<div class="flex flex-col justify-evenly lg:p-9 md:p-8 p-4 animate__animated animate__zoomIn">
+		<span class="text-3xl lg:text-4xl font-light block text-center md:text-center lg:text-start">{i18n.HEADER.HEADER_SUBTITLE}</span>
+		<h1 class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl font-bold text-nowrap text-center md:text-center lg:text-start"> {i18n.HEADER.HEADER_TITLE} </h1>
+		<span class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl text-center md:text-center lg:text-start leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> {i18n.HEADER.HEADER_NAME} </span>
+		<p class="text-base xl:text-xl lg:text-lg font-semibold text-base-content text-center md:text-center lg:text-start my-8"> {i18n.HEADER.HEADER_ABOUT} </p>
+		<!-- Botones -->
+		<div class="flex flex-col md:flex-row justify-center items-center md:justify-around gap-2 mt-2">
+			<div class="flex justify-center items-center w-full md:w-1/2">
+				<a href={`/${currentLocale}/projects`} class="btn btn-primary lg:text-lg md:text-base w-full"> {i18n.HEADER.HEADER_BUTTON} <span> {
+						<MoveRight size={22} />}
+					</span>
+				</a>
+			</div>
+			<div class="flex justify-center items-center w-full md:w-1/2">
+				<a href="https://docs.google.com/viewer?url=https://khelde.vercel.app/CV_Erick_Miguel_Gonzalez_Rivera.pdf" target="_blank" class="btn btn-neutral lg:text-lg md:text-base w-full" aria-label="Ver cv para saber mas acerca de mi"> {i18n.ABOUTME.ABOUT_DOWNLOAD_CV} <span>{
+						<SquareArrowOutUpRight size={20} />}
+					</span>
+				</a>
+			</div>
+		</div>
+		<div class="flex justify-center md:justify-center lg:justify-start mt-4 gap-4">
+			<a href="https://github.com/muke78" target="_blank" aria-label="Saber mas acerca de mis repositorios y lo que he hecho" class="hover:scale-110 transition-transform">
+				<span class="hover:text-primary duration-300">{
+					<Github size={36} />}
+				</span>
+			</a>
+			<a href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/" target="_blank" aria-label="Saber mas acerca de experiencia" class="hover:scale-110 transition-transform">
+				<span class="hover:text-primary duration-300">{
+					<Linkedin size={36} />}
+				</span>
+			</a>
+			<a href="https://wa.me/+527203966119" target="_blank" aria-label="Número de teléfono" class="hover:scale-110 transition-transform">
+				<span class="text-4xl hover:text-primary duration-300">
+					{<MessageCircle size={36}/>}
+				</span>
+			</a>
+			<a href="mailto:erickm.gonzalez.rivera@gmail.com" target="_blank" aria-label="Correo electrónico" class="hover:scale-110 transition-transform">
+				<span class="hover:text-primary duration-300">
+					{<Mail size={36} />}
+				</span>
+			</a>
+		</div>
+	</div>
 </div>
