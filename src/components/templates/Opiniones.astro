@@ -6,10 +6,10 @@ import type { Testimonial } from '@/interfaces/currentLang.interface';
 
 const data = (await db.select().from(comments).all()) as Testimonial[];
 
-import {Testimonials} from '@/components/features/opinions/Testimonials'
+import { Opinions } from '@/components/features/opinions/Opinions'
 const {currentLocale}  = Astro
 ---
 
 <div class="hero-content mt-16">
-    <Testimonials client:load currentLocale={currentLocale} data={data}/>
+    <Opinions client:load currentLocale={currentLocale} data={data}/>
 </div>

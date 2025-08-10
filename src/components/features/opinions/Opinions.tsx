@@ -48,7 +48,7 @@ const emptyStateVariants = {
   },
 };
 
-export const Testimonials = ({ currentLocale, data }: DataTestimonials) => {
+export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
   const i18n = getI18N({ currentLocale });
 
   return (

@@ -1,13 +1,18 @@
-import { ItemRepositoriosEmpres } from "@/components/features/projects/ItemRepositoriosEmpres";
-import { ItemsRepoRepositorios } from "@/components/features/projects/ItemsRepositorios";
+import {
+  Backend,
+  Companies,
+  DataAnalyst,
+  Frontend,
+} from "@/components/features/projects/index";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
-import { v } from "@/styles/variables";
 
 import { useEffect, useState } from "react";
 
+import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
+
 export const TabsProyectos = ({ currentLocale }: PropsLang) => {
-  const [activeTab, setActiveTab] = useState<string>("proyectos");
+  const [activeTab, setActiveTab] = useState<string>("frontend");
   const [mounted, setMounted] = useState<boolean>(false);
 
   const i18n = getI18N({ currentLocale });
@@ -30,37 +35,85 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
     return <span className="loading loading-ring loading-xl"></span>;
   }
 
+  const getShortText = (text: string, length: number) => {
+    return text.slice(0, length);
+  };
+
   return (
-    <div className="flex flex-col w-full h-1/2 mx-auto p-4">
-      {/* Buttons at the top */}
-      <div className="lg:flex lg:justify-center lg:items-center grid grid-cols-1 gap-4 w-full justify-center sm:justify-start animate__animated animate__fadeIn">
+    <div className="flex flex-col lg:flex-col w-5/6 lg:w-full h-1/2 lg:p-9 md:p-8 p-4">
+      {/* Contenedor de los botones con un ancho fijo */}
+      <div className="flex gap-4">
         <button
-          className={`btn btn-sm sm:w-auto ${activeTab === "proyectos" ? "btn-primary" : "btn-neutral"} text-md lg:text-lg`}
-          onClick={() => setActiveTab("proyectos")}
+          className={`btn rounded-full ${activeTab === "frontend" ? "btn-primary" : "btn-outline"} text-lg`}
+          onClick={() => setActiveTab("frontend")}
         >
-          <span className="text-2xl">
-            {v.iconoProyectos && <v.iconoProyectos />}
+          <span className="sm:inline md:inline lg:inline">
+            <Layout />
           </span>
-          {i18n.PROJECTS.PROJECTS_TITLE}
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText("Frontend", 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">Frontend</span>
         </button>
+
         <button
-          className={`btn btn-sm sm:w-auto ${activeTab === "proyectosEmpres" ? "btn-primary" : "btn-neutral"} text-md lg:text-lg`}
-          onClick={() => setActiveTab("proyectosEmpres")}
+          className={`btn rounded-full ${activeTab === "backend" ? "btn-primary" : "btn-outline"} text-lg`}
+          onClick={() => setActiveTab("backend")}
         >
-          <span className="text-2xl">
-            {v.iconoProyectoEmpresarial && <v.iconoProyectoEmpresarial />}
+          <span className="sm:inline md:inline lg:inline">
+            <HardDrive />
           </span>
-          {i18n.PROJECTS.PROJECTS_TITLE_BUSIN}
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText("Backend", 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">Backend</span>
+        </button>
+
+        <button
+          className={`btn rounded-full ${activeTab === "companies" ? "btn-primary" : "btn-outline"} text-lg`}
+          onClick={() => setActiveTab("companies")}
+        >
+          <span className="sm:inline md:inline lg:inline">
+            <Building />
+          </span>
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText("Empresas", 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">Empresas</span>
+        </button>
+
+        <button
+          className={`btn rounded-full ${activeTab === "dataAnalyst" ? "btn-primary" : "btn-outline"} text-lg`}
+          onClick={() => setActiveTab("dataAnalyst")}
+        >
+          <span className="sm:inline md:inline lg:inline">
+            <ChartArea />
+          </span>
+          {/* Texto para pantallas pequeñas (sm) */}
+          <span className="hidden sm:inline md:hidden lg:hidden">
+            {getShortText("Datos", 5)}
+          </span>
+          {/* Texto completo para pantallas medianas y grandes (md y lg) */}
+          <span className="hidden md:inline lg:inline">Datos</span>
         </button>
       </div>
-
-      {/* Content below */}
-      <div className="pt-4 w-full">
-        {activeTab === "proyectos" && (
-          <ItemsRepoRepositorios currentLocale={currentLocale} />
+      {/* Separador solo visible en pantallas grandes */}
+      <div className="divider divider-vertical lg:divider-vertical"></div>
+      {/* Contenedor del contenido del tab con un ancho flexible */}
+      <div className="flex-1 w-full animate__animated animate__zoomIn">
+        {activeTab === "frontend" && <Frontend currentLocale={currentLocale} />}
+        {activeTab === "backend" && <Backend currentLocale={currentLocale} />}
+        {activeTab === "companies" && (
+          <Companies currentLocale={currentLocale} />
         )}
-        {activeTab === "proyectosEmpres" && (
-          <ItemRepositoriosEmpres currentLocale={currentLocale} />
+        {activeTab === "dataAnalyst" && (
+          <DataAnalyst currentLocale={currentLocale} />
         )}
       </div>
     </div>
