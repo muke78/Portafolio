@@ -1,3 +1,5 @@
+import type { CATEGORIES, LOCALES } from "@/db/projects";
+
 export interface PropsLang {
   currentLocale: string;
 }
@@ -20,25 +22,32 @@ export interface NavbarItem {
   label: string;
 }
 
-export interface Repo {
-  id: string;
+export interface Projects {
+  project_id: number;
+  slug: string;
+  category: (typeof CATEGORIES)[number];
+  card_image: string;
+  images_topics: string;
+  link_repo: string;
+  link_web: string;
+  title_default: string;
+  description_default: string;
+  fork: boolean;
+}
+
+export interface ProjectsTranslations {
+  translate_project_id: number;
+  project_id: number;
+  locale: (typeof LOCALES)[number];
   title: string;
-  description?: string;
-  topics?: string[];
-  link: string;
-  img: string;
-  label: string;
-  type: string;
-  fork?: boolean;
+  description: string;
 }
 
 export interface Testimonial extends FormOpinions {
-  id: number;
+  comment_id: number;
   direction: "left" | "bottom";
 }
 
 export interface DataTestimonials extends PropsLang {
   data: Testimonial[];
 }
-
-export type RepoEmpres = Omit<Repo, "label" | "type">;

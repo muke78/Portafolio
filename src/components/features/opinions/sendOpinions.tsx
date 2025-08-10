@@ -1,4 +1,4 @@
-import { comments } from "@/db/schema";
+import { comments } from "@/db/comments";
 import { getI18N } from "@/i18n";
 import type {
   FormOpinions,
