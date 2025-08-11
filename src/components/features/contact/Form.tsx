@@ -139,7 +139,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
         </ul>
       </div>
 
-      <div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-100 transition-all duration-400 ease-in-out p-5 lg:p-10 md:p-9 sm:p-8">
+      <div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-300 p-5 lg:p-10 md:p-9 sm:p-8">
         <form onSubmit={handleSubmit(onSubmit)} method="POST">
           <div className="grid grid-cols-1 gap-4">
             <div>
@@ -149,7 +149,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                 </legend>
                 <motion.input
                   type="text"
-                  className="input w-full"
+                  className="input w-full bg-base-200"
                   placeholder={i18n.FORM.INPUT_NAME}
                   whileFocus={{ scale: 1.02 }}
                   {...register("name")}
@@ -173,7 +173,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                 </legend>
                 <motion.input
                   type="email"
-                  className="input w-full"
+                  className="input w-full bg-base-200"
                   placeholder={i18n.FORM.INPUT_EMAIL}
                   whileFocus={{ scale: 1.02 }}
                   {...register("email")}
@@ -197,7 +197,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                 </legend>
                 <motion.input
                   type="number"
-                  className="input w-full"
+                  className="input w-full bg-base-200"
                   placeholder={i18n.FORM.INPUT_PHONE}
                   whileFocus={{ scale: 1.02 }}
                   {...register("phone")}
@@ -219,7 +219,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                   {i18n.FORM.INPUT_MORE_INFORMATION}
                 </legend>
                 <motion.textarea
-                  className="textarea h-16 w-full"
+                  className="textarea h-16 w-full bg-base-200"
                   placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
                   whileFocus={{ scale: 1.02 }}
                   {...register("moreInformation")}
