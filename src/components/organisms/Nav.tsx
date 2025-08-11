@@ -22,7 +22,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="font-semibold text-2xl text-base-content/90"
-          href="home"
+          href={`/${currentLocale}/home`}
           aria-label="Inicio del portafolio"
         >
           Khelde.
