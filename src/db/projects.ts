@@ -15,8 +15,8 @@ export const projects = sqliteTable("projects", {
   category: text("category", { enum: CATEGORIES }).notNull(),
   card_image: text("card_image").notNull(),
   images_topics: text("images_topics").notNull(), // Podrías usar JSON.stringify para array
-  link_repo: text("link_repo").notNull(),
-  link_web: text("link_web").notNull(),
+  link_repo: text("link_repo"),
+  link_web: text("link_web"),
   title_default: text("title_default").notNull(),
   description_default: text("description_default").notNull(),
   fork: int("fork", { mode: "boolean" }).notNull(), // true/false directamente
