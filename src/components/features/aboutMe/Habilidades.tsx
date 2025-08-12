@@ -11,7 +11,7 @@ export const Habilidades = ({ currentLocale }: PropsLang) => {
         {i18n.SKILLS.SKILLS_TITLE}
       </span>
 
-      <div className="pr-2 md:pr-4">
+      <div>
         <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 pb-4">
           <ItemDataHabilidades currentLocale={currentLocale} />
         </div>

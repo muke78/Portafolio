@@ -9,20 +9,6 @@
   "ABOUTME": {
     "ABOUT_TITLE": "Acerca de mí",
     "ABOUT_ABOUT_DESCRIPTION": "Soy un desarrollador web especializado en la creación de aplicaciones completas desde el diseño de interfaces hasta la implementación de lógica en el servidor. Tengo experiencia en bases de datos y en el despliegue de aplicaciones, asegurando un rendimiento óptimo y una experiencia de usuario fluida. Además, domino el control de versiones a través de Git y utilizo Power BI para el análisis de datos, lo que me permite tomar decisiones informadas basadas en métricas.",
-    "ABOUT_EXPIRENCE": [
-      {
-        "EXPIRENCE": "Años",
-        "EXPIRENCE_ABOUT": "de experiencia"
-      },
-      {
-        "PROJECTS": "Proyectos",
-        "PROJECTS_ABOUT": "completados"
-      },
-      {
-        "WORKING": "Trabajando",
-        "WORKING_ABOUT": "en compañías"
-      }
-    ],
     "ABOUT_DOWNLOAD_CV": "Ver CV",
     "ABOUT_TITLE_CARD": "Ingeniero en Tecnologías de la Información. Desarrollador Full-Stack.",
     "ABOUT_SUBTITLE": "Autonomo",
@@ -35,10 +21,11 @@
     "EDUCATION_TITLE": "Educación"
   },
   "PROJECTS": {
-    "PROJECTS_TITLE": "Proyectos",
-    "PROJECTS_TITLE_BUSIN": "Proyectos empresariales",
-    "PROJECTS_VIEW": "Ver proyecto",
-    "PROJECTS_MODAL_TITLE": "Galeria de imagenes"
+    "PROJECTS_TITLE_BUTTON_F": "Frontend",
+    "PROJECTS_TITLE_BUTTON_B": "Backend",
+    "PROJECTS_TITLE_BUTTON_C": "Empresas",
+    "PROJECTS_TITLE_BUTTON_D": "Analisis de datos",
+    "PROJECTS_BADGE_FORK": "Colaboración"
   },
   "404": {
     "404_BODY": "¡Ups! La pagina que estas buscando aun no esta en orbita, regresa despues"

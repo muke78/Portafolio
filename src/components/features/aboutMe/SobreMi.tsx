@@ -9,9 +9,14 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
       <span className="font-bold text-5xl"> {i18n.ABOUTME.ABOUT_TITLE}</span>
       <div className="grid grid-cols-1 w-full card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out mt-4 animate__animated animate__zoomIn">
         <img
-          className="rounded-t-lg w-full"
+          className="rounded-t-lg"
           src="/Aboutme.webp"
           alt="Acerca de mí"
+          style={{
+            width: "1918px",
+            height: "400px",
+            objectFit: "cover",
+          }}
         />
         <div className="p-5">
           <div className="flex justify-between">

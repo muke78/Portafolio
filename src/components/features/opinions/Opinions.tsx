@@ -225,7 +225,7 @@ export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
                 </div>
 
                 {/* Contenido */}
-                <p className="text-base-content/70 leading-relaxed text-sm line-clamp-6 mb-4">
+                <p className="text-base-content/70 text-justify leading-relaxed text-sm">
                   {testimonial.description}
                 </p>
 

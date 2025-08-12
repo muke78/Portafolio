@@ -11,7 +11,7 @@ export const Experiencia = ({ currentLocale }: PropsLang) => {
         {i18n.ABOUTME.EXPERIENCE}
       </span>
 
-      <div className="pr-2 md:pr-4">
+      <div>
         <div className="flex flex-col gap-4 pt-4">
           <ItemDataExperiencia currentLocale={currentLocale} />
         </div>

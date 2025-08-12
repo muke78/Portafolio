@@ -58,4 +58,5 @@ export interface UseDataProjects extends PropsLang {
 
 export interface PropsLangWithData extends PropsLang {
   data: Projects[] | null;
+  loading: boolean;
 }

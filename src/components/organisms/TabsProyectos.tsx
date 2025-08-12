@@ -16,6 +16,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
   const [activeTab, setActiveTab] = useState<string>("frontend");
   const [mounted, setMounted] = useState<boolean>(false);
   const [data, setData] = useState<Projects[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const i18n = getI18N({ currentLocale });
 
@@ -35,8 +36,10 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const result = await useDataProjects({ currentLocale, activeTab });
       setData(result.rows as Projects[]);
+      setLoading(false);
     }
     fetchData();
   }, [currentLocale, activeTab]);
@@ -62,10 +65,12 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
           </span>
           {/* Texto para pantallas pequeñas (sm) */}
           <span className="hidden sm:inline md:hidden lg:hidden">
-            {getShortText("Frontend", 5)}
+            {getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F, 5)}
           </span>
           {/* Texto completo para pantallas medianas y grandes (md y lg) */}
-          <span className="hidden md:inline lg:inline">Frontend</span>
+          <span className="hidden md:inline lg:inline">
+            {i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F}
+          </span>
         </button>
 
         <button
@@ -77,10 +82,12 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
           </span>
           {/* Texto para pantallas pequeñas (sm) */}
           <span className="hidden sm:inline md:hidden lg:hidden">
-            {getShortText("Backend", 5)}
+            {getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B, 5)}
           </span>
           {/* Texto completo para pantallas medianas y grandes (md y lg) */}
-          <span className="hidden md:inline lg:inline">Backend</span>
+          <span className="hidden md:inline lg:inline">
+            {i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B}
+          </span>
         </button>
 
         <button
@@ -92,10 +99,12 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
           </span>
           {/* Texto para pantallas pequeñas (sm) */}
           <span className="hidden sm:inline md:hidden lg:hidden">
-            {getShortText("Empresas", 5)}
+            {getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C, 5)}
           </span>
           {/* Texto completo para pantallas medianas y grandes (md y lg) */}
-          <span className="hidden md:inline lg:inline">Empresas</span>
+          <span className="hidden md:inline lg:inline">
+            {i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C}
+          </span>
         </button>
 
         <button
@@ -107,10 +116,12 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
           </span>
           {/* Texto para pantallas pequeñas (sm) */}
           <span className="hidden sm:inline md:hidden lg:hidden">
-            {getShortText("Datos", 5)}
+            {getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D, 5)}
           </span>
           {/* Texto completo para pantallas medianas y grandes (md y lg) */}
-          <span className="hidden md:inline lg:inline">Datos</span>
+          <span className="hidden md:inline lg:inline">
+            {i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D}
+          </span>
         </button>
       </div>
       {/* Separador solo visible en pantallas grandes */}
@@ -118,16 +129,32 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       {/* Contenedor del contenido del tab con un ancho flexible */}
       <div className="flex-1 w-full animate__animated animate__zoomIn">
         {activeTab === "frontend" && (
-          <Frontend currentLocale={currentLocale} data={data} />
+          <Frontend
+            currentLocale={currentLocale}
+            data={data}
+            loading={loading}
+          />
         )}
         {activeTab === "backend" && (
-          <Backend currentLocale={currentLocale} data={data} />
+          <Backend
+            currentLocale={currentLocale}
+            data={data}
+            loading={loading}
+          />
         )}
         {activeTab === "companies" && (
-          <Companies currentLocale={currentLocale} data={data} />
+          <Companies
+            currentLocale={currentLocale}
+            data={data}
+            loading={loading}
+          />
         )}
         {activeTab === "dataAnalyst" && (
-          <DataAnalyst currentLocale={currentLocale} data={data} />
+          <DataAnalyst
+            currentLocale={currentLocale}
+            data={data}
+            loading={loading}
+          />
         )}
       </div>
     </div>
