@@ -219,12 +219,8 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
                 {/* Header con Quote */}
                 <div className="flex items-start gap-4 mb-5">
                   <motion.div
-                    className="flex-shrink-0 p-2.5"
-                    whileHover={{
-                      rotate: 15,
-                      scale: 1.1,
-                    }}
-                    transition={{ duration: 0.2 }}
+                    className="flex-shrink-0 p-2.5 group-hover:scale-[1.2] group-hover:rotate-12 transition-all duration-300 ease-in-out"
+                    transition={{ duration: 0.9 }}
                   >
                     <Quote className="w-10 h-10 text-secondary" />
                   </motion.div>

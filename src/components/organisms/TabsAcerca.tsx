@@ -38,9 +38,9 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-col w-5/6 lg:w-full h-1/2">
+    <div className="flex flex-col lg:flex-col lg:w-full h-1/2">
       {/* Contenedor de los botones con un ancho fijo */}
-      <div className="flex gap-4">
+      <div className="hero-content">
         <button
           className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "sobreMi" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("sobreMi")}
