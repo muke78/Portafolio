@@ -188,7 +188,7 @@ export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
           <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
             {data.map((testimonial, index) => (
               <motion.div
-                key={testimonial.id}
+                key={testimonial.comment_id}
                 variants={
                   cardVariants[
                     testimonial.direction as keyof typeof cardVariants
@@ -196,22 +196,22 @@ export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
                 }
                 whileHover={{
                   y: -8,
-                  scale: 1.02,
+                  scale: 1.03,
                   transition: { duration: 0.3, ease: "easeOut" },
                 }}
-                className="group relative break-inside-avoid bg-base-100 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 mb-6 border border-base-300/50 backdrop-blur-sm"
+                className="group relative break-inside-avoid card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent p-6 mb-6 "
               >
                 {/* Header con Quote */}
                 <div className="flex items-start gap-4 mb-5">
                   <motion.div
-                    className="flex-shrink-0 p-2.5 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/10 border border-secondary/20"
+                    className="flex-shrink-0 p-2.5"
                     whileHover={{
                       rotate: 15,
                       scale: 1.1,
                     }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Quote className="w-5 h-5 text-secondary" />
+                    <Quote className="w-10 h-10 text-secondary" />
                   </motion.div>
 
                   <div className="flex-1 min-w-0">
@@ -231,7 +231,7 @@ export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
 
                 {/* Indicador animado */}
                 <motion.div
-                  className="absolute bottom-0 left-6 right-6 h-0.5 bg-gradient-to-r from-secondary via-primary to-secondary rounded-full origin-center"
+                  className="absolute bottom-0 left-6 right-6 h-0.5"
                   initial={{ scaleX: 0, opacity: 0 }}
                   whileHover={{
                     scaleX: 1,
@@ -245,12 +245,9 @@ export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
 
                 {/* Efecto de brillo sutil */}
                 <motion.div
-                  className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/10 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  className="absolute inset-0 rounded-xl pointer-events-none"
                   initial={false}
                 />
-
-                {/* Borde decorativo */}
-                <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-primary/20 transition-colors duration-300" />
               </motion.div>
             ))}
           </div>

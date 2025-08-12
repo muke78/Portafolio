@@ -4,8 +4,9 @@ import {
   DataAnalyst,
   Frontend,
 } from "@/components/features/projects/index";
+import { useDataProjects } from "@/hooks/useDataProjects";
 import { getI18N } from "@/i18n";
-import type { PropsLang } from "@/interfaces/currentLang.interface";
+import type { Projects, PropsLang } from "@/interfaces/currentLang.interface";
 
 import { useEffect, useState } from "react";
 
@@ -14,6 +15,7 @@ import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
 export const TabsProyectos = ({ currentLocale }: PropsLang) => {
   const [activeTab, setActiveTab] = useState<string>("frontend");
   const [mounted, setMounted] = useState<boolean>(false);
+  const [data, setData] = useState<Projects[]>([]);
 
   const i18n = getI18N({ currentLocale });
 
@@ -30,6 +32,14 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       localStorage.setItem("activeProjectTab", activeTab);
     }
   }, [activeTab, mounted]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await useDataProjects({ currentLocale, activeTab });
+      setData(result.rows as Projects[]);
+    }
+    fetchData();
+  }, [currentLocale, activeTab]);
 
   if (!mounted) {
     return <span className="loading loading-ring loading-xl"></span>;
@@ -107,13 +117,17 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       <div className="divider divider-vertical lg:divider-vertical"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
       <div className="flex-1 w-full animate__animated animate__zoomIn">
-        {activeTab === "frontend" && <Frontend currentLocale={currentLocale} />}
-        {activeTab === "backend" && <Backend currentLocale={currentLocale} />}
+        {activeTab === "frontend" && (
+          <Frontend currentLocale={currentLocale} data={data} />
+        )}
+        {activeTab === "backend" && (
+          <Backend currentLocale={currentLocale} data={data} />
+        )}
         {activeTab === "companies" && (
-          <Companies currentLocale={currentLocale} />
+          <Companies currentLocale={currentLocale} data={data} />
         )}
         {activeTab === "dataAnalyst" && (
-          <DataAnalyst currentLocale={currentLocale} />
+          <DataAnalyst currentLocale={currentLocale} data={data} />
         )}
       </div>
     </div>

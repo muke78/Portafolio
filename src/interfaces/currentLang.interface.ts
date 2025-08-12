@@ -27,11 +27,11 @@ export interface Projects {
   slug: string;
   category: (typeof CATEGORIES)[number];
   card_image: string;
-  images_topics: string;
+  images_topics: string[];
   link_repo: string;
   link_web: string;
-  title_default: string;
-  description_default: string;
+  title: string;
+  description: string;
   fork: boolean;
 }
 
@@ -50,4 +50,12 @@ export interface Testimonial extends FormOpinions {
 
 export interface DataTestimonials extends PropsLang {
   data: Testimonial[];
+}
+
+export interface UseDataProjects extends PropsLang {
+  activeTab: string;
+}
+
+export interface PropsLangWithData extends PropsLang {
+  data: Projects[] | null;
 }

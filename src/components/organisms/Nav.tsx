@@ -29,7 +29,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
         </motion.a>
 
         {/* Navegación Desktop */}
-        <div className="hidden min-[900px]:flex items-center space-x-8">
+        <div className="hidden min-[1000px]:flex items-center space-x-8">
           <ul className="flex items-center space-x-8">
             <ItemsNav currentLocale={currentLocale} />
           </ul>
@@ -42,7 +42,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
         </div>
 
         {/* Controles Mobile */}
-        <div className="min-[900px]:hidden flex items-center space-x-3">
+        <div className="min-[1000px]:hidden flex items-center space-x-3">
           <LangDrop currentLocale={currentLocale} />
           <ThemeDrop />
 
