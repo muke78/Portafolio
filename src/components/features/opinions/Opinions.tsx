@@ -1,5 +1,11 @@
+import { useDataComments } from "@/hooks/useDataComments";
 import { getI18N } from "@/i18n";
-import type { DataTestimonials } from "@/interfaces/currentLang.interface";
+import type {
+  PropsLang,
+  Testimonial,
+} from "@/interfaces/currentLang.interface";
+
+import { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
@@ -48,11 +54,20 @@ const emptyStateVariants = {
   },
 };
 
-export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
+export const Opinions = ({ currentLocale }: PropsLang) => {
+  const [data, setData] = useState<Testimonial[]>([]);
   const i18n = getI18N({ currentLocale });
 
+  useEffect(() => {
+    async function fetchData() {
+      const result = await useDataComments();
+      setData(result.rows as Testimonial[]);
+    }
+    fetchData();
+  }, [currentLocale]);
+
   return (
-    <div className="relative max-w-full overflow-hidden lg:p-9 md:p-8 p-4">
+    <div className="relative max-w-full overflow-hidden ">
       {/* Header Section */}
       <motion.div
         className="flex flex-col text-center mb-12"
@@ -61,12 +76,12 @@ export const Opinions = ({ currentLocale, data }: DataTestimonials) => {
         transition={{ duration: 0.6 }}
       >
         <motion.div
-          className="inline-block px-4 py-2 bg-primary/20 text-primary text-sm font-medium rounded-full mb-6 mx-auto backdrop-blur-sm border border-primary/20"
+          className="inline-block lg:px-4 lg:py-2 px-1 py-1 bg-primary/5 text-primary text-sm font-medium rounded-full mb-6 mx-auto backdrop-blur-sm border border-primary/20"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5, ease: "backOut" }}
         >
-          {i18n.OPINIONS.OPINIONS_SUBTITLE}
+          <p className="break-all">{i18n.OPINIONS.OPINIONS_SUBTITLE}</p>
         </motion.div>
 
         <motion.h2

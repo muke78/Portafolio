@@ -48,10 +48,6 @@ export interface Testimonial extends FormOpinions {
   direction: "left" | "bottom";
 }
 
-export interface DataTestimonials extends PropsLang {
-  data: Testimonial[];
-}
-
 export interface UseDataProjects extends PropsLang {
   activeTab: string;
 }

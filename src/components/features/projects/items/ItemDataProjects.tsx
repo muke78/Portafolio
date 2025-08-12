@@ -1,7 +1,7 @@
 import { getI18N } from "@/i18n";
 import type { PropsLangWithData } from "@/interfaces/currentLang.interface";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Github, Globe } from "lucide-react";
 
@@ -12,21 +12,20 @@ export const ItemDataProjects = ({
 }: PropsLangWithData) => {
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const i18n = getI18N({ currentLocale });
-  const memorization = useMemo(() => data, [data]);
 
   // Detectamos si está cargando (data no existe o está vacía)
   const isLoading = loading;
 
-  const handleImageLoad = (tech: string) => {
+  const handleImageLoad = useCallback((tech: string) => {
     setLoadedImages((prev) => ({ ...prev, [tech]: true }));
-  };
+  }, []);
 
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
       {isLoading ? (
         <span className="loading loading-ring loading-xl"></span>
       ) : (
-        memorization.map(
+        data.map(
           ({
             project_id,
             slug,

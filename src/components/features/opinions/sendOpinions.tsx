@@ -49,7 +49,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
         direction,
       });
     } catch (error) {
-      console.error("Funciona ptm", error);
+      console.error("Error", error);
     }
 
     setIsLoading(false);

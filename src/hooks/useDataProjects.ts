@@ -8,7 +8,6 @@ export const useDataProjects = async ({
   currentLocale,
   activeTab,
 }: UseDataProjects) => {
-  console.log(activeTab);
   const rows = await db
     .select({
       project_id: projects.project_id,
