@@ -1,10 +1,10 @@
+import { useDataProjects } from "@/api/apiDataProjects";
 import {
   Backend,
   Companies,
   DataAnalyst,
   Frontend,
 } from "@/components/features/projects/index";
-import { useDataProjects } from "@/hooks/useDataProjects";
 import { getI18N } from "@/i18n";
 import type { Projects, PropsLang } from "@/interfaces/currentLang.interface";
 
@@ -127,7 +127,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       {/* Separador solo visible en pantallas grandes */}
       <div className="divider divider-vertical lg:divider-vertical"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
-      <div className="flex-1 w-full animate__animated animate__zoomIn">
+      <div className="flex-1 w-full ">
         {activeTab === "frontend" && (
           <Frontend
             currentLocale={currentLocale}

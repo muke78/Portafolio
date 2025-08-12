@@ -1,4 +1,4 @@
-import { useDataComments } from "@/hooks/useDataComments";
+import { useDataComments } from "@/api/apiDataComments";
 import { getI18N } from "@/i18n";
 import type {
   PropsLang,
@@ -67,7 +67,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
   }, [currentLocale]);
 
   return (
-    <div className="relative max-w-full overflow-hidden ">
+    <div className="relative w-full overflow-hidden lg:p-9 md:p-8 p-4">
       {/* Header Section */}
       <motion.div
         className="flex flex-col text-center mb-12"
@@ -76,12 +76,12 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
         transition={{ duration: 0.6 }}
       >
         <motion.div
-          className="inline-block lg:px-4 lg:py-2 px-1 py-1 bg-primary/5 text-primary text-sm font-medium rounded-full mb-6 mx-auto backdrop-blur-sm border border-primary/20"
+          className="inline-block px-4 py-2 bg-primary/20 text-primary text-sm font-medium rounded-full mb-6 mx-auto backdrop-blur-sm border border-primary/20"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5, ease: "backOut" }}
         >
-          <p className="break-all">{i18n.OPINIONS.OPINIONS_SUBTITLE}</p>
+          {i18n.OPINIONS.OPINIONS_SUBTITLE}
         </motion.div>
 
         <motion.h2
@@ -200,7 +200,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
           </motion.div>
         ) : (
           // Grid de testimonios mejorado
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {data.map((testimonial, index) => (
               <motion.div
                 key={testimonial.comment_id}
@@ -214,7 +214,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
                   scale: 1.03,
                   transition: { duration: 0.3, ease: "easeOut" },
                 }}
-                className="group relative break-inside-avoid card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent p-6 mb-6 "
+                className="group relative break-inside-avoid card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent p-4"
               >
                 {/* Header con Quote */}
                 <div className="flex items-start gap-4 mb-5">
@@ -230,7 +230,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
                   </motion.div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-base-content text-lg leading-tight mb-1 truncate">
+                    <h3 className="font-semibold text-base-content text-lg leading-tight mb-2 truncate">
                       {testimonial.name}
                     </h3>
                     <p className="text-sm text-base-content/70 font-medium">
@@ -240,7 +240,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
                 </div>
 
                 {/* Contenido */}
-                <p className="text-base-content/70 text-justify leading-relaxed text-sm">
+                <p className="text-base-content/70 break-words leading-relaxed text-sm m-2">
                   {testimonial.description}
                 </p>
 
