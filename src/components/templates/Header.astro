@@ -21,14 +21,14 @@ const i18n = getI18N({ currentLocale });
 		</div>
 	</div>
 	<div class="flex flex-col justify-evenly lg:p-9 md:p-8 p-4 animate__animated animate__zoomIn">
-		<span class="text-3xl lg:text-4xl font-light block text-center md:text-center lg:text-start">{i18n.HEADER.HEADER_SUBTITLE}</span>
-		<h1 class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl font-bold text-nowrap text-center md:text-center lg:text-start"> {i18n.HEADER.HEADER_TITLE} </h1>
-		<span class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl text-center md:text-center lg:text-start leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent"> {i18n.HEADER.HEADER_NAME} </span>
-		<p class="text-base xl:text-xl lg:text-lg font-semibold text-base-content text-center md:text-center lg:text-start my-8"> {i18n.HEADER.HEADER_ABOUT} </p>
+		<span class="text-3xl lg:text-4xl font-light block text-center md:text-center lg:text-start px-4 lg:p-0">{i18n.HEADER.HEADER_SUBTITLE}</span>
+		<h1 class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl font-bold text-nowrap text-center md:text-center lg:text-start px-4 lg:p-0"> {i18n.HEADER.HEADER_TITLE} </h1>
+		<span class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl text-center md:text-center lg:text-start leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent px-4 lg:p-0"> {i18n.HEADER.HEADER_NAME} </span>
+		<p class="text-base xl:text-xl lg:text-lg font-semibold text-base-content text-center md:text-center lg:text-start px-4 lg:p-0 my-8"> {i18n.HEADER.HEADER_ABOUT} </p>
 		<!-- Botones -->
-		<div class="flex flex-col md:flex-row justify-center items-center md:justify-around gap-2 mt-2">
+		<div class="flex flex-col md:flex-row justify-center items-center md:justify-around gap-2 px-4 lg:p-0 mt-2">
 			<div class="flex justify-center items-center w-full md:w-1/2">
-				<a href={`/${currentLocale}/projects`} class="btn btn-primary lg:text-lg md:text-base w-full"> {i18n.HEADER.HEADER_BUTTON} <span> {
+				<a href={`/${currentLocale}/home#projects`} class="btn btn-primary lg:text-lg md:text-base w-full"> {i18n.HEADER.HEADER_BUTTON} <span> {
 						<MoveRight size={22} />}
 					</span>
 				</a>
@@ -40,7 +40,8 @@ const i18n = getI18N({ currentLocale });
 				</a>
 			</div>
 		</div>
-		<div class="flex justify-center md:justify-center lg:justify-start mt-4 gap-4">
+		
+		<div class="flex justify-center md:justify-center lg:justify-start mt-4 gap-4 px-4 lg:p-0">
 			<a href="https://github.com/muke78" target="_blank" aria-label="Saber mas acerca de mis repositorios y lo que he hecho" class="hover:scale-110 transition-transform">
 				<span class="hover:text-primary">{
 					<Github size={36} />}

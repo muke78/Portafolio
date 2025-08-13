@@ -53,7 +53,7 @@
     "OPINIONS_LOAD_SEND_INFORMATION": "Envoi en cours...",
     "OPINIONS_SEND_INFORMATION": "Envoyer un commentaire",
 
-    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "L'expérience doit comporter plus de 7 caractères",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "L'expérience doit comporter plus de 14 caractères",
     "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, seulement 500 caractères autorisés",
 
     "OPINIONS_SEND_SUCCESSFULL": "Merci pour votre commentaire !",

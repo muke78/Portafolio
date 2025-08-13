@@ -38,9 +38,9 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-col lg:w-full h-1/2">
+    <div className="flex flex-col lg:flex-col lg:w-full">
       {/* Contenedor de los botones con un ancho fijo */}
-      <div className="hero-content">
+      <div className="flex justify-center items-center lg:justify-start lg:items-start md:justify-start md:items-start gap-4">
         <button
           className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "sobreMi" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("sobreMi")}
@@ -114,7 +114,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
       {/* Separador solo visible en pantallas grandes */}
       <div className="divider divider-vertical lg:divider-vertical"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
-      <div className="flex-1 w-full animate__animated animate__zoomIn">
+      <div className="flex-1 w-full hero-content animate__animated animate__zoomIn">
         {activeTab === "experiencia" && (
           <Experiencia currentLocale={currentLocale} />
         )}

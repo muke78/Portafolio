@@ -44,7 +44,7 @@
     "OPINIONS_NOT_FOUND_DESCRIPTION": "Upps! aun no hay nada por aqui ni nada por alla, pronto veras algo aquí",
 
     "OPINIONS_FORM_TITLE": " Escribe una opinión",
-    "OPINIONS_FORM_SUBTITLE": "Puedes compartir una experiencia que hayas tenido trabajando conmigo, tu opinión sobre mi trabajo o incluso algún detalle que consideres importante mencionar, ¡me ayudaria mucho a seguir creciendo como desarrollador!",
+    "OPINIONS_FORM_SUBTITLE": "Puedes compartir una experiencia que hayas tenido trabajando conmigo, tu opinión sobre mi trabajo",
 
     "OPINIONS_FORM_NAME_PLACEHOLDER": "Tu nombre completo",
     "OPINIONS_FORM_JOB_PLACEHOLDER": "Ej: Desarrollador Frontend",
@@ -53,7 +53,7 @@
     "OPINIONS_LOAD_SEND_INFORMATION": "Enviando...",
     "OPINIONS_SEND_INFORMATION": "Enviar comentario",
 
-    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "La experiencia debe ser mas grande de 7 caracteres",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "La experiencia debe ser mas grande de 14 caracteres",
     "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Limite de caracteres alcanzado, solo se permiten 500 caracteres",
 
     "OPINIONS_SEND_SUCCESSFULL": " ¡Gracias por tu comentario!",

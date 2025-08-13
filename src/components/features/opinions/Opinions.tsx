@@ -67,10 +67,10 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
   }, [currentLocale]);
 
   return (
-    <div className="relative w-full overflow-hidden lg:p-9 md:p-8 p-4">
+    <div className="relative w-full overflow-hidden p-4">
       {/* Header Section */}
       <motion.div
-        className="flex flex-col text-center mb-12"
+        className="flex flex-col text-center mb-12 p-4"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -200,7 +200,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
           </motion.div>
         ) : (
           // Grid de testimonios mejorado
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-4 p-4">
             {data.map((testimonial, index) => (
               <motion.div
                 key={testimonial.comment_id}

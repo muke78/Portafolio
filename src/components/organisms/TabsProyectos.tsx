@@ -52,10 +52,64 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
     return text.slice(0, length);
   };
 
+  const SkeletonCard = () => (
+    <div className="w-full">
+      <div className="card w-full bg-base-100 shadow-sm border border-transparent animate-pulse">
+        {/* Figure skeleton - mismo tamaño que las imágenes reales */}
+        <figure className="relative overflow-hidden">
+          <div className="w-full h-48 bg-base-300"></div>
+          {/* Botones skeleton en las mismas posiciones */}
+          <div className="absolute right-12 top-2 p-2">
+            <div className="btn btn-sm bg-base-300 border-0">
+              <div className="w-[30px] h-[30px] bg-base-content/20 rounded"></div>
+            </div>
+          </div>
+          <div className="absolute right-0 top-2 p-2">
+            <div className="btn btn-sm bg-base-300 border-0">
+              <div className="w-[30px] h-[30px] bg-base-content/20 rounded"></div>
+            </div>
+          </div>
+        </figure>
+
+        {/* Card body skeleton */}
+        <div className="card-body">
+          {/* Título y badge skeleton */}
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex items-center gap-2">
+              <div className="h-6 bg-base-300 rounded w-32"></div>
+              <div className="badge bg-base-300 border-0 h-5 w-20"></div>
+            </div>
+          </div>
+
+          {/* Descripción skeleton - 3 líneas como el contenido real */}
+          <div className="space-y-2 mb-4">
+            <div className="h-4 bg-base-300 rounded w-full"></div>
+            <div className="h-4 bg-base-300 rounded w-4/5"></div>
+            <div className="h-4 bg-base-300 rounded w-3/5"></div>
+          </div>
+
+          {/* Card actions skeleton */}
+          <div className="card-actions justify-start">
+            <div className="avatar-group -space-x-3">
+              {[...Array(5)].map((_, idx) => (
+                <div key={idx} className="avatar">
+                  <div className="w-8 h-8 bg-base-300 rounded-full"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Para skeletons, simulamos 3 cards de carga
+  const skeletonItems = Array(3).fill(null);
+
   return (
-    <div className="flex flex-col lg:flex-col lg:w-full h-1/2">
+    <div className="flex flex-col lg:flex-col lg:w-full">
       {/* Contenedor de los botones con un ancho fijo */}
-      <div className="hero-content">
+      <div className="flex justify-center items-center lg:justify-start lg:items-start md:justify-start md:items-start gap-4">
         <button
           className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "frontend" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
           onClick={() => setActiveTab("frontend")}
@@ -127,34 +181,24 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       {/* Separador solo visible en pantallas grandes */}
       <div className="divider divider-vertical lg:divider-vertical"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
-      <div className="flex-1 w-full ">
-        {activeTab === "frontend" && (
-          <Frontend
-            currentLocale={currentLocale}
-            data={data}
-            loading={loading}
-          />
-        )}
-        {activeTab === "backend" && (
-          <Backend
-            currentLocale={currentLocale}
-            data={data}
-            loading={loading}
-          />
-        )}
-        {activeTab === "companies" && (
-          <Companies
-            currentLocale={currentLocale}
-            data={data}
-            loading={loading}
-          />
-        )}
-        {activeTab === "dataAnalyst" && (
-          <DataAnalyst
-            currentLocale={currentLocale}
-            data={data}
-            loading={loading}
-          />
+      <div className="flex-1 w-full hero-content">
+        {loading ? (
+          skeletonItems.map((_, i) => <SkeletonCard key={i} />)
+        ) : (
+          <>
+            {activeTab === "frontend" && (
+              <Frontend currentLocale={currentLocale} data={data} />
+            )}
+            {activeTab === "backend" && (
+              <Backend currentLocale={currentLocale} data={data} />
+            )}
+            {activeTab === "companies" && (
+              <Companies currentLocale={currentLocale} data={data} />
+            )}
+            {activeTab === "dataAnalyst" && (
+              <DataAnalyst currentLocale={currentLocale} data={data} />
+            )}
+          </>
         )}
       </div>
     </div>

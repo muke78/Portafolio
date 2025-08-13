@@ -9,13 +9,13 @@ export const Backend = ({
 }: PropsLangWithData) => {
   const i18n = getI18N({ currentLocale });
   return (
-    <div className="w-full flex flex-col animate__animated animate__zoomIn">
+    <div className="w-full flex flex-col ">
       <span className="font-bold text-5xl">
         {i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B}
       </span>
 
       <div>
-        <div className="flex flex-col gap-4 pt-4">
+        <div className="flex flex-col hero-content gap-4 pt-4 animate__animated animate__zoomIn">
           <ItemDataProjects
             currentLocale={currentLocale}
             data={data}

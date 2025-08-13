@@ -53,7 +53,7 @@
     "OPINIONS_LOAD_SEND_INFORMATION": "Sending...",
     "OPINIONS_SEND_INFORMATION": "Send comment",
 
-    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "Experience must be longer than 7 characters",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "Experience must be longer than 14 characters",
     "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Character limit reached, only 500 characters allowed",
 
     "OPINIONS_SEND_SUCCESSFULL": "Thank you for your comment!",

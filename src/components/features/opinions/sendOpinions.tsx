@@ -1,12 +1,10 @@
 import { useDataPostComments } from "@/api/apiDataComments";
 import { SubmittedOpinion } from "@/components/features/opinions/SubmittedOpinion";
-import { comments } from "@/db/comments";
 import { getI18N } from "@/i18n";
 import type {
   FormOpinions,
   PropsLang,
 } from "@/interfaces/currentLang.interface";
-import { db } from "@/lib/db";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
 
 import { useState } from "react";
@@ -70,7 +68,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 lg:w-3xl md:w-2xl sm:w-xl">
+    <div className="min-h-screen flex items-center justify-center overflow-scroll lg:overflow-hidden p-4 lg:w-3xl md:w-2xl sm:w-xl">
       <motion.div
         className="w-full max-w"
         variants={containerVariants}
@@ -118,7 +116,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 <motion.input
                   type="text"
                   placeholder={i18n.OPINIONS.OPINIONS_FORM_NAME_PLACEHOLDER}
-                  className="input input-lg w-full"
+                  className="input lg:input-lg input-md w-full"
                   whileFocus={{ scale: 1.02 }}
                   {...register("name")}
                 />
@@ -145,7 +143,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 <motion.input
                   type="text"
                   placeholder={i18n.OPINIONS.OPINIONS_FORM_JOB_PLACEHOLDER}
-                  className="input input-lg w-full"
+                  className="input lg:input-lg input-md w-full"
                   whileFocus={{ scale: 1.02 }}
                   {...register("job")}
                 />
@@ -170,7 +168,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 <motion.textarea
                   rows={4}
                   placeholder={i18n.OPINIONS.OPINIONS_FORM_EXP_PLACEHOLDER}
-                  className="textarea textarea-lg w-full"
+                  className="textarea lg:textarea-lg textarea-md w-full"
                   whileFocus={{ scale: 1.02 }}
                   {...register("description")}
                 />
@@ -190,7 +188,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 type="submit"
                 disabled={isLoading}
                 variants={itemVariants}
-                className="btn btn-xl bg-gradient-to-r from-primary via-secondary/70 to-accent text-base-200 btn-wide max-w-full mt-2"
+                className="btn xl:btn-xl lg:btn-lg btn-md bg-gradient-to-r from-primary via-secondary/70 to-accent text-base-200 btn-wide max-w-full"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
