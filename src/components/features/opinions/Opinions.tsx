@@ -193,7 +193,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
               <h3 className="text-2xl font-semibold text-base-content/80 mb-3">
                 {i18n.OPINIONS.OPINIONS_NOT_FOUND}
               </h3>
-              <p className="text-sm text-primary/60 leading-relaxed">
+              <p className="text-sm text-primary/90 leading-relaxed">
                 {i18n.OPINIONS.OPINIONS_NOT_FOUND_DESCRIPTION}
               </p>
             </motion.div>

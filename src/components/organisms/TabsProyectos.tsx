@@ -5,6 +5,7 @@ import {
   DataAnalyst,
   Frontend,
 } from "@/components/features/projects/index";
+import { SkeletonProjectsCard } from "@/components/features/projects/items/SkeletonProjectsCard";
 import { getI18N } from "@/i18n";
 import type { Projects, PropsLang } from "@/interfaces/currentLang.interface";
 
@@ -17,6 +18,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [data, setData] = useState<Projects[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [previousDataLength, setPreviousDataLength] = useState<number>(0);
 
   const i18n = getI18N({ currentLocale });
 
@@ -39,7 +41,16 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       setLoading(true);
       const result = await useDataProjects({ currentLocale, activeTab });
       setData(result.rows as Projects[]);
-      setLoading(false);
+
+      if (data.length > 0) {
+        setPreviousDataLength(data.length);
+      }
+
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
     }
     fetchData();
   }, [currentLocale, activeTab]);
@@ -52,59 +63,29 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
     return text.slice(0, length);
   };
 
-  const SkeletonCard = () => (
-    <div className="w-full">
-      <div className="card w-full bg-base-100 shadow-sm border border-transparent animate-pulse">
-        {/* Figure skeleton - mismo tamaño que las imágenes reales */}
-        <figure className="relative overflow-hidden">
-          <div className="w-full h-48 bg-base-300"></div>
-          {/* Botones skeleton en las mismas posiciones */}
-          <div className="absolute right-12 top-2 p-2">
-            <div className="btn btn-sm bg-base-300 border-0">
-              <div className="w-[30px] h-[30px] bg-base-content/20 rounded"></div>
-            </div>
-          </div>
-          <div className="absolute right-0 top-2 p-2">
-            <div className="btn btn-sm bg-base-300 border-0">
-              <div className="w-[30px] h-[30px] bg-base-content/20 rounded"></div>
-            </div>
-          </div>
-        </figure>
+  // Determinamos cuántos skeletons mostrar basado en la data
+  const getSkeletonCount = () => {
+    // Si hay data previa, usamos esa longitud
+    if (previousDataLength > 0) {
+      return previousDataLength;
+    }
+    // Si no hay data previa, usamos un número por defecto según el tab
+    switch (activeTab) {
+      case "frontend":
+        return 7;
+      case "backend":
+        return 9;
+      case "companies":
+        return 3;
+      case "dataAnalyst":
+        return 2;
+      default:
+        return 3;
+    }
+  };
 
-        {/* Card body skeleton */}
-        <div className="card-body">
-          {/* Título y badge skeleton */}
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex items-center gap-2">
-              <div className="h-6 bg-base-300 rounded w-32"></div>
-              <div className="badge bg-base-300 border-0 h-5 w-20"></div>
-            </div>
-          </div>
-
-          {/* Descripción skeleton - 3 líneas como el contenido real */}
-          <div className="space-y-2 mb-4">
-            <div className="h-4 bg-base-300 rounded w-full"></div>
-            <div className="h-4 bg-base-300 rounded w-4/5"></div>
-            <div className="h-4 bg-base-300 rounded w-3/5"></div>
-          </div>
-
-          {/* Card actions skeleton */}
-          <div className="card-actions justify-start">
-            <div className="avatar-group -space-x-3">
-              {[...Array(5)].map((_, idx) => (
-                <div key={idx} className="avatar">
-                  <div className="w-8 h-8 bg-base-300 rounded-full"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  // Para skeletons, simulamos 3 cards de carga
-  const skeletonItems = Array(3).fill(null);
+  const skeletonCount = getSkeletonCount();
+  const skeletonItems = Array(skeletonCount).fill(null);
 
   return (
     <div className="flex flex-col lg:flex-col lg:w-full">
@@ -181,9 +162,13 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       {/* Separador solo visible en pantallas grandes */}
       <div className="divider divider-vertical lg:divider-vertical"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
-      <div className="flex-1 w-full hero-content">
+      <div className="flex-1 w-full p-4">
         {loading ? (
-          skeletonItems.map((_, i) => <SkeletonCard key={i} />)
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 lg:gap-6 p-2 xs:p-4 sm:p-6">
+            {skeletonItems.map((_, i) => (
+              <SkeletonProjectsCard key={i} />
+            ))}
+          </div>
         ) : (
           <>
             {activeTab === "frontend" && (

@@ -5,9 +5,12 @@ import compress from "astro-compress";
 import { defineConfig, envField } from "astro/config";
 
 export default defineConfig({
-  site: "https://khelde.vercel.app/es/home",
+  site: "https://khelde.vercel.app",
   integrations: [
-    react(),
+    react({
+      include: ["**/react/*", "**/components/**/*"],
+      experimentalReactChildren: false,
+    }),
     sitemap({
       i18n: {
         defaultLocale: "es",
@@ -20,7 +23,6 @@ export default defineConfig({
     }),
     compress({
       CSS: true,
-      JavaScript: true,
       HTML: true,
       Image: false,
       SVG: true,
@@ -40,10 +42,29 @@ export default defineConfig({
     },
   },
   vite: {
+    define: {
+      "process.env.NODE_ENV": JSON.stringify(
+        process.env.NODE_ENV || "development",
+      ),
+    },
     build: {
-      minify: true,
+      minify: "esbuild",
+      sourcemap: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ["react", "react-dom"],
+          },
+        },
+      },
     },
     plugins: [tailwindcss()],
+
+    server: {
+      fs: {
+        allow: [".."],
+      },
+    },
   },
   env: {
     schema: {

@@ -36,7 +36,7 @@ export const ItemDataProjects = ({
           >
             <figure className="relative overflow-hidden group cursor-pointer">
               <img
-                src={card_image}
+                src={`https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev/${card_image}`}
                 alt={slug}
                 className={`transition-transform duration-300 ease-in-out group-hover:scale-[1.03] ${
                   loadedImages[card_image]
@@ -44,35 +44,36 @@ export const ItemDataProjects = ({
                     : "opacity-0 absolute"
                 }`}
                 style={{
-                  width: "1918px",
+                  width: "100%",
                   height: "200px",
                   objectFit: "cover",
                 }}
+                loading="lazy"
                 onLoad={() => handleImageLoad(card_image)}
               />
 
               {/* Botón GitHub */}
               <div className="absolute right-12 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <a
-                  href={link_repo}
-                  target="_blank"
+                <button
+                  onClick={() => window.open(link_repo, "_blank")}
                   rel="noopener noreferrer"
                   className="btn btn-sm btn-soft hover:btn-secondary"
+                  aria-label={slug}
                 >
                   <Github size={18} />
-                </a>
+                </button>
               </div>
 
               {/* Botón Live Demo */}
               <div className="absolute right-0 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <a
-                  href={link_web}
-                  target="_blank"
+                <button
+                  onClick={() => window.open(link_web, "_blank")}
                   rel="noopener noreferrer"
                   className="btn btn-sm btn-soft hover:btn-secondary"
+                  aria-label={slug}
                 >
                   <Globe size={18} />
-                </a>
+                </button>
               </div>
             </figure>
             <div className="card-body">

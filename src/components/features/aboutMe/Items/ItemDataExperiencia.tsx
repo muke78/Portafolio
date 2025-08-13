@@ -34,9 +34,9 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
                 className="w-12 h-12 rounded-full bg-base-200 object-cover"
               />
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold text-base-content">
+                <h2 className="text-lg font-semibold text-base-content">
                   {title}
-                </h3>
+                </h2>
                 {work && (
                   <span className="badge badge-primary text-base-200 font-medium textarea-md my-2 rounded-full">
                     {work}

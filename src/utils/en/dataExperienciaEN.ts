@@ -7,7 +7,7 @@ export const experienceDataEN: DataItemsExperiencia[] = [
     title:
       "Full Stack Developer | Freelancer (Collaborative and Personal Projects)",
     subtitle: "JoniTech · Freelancer",
-    img: "https://jonitech.com/favicon/favicon-96x96.png",
+    img: "https://avatars.githubusercontent.com/u/68925885?v=4",
     alt: "joniTech Logo",
     time: "Mar. 2025 · Present",
     location: "Cancún, Mexico · Remote",
