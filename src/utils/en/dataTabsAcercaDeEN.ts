@@ -4,31 +4,63 @@ export const dataTabsAcercaDeEN: DataItemsHabilidades[] = [
   {
     title: "Frontend Developer",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=html,js,ts,css,react,astro",
+      "https://go-skill-icons.vercel.app/api/icons?i=astro,css,html,js,react,ts",
     ],
   },
   {
     title: "Backend Developer",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=js,nodejs,express,sqlserver,swagger",
+      "https://go-skill-icons.vercel.app/api/icons?i=express,hono,js,nodejs,drizzle,prisma,sequelize,mysql,sqlserver,postgresql,turso",
     ],
   },
   {
-    title: "UI Tools",
+    title: "UI and Styles",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=mui,bootstrap,tailwindcss,daisyui,styledcomponents",
+      "https://go-skill-icons.vercel.app/api/icons?i=bootstrap,daisyui,mui,tailwindcss,styledcomponents",
     ],
   },
   {
-    title: "Web hosting",
+    title: "Testing and Good Practices",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=aws,githubpages,firebase,netlify,vercel",
+      "https://go-skill-icons.vercel.app/api/icons?i=jest,jwt,lighthouse,testinglibrary",
     ],
   },
   {
-    title: "Mas habilidades",
+    title: "Data Consumption and Status",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=jest,testinglibrary,jwt,npm,yarn,pnpm,bun,github,git,jupyter,lighthouse,zustand,postman,supabase,reactquery,mysql,chartjs,leaflet,pbi,photoshop,framer",
+      "https://go-skill-icons.vercel.app/api/icons?i=axios,reactquery,zustand",
     ],
+  },
+  {
+    title: "Charts and Maps",
+    images: [
+      "https://go-skill-icons.vercel.app/api/icons?i=chartjs,leaflet,pbi",
+    ],
+  },
+  {
+    title: "Design and Animations",
+    images: ["https://go-skill-icons.vercel.app/api/icons?i=framer,photoshop"],
+  },
+  {
+    title: "Web Hosting",
+    images: [
+      "https://go-skill-icons.vercel.app/api/icons?i=aws,firebase,githubpages,netlify,vercel",
+    ],
+  },
+  {
+    title: "DevOps and Collaboration",
+    images: [
+      "https://go-skill-icons.vercel.app/api/icons?i=git,github,slack,miro,jupyter",
+    ],
+  },
+  {
+    title: "API Tools",
+    images: [
+      "https://go-skill-icons.vercel.app/api/icons?i=postman,apidog,swagger",
+    ],
+  },
+  {
+    title: "Package Managers",
+    images: ["https://go-skill-icons.vercel.app/api/icons?i=bun,npm,pnpm,yarn"],
   },
 ];

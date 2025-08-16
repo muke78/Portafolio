@@ -9,20 +9,6 @@
   "ABOUTME": {
     "ABOUT_TITLE": "À propos de moi",
     "ABOUT_ABOUT_DESCRIPTION": "Je suis un développeur web spécialisé dans la création d'applications complètes, de la conception d'interfaces à la mise en œuvre de la logique sur le serveur. J'ai de l'expérience dans les bases de données et le déploiement d'applications, garantissant des performances optimales et une expérience utilisateur fluide. De plus, je maîtrise le contrôle de version via Git et j'utilise Power BI pour l'analyse des données, ce qui me permet de prendre des décisions éclairées basées sur des métriques.",
-    "ABOUT_EXPIRENCE": [
-      {
-        "EXPIRENCE": "Années",
-        "EXPIRENCE_ABOUT": "d'expérience"
-      },
-      {
-        "PROJECTS": "Projets",
-        "PROJECTS_ABOUT": "complétés"
-      },
-      {
-        "WORKING": "Travaillant",
-        "WORKING_ABOUT": "dans des entreprises"
-      }
-    ],
     "ABOUT_DOWNLOAD_CV": "Voir cv",
     "ABOUT_TITLE_CARD": "Ingénieur en technologies de l'information. Développeur Full-Stack.",
     "ABOUT_SUBTITLE": "Autonome",
@@ -35,55 +21,79 @@
     "EDUCATION_TITLE": "Éducation"
   },
   "PROJECTS": {
-    "PROJECTS_TITLE": "Projets",
-    "PROJECTS_TITLE_BUSIN": "Projets d'entreprise",
-    "PROJECTS_VIEW": "Voir le projet",
-    "PROJECTS_MODAL_TITLE": "Galerie d'images"
-  },
-  "FOOTER": {
-    "FOOTER_MAKE": "Conçu et construit avec",
-    "FOOTER_ECOLOGICAL_FOOTPRINT": "🌱 Ce site Web est durable - Évaluation"
-  },
-  "THEME": {
-    "BUTTON_LABEL": "Thèmes"
-  },
-  "LANGUAGES": {
-    "BUTTON_LABEL": "Langues"
-  },
-  "VERSION": {
-    "BUTTON_LABEL": "Version",
-    "VERSION_CURRENT": "Actuelle"
-  },
-  "TOAST": {
-    "TOAST_TITLE": "Version préliminaire",
-    "TOAST_BODY": "La version 1.0.1 est déployée mais il y aura des changements futurs dans les prochains mois",
-    "TOAST_BUTTON": "Accepter"
+    "PROJECTS_TITLE_BUTTON_F": "L'extrémité avant",
+    "PROJECTS_TITLE_BUTTON_B": "Back-end",
+    "PROJECTS_TITLE_BUTTON_C": "Entreprises",
+    "PROJECTS_TITLE_BUTTON_D": "Analyse des données",
+    "PROJECTS_BADGE_FORK": "Collaboration"
   },
   "404": {
-    "404_BODY": "Oups ! La page que vous recherchez n'existe pas."
+    "404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard."
   },
   "UNIVERSITY": {
     "UNIVERSITY_TITLE": "Université Polytechnique de la Vallée de Mexico (UPVM)",
     "UNIVERSITY_SUBTITLE": "Ingénierie en Technologies de l'Information",
     "UNIVERSITY_TEXT": "Au cours de mes études universitaires, j'ai découvert divers domaines de l'informatique, tels que la maintenance des équipements, la mise en réseau, la programmation orientée objet, le développement mobile avec Xamarin, la cybersécurité, l'ingénierie des exigences et les bases de données. J'ai également travaillé avec Arduino en robotique. Cependant, ce qui m'intéressait le plus était le développement web. Même si je n'ai appris que les bases de jQuery, j'ai toujours eu l'envie de continuer à apprendre sur ce sujet. Actuellement, je suis autodidacte et je m'efforce d'apprendre quelque chose de nouveau chaque jour."
   },
+  "OPINIONS": {
+    "OPINIONS_SUBTITLE": "Soyez très patient avec vous-même et ne vous comparez pas trop aux autres.",
+    "OPINIONS_TITLE": "Avis sur mon travail",
+    "OPINIONS_SUB_SUBTILE": "Voici quelques commentaires !",
+
+    "OPINIONS_NOT_FOUND": "Il n'y a pas encore de témoignages.",
+    "OPINIONS_NOT_FOUND_DESCRIPTION": "Oups ! Rien ici ni là pour l'instant. Vous verrez quelque chose ici bientôt.",
+
+    "OPINIONS_FORM_TITLE": "Écrire un avis",
+    "OPINIONS_FORM_SUBTITLE": "Vous pouvez partager une expérience que vous avez vécue en travaillant avec moi ou une opinion sur mon travail.",
+
+    "OPINIONS_FORM_NAME_PLACEHOLDER": "Votre nom complet",
+    "OPINIONS_FORM_JOB_PLACEHOLDER": "Ex : Développeur Frontend",
+    "OPINIONS_FORM_EXP_PLACEHOLDER": "Écrivez votre expérience ici",
+
+    "OPINIONS_LOAD_SEND_INFORMATION": "Envoi en cours...",
+    "OPINIONS_SEND_INFORMATION": "Envoyer un commentaire",
+
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "L'expérience doit comporter plus de 14 caractères",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, seulement 500 caractères autorisés",
+
+    "OPINIONS_SEND_SUCCESSFULL": "Merci pour votre commentaire !",
+    "OPINIONS_SEND_SUCCESSFULL_INFORMATION": "Votre réponse a été envoyée avec succès. Nous apprécions votre temps et vos retours.",
+    "OPINIONS_REDIRECT_COMMENTS": "Aller aux commentaires"
+  },
   "FORM": {
     "FORM_TITLE": "Contact",
-    "FORM_DESCRIPTION": "Je suis disponible pour des travaux freelance. Connectez-vous avec moi via Telegram, il sera envoyé via un ChatBot.",
-    "INPUT_NAME": "Prénom",
-    "INPUT_LAST_NAME": "Nom de famille",
-    "INPUT_EMAIL": "Adresse e-mail",
+    "FORM_DESCRIPTION": "Je suis disponible pour des missions freelance. Contactez-moi via Telegram, cela sera envoyé via un ChatBot.",
+    "INPUT_NAME": "Nom",
+    "INPUT_EMAIL": "Email",
     "INPUT_PHONE": "Téléphone",
-    "INPUT_SERVICES": "Services",
-    "DEVELOPMENT_WEB": "Développement web",
-    "DEVELOPMENT_API": "Développement d'API",
-    "CONSULT": "Consultation",
+    "INPUT_JOB": "Poste ou spécialité",
+    "INPUT_JOB_INPUT_OPTIONAL": "optionnel",
+    "INPUT_TELL_EXPERIENCE": "Raconter l'expérience",
+
     "INPUT_MORE_INFORMATION": "Plus d'informations",
     "INPUT_MORE_INFORMATION_TEXT": "Écrivez votre message ici",
     "BUTTON_LABEL": "Envoyer le message",
+
+    "FORM_TITLE_SMALL_SUBHEADER": "JE SUIS LÀ POUR TOUT CE DONT VOUS AVEZ BESOIN ET VOUS POUVEZ ME CONTACTER",
+    "FORM_TITLE_HEAD_STRONG": "Parlons",
+    "FORM_TITLE_HEAD_STRONG_SECOND": "de",
+    "FORM_TITLE_HEAD_STRONG_THRID": "vos besoins en solutions système",
+    "FORM_SUBTITLE_SUBHEAD": "Vous cherchez des solutions système de haute qualité adaptées à vos besoins ? Contactez-moi.",
+    "FORM_OPTIONS_CONTACT_EMAIL": "Email",
+    "FORM_OPTIONS_CONTACT_PHONE": "Téléphone",
+
+    "FORM_VALID_NAME": "Le nom doit contenir plus de 4 lettres",
+    "FORM_VALID_LASTNAME": "Le prénom doit contenir plus de 4 lettres",
+    "FORM_VALID_EMAIL": "Format d'email invalide",
+    "FORM_VALID_PHONE_MIN": "Le numéro doit comporter au moins 7 chiffres",
+    "FORM_VALID_PHONE_MAX": "Le numéro est trop long",
     "FORM_VALID_INFORMATION": "Ce champ est obligatoire",
-    "FORM_INVALID_EMAIL": "Format d'e-mail invalide",
-    "FORM_SEND_INFORMATION_CORRECT": "Les informations ont été envoyées avec succès !",
-    "FORM_SEND_INFORMATION_INCORRECT": "Une erreur s'est produite lors de l'envoi du message"
+    "FORM_VALID_PHONE_REGEX": "Le numéro doit contenir uniquement des chiffres et des symboles valides (+, -, espaces, parenthèses)",
+    "FORM_VALID_MORE_INFORMATION_MIN": "La description doit comporter plus de 7 caractères",
+    "FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, seulement 260 caractères autorisés",
+    "FORM_INVALID_EMAIL": "Format d'email invalide",
+
+    "FORM_SEND_INFORMATION_CORRECT": "Informations envoyées avec succès !",
+    "FORM_SEND_INFORMATION_INCORRECT": "Une erreur est survenue lors de l'envoi du message"
   }
 }

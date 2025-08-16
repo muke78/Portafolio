@@ -1,19 +1,19 @@
 #!/bin/sh
 
+# Cargar NVM (necesario en entornos donde Husky no hereda el PATH completo)
+export NVM_DIR="$HOME/.nvm"
+# Esto carga nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# Esto carga nvm para bash >=0.4.0
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
 echo "🔍 Verificando archivos antes del commit..."
+echo "📦 Formateando código con Prettier..."
 
-# Formatear código antes del commit
-echo "🚀 Ejecutando Prettier..."
-pnpm run prettier --write .
+pnpm prettier 'src/**/*.{js,ts,jsx,tsx,json,astro,css}' --write || exit 1
 
-# Agregar los archivos modificados después de formatear
+# Agregar los archivos modificados después del formateo
 git add .
 
-# Verificar que el código esté actualizado antes del push
-echo "🔄 Verificando que tu código esté actualizado..."
-if ! git pull; then
-  echo "❌ Error al actualizar el código. Revisa los conflictos."
-  exit 1
-fi
 
-echo "✅ Código actualizado. Todo listo para el commit."
+echo "✅ Todo listo para el commit. 🎉"

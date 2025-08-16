@@ -1,13 +1,8 @@
 ---
 import { TabsAcerca } from '@/components/organisms/TabsAcerca'
-import Bubble from '@/components/atoms/Bubble.astro';
 const { currentLocale } = Astro;
 ---
 
-<div class="hero-content flex w-full lg:mt-36">
-    <Bubble
-    class="top-40 lg:top-72 left-0 bg-primary"
-    classNameToBottom="bottom-80 right-36 bg-accent"
-  />
+<div class="isolate flex w-7xl items-start justify-start gap-4 lg:p-9 md:p-8 sm:p-4 p-4 mt-16">
     <TabsAcerca client:load currentLocale={currentLocale}/>
 </div>

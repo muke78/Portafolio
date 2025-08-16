@@ -1,60 +1,88 @@
-import { v } from "@/styles/variables";
-import { experienceDataEN } from "@/utils/en/dataExperienciaEN";
-import { dataExperiencia } from "@/utils/es/dataExperiencia";
-import { dataExperienceFR } from "@/utils/fr/dataExperienciaFR";
+import type {
+  Experiences,
+  PropsLang,
+} from "@/interfaces/currentLang.interface";
+import { listExperiencesServices } from "@/services/experiences/experiences.services";
 
-import type React from "react";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
-interface ModalWorkProps {
-  currentLocale: string;
-}
+import { Building, Clock, MapPin } from "lucide-react";
 
-const langTraduceData = (currentLocale: string) => {
-  if (currentLocale === "es") return dataExperiencia;
-  if (currentLocale === "fr") return dataExperienceFR;
-  return experienceDataEN;
-};
+export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
+  const [data, setData] = useState<Experiences[]>([]); // tipa tu array según tu DTO
+  const [loading, setLoading] = useState(true);
 
-export const ItemDataExperiencia: React.FC<ModalWorkProps> = ({
-  currentLocale,
-}) => {
-  const memorization = useMemo(
-    () => langTraduceData(currentLocale),
-    [currentLocale],
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await listExperiencesServices({ currentLocale });
+        setData(result.data);
+      } catch (error) {
+        console.error("Error cargando experiencias:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentLocale]);
+
+  if (loading) return <span className="loading loading-ring loading-xl"></span>;
 
   return (
-    <>
-      <div className="grid lg:grid-cols-2 lg:grid-rows-2 grid-cols-1 gap-4 pt-4">
-        {memorization.map(({ id, work, title, subtitle, time, location }) => (
-          <div key={id} className="bg-base-100 shadow-lg p-8 rounded-xl">
-            <div className="flex flex-col justify-start items-start gap-2">
-              <h3 className="flex items-start mb-1 text-xl font-semibold">
-                {title}
+    <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
+      {data.map(
+        ({
+          experience_id,
+          work,
+          title,
+          description,
+          img,
+          alt,
+          time,
+          location,
+        }) => (
+          <div
+            key={experience_id}
+            className="card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out p-8 rounded-2xl"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <img
+                src={`https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev/${img}`}
+                alt={alt}
+                className="w-12 h-12 rounded-full bg-base-200 object-cover"
+              />
+              <div className="flex flex-col">
+                <h2 className="text-lg font-semibold text-base-content">
+                  {title}
+                </h2>
                 {work && (
-                  <span className="badge badge-primary rounded-full text-sm font-medium mr-2 px-2.5 py-0.5 ms-3">
+                  <span className="badge badge-primary text-base-200 font-medium textarea-md my-2 rounded-full">
                     {work}
                   </span>
                 )}
-              </h3>
-              <span className="flex justify-center items-center gap-2 text-sm text-base-content/90">
-                <span>{v.iconoEmpresa && <v.iconoEmpresa />}</span>
-                {subtitle}
-              </span>
+              </div>
+            </div>
 
-              <span className="flex justify-center items-center gap-2 text-sm text-base-content/60">
-                <span>{v.iconoReloj && <v.iconoReloj />}</span>
-                {time}
-              </span>
-              <span className="flex justify-center items-center gap-2 text-sm text-base-content/60">
-                <span>{v.iconoUbicacion && <v.iconoUbicacion />}</span>
-                {location}
-              </span>
+            <div className="text-sm space-y-2 text-base-content/80">
+              <div className="flex items-center gap-2">
+                <Building className="text-base-content/60" />
+                <span>{description}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Clock className="text-base-content/60" />
+                <span>{time}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <MapPin className="text-base-content/60" />
+                <span>{location}</span>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-    </>
+        ),
+      )}
+    </div>
   );
 };

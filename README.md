@@ -1,90 +1,169 @@
-# Portafolio desarrollado en astro
+# 🚀 Portafolio Personal
 
-Se realizo el porttafolio con la tecnoligia de [Astro](https://astro.build/) y con la libreria de [React](https://es.react.dev/) montada a astro, con [Tailwind](https://tailwindui.com/) en su interfaz desde @tailwindcss/vite
-con tailwindcss 4.1.3
+Se realizó el portafolio con la tecnología de [Astro](https://astro.build/) y con la librería de [React](https://es.react.dev/) montada a Astro, con [Tailwind](https://tailwindui.com/) en su interfaz desde @tailwindcss/vite con Tailwind CSS 4.1.3.
 
-- Se monto [Daisyui](https://daisyui.com/) sobre tailwind para manejar los temas de la apliacion 5.0.6
-- Version estable `v.2.3.2` release, proximas y futuras actualizaciones
-- Proxima actualizacion `v.2.3.3` o `v.2.4.2`
-- Se ocupa la herramienta de reenvio de puertos desde host de tunel para revisar los cambios de el servidor en tiempo real desde un celular
+- Se montó [DaisyUI](https://daisyui.com/) sobre Tailwind para manejar los temas de la aplicación (v5.0.6).
+- Versión estable `v.2.6.0` release, próximas y futuras actualizaciones.
+- Próxima actualización `v.2.6.1` o `v.2.6.x` o `v.2.x.x`.
+- Se utiliza la herramienta de reenvío de puertos desde host de túnel para revisar los cambios del servidor en tiempo real desde un celular.
 
-## 🏯 Lighthouse y optimizacion de la pagina
+## 🏯 Lighthouse y optimización de la página
 
-![alt text](image.png)
+![Lighthouse Score](./image.png)
 
-## 🛠 Tecnologías Utilizadas
+## 📋 Tabla de Contenidos
 
-El proyecto está desarrollado con las siguientes tecnologías y librerías:
+- [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)
+- [📁 Estructura del Proyecto](#-estructura-del-proyecto)
+- [⚙️ Requisitos Previos](#-requisitos-previos)
+- [🔧 Instalación](#-instalación)
+- [💻 Desarrollo Local](#-desarrollo-local)
+- [🗄️ Base de Datos](#-base-de-datos)
+- [🌐 Internacionalización](#-internacionalización)
+- [🎨 Temas](#-temas)
+- [📦 Producción](#-producción)
 
-### 📌 **Frontend y UI**
+## 🛠️ Tecnologías Utilizadas
 
-- [`astro`](https://astro.build/) - Framework moderno para crear sitios rápidos y estáticos con componentes de múltiples frameworks.
-- [`react-dom`](https://react.dev/) - Renderizado de componentes React en el DOM.
-- [`react-router-dom`](https://reactrouter.com/) - Enrutamiento dinámico en aplicaciones React.
-- [`tailwindcss`](https://tailwindcss.com/) - Framework CSS para estilos rápidos y eficientes.
-- [`daisyui`](https://daisyui.com/) - Extensión de TailwindCSS con componentes personalizables.
-- [`framer-motion`](https://www.framer.com/motion/) - Animaciones fluidas y avanzadas en React.
-- [`animate.css`](https://animate.style/) - Animaciones CSS listas para usar.
-- [`swup`](https://swup.dev/) - Transiciones suaves entre páginas para mejorar la experiencia del usuario.
-- [`swiper`](https://swiperjs.com/) - Slider moderno y responsivo con soporte para gestos táctiles.
-- [`react-hot-toast`](https://react-hot-toast.com/) - Notificaciones livianas y personalizables en React.
-- [`react-hook-form`](https://react-hook-form.com/) - Manejador de formularios para React eficiente y flexible.
-- [`husky`](https://typicode.github.io/husky/#/) - Herramienta para ejecutar hooks de Git como validaciones antes de commits.
+- **Framework**: [Astro](https://astro.build/) v5.4.2
+- **UI Framework**: [React](https://reactjs.org/) v18.3.1
+- **Estilos**:
+  - [Tailwind CSS](https://tailwindcss.com/) v4.1.3
+  - [DaisyUI](https://daisyui.com/) v5.0.6
+- **Base de Datos**:
+  - [Drizzle ORM](https://orm.drizzle.team/) v0.44.4
+  - [LibSQL](https://turso.tech/libsql)
+- **Animaciones**:
+  - [Framer Motion](https://www.framer.com/motion/)
+  - [Swiper](https://swiperjs.com/)
+  - [Animate.css](https://animate.style/)
+- **Formularios**:
+  - [React Hook Form](https://react-hook-form.com/)
+  - [Zod](https://zod.dev/)
+- **Otros**:
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [Lucide Icons](https://lucide.dev/)
+  - [React Icons](https://react-icons.github.io/react-icons/)
 
-## 📂 Estructura del Proyecto
+## 📁 Estructura del Proyecto
 
-Se hizo el cambio a arquitectura por funcionalidad para llevar un mejor cambio de los archivos y este mas organizado, un ejemplo como este
-
-```
-/src
-├── /components               # Componentes reutilizables de UI
-│   ├── /atoms                # Elementos básicos de la UI (botones, inputs, etc.)
-│   ├── /features             # Componentes enfocados en funcionalidades específicas
-│   ├── /organisms            # Composición de múltiples componentes (más complejos)
-│   ├── /templates            # Estructuras de diseño reutilizables
-│   └── /utils                # Utilidades específicas para componentes
-├── /hooks                    # Custom hooks reutilizables
-├── /i18n                     # Configuración de internacionalización
-│   ├── /locales              # Archivos de traducción por idioma
-│   ├── index.ts              # Archivo principal de i18n
-│   ├── ui.ts                 # Traducciones de elementos de UI
-│   └── utils.ts              # Funciones auxiliares para i18n
-├── /img                      # Recursos gráficos e imágenes
-├── /js                       # Scripts JS que no pertenecen a componentes
-├── /layouts                  # Plantillas de diseño general de páginas
-├── /pages                    # Rutas y páginas del sitio
-│   ├── /en                   # Páginas en inglés
-│   ├── /es                   # Páginas en español
-│   ├── /fr                   # Páginas en francés
-│   ├── 404.astro             # Página de error personalizada
-│   └── index.astro           # Página principal
-├── /styles                   # Archivos de estilos globales
-├── /types                    # Definiciones de tipos TypeScript
-└── /utils                    # Funciones y datos reutilizables globales
-    ├── /en                   # Datos en inglés
-    ├── /es                   # Datos en español
-    ├── /fr                   # Datos en francés
-    ├── dataDarkThemes.ts     # Configuración de temas oscuros
-    ├── dataRepoPinned.ts     # Repositorios destacados
-    └── dataTitlePage.ts      # Títulos y metadatos de las páginas
+```bash
+src/
+├── components/           # Componentes React organizados por Atomic Design
+│   ├── atoms/           # Componentes básicos
+│   ├── features/        # Características específicas
+│   ├── organisms/       # Componentes compuestos
+│   └── templates/       # Plantillas Astro
+├── db/                  # Configuración de la base de datos
+├── hooks/               # Hooks personalizados de React
+├── i18n/                # Configuración de internacionalización
+├── layouts/             # Layouts de Astro
+├── pages/               # Rutas y páginas (es, en, fr)
+├── schemas/             # Esquemas de validación Zod
+├── styles/              # Estilos globales
+├── types/               # Tipos TypeScript
+└── utils/               # Utilidades y datos estáticos
 ```
 
-## 📌 Convenciones de Código
+## ⚙️ Requisitos Previos
 
-Para mantener un código limpio y estandarizado, seguimos estas prácticas:
+- Node.js (v18 o superior)
+- pnpm
+- Git
 
-- Prettier para formateo automático.
-- Husky para ejecutar validaciones antes de los commits.
-- Zustand para manejo de estado global.
-- Astro para el framework de componentes.
-- TailwindCSS para darle estilo a la aplicación.
-- React para el framework de componentes.
-- React Router para el enrutamiento.
-- React Hook Form para el manejo de formularios.
-- Framer Motion para las animaciones.
-- Swiper para el slider.
-- React Hot Toast para las notificaciones.
+## 🔧 Instalación
+
+- Clona el repositorio:
+
+```bash
+    git clone https://github.com/muke78/Portafolio.git
+    cd Portafolio
+```
+
+- Instala las dependencias:
+
+```bash
+    pnpm install
+```
+
+- Copia el archivo de variables de entorno:
+
+```bash
+    cp .env.example .env
+```
+
+## 💻 Desarrollo Local
+
+- Inicia el servidor de desarrollo:
+
+```bash
+    pnpm dev
+```
+
+- El sitio estará disponible en [http://localhost:4321](http://localhost:4321)
+
+## 🗄️ Base de Datos
+
+- Configuración de Drizzle
+- Genera las migraciones:
+
+```bash
+    pnpm db:generate
+```
+
+- Aplica las migraciones:
+
+```bash
+    pnpm db:migrate
+```
+
+- Visualiza la base de datos (opcional):
+
+```bash
+    pnpm db:studio
+```
+
+## 🌐 Internacionalización
+
+El proyecto soporta múltiples idiomas:
+
+- 🇪🇸 Español (es)
+- 🇺🇸 Inglés (en)
+- 🇫🇷 Francés (fr)
+
+Los archivos de traducción se encuentran en `locales`.
+
+## 🎨 Temas
+
+El proyecto incluye un sistema de temas usando DaisyUI con soporte para modo claro y oscuro.
+
+## 📦 Producción
+
+- Construye el proyecto:
+
+```bash
+    pnpm build
+```
+
+- Previsualiza la build:
+
+```bash
+    pnpm preview
+```
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
+Este proyecto está bajo la licencia MIT. Ver el archivo LICENSE para más detalles.
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Por favor, abre un issue o pull request para sugerir cambios o mejoras.
+
+## 📞 Contacto
+
+Si tienes alguna pregunta o sugerencia, no dudes en contactarme:
+
+- Nombre: [Erick Gonzalez](https://github.com/muke78)
+- Correo : <erickm.gonzalez.rivera@gmail.com>
+
+⭐️ Si te gusta este proyecto, ¡no olvides darle una estrella en GitHub!
