@@ -44,7 +44,7 @@
     "OPINIONS_NOT_FOUND_DESCRIPTION": "Oups ! Rien ici ni là pour l'instant. Vous verrez quelque chose ici bientôt.",
 
     "OPINIONS_FORM_TITLE": "Écrire un avis",
-    "OPINIONS_FORM_SUBTITLE": "Vous pouvez partager une expérience que vous avez vécue en travaillant avec moi, votre avis sur mon travail ou même tout détail que vous jugez important de mentionner. Cela m'aiderait beaucoup à continuer à progresser en tant que développeur!",
+    "OPINIONS_FORM_SUBTITLE": "Vous pouvez partager une expérience que vous avez vécue en travaillant avec moi ou une opinion sur mon travail.",
 
     "OPINIONS_FORM_NAME_PLACEHOLDER": "Votre nom complet",
     "OPINIONS_FORM_JOB_PLACEHOLDER": "Ex : Développeur Frontend",

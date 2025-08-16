@@ -4,7 +4,7 @@ import type { PropsLang } from "@/interfaces/currentLang.interface";
 export const Educacion = ({ currentLocale }: PropsLang) => {
   const i18n = getI18N({ currentLocale });
   return (
-    <div className="flex flex-col hero-content">
+    <div className="flex flex-col p-4">
       <span className="font-bold text-5xl">
         {i18n.EDUCATION.EDUCATION_TITLE}
       </span>

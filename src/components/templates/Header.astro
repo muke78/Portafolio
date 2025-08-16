@@ -5,7 +5,7 @@ import {Github, Linkedin, Mail, MessageCircle, MoveRight, SquareArrowOutUpRight}
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
-<div class="hero-content flex-col lg:flex-row-reverse mt-16">
+<div class="hero-content flex-col lg:flex-row-reverse mt-10">
 	<!-- Burbuja 1 con client:load -->
 	<Bubble className="bg-accent" position="top-56 left-48" delay={3} duration={5} client:load />
 	<!-- Burbuja 2 con client:load -->
@@ -34,7 +34,7 @@ const i18n = getI18N({ currentLocale });
 				</a>
 			</div>
 			<div class="flex justify-center items-center w-full md:w-1/2">
-				<a href="https://docs.google.com/viewer?url=https://khelde.vercel.app/CV_Erick_Miguel_Gonzalez_Rivera.pdf" target="_blank" class="btn btn-neutral lg:text-lg md:text-base w-full" aria-label="Ver cv para saber mas acerca de mi"> {i18n.ABOUTME.ABOUT_DOWNLOAD_CV} <span>{
+				<a href="https://q8mthsih9ooiwevt.public.blob.vercel-storage.com/CV_Erick_Miguel_Gonzalez_Rivera.pdf" target="_blank" class="btn btn-neutral lg:text-lg md:text-base w-full" aria-label="Ver cv para saber mas acerca de mi"> {i18n.ABOUTME.ABOUT_DOWNLOAD_CV} <span>{
 						<SquareArrowOutUpRight size={20} />}
 					</span>
 				</a>

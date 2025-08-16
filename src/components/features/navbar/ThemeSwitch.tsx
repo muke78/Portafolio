@@ -5,19 +5,13 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MoonStar, Sun } from "lucide-react";
 
-export const ThemeDrop: React.FC = () => {
-  const { changeTheme, setChangeTheme, mounted } = useTheme();
+export const ThemeDrop = () => {
+  const { theme, toggleTheme, mounted } = useTheme();
   const [isHovering, setIsHovering] = useState(false);
-
-  const toggleTheme = () => {
-    setChangeTheme((prevTheme) =>
-      prevTheme === "winter" ? "night" : "winter",
-    );
-  };
 
   if (!mounted) return null;
 
-  const isDark = changeTheme === "night";
+  const isDark = theme === "night";
 
   return (
     <div className="relative">

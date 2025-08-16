@@ -1,4 +1,11 @@
-import type { CATEGORIES, LOCALES } from "@/db/projects";
+export const CATEGORIES = [
+  "frontend",
+  "backend",
+  "companies",
+  "dataAnalyst",
+] as const;
+
+export const LOCALES = ["en", "es", "fr"] as const;
 
 export interface PropsLang {
   currentLocale: string;
@@ -22,6 +29,10 @@ export interface NavbarItem {
   label: string;
 }
 
+export interface ItemsNavProps extends PropsLang {
+  onItemClick?: () => void;
+}
+
 export interface Projects {
   project_id: number;
   slug: string;
@@ -33,6 +44,17 @@ export interface Projects {
   title: string;
   description: string;
   fork: boolean;
+}
+
+export interface Experiences {
+  experience_id: number;
+  work: string;
+  title: string;
+  description: string;
+  img: string;
+  alt: string;
+  time: string;
+  location: string;
 }
 
 export interface ProjectsTranslations {

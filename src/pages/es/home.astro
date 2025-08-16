@@ -15,19 +15,19 @@ const {currentLocale} = Astro;
       <Nav client:load currentLocale={currentLocale}/>
     </div>
     <section class="w-full h-full">
-      <div class="hero bg-base-300 min-h-screen" id="home">
+      <div class="hero bg-base-300 min-h-screen scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="home">
         <Header />
       </div>
-      <div class="hero bg-base-300 min-h-screen flex justify-center items-start" id="about">
+      <div class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="about">
         <Acerca />
       </div>
-      <div class="hero bg-base-300 min-h-screen flex justify-center items-start" id="projects">
+      <div class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="projects">
         <Proyectos />
       </div>
       <div class="hero bg-base-300 min-h-screen flex justify-center items-start" id="opinions">
         <Opiniones />
       </div>
-      <div class="hero bg-base-300 min-h-screen" id="contact">
+      <div class="hero bg-base-300 min-h-screen scroll-m-14 lg:scroll-m-0 md:scroll-m-0" id="contact">
         <Contactos>
       </div>
     </section>

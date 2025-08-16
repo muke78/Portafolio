@@ -1,4 +1,3 @@
-import { useDataProjects } from "@/api/apiDataProjects";
 import {
   Backend,
   Companies,
@@ -8,8 +7,9 @@ import {
 import { SkeletonProjectsCard } from "@/components/features/projects/items/SkeletonProjectsCard";
 import { getI18N } from "@/i18n";
 import type { Projects, PropsLang } from "@/interfaces/currentLang.interface";
+import { listProjectsServices } from "@/services/projects/projects.services";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
 
@@ -21,43 +21,6 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
   const [previousDataLength, setPreviousDataLength] = useState<number>(0);
 
   const i18n = getI18N({ currentLocale });
-
-  useEffect(() => {
-    const savedTab = localStorage.getItem("activeProjectTab");
-    if (savedTab) {
-      setActiveTab(savedTab);
-    }
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      localStorage.setItem("activeProjectTab", activeTab);
-    }
-  }, [activeTab, mounted]);
-
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      const result = await useDataProjects({ currentLocale, activeTab });
-      setData(result.rows as Projects[]);
-
-      if (data.length > 0) {
-        setPreviousDataLength(data.length);
-      }
-
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-    fetchData();
-  }, [currentLocale, activeTab]);
-
-  if (!mounted) {
-    return <span className="loading loading-ring loading-xl"></span>;
-  }
 
   const getShortText = (text: string, length: number) => {
     return text.slice(0, length);
@@ -86,6 +49,52 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
 
   const skeletonCount = getSkeletonCount();
   const skeletonItems = Array(skeletonCount).fill(null);
+
+  useEffect(() => {
+    const savedTab = localStorage.getItem("activeProjectTab");
+    if (savedTab) {
+      setActiveTab(savedTab);
+    }
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem("activeProjectTab", activeTab);
+    }
+  }, [activeTab, mounted]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const result = await listProjectsServices({ currentLocale });
+      setData(result.data.rows as Projects[]);
+
+      if (data.length > 0) {
+        setPreviousDataLength(data.length);
+      }
+
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+    fetchData();
+  }, [currentLocale]);
+
+  const projectsByCategory = useMemo(() => {
+    return {
+      frontend: data.filter((p) => p.category === "frontend"),
+      backend: data.filter((p) => p.category === "backend"),
+      companies: data.filter((p) => p.category === "companies"),
+      dataAnalyst: data.filter((p) => p.category === "dataAnalyst"),
+    };
+  }, [data]);
+
+  if (!mounted) {
+    return <span className="loading loading-ring loading-xl"></span>;
+  }
 
   return (
     <div className="flex flex-col lg:flex-col lg:w-full">
@@ -172,16 +181,28 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
         ) : (
           <>
             {activeTab === "frontend" && (
-              <Frontend currentLocale={currentLocale} data={data} />
+              <Frontend
+                currentLocale={currentLocale}
+                data={projectsByCategory.frontend}
+              />
             )}
             {activeTab === "backend" && (
-              <Backend currentLocale={currentLocale} data={data} />
+              <Backend
+                currentLocale={currentLocale}
+                data={projectsByCategory.backend}
+              />
             )}
             {activeTab === "companies" && (
-              <Companies currentLocale={currentLocale} data={data} />
+              <Companies
+                currentLocale={currentLocale}
+                data={projectsByCategory.companies}
+              />
             )}
             {activeTab === "dataAnalyst" && (
-              <DataAnalyst currentLocale={currentLocale} data={data} />
+              <DataAnalyst
+                currentLocale={currentLocale}
+                data={projectsByCategory.dataAnalyst}
+              />
             )}
           </>
         )}

@@ -57,7 +57,9 @@ export const ItemDataProjects = ({
                 <button
                   onClick={() => window.open(link_repo, "_blank")}
                   rel="noopener noreferrer"
-                  className="btn btn-sm btn-soft hover:btn-secondary"
+                  className={`btn btn-sm btn-soft ${
+                    !link_repo ? "btn-disabled" : "hover:btn-secondary"
+                  }`}
                   aria-label={slug}
                 >
                   <Github size={18} />
@@ -69,7 +71,9 @@ export const ItemDataProjects = ({
                 <button
                   onClick={() => window.open(link_web, "_blank")}
                   rel="noopener noreferrer"
-                  className="btn btn-sm btn-soft hover:btn-secondary"
+                  className={`btn btn-sm btn-soft ${
+                    !link_web ? "btn-disabled" : "hover:btn-secondary"
+                  }`}
                   aria-label={slug}
                 >
                   <Globe size={18} />

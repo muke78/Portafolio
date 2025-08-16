@@ -1,9 +1,9 @@
-import { useDataComments } from "@/api/apiDataComments";
 import { getI18N } from "@/i18n";
 import type {
   PropsLang,
   Testimonial,
 } from "@/interfaces/currentLang.interface";
+import { listCommentsServices } from "@/services/comments/comments.services";
 
 import { useEffect, useState } from "react";
 
@@ -60,8 +60,8 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 
   useEffect(() => {
     async function fetchData() {
-      const result = await useDataComments();
-      setData(result.rows as Testimonial[]);
+      const result = await listCommentsServices();
+      setData(result.data as Testimonial[]);
     }
     fetchData();
   }, [currentLocale]);

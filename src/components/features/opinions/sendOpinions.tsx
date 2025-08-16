@@ -1,4 +1,3 @@
-import { useDataPostComments } from "@/api/apiDataComments";
 import { SubmittedOpinion } from "@/components/features/opinions/SubmittedOpinion";
 import { getI18N } from "@/i18n";
 import type {
@@ -6,6 +5,7 @@ import type {
   PropsLang,
 } from "@/interfaces/currentLang.interface";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
+import { postCommentsServices } from "@/services/comments/comments.services";
 
 import { useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
@@ -39,7 +39,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
     const { name, job, description } = save;
 
-    useDataPostComments({ name, job, description });
+    await postCommentsServices({ name, job, description });
 
     setIsLoading(false);
     setIsSubmitted(true);
@@ -89,12 +89,15 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
               <MessageSquare className="w-12 h-12 text-base-200 mx-auto mb-3" />
             </motion.div>
             <motion.h2
-              className="text-3xl font-bold text-base-200"
+              className="lg:text-3xl md:text-2xl text-xl font-bold text-base-200"
               variants={itemVariants}
             >
               {i18n.OPINIONS.OPINIONS_FORM_TITLE}
             </motion.h2>
-            <motion.p className="text-base-200/80 mt-2" variants={itemVariants}>
+            <motion.p
+              className="lg:text-2xl md:text-xl text-md text-base-200/80 mt-2"
+              variants={itemVariants}
+            >
               {i18n.OPINIONS.OPINIONS_FORM_SUBTITLE}
             </motion.p>
           </div>

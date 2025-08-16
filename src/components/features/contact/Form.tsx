@@ -2,12 +2,12 @@ import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 import type { FormData, PropsLang } from "@/interfaces/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
+import { postCommentsChatBotServices } from "@/services/telegram/telegram.services";
 
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VITE_BOT_TOKEN, VITE_CHAT_ID } from "astro:env/client";
 import { motion } from "framer-motion";
 import { Mail, Phone, Send } from "lucide-react";
 
@@ -34,35 +34,9 @@ export const Form = ({ currentLocale }: PropsLang) => {
   });
 
   const onSubmit = async (data: FormData) => {
-    const botToken = VITE_BOT_TOKEN;
-    const chatId = VITE_CHAT_ID;
-
-    if (!botToken || !chatId) {
-      toast.error("No se encontraron credenciales de Telegram.", {
-        duration: 5000,
-        position: "bottom-right",
-      });
-      return;
-    }
-
-    const message = `📩 *Nuevo formulario enviado*\n
-  🔹 *Nombre:* ${data.name}
-  🔹 *Email:* ${data.email}
-  🔹 *Teléfono:* ${data.phone}
-  🔹 *Más información:* ${data.moreInformation}`;
-
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
     try {
-      await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: "Markdown",
-        }),
-      });
+      await postCommentsChatBotServices(data);
+
       toast.success(sendInformationValid, {
         duration: 5000,
         position: "bottom-right",
@@ -219,7 +193,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                   {i18n.FORM.INPUT_MORE_INFORMATION}
                 </legend>
                 <motion.textarea
-                  className="textarea h-16 w-full bg-base-200"
+                  className="textarea w-full field-sizing-content bg-base-200"
                   placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
                   whileFocus={{ scale: 1.02 }}
                   {...register("moreInformation")}
