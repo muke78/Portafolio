@@ -2,15 +2,14 @@ import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 import type { FormData, PropsLang } from "@/interfaces/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
-import { v } from "@/styles/variables";
+import { postCommentsChatBotServices } from "@/services/telegram/telegram.services";
 
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VITE_BOT_TOKEN, VITE_CHAT_ID } from "astro:env/client";
 import { motion } from "framer-motion";
-import { Send } from "lucide-react";
+import { Mail, Phone, Send } from "lucide-react";
 
 export const Form = ({ currentLocale }: PropsLang) => {
   const { changeTheme } = useTheme();
@@ -35,35 +34,9 @@ export const Form = ({ currentLocale }: PropsLang) => {
   });
 
   const onSubmit = async (data: FormData) => {
-    const botToken = VITE_BOT_TOKEN;
-    const chatId = VITE_CHAT_ID;
-
-    if (!botToken || !chatId) {
-      toast.error("No se encontraron credenciales de Telegram.", {
-        duration: 5000,
-        position: "bottom-right",
-      });
-      return;
-    }
-
-    const message = `📩 *Nuevo formulario enviado*\n
-  🔹 *Nombre:* ${data.name}
-  🔹 *Email:* ${data.email}
-  🔹 *Teléfono:* ${data.phone}
-  🔹 *Más información:* ${data.moreInformation}`;
-
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
     try {
-      await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: "Markdown",
-        }),
-      });
+      await postCommentsChatBotServices(data);
+
       toast.success(sendInformationValid, {
         duration: 5000,
         position: "bottom-right",
@@ -102,8 +75,8 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
         <ul className="space-y-2">
           <li className="flex items-center gap-4">
-            <span className="text-3xl text-primary ">
-              {v.iconoCorreo && <v.iconoCorreo />}
+            <span className="text-3xl text-secondary ">
+              {<Mail size={36} />}
             </span>
             <span>
               <strong className="text-sm text-base-content/50">
@@ -120,8 +93,8 @@ export const Form = ({ currentLocale }: PropsLang) => {
             </span>
           </li>
           <li className="flex items-center gap-4">
-            <span className="text-3xl text-primary">
-              {v.iconoTelefono && <v.iconoTelefono />}
+            <span className="text-3xl text-secondary">
+              {<Phone size={36} />}
             </span>
             <span>
               <strong className="text-sm text-base-content/50">
@@ -140,7 +113,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
         </ul>
       </div>
 
-      <div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-100 transition-all duration-400 ease-in-out p-5 lg:p-10 md:p-9 sm:p-8">
+      <div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-300 p-5 lg:p-10 md:p-9 sm:p-8">
         <form onSubmit={handleSubmit(onSubmit)} method="POST">
           <div className="grid grid-cols-1 gap-4">
             <div>
@@ -150,7 +123,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                 </legend>
                 <motion.input
                   type="text"
-                  className="input w-full"
+                  className="input w-full bg-base-200"
                   placeholder={i18n.FORM.INPUT_NAME}
                   whileFocus={{ scale: 1.02 }}
                   {...register("name")}
@@ -174,7 +147,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                 </legend>
                 <motion.input
                   type="email"
-                  className="input w-full"
+                  className="input w-full bg-base-200"
                   placeholder={i18n.FORM.INPUT_EMAIL}
                   whileFocus={{ scale: 1.02 }}
                   {...register("email")}
@@ -198,7 +171,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                 </legend>
                 <motion.input
                   type="number"
-                  className="input w-full"
+                  className="input w-full bg-base-200"
                   placeholder={i18n.FORM.INPUT_PHONE}
                   whileFocus={{ scale: 1.02 }}
                   {...register("phone")}
@@ -220,7 +193,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                   {i18n.FORM.INPUT_MORE_INFORMATION}
                 </legend>
                 <motion.textarea
-                  className="textarea h-16 w-full"
+                  className="textarea w-full field-sizing-content bg-base-200"
                   placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
                   whileFocus={{ scale: 1.02 }}
                   {...register("moreInformation")}

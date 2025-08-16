@@ -9,20 +9,6 @@
   "ABOUTME": {
     "ABOUT_TITLE": "À propos de moi",
     "ABOUT_ABOUT_DESCRIPTION": "Je suis un développeur web spécialisé dans la création d'applications complètes, de la conception d'interfaces à la mise en œuvre de la logique sur le serveur. J'ai de l'expérience dans les bases de données et le déploiement d'applications, garantissant des performances optimales et une expérience utilisateur fluide. De plus, je maîtrise le contrôle de version via Git et j'utilise Power BI pour l'analyse des données, ce qui me permet de prendre des décisions éclairées basées sur des métriques.",
-    "ABOUT_EXPIRENCE": [
-      {
-        "EXPIRENCE": "Années",
-        "EXPIRENCE_ABOUT": "d'expérience"
-      },
-      {
-        "PROJECTS": "Projets",
-        "PROJECTS_ABOUT": "complétés"
-      },
-      {
-        "WORKING": "Travaillant",
-        "WORKING_ABOUT": "dans des entreprises"
-      }
-    ],
     "ABOUT_DOWNLOAD_CV": "Voir cv",
     "ABOUT_TITLE_CARD": "Ingénieur en technologies de l'information. Développeur Full-Stack.",
     "ABOUT_SUBTITLE": "Autonome",
@@ -35,10 +21,11 @@
     "EDUCATION_TITLE": "Éducation"
   },
   "PROJECTS": {
-    "PROJECTS_TITLE": "Projets",
-    "PROJECTS_TITLE_BUSIN": "Projets d'entreprise",
-    "PROJECTS_VIEW": "Voir le projet",
-    "PROJECTS_MODAL_TITLE": "Galerie d'images"
+    "PROJECTS_TITLE_BUTTON_F": "L'extrémité avant",
+    "PROJECTS_TITLE_BUTTON_B": "Back-end",
+    "PROJECTS_TITLE_BUTTON_C": "Entreprises",
+    "PROJECTS_TITLE_BUTTON_D": "Analyse des données",
+    "PROJECTS_BADGE_FORK": "Collaboration"
   },
   "404": {
     "404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard."
@@ -57,7 +44,7 @@
     "OPINIONS_NOT_FOUND_DESCRIPTION": "Oups ! Rien ici ni là pour l'instant. Vous verrez quelque chose ici bientôt.",
 
     "OPINIONS_FORM_TITLE": "Écrire un avis",
-    "OPINIONS_FORM_SUBTITLE": "Votre retour est précieux pour continuer à grandir en tant que développeur",
+    "OPINIONS_FORM_SUBTITLE": "Vous pouvez partager une expérience que vous avez vécue en travaillant avec moi ou une opinion sur mon travail.",
 
     "OPINIONS_FORM_NAME_PLACEHOLDER": "Votre nom complet",
     "OPINIONS_FORM_JOB_PLACEHOLDER": "Ex : Développeur Frontend",
@@ -66,7 +53,7 @@
     "OPINIONS_LOAD_SEND_INFORMATION": "Envoi en cours...",
     "OPINIONS_SEND_INFORMATION": "Envoyer un commentaire",
 
-    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "L'expérience doit comporter plus de 7 caractères",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "L'expérience doit comporter plus de 14 caractères",
     "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, seulement 500 caractères autorisés",
 
     "OPINIONS_SEND_SUCCESSFULL": "Merci pour votre commentaire !",

@@ -9,20 +9,6 @@
   "ABOUTME": {
     "ABOUT_TITLE": "About me",
     "ABOUT_ABOUT_DESCRIPTION": "I am a web developer specialized in creating complete applications from interface design to logic implementation on the server. I have experience in databases and application deployment, ensuring optimal performance and a smooth user experience. Additionally, I have mastered version control through Git and use Power BI for data analysis, allowing me to make informed decisions based on metrics.",
-    "ABOUT_EXPIRENCE": [
-      {
-        "EXPIRENCE": "Years",
-        "EXPIRENCE_ABOUT": "of experience"
-      },
-      {
-        "PROJECTS": "Projects",
-        "PROJECTS_ABOUT": "completed"
-      },
-      {
-        "WORKING": "Working",
-        "WORKING_ABOUT": "in companies"
-      }
-    ],
     "ABOUT_DOWNLOAD_CV": "See CV",
     "ABOUT_TITLE_CARD": "Information Technology Engineer. Full-Stack Developer.",
     "ABOUT_SUBTITLE": "Autonomous",
@@ -35,10 +21,11 @@
     "EDUCATION_TITLE": "Education"
   },
   "PROJECTS": {
-    "PROJECTS_TITLE": "Projects",
-    "PROJECTS_TITLE_BUSIN": "Business projects",
-    "PROJECTS_VIEW": "See project",
-    "PROJECTS_MODAL_TITLE": "Image gallery"
+    "PROJECTS_TITLE_BUTTON_F": "Frontend",
+    "PROJECTS_TITLE_BUTTON_B": "Backend",
+    "PROJECTS_TITLE_BUTTON_C": "Companies",
+    "PROJECTS_TITLE_BUTTON_D": "Data analysis",
+    "PROJECTS_BADGE_FORK": "Collaboration"
   },
   "404": {
     "404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later."
@@ -57,7 +44,7 @@
     "OPINIONS_NOT_FOUND_DESCRIPTION": "Oops! Nothing here or there yet. You'll see something here soon.",
 
     "OPINIONS_FORM_TITLE": "Write an opinion",
-    "OPINIONS_FORM_SUBTITLE": "Your feedback is valuable to keep growing as a developer",
+    "OPINIONS_FORM_SUBTITLE": "You can share an experience you've had working with me or an opinion about my work.",
 
     "OPINIONS_FORM_NAME_PLACEHOLDER": "Your full name",
     "OPINIONS_FORM_JOB_PLACEHOLDER": "e.g., Frontend Developer",
@@ -66,7 +53,7 @@
     "OPINIONS_LOAD_SEND_INFORMATION": "Sending...",
     "OPINIONS_SEND_INFORMATION": "Send comment",
 
-    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "Experience must be longer than 7 characters",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "Experience must be longer than 14 characters",
     "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Character limit reached, only 500 characters allowed",
 
     "OPINIONS_SEND_SUCCESSFULL": "Thank you for your comment!",

@@ -1,14 +1,8 @@
 ---
-import { getI18N } from '@/i18n';
 import { TabsProyectos } from '@/components/organisms/TabsProyectos';
-
-
-
 const { currentLocale } = Astro;
-const i18n = getI18N({ currentLocale });
 ---
-  <div class="hero-content lg:w-5/6 w-full flex-col lg:flex-row-reverse mt-16">
-      <div class="grid grid-cols-1 w-full gap-6 animate__animated animate__zoomIn rounded-lg">
-          <TabsProyectos client:load currentLocale={currentLocale}/>
-      </div>
-  </div>
+
+<div class="isolate flex w-7xl items-start justify-start gap-4 lg:p-9 md:p-8 sm:p-4 p-4 mt-16">
+    <TabsProyectos client:load currentLocale={currentLocale}/>
+</div>

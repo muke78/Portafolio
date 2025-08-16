@@ -3,16 +3,44 @@ import { LangDrop } from "@/components/features/navbar/LangDrop";
 import { ThemeDrop } from "@/components/features/navbar/ThemeSwitch";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 export const Nav = ({ currentLocale }: PropsLang) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
+
+  // Cerrar al click afuera o Esc
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        isOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(e.target as Node) &&
+        window.innerWidth < 1000
+      ) {
+        closeSidebar();
+      }
+    };
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (isOpen && e.key === "Escape") {
+        closeSidebar();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [isOpen]);
 
   return (
     <nav className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-base-content/5 border-b border-base-content/10 z-40">
@@ -21,15 +49,15 @@ export const Nav = ({ currentLocale }: PropsLang) => {
         <motion.a
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="font-bold text-2xl text-base-content"
-          href="home"
+          className="font-semibold text-2xl text-base-content/90"
+          href={`/${currentLocale}/home`}
           aria-label="Inicio del portafolio"
         >
           Khelde.
         </motion.a>
 
         {/* Navegación Desktop */}
-        <div className="hidden min-[900px]:flex items-center space-x-8">
+        <div className="hidden min-[1000px]:flex items-center space-x-8">
           <ul className="flex items-center space-x-8">
             <ItemsNav currentLocale={currentLocale} />
           </ul>
@@ -42,7 +70,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
         </div>
 
         {/* Controles Mobile */}
-        <div className="min-[900px]:hidden flex items-center space-x-3">
+        <div className="min-[1000px]:hidden flex items-center space-x-3">
           <LangDrop currentLocale={currentLocale} />
           <ThemeDrop />
 
@@ -76,6 +104,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={sidebarRef}
             initial={{ x: "100%", opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: "100%", opacity: 0 }}
@@ -110,13 +139,16 @@ export const Nav = ({ currentLocale }: PropsLang) => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1, staggerChildren: 0.05 }}
                 >
-                  <ItemsNav currentLocale={currentLocale} />
+                  <ItemsNav
+                    currentLocale={currentLocale}
+                    onItemClick={closeSidebar}
+                  />
                 </motion.ul>
               </div>
 
               {/* Footer del Sidebar */}
               <div className="p-6 border-t rounded-2xl border-base-content/10 bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-lg">
-                <div className="flex items-center justify-center space-x-4 ">
+                <div className="flex justify-start items-center space-x-4 ">
                   <span className="text-sm text-gray-400">Configuración:</span>
                   <div className="flex space-x-3">
                     <LangDrop currentLocale={currentLocale} />

@@ -10,7 +10,7 @@ export const opinionsSchema = ({ currentLocale }: PropsLang) => {
     job: z.string().optional(),
     description: z
       .string()
-      .min(7, i18n.OPINIONS.OPINIONS_FORM_VALID_MORE_INFORMATION_MIN)
+      .min(14, i18n.OPINIONS.OPINIONS_FORM_VALID_MORE_INFORMATION_MIN)
       .max(500, i18n.OPINIONS.OPINIONS_FORM_VALID_MORE_INFORMATION_MAX),
   });
   return schema;

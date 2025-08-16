@@ -1,3 +1,12 @@
+export const CATEGORIES = [
+  "frontend",
+  "backend",
+  "companies",
+  "dataAnalyst",
+] as const;
+
+export const LOCALES = ["en", "es", "fr"] as const;
+
 export interface PropsLang {
   currentLocale: string;
 }
@@ -20,25 +29,51 @@ export interface NavbarItem {
   label: string;
 }
 
-export interface Repo {
-  id: string;
+export interface ItemsNavProps extends PropsLang {
+  onItemClick?: () => void;
+}
+
+export interface Projects {
+  project_id: number;
+  slug: string;
+  category: (typeof CATEGORIES)[number];
+  card_image: string;
+  images_topics: string[];
+  link_repo: string;
+  link_web: string;
   title: string;
-  description?: string;
-  topics?: string[];
-  link: string;
+  description: string;
+  fork: boolean;
+}
+
+export interface Experiences {
+  experience_id: number;
+  work: string;
+  title: string;
+  description: string;
   img: string;
-  label: string;
-  type: string;
-  fork?: boolean;
+  alt: string;
+  time: string;
+  location: string;
+}
+
+export interface ProjectsTranslations {
+  translate_project_id: number;
+  project_id: number;
+  locale: (typeof LOCALES)[number];
+  title: string;
+  description: string;
 }
 
 export interface Testimonial extends FormOpinions {
-  id: number;
+  comment_id: number;
   direction: "left" | "bottom";
 }
 
-export interface DataTestimonials extends PropsLang {
-  data: Testimonial[];
+export interface UseDataProjects extends PropsLang {
+  activeTab: string;
 }
 
-export type RepoEmpres = Omit<Repo, "label" | "type">;
+export interface PropsLangWithData extends PropsLang {
+  data: Projects[] | null;
+}

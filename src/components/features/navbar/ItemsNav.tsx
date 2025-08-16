@@ -1,4 +1,7 @@
-import type { NavbarItem, PropsLang } from "@/interfaces/currentLang.interface";
+import type {
+  ItemsNavProps,
+  NavbarItem,
+} from "@/interfaces/currentLang.interface";
 import { dataListNavbarEN } from "@/utils/en/dataNavbarEN";
 import { dataListNavbar } from "@/utils/es/dataNavbar";
 import { dataListNavbarFR } from "@/utils/fr/dataNavbarFR";
@@ -11,7 +14,9 @@ const langTraduceData: Record<string, typeof dataListNavbar> = {
   fr: dataListNavbarFR,
 };
 
-export const ItemsNav = ({ currentLocale }: PropsLang) => {
+const NAV_HEIGHT = 80;
+
+export const ItemsNav = ({ currentLocale, onItemClick }: ItemsNavProps) => {
   const [activeSection, setActiveSection] = useState<string>("");
 
   const memorization: NavbarItem[] = useMemo(
@@ -26,7 +31,7 @@ export const ItemsNav = ({ currentLocale }: PropsLang) => {
       memorization.forEach((item) => {
         const section = document.querySelector(item.to) as HTMLElement;
         if (section) {
-          const sectionTop = section.offsetTop - 32; // margen superior
+          const sectionTop = section.offsetTop - NAV_HEIGHT; // compensar navbar
           const sectionHeight = section.offsetHeight;
           if (
             window.scrollY >= sectionTop &&
@@ -45,6 +50,12 @@ export const ItemsNav = ({ currentLocale }: PropsLang) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [memorization]);
 
+  const handleClick = () => {
+    if (onItemClick && window.innerWidth < 1000) {
+      onItemClick(); // solo dispara en mobile
+    }
+  };
+
   return (
     <>
       {memorization.map((list) => {
@@ -59,7 +70,11 @@ export const ItemsNav = ({ currentLocale }: PropsLang) => {
               ${isActive ? "text-primary font-bold before:w-full before:bg-primary" : ""}
             `}
           >
-            <a href={list.to} aria-label={`Ir a ${list.label}`}>
+            <a
+              href={list.to}
+              aria-label={`Ir a ${list.label}`}
+              onClick={handleClick}
+            >
               {list.label}
             </a>
           </li>

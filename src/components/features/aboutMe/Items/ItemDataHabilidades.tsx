@@ -3,7 +3,7 @@ import { dataTabsAcercaDeEN } from "@/utils/en/dataTabsAcercaDeEN";
 import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercaDe";
 import { dataTabsAcercaDeFR } from "@/utils/fr/dataTabsAcercaDeFR";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
   es: dataTabsAcercaDe,
@@ -19,16 +19,16 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
     [currentLocale],
   );
 
-  const handleImageLoad = (tech: string) => {
+  const handleImageLoad = useCallback((tech: string) => {
     setLoadedImages((prev) => ({ ...prev, [tech]: true }));
-  };
+  }, []);
 
   return (
     <>
       {memorization.map(({ title, images }, index) => (
         <div
           key={index}
-          className={`bg-base-100 shadow-md border border-transparent hover:border-secondary hover:bg-gradient-to-br from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out transform p-8 rounded-2xl ${
+          className={`card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out p-8 ${
             index === memorization.length - 1 ? "lg:col-span-2" : ""
           }`}
         >

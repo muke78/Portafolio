@@ -1,15 +1,8 @@
 ---
-// src/pages/index.astro
-import { comments } from "@/db/schema";
-import { db } from "@/lib/db";
-import type { Testimonial } from '@/interfaces/currentLang.interface';
-
-const data = (await db.select().from(comments).all()) as Testimonial[];
-
-import {Testimonials} from '@/components/features/opinions/Testimonials'
+import { Opinions } from '@/components/features/opinions/Opinions'
 const {currentLocale}  = Astro
 ---
 
-<div class="hero-content mt-16">
-    <Testimonials client:load currentLocale={currentLocale} data={data}/>
+<div class="isolate flex w-7xl items-start justify-start gap-4 lg:p-9 md:p-8 sm:p-4 p-4 mt-16">
+    <Opinions client:load currentLocale={currentLocale}/>
 </div>

@@ -16,7 +16,7 @@ export const dataTabsAcercaDeEN: DataItemsHabilidades[] = [
   {
     title: "UI and Styles",
     images: [
-      "https://go-skill-icons.vercel.app/api/icons?i=bootstrap,daisyui,mui,styledcomponents,tailwindcss",
+      "https://go-skill-icons.vercel.app/api/icons?i=bootstrap,daisyui,mui,tailwindcss,styledcomponents",
     ],
   },
   {
