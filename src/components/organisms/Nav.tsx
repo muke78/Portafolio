@@ -43,13 +43,16 @@ export const Nav = ({ currentLocale }: PropsLang) => {
   }, [isOpen]);
 
   return (
-    <nav className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-base-content/5 border-b border-base-content/10 z-40">
+    <nav
+      className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-base-content/5 border-b border-base-content/10 z-40"
+      role="navigation"
+    >
       <div className="max-w-7xl mx-auto h-20 flex justify-between items-center px-6">
         {/* Logo */}
         <motion.a
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="font-semibold text-2xl text-base-content/90"
+          className="font-semibold text-2xl text-base-content"
           href={`/${currentLocale}/home`}
           aria-label="Inicio del portafolio"
         >

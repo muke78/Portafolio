@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { Mail, Phone, Send } from "lucide-react";
 
 export const Form = ({ currentLocale }: PropsLang) => {
-  const { changeTheme } = useTheme();
+  const { theme } = useTheme();
 
   const i18n = getI18N({ currentLocale });
   const sendInformationValid = `${i18n.FORM.FORM_SEND_INFORMATION_CORRECT}`;
@@ -54,7 +54,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-3 md:gap-3 lg:p-9 md:p-8 p-4">
       <div className="col-start-1 row-start-1 md:col-span-1 md:row-span-1 rounded-md space-y-1 text-base-content">
-        <small className="block font-medium text-base-content/40">
+        <small className="block font-medium text-base-content/60">
           {i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
         </small>
 
@@ -79,7 +79,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
               {<Mail size={36} />}
             </span>
             <span>
-              <strong className="text-sm text-base-content/50">
+              <strong className="text-sm text-base-content/80">
                 {i18n.FORM.FORM_OPTIONS_CONTACT_EMAIL}
               </strong>{" "}
               <a
@@ -97,7 +97,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
               {<Phone size={36} />}
             </span>
             <span>
-              <strong className="text-sm text-base-content/50">
+              <strong className="text-sm text-base-content/80">
                 {i18n.FORM.FORM_OPTIONS_CONTACT_PHONE}
               </strong>{" "}
               <a
@@ -223,8 +223,8 @@ export const Form = ({ currentLocale }: PropsLang) => {
           <Toaster
             toastOptions={{
               style: {
-                background: `${changeTheme === "night" ? "#0f172a" : changeTheme === "nord" ? "#2e3440" : "#eceff4"}`,
-                color: `${changeTheme === "night" ? "#eceff4" : changeTheme === "nord" ? "#eceff4" : "#0f172a"}`,
+                background: `${theme === "night" ? "#0f172a" : theme === "nord" ? "#2e3440" : "#eceff4"}`,
+                color: `${theme === "night" ? "#eceff4" : theme === "nord" ? "#eceff4" : "#0f172a"}`,
               },
             }}
             reverseOrder={false}

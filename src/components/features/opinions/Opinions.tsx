@@ -56,15 +56,20 @@ const emptyStateVariants = {
 
 export const Opinions = ({ currentLocale }: PropsLang) => {
   const [data, setData] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const i18n = getI18N({ currentLocale });
 
   useEffect(() => {
     async function fetchData() {
       const result = await listCommentsServices();
       setData(result.data as Testimonial[]);
+      setLoading(false);
     }
+
     fetchData();
   }, [currentLocale]);
+
+  if (loading) return <span className="loading loading-ring loading-xl"></span>;
 
   return (
     <div className="relative w-full overflow-hidden p-4">

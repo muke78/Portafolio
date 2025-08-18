@@ -12,7 +12,7 @@ export const Habilidades = ({ currentLocale }: PropsLang) => {
       </span>
 
       <div className="animate__animated animate__zoomIn">
-        <div className="grid lg:grid-cols-3 grid-cols-1 p-4 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 p-4 gap-4">
           <ItemDataHabilidades currentLocale={currentLocale} />
         </div>
       </div>
