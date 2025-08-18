@@ -88,7 +88,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                 aria-label="Correo electrónico"
                 className="flex"
               >
-                muke7881@gmail.com
+                erickm.gonzalez.rivera@gmail.com
               </a>
             </span>
           </li>
