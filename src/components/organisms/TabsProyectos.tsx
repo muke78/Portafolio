@@ -73,12 +73,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       if (data.length > 0) {
         setPreviousDataLength(data.length);
       }
-
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      setLoading(false);
     }
     fetchData();
   }, [currentLocale]);
@@ -173,7 +168,7 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
       {/* Contenedor del contenido del tab con un ancho flexible */}
       <div className="flex-1 w-full p-4">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 lg:gap-6 p-2 xs:p-4 sm:p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 lg:gap-6 p-2 xs:p-4 sm:p-6">
             {skeletonItems.map((_, i) => (
               <SkeletonProjectsCard key={i} />
             ))}
