@@ -23,8 +23,8 @@ export default defineConfig({
     }),
     compress({
       CSS: true,
-      HTML: true,
-      Image: false,
+      HTML: false,
+      Image: true,
       SVG: true,
       Logger: true,
     }),

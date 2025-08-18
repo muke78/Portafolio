@@ -10,7 +10,7 @@ const {currentLocale} = Astro;
 ---
 
 <Layout>
-  <header class="relative w-full transition-all duration-500 ease-in-out"> 
+  <header class="relative w-full transition-all duration-500 ease-in-out" role="banner"> 
     <div class="w-full lg:p-0 md:p-10 p-10">
       <Nav client:load currentLocale={currentLocale}/>
     </div>
@@ -27,11 +27,10 @@ const {currentLocale} = Astro;
       <div class="hero bg-base-300 min-h-screen flex justify-center items-start" id="opinions">
         <Opiniones />
       </div>
-      <div class="hero bg-base-300 min-h-screen scroll-m-14 lg:scroll-m-0 md:scroll-m-0" id="contact">
+      <div class="hero bg-base-300 min-h-screen scroll-m-14 lg:scroll-m-12 md:scroll-m-0" id="contact">
         <Contactos>
       </div>
     </section>
   </header>
 </Layout>
-
 

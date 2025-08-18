@@ -68,9 +68,9 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center overflow-scroll lg:overflow-hidden p-4 lg:w-3xl md:w-2xl sm:w-xl">
+    <div className="min-h-screen w-full flex items-center justify-center py-4 px-3 sm:px-4">
       <motion.div
-        className="w-full max-w"
+        className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto my-auto"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -79,8 +79,8 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
           className="bg-base-100 rounded-xl shadow-xl overflow-hidden"
           variants={itemVariants}
         >
-          {/* Header con gradiente */}
-          <div className="bg-gradient-to-r from-primary via-secondary/70 to-accent p-6 text-center">
+          {/* Header con gradiente - Más compacto */}
+          <div className="bg-gradient-to-br from-primary via-secondary/70 to-accent p-3 sm:p-4 lg:p-6 text-center">
             <motion.div
               initial={{ rotate: -180, opacity: 0 }}
               animate={{ rotate: 0, opacity: 1 }}
