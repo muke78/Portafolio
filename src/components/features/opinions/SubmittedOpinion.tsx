@@ -46,7 +46,7 @@ export const SubmittedOpinion = ({ currentLocale }: PropsLang) => {
           </motion.h2>
 
           <motion.p
-            className="text-base-content/60 mb-6"
+            className="text-base-content/80 mb-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
@@ -56,7 +56,7 @@ export const SubmittedOpinion = ({ currentLocale }: PropsLang) => {
 
           <motion.a
             href="home#opinions"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-medium transition-colors duration-200"
+            className="bg-blue-700 hover:bg-blue-900 text-white px-6 py-3 rounded-full font-medium transition-colors duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0 }}
