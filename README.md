@@ -43,10 +43,12 @@ flowchart TD
         click IL "https://github.com/muke78/portafolio/blob/main/src/i18n/index.ts"
         IU["i18n UI"]:::i18n
         click IU "https://github.com/muke78/portafolio/blob/main/src/i18n/ui.ts"
-        IUT["i18n Utils"]:::i18n
-        click IUT "https://github.com/muke78/portafolio/blob/main/src/i18n/utils.ts"
-        LU["Language Data Utilities"]:::i18n
-        click LU "https://github.com/muke78/portafolio/tree/main/src/utils/en"
+        LN["Language Data Utilities EN"]:::i18n
+        click LN "https://github.com/muke78/portafolio/tree/main/src/utils/en"
+        LE["Language Data Utilities ES"]:::i18n
+        click LE "https://github.com/muke78/portafolio/tree/main/src/utils/es"
+        LF["Language Data Utilities FR"]:::i18n
+        click LF "https://github.com/muke78/portafolio/tree/main/src/utils/fr"
     end
 
     %% Content & Layout (Page Routing)
@@ -82,11 +84,12 @@ flowchart TD
     TH ---|"manages"| S
     IL ---|"supplies"| P
     L ---|"provides"| IL
-    IU ---|"renders"| P
-    IUT ---|"supports"| IL
-    LU ---|"feeds"| P
+    IU ---|"is used by"| P
+    LN ---|"i18n english"| P
+    LE ---|"i18n spanish"| P
+    LF ---|"i18n frances"| P
     P -->|"consumes"| UD
-    UD -->|"defines"| DT
+    UD -->|"uses"| DT
     PA -->|"serves"| P
     AE -->|"integrates"| PA
     IU ---|"influences"| S
