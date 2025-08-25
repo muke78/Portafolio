@@ -153,7 +153,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
                   whileFocus={{ scale: 1.02 }}
                   {...register("email")}
                 />
-                {errors.name && (
+                {errors.email && (
                   <motion.div
                     className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center"
                     initial={{ opacity: 0, y: -10 }}
