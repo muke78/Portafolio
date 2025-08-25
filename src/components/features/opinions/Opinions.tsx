@@ -81,7 +81,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
         transition={{ duration: 0.6 }}
       >
         <motion.div
-          className="inline-block px-4 py-2 bg-primary/20 text-primary text-sm font-medium rounded-full mb-6 mx-auto backdrop-blur-sm border border-primary/20"
+          className="inline-block px-4 py-2 bg-primary/20 text-base-content text-sm rounded-full mb-6 mx-auto backdrop-blur-sm border border-primary/20"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5, ease: "backOut" }}
@@ -99,7 +99,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
         </motion.h2>
 
         <motion.p
-          className="text-xl text-base-content/60 font-medium max-w-2xl mx-auto"
+          className="text-xl text-base-content/90 font-medium max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6 }}
@@ -224,7 +224,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
                 {/* Header con Quote */}
                 <div className="flex items-start gap-4 mb-5">
                   <motion.div
-                    className="flex-shrink-0 p-2.5 group-hover:scale-[1.2] group-hover:rotate-12 transition-all duration-300 ease-in-out"
+                    className="flex-shrink-0 p-2.5 group-hover:scale-[1.2] group-hover:rotate-12 transition-all duration-500 ease-in-out "
                     transition={{ duration: 0.9 }}
                   >
                     <Quote className="w-10 h-10 text-secondary" />

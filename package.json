@@ -10,10 +10,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "prettier": "prettier --write .",
-    "prepare": "husky",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

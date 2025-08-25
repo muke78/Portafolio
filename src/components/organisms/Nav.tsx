@@ -54,7 +54,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
           animate={{ opacity: 1, x: 0 }}
           className="font-semibold text-2xl text-base-content"
           href={`/${currentLocale}/home`}
-          aria-label="Inicio del portafolio"
+          aria-label="Pagina principal, portafolio de Erick González"
         >
           Khelde.
         </motion.a>
@@ -117,7 +117,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
               stiffness: 300,
               opacity: { duration: 0.2 },
             }}
-            className="fixed top-0 right-0 max-h-screen w-80 max-w-[85vw] bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-xl border-l border-base-content/10 rounded-b-2xl shadow-2xl z-50"
+            className="fixed top-0 right-0 max-h-screen w-80 max-w-[85vw] bg-base-300 border-l border-base-content/10 rounded-b-2xl shadow-2xl z-50"
           >
             {/* Header del Sidebar */}
             <div className="flex items-center justify-between p-5 border-b border-base-content/10">
@@ -135,7 +135,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
             {/* Contenido del Sidebar */}
             <div className="flex flex-col h-full">
               {/* Navegación */}
-              <div className="flex-1 px-6 py-8 bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-lg">
+              <div className="flex-1 px-6 py-8 bg-base-300">
                 <motion.ul
                   className="space-y-6"
                   initial={{ y: 20, opacity: 0 }}
@@ -150,9 +150,8 @@ export const Nav = ({ currentLocale }: PropsLang) => {
               </div>
 
               {/* Footer del Sidebar */}
-              <div className="p-6 border-t rounded-2xl border-base-content/10 bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-lg">
-                <div className="flex justify-start items-center space-x-4 ">
-                  <span className="text-sm text-gray-400">Configuración:</span>
+              <div className="p-6 border-t rounded-b-2xl border-base-content/10 bg-base-300">
+                <div className="flex justify-start items-center space-x-4">
                   <div className="flex space-x-3">
                     <LangDrop currentLocale={currentLocale} />
                     <ThemeDrop />

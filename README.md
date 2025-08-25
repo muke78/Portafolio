@@ -7,6 +7,105 @@ Se realizó el portafolio con la tecnología de [Astro](https://astro.build/) y 
 - Próxima actualización `v.2.6.1` o `v.2.6.x` o `v.2.x.x`.
 - Se utiliza la herramienta de reenvío de puertos desde host de túnel para revisar los cambios del servidor en tiempo real desde un celular.
 
+# 🔷 Diagrama de flujo de procesos para entender el portfolio
+
+```mermaid
+flowchart TD
+    %% Build Engine
+    AE["Astro Build Engine"]:::build
+    click AE "https://github.com/muke78/portafolio/blob/main/astro.config.mjs"
+
+    %% React Components Hierarchy
+    subgraph "React Components Hierarchy"
+        A["Atoms"]:::react
+        click A "https://github.com/muke78/portafolio/tree/main/src/components/atoms"
+        F["Features"]:::react
+        click F "https://github.com/muke78/portafolio/tree/main/src/components/features"
+        O["Organisms"]:::react
+        click O "https://github.com/muke78/portafolio/tree/main/src/components/organisms"
+        T["Templates"]:::react
+        click T "https://github.com/muke78/portafolio/tree/main/src/components/templates"
+    end
+
+    %% Styling & Theme Management
+    S["Tailwind/DaisyUI Styling"]:::styling
+    click S "https://github.com/muke78/portafolio/blob/main/tailwind.config.js"
+    SC["Styles"]:::styling
+    click SC "https://github.com/muke78/portafolio/blob/main/src/styles/styles.css"
+    TH["Theme Hook (useTheme)"]:::hook
+    click TH "https://github.com/muke78/portafolio/blob/main/src/hooks/useTheme.ts"
+
+    %% Internationalization (i18n) Modules
+    subgraph "Internationalization (i18n)"
+        L["Locale Definitions"]:::i18n
+        click L "https://github.com/muke78/portafolio/tree/main/src/i18n/locales"
+        IL["i18n Logic"]:::i18n
+        click IL "https://github.com/muke78/portafolio/blob/main/src/i18n/index.ts"
+        IU["i18n UI"]:::i18n
+        click IU "https://github.com/muke78/portafolio/blob/main/src/i18n/ui.ts"
+        LN["Language Data Utilities EN"]:::i18n
+        click LN "https://github.com/muke78/portafolio/tree/main/src/utils/en"
+        LE["Language Data Utilities ES"]:::i18n
+        click LE "https://github.com/muke78/portafolio/tree/main/src/utils/es"
+        LF["Language Data Utilities FR"]:::i18n
+        click LF "https://github.com/muke78/portafolio/tree/main/src/utils/fr"
+    end
+
+    %% Content & Layout (Page Routing)
+    subgraph "Content & Layout"
+        P["Pages"]:::pages
+        click P "https://github.com/muke78/portafolio/tree/main/src/pages"
+        LAY["Layout"]:::pages
+        click LAY "https://github.com/muke78/portafolio/blob/main/src/layouts/Layout.astro"
+    end
+
+    %% Utility & Data Management
+    UD["Utilities & Data"]:::utility
+    click UD "https://github.com/muke78/portafolio/tree/main/src/utils"
+    DT["Data Types"]:::utility
+    click DT "https://github.com/muke78/portafolio/tree/main/src/types"
+
+    %% Public Assets & Configurations
+    PA["Public Assets & Configurations"]:::public
+    click PA "https://github.com/muke78/portafolio/tree/main/public"
+    RT["robots.txt"]:::public
+    click RT "https://github.com/muke78/portafolio/blob/main/robots.txt"
+
+    %% Connections
+    AE -->|"compiles"| LAY
+    LAY -->|"uses"| T
+    T -->|"includes"| O
+    O -->|"composedOf"| F
+    F -->|"contains"| A
+    S ---|"styles"| A
+    S ---|"styles"| F
+    S ---|"styles"| O
+    S ---|"styles"| T
+    TH ---|"manages"| S
+    IL ---|"supplies"| P
+    L ---|"provides"| IL
+    IU ---|"is used by"| P
+    LN ---|"i18n english"| P
+    LE ---|"i18n spanish"| P
+    LF ---|"i18n frances"| P
+    P -->|"consumes"| UD
+    UD -->|"uses"| DT
+    PA -->|"serves"| P
+    AE -->|"integrates"| PA
+    IU ---|"influences"| S
+
+    %% Class definitions
+    classDef build fill:#f9d423,stroke:#333,stroke-width:2px;
+    classDef react fill:#bbdef0,stroke:#1e88e5,stroke-width:2px;
+    classDef styling fill:#f8bbd0,stroke:#d81b60,stroke-width:2px;
+    classDef hook fill:#c5e1a5,stroke:#7cb342,stroke-width:2px;
+    classDef i18n fill:#ffe082,stroke:#ffa000,stroke-width:2px;
+    classDef pages fill:#dcedc8,stroke:#8bc34a,stroke-width:2px;
+    classDef utility fill:#d1c4e9,stroke:#673ab7,stroke-width:2px;
+    classDef public fill:#b2ebf2,stroke:#0097a7,stroke-width:2px;
+
+```
+
 ## 🏯 Lighthouse y optimización de la página
 
 ![Lighthouse Score](./image.png)

@@ -21,7 +21,7 @@ export const ThemeDrop = () => {
         onHoverEnd={() => setIsHovering(false)}
         className={`
           swap swap-rotate btn btn-circle relative overflow-hidden group
-          bg-gradient-to-br transition-all duration-300 border
+          bg-gradient-to-br transition-all duration-100 border
           ${
             isDark
               ? "from-indigo-500/10 to-purple-600/10 hover:from-indigo-500/20 hover:to-purple-600/20 border-indigo-400/20"
@@ -53,7 +53,11 @@ export const ThemeDrop = () => {
                   "linear-gradient(225deg, rgba(239, 68, 68, 0.1) 0%, rgba(251, 191, 36, 0.05) 50%, rgba(251, 191, 36, 0.1) 100%)",
                 ],
           }}
-          transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+          transition={{
+            duration: 0.3,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
         />
 
         {/* Contenedor de iconos con animaciones */}
@@ -67,7 +71,7 @@ export const ThemeDrop = () => {
                 exit={{ rotate: 90, scale: 0, opacity: 0 }}
                 transition={{
                   type: "spring",
-                  stiffness: 200,
+                  stiffness: 100,
                   damping: 15,
                   duration: 0.3,
                 }}
@@ -87,7 +91,7 @@ export const ThemeDrop = () => {
                 exit={{ rotate: -90, scale: 0, opacity: 0 }}
                 transition={{
                   type: "spring",
-                  stiffness: 200,
+                  stiffness: 100,
                   damping: 15,
                   duration: 0.3,
                 }}

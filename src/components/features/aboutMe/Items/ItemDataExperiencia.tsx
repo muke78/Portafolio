@@ -44,7 +44,8 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
         }) => (
           <div
             key={experience_id}
-            className="card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:scale-[1.03] hover:brightness-105 transition-all duration-400 ease-in-out p-8 rounded-2xl"
+            className="card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
+            hover:shadow-xl hover:scale-[1.03] hover:brightness-105 transition-all duration-500 ease-in-out  p-8 rounded-2xl"
           >
             <div className="flex items-center gap-4 mb-4">
               <img

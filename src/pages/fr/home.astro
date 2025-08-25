@@ -10,10 +10,11 @@ const {currentLocale} = Astro;
 ---
 
 <Layout>
-  <header class="relative w-full transition-all duration-500 ease-in-out" role="banner"> 
-    <div class="w-full lg:p-0 md:p-10 p-10">
-      <Nav client:load currentLocale={currentLocale}/>
-    </div>
+  <header class="relative w-full" role="banner">
+  <div class="w-full lg:p-0 md:p-10 p-10">
+    <Nav client:load currentLocale={currentLocale} />
+  </div>
+  <main role="main">
     <section class="w-full h-full">
       <div class="hero bg-base-300 min-h-screen scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="home">
         <Header />
@@ -28,9 +29,10 @@ const {currentLocale} = Astro;
         <Opiniones />
       </div>
       <div class="hero bg-base-300 min-h-screen scroll-m-14 lg:scroll-m-12 md:scroll-m-0" id="contact">
-        <Contactos>
+        <Contactos />
       </div>
     </section>
-  </header>
+  </main>
+</header>
 </Layout>
 
