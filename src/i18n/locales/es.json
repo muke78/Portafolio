@@ -3,7 +3,7 @@
     "HEADER_TITLE": "Hola soy",
     "HEADER_SUBTITLE": "Desarrollador Full-Stack",
     "HEADER_NAME": "Erick González",
-    "HEADER_ABOUT": "Ingeniero en Tecnologías de la Información titulado, especializado en desarrollo FullStack y análisis de datos. Con más de dos años de experiencia creando aplicaciones eficientes, escalables y bien estructuradas.",
+    "HEADER_ABOUT": "Ingeniero en Tecnologías de la Información titulado, especializado en desarrollo Full-Stack y análisis de datos. Con más de dos años de experiencia creando aplicaciones eficientes, escalables y bien estructuradas.",
     "HEADER_BUTTON": "Ver proyectos"
   },
   "ABOUTME": {
@@ -11,7 +11,7 @@
     "ABOUT_ABOUT_DESCRIPTION": "Soy un desarrollador web especializado en la creación de aplicaciones completas desde el diseño de interfaces hasta la implementación de lógica en el servidor. Tengo experiencia en bases de datos y en el despliegue de aplicaciones, asegurando un rendimiento óptimo y una experiencia de usuario fluida. Además, domino el control de versiones a través de Git y utilizo Power BI para el análisis de datos, lo que me permite tomar decisiones informadas basadas en métricas.",
     "ABOUT_DOWNLOAD_CV": "Ver CV",
     "ABOUT_TITLE_CARD": "Ingeniero en Tecnologías de la Información. Desarrollador Full-Stack.",
-    "ABOUT_SUBTITLE": "Autonomo",
+    "ABOUT_SUBTITLE": "Autónomo",
     "EXPERIENCE": "Experiencia"
   },
   "SKILLS": {
@@ -24,11 +24,11 @@
     "PROJECTS_TITLE_BUTTON_F": "Frontend",
     "PROJECTS_TITLE_BUTTON_B": "Backend",
     "PROJECTS_TITLE_BUTTON_C": "Empresas",
-    "PROJECTS_TITLE_BUTTON_D": "Analisis de datos",
+    "PROJECTS_TITLE_BUTTON_D": "Análisis de datos",
     "PROJECTS_BADGE_FORK": "Colaboración"
   },
   "404": {
-    "404_BODY": "¡Ups! La pagina que estas buscando aun no esta en orbita, regresa despues"
+    "404_BODY": "¡Ups! La página que estás buscando aún no está en órbita, regresa después"
   },
   "UNIVERSITY": {
     "UNIVERSITY_TITLE": "Universidad Politécnica del Valle de México (UPVM)",
@@ -41,9 +41,9 @@
     "OPINIONS_SUB_SUBTILE": "¡Aquí unos comentarios!",
 
     "OPINIONS_NOT_FOUND": "Aún no hay testimonios",
-    "OPINIONS_NOT_FOUND_DESCRIPTION": "Upps! aun no hay nada por aqui ni nada por alla, pronto veras algo aquí",
+    "OPINIONS_NOT_FOUND_DESCRIPTION": "¡Ups! aún no hay nada por aquí ni nada por allá, pronto verás algo aquí",
 
-    "OPINIONS_FORM_TITLE": " Escribe una opinión",
+    "OPINIONS_FORM_TITLE": "Escribe una opinión",
     "OPINIONS_FORM_SUBTITLE": "Puedes compartir una experiencia que hayas tenido trabajando conmigo o una opinión sobre mi trabajo",
 
     "OPINIONS_FORM_NAME_PLACEHOLDER": "Tu nombre completo",
@@ -53,10 +53,10 @@
     "OPINIONS_LOAD_SEND_INFORMATION": "Enviando...",
     "OPINIONS_SEND_INFORMATION": "Enviar comentario",
 
-    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "La experiencia debe ser mas grande de 14 caracteres",
-    "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Limite de caracteres alcanzado, solo se permiten 500 caracteres",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MIN": "La experiencia debe ser más grande de 14 caracteres",
+    "OPINIONS_FORM_VALID_MORE_INFORMATION_MAX": "Límite de caracteres alcanzado, solo se permiten 500 caracteres",
 
-    "OPINIONS_SEND_SUCCESSFULL": " ¡Gracias por tu comentario!",
+    "OPINIONS_SEND_SUCCESSFULL": "¡Gracias por tu comentario!",
     "OPINIONS_SEND_SUCCESSFULL_INFORMATION": "Tu respuesta se ha enviado correctamente. Apreciamos tu tiempo y retroalimentación.",
     "OPINIONS_REDIRECT_COMMENTS": "Ir a los comentarios"
   },
@@ -84,13 +84,13 @@
 
     "FORM_VALID_NAME": "El nombre debe ser mayor a 4 letras",
     "FORM_VALID_LASTNAME": "El apellido debe ser mayor a 4 letras",
-    "FORM_VALID_EMAIL": "Formato de correo invalido",
+    "FORM_VALID_EMAIL": "Formato de correo inválido",
     "FORM_VALID_PHONE_MIN": "El número debe tener al menos 7 dígitos",
     "FORM_VALID_PHONE_MAX": "El número es demasiado largo",
     "FORM_VALID_INFORMATION": "Este campo es obligatorio",
     "FORM_VALID_PHONE_REGEX": "El número debe contener solo dígitos y símbolos válidos (+, -, espacios, paréntesis)",
-    "FORM_VALID_MORE_INFORMATION_MIN": "La descripcion debe ser mas grande de 7 caracteres",
-    "FORM_VALID_MORE_INFORMATION_MAX": "Limite de caracteres alcanzado, solo se permiten 260 caracteres",
+    "FORM_VALID_MORE_INFORMATION_MIN": "La descripción debe ser más grande de 7 caracteres",
+    "FORM_VALID_MORE_INFORMATION_MAX": "Límite de caracteres alcanzado, solo se permiten 260 caracteres",
     "FORM_INVALID_EMAIL": "Formato de correo inválido",
 
     "FORM_SEND_INFORMATION_CORRECT": "¡Se ha enviado correctamente la información!",
