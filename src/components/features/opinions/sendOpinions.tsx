@@ -114,7 +114,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 <label className="flex items-center text-sm font-medium mb-2">
                   <User className="w-4 h-4 mr-2 text-secondary" />
                   {i18n.FORM.INPUT_NAME}{" "}
-                  <span className="text-red-500 ml-1">*</span>
+                  <span className="text-base font-bold text-error ml-1">*</span>
                 </label>
                 <motion.input
                   type="text"
@@ -124,13 +124,13 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                   {...register("name")}
                 />
                 {errors.name && (
-                  <motion.p
-                    className="text-red-500 text-sm mt-1 flex items-center"
+                  <motion.div
+                    className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
                     {(errors.name as FieldError)?.message}
-                  </motion.p>
+                  </motion.div>
                 )}
               </motion.div>
 
@@ -152,7 +152,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 />
                 {errors.job && (
                   <motion.p
-                    className="text-red-500 text-sm mt-1 flex items-center"
+                    className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
@@ -166,7 +166,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                 <label className="flex items-center text-sm font-medium mb-2">
                   <MessageSquare className="w-4 h-4 mr-2 text-secondary" />
                   {i18n.FORM.INPUT_TELL_EXPERIENCE}{" "}
-                  <span className="text-red-500 ml-1">*</span>
+                  <span className="text-base font-bold text-error ml-1">*</span>
                 </label>
                 <motion.textarea
                   rows={4}
@@ -176,13 +176,13 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
                   {...register("description")}
                 />
                 {errors.description && (
-                  <motion.p
-                    className="text-red-500 text-sm mt-1 flex items-center"
+                  <motion.div
+                    className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
                     {(errors.description as FieldError)?.message}
-                  </motion.p>
+                  </motion.div>
                 )}
               </motion.div>
 

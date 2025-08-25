@@ -31,7 +31,7 @@ export const ItemDataProjects = ({
           fork,
         }) => (
           <div
-            className="card bg-base-100 shadow-sm border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-300 ease-in-out"
+            className="card bg-base-100 shadow-sm border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-500 ease-in-out "
             key={project_id}
           >
             <figure className="relative overflow-hidden group cursor-pointer">
@@ -92,10 +92,10 @@ export const ItemDataProjects = ({
               <p>{description}</p>
 
               <div className="card-actions justify-start">
-                <div className="avatar-group -space-x-3 py-3">
+                <div className="avatar-group -space-x-2 py-3">
                   {images_topics.map((topic) => (
                     <div
-                      className="avatar hover:-translate-y-3 transition-all duration-300"
+                      className="avatar border-2 hover:-translate-y-3 transition-all duration-300"
                       key={topic}
                     >
                       <div className="w-8">
