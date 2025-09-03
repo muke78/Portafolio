@@ -23,6 +23,7 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
             height: "400px",
             objectFit: "cover",
           }}
+          loading="lazy"
         />
         <div className="p-5">
           <div className="flex justify-between">

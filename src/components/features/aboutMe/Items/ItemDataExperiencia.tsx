@@ -52,6 +52,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
                 src={`https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev/${img}`}
                 alt={alt}
                 className="w-12 h-12 rounded-full bg-base-200 object-cover"
+                loading="lazy"
               />
               <div className="flex flex-col">
                 <h2 className="text-lg font-semibold text-base-content">
