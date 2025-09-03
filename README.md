@@ -3,8 +3,8 @@
 Se realizó el portafolio con la tecnología de [Astro](https://astro.build/) y con la librería de [React](https://es.react.dev/) montada a Astro, con [Tailwind](https://tailwindui.com/) en su interfaz desde @tailwindcss/vite con Tailwind CSS 4.1.3.
 
 - Se montó [DaisyUI](https://daisyui.com/) sobre Tailwind para manejar los temas de la aplicación (v5.0.6).
-- Versión estable `v.2.6.0` release, próximas y futuras actualizaciones.
-- Próxima actualización `v.2.6.1` o `v.2.6.x` o `v.2.x.x`.
+- Versión estable `v.3.0.2` release, próximas y futuras actualizaciones.
+- Próxima actualización `v.3.0.3` o `v.3.0.x` o `v.3.x.x`.
 - Se utiliza la herramienta de reenvío de puertos desde host de túnel para revisar los cambios del servidor en tiempo real desde un celular.
 
 # 🔷 Diagrama de flujo de procesos para entender el portfolio
