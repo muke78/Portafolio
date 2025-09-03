@@ -68,7 +68,7 @@ export default defineConfig({
   },
   env: {
     schema: {
-      VITE_URL_API_PRODUCTION: envField.string({
+      VITE_API_URL: envField.string({
         context: "client",
         access: "public",
       }),
