@@ -53,6 +53,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
                         src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
                         alt={`Icon for ${tech}`}
                         onLoad={() => handleImageLoad(tech)}
+                        loading="lazy"
                       />
 
                       <span className="text-xs mt-1 text-base-content">

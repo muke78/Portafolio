@@ -111,6 +111,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
           </span>
         </button>
       </div>
+
       {/* Separador solo visible en pantallas grandes */}
       <div className="divider divider-vertical lg:divider-vertical"></div>
       {/* Contenedor del contenido del tab con un ancho flexible */}
