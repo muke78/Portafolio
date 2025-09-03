@@ -110,6 +110,7 @@ export const ItemDataProjects = ({
                           src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
                           alt={topic}
                           onLoad={() => handleImageLoad(topic)}
+                          loading="lazy"
                         />
                       </div>
                     </div>

@@ -6,18 +6,19 @@ const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 ---
 <div class="hero-content flex-col lg:flex-row-reverse mt-10">
-	<!-- Burbuja 1 con client:load -->
-	<Bubble className="bg-accent" position="top-56 left-48" delay={3} duration={5} client:load />
-	<!-- Burbuja 2 con client:load -->
-	<Bubble className="bg-primary" position="right-48" delay={1.5} duration={7} client:load />
-	<!-- Burbuja 3 con client:load -->
-	<Bubble className="bg-secondary" position="bottom-96" delay={0.5} duration={26} client:load />
+
+	<Bubble className="bg-accent" position="top-56 left-48" delay={3} duration={5} client:load />     
+	<!-- Burbuja 2 con client:load -->     
+	<Bubble className="bg-primary" position="right-48" delay={1.5} duration={7} client:load />     
+	<!-- Burbuja 3 con client:load -->     
+	<Bubble className="bg-secondary" position="bottom-96" delay={0.5} duration={26} client:load />     
+	
 	<div class="avatar animate__animated animate__fadeIn">
-		<div class="ring-primary ring-offset-base-100 w-[250px] md:w-[450px] rounded-full ring-4 border-dashed ring-offset-8">
-			<picture>
-				<source media="(min-width: 768px)" srcset="/yop_450.webp" />
-				<img src="/yop_250.webp" alt="muke78" />
-			</picture>
+		<div class="ring-primary ring-offset-base-100 w-36 xs:w-40 sm:w-56 md:w-[250px] lg:w-[350px] xl:w-[450px] rounded-full ring-4 border-dashed ring-offset-8">
+			 <picture>                 
+				<source media="(min-width: 768px)" srcset="/yop_450.webp" />                 
+				<img src="/yop_250.webp" alt="muke78" />             
+			</picture> 
 		</div>
 	</div>
 	<div class="flex flex-col justify-evenly lg:p-9 md:p-8 p-4 animate__animated animate__zoomIn">

@@ -74,8 +74,10 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 
         {/* Controles Mobile */}
         <div className="min-[1000px]:hidden flex items-center space-x-3">
-          <LangDrop currentLocale={currentLocale} />
-          <ThemeDrop />
+          <div className="max-[430px]:hidden flex items-center space-x-3">
+            <LangDrop currentLocale={currentLocale} />
+            <ThemeDrop />
+          </div>
 
           {/* Botón Menú Mobile */}
           <motion.button
