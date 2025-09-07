@@ -19,9 +19,9 @@ export interface FormData {
 }
 
 export interface FormOpinions {
-  name: string;
-  job: string;
-  description: string;
+  name?: string;
+  job?: string;
+  description?: string;
 }
 
 export interface NavbarItem {
@@ -68,6 +68,8 @@ export interface ProjectsTranslations {
 export interface Testimonial extends FormOpinions {
   comment_id: number;
   direction: "left" | "bottom";
+  country_flag: string;
+  created_at: string;
 }
 
 export interface UseDataProjects extends PropsLang {
@@ -76,4 +78,8 @@ export interface UseDataProjects extends PropsLang {
 
 export interface PropsLangWithData extends PropsLang {
   data: Projects[] | null;
+}
+
+export interface PropsLangTestimonials extends PropsLang {
+  data?: Testimonial[];
 }

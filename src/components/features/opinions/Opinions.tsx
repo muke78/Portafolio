@@ -1,10 +1,10 @@
 import { getI18N } from "@/i18n";
 import type {
-  PropsLang,
+  PropsLangTestimonials,
   Testimonial,
 } from "@/interfaces/currentLang.interface";
-import { listCommentsServices } from "@/services/comments/comments.services";
 
+// import { listCommentsServices } from "@/services/comments/comments.services";
 import { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
@@ -54,20 +54,17 @@ const emptyStateVariants = {
   },
 };
 
-export const Opinions = ({ currentLocale }: PropsLang) => {
-  const [data, setData] = useState<Testimonial[]>([]);
+export const Opinions = ({ currentLocale, data }: PropsLangTestimonials) => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const i18n = getI18N({ currentLocale });
 
   useEffect(() => {
-    async function fetchData() {
-      const result = await listCommentsServices();
-      setData(result.data as Testimonial[]);
-      setLoading(false);
+    if (data) {
+      setTestimonials(data);
     }
-
-    fetchData();
-  }, [currentLocale]);
+    setLoading(false);
+  }, [data, currentLocale]);
 
   if (loading) return <span className="loading loading-ring loading-xl"></span>;
 
@@ -115,7 +112,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
         variants={containerVariants}
         viewport={{ once: true }}
       >
-        {data.length === 0 ? (
+        {testimonials.length === 0 ? (
           // Estado vacío mejorado
           <motion.div
             className="flex flex-col items-center justify-center min-h-[400px] px-8 py-12"
@@ -206,7 +203,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
         ) : (
           // Grid de testimonios mejorado
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-4 p-4">
-            {data.map((testimonial, index) => (
+            {testimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.comment_id}
                 variants={

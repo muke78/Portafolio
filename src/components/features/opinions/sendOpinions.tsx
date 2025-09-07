@@ -5,9 +5,9 @@ import type {
   PropsLang,
 } from "@/interfaces/currentLang.interface";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
-import { postCommentsServices } from "@/services/comments/comments.services";
 
-import { useState } from "react";
+// import { postCommentsServices } from "@/services/comments/comments.services";
+import { type FormEvent, useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,12 +34,22 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
     },
   });
 
-  const onSubmit = async (save: FormOpinions) => {
+  const onSubmit = async (
+    save: FormOpinions,
+    e: FormEvent<HTMLFormElement>,
+  ) => {
     setIsLoading(true);
 
-    const { name, job, description } = save;
+    // const { name, job, description } = save;
 
-    await postCommentsServices({ name, job, description });
+    // await postCommentsServices({ name, job, description });
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const response = await fetch("/api/comments", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
 
     setIsLoading(false);
     setIsSubmitted(true);
@@ -104,11 +114,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
           {/* Formulario */}
           <div className="p-8 space-y-6">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              method="POST"
-              className="space-y-6"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Campo Nombre */}
               <motion.div variants={itemVariants} className="space-y-2">
                 <label className="flex items-center text-sm font-medium mb-2">
