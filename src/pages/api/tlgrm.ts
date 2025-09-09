@@ -4,19 +4,15 @@ import type { APIRoute } from "astro";
 import { API_SECRET_TOKEN } from "astro:env/server";
 
 export const POST: APIRoute = async ({ request }) => {
-  const data = await request.formData();
-  const name = data.get("name");
-  const email = data.get("email");
-  const phone = data.get("phone");
-  const moreInformation = data.get("moreInformation");
+  const body = await request.json();
 
   await api.post(
     "/tlgrm",
     {
-      name,
-      email,
-      phone,
-      moreInformation,
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      moreInformation: body.moreInformation,
     },
     {
       headers: {
@@ -28,10 +24,10 @@ export const POST: APIRoute = async ({ request }) => {
   return new Response(
     JSON.stringify({
       message: {
-        name,
-        email,
-        phone,
-        moreInformation,
+        name: body.name,
+        email: body.email,
+        phone: body.phone,
+        moreInformation: body.moreInformation,
       },
     }),
     {

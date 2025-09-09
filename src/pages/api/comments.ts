@@ -4,14 +4,14 @@ import type { APIRoute } from "astro";
 import { API_SECRET_TOKEN } from "astro:env/server";
 
 export const POST: APIRoute = async ({ request }) => {
-  const data = await request.formData();
-  const name = data.get("name");
-  const job = data.get("job");
-  const description = data.get("description");
-
+  const body = await request.json();
   await api.post(
     "/comments",
-    { name, job, description },
+    {
+      name: body.name,
+      job: body.job,
+      description: body.description,
+    },
     {
       headers: {
         Authorization: `Bearer ${API_SECRET_TOKEN}`,
@@ -22,9 +22,9 @@ export const POST: APIRoute = async ({ request }) => {
   return new Response(
     JSON.stringify({
       message: {
-        name,
-        job,
-        description,
+        name: body.name,
+        job: body.job,
+        description: body.description,
       },
     }),
     {
@@ -40,5 +40,5 @@ export const GET: APIRoute = async () => {
     },
   });
 
-  return new Response(JSON.stringify({ data }), { status: 200 });
+  return new Response(JSON.stringify(data), { status: 200 });
 };

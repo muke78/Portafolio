@@ -3,7 +3,6 @@ import { getI18N } from "@/i18n";
 import type { FormData, PropsLang } from "@/interfaces/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
 
-import type { FormEvent } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -33,12 +32,14 @@ export const Form = ({ currentLocale }: PropsLang) => {
     },
   });
 
-  const onSubmit = async (data: FormData, e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (data: FormData) => {
     try {
-      const formData = new FormData(e.target as HTMLFormElement);
       await fetch("/api/tlgrm", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
 
       toast.success(sendInformationValid, {

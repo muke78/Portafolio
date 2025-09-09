@@ -6,8 +6,7 @@ import type {
 } from "@/interfaces/currentLang.interface";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
 
-// import { postCommentsServices } from "@/services/comments/comments.services";
-import { type FormEvent, useState } from "react";
+import { useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,15 +33,14 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
     },
   });
 
-  const onSubmit = async (
-    save: FormOpinions,
-    e: FormEvent<HTMLFormElement>,
-  ) => {
+  const onSubmit = async (save: FormOpinions) => {
     setIsLoading(true);
-    const formData = new FormData(e.target as HTMLFormElement);
     await fetch("/api/comments", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(save),
     });
 
     setIsLoading(false);

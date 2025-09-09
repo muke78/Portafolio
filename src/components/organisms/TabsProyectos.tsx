@@ -72,10 +72,10 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
           `/api/projects?currentLocale=${currentLocale}`,
         );
         const projects = await result.json();
-        setData(projects.data.data.rows as Projects[]);
+        setData(projects.data.rows as Projects[]);
 
-        if (projects.data.data.rows.length > 0) {
-          setPreviousDataLength(projects.data.data.rows.length);
+        if (projects.data.rows.length > 0) {
+          setPreviousDataLength(projects.data.rows.length);
         }
       } catch (error) {
         console.error("Error al cargar proyectos:", error);
