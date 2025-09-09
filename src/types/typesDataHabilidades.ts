@@ -1,4 +1,4 @@
 export type DataItemsHabilidades = {
-  title: string;
-  images: string[];
+	title: string;
+	images: string[];
 };

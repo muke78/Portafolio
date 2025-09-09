@@ -10,7 +10,7 @@ export NVM_DIR="$HOME/.nvm"
 echo "🔍 Verificando archivos antes del commit..."
 echo "📦 Formateando código con Prettier..."
 
-pnpm prettier 'src/**/*.{js,ts,jsx,tsx,json,astro,css}' --write || exit 1
+pnpm exec biome format --write ./src || exit 1
 
 # Agregar los archivos modificados después del formateo
 git add .
