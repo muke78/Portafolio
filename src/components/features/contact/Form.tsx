@@ -2,7 +2,6 @@ import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 import type { FormData, PropsLang } from "@/interfaces/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
-import { postCommentsChatBotServices } from "@/services/telegram/telegram.services";
 
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
@@ -35,7 +34,13 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await postCommentsChatBotServices(data);
+      await fetch("/api/tlgrm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       toast.success(sendInformationValid, {
         duration: 5000,

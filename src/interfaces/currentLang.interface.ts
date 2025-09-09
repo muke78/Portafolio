@@ -1,3 +1,8 @@
+import type { contactSchema } from "@/schemas/contactSchema";
+import type { opinionsSchema } from "@/schemas/opinionsSchema";
+
+import { z } from "zod";
+
 export const CATEGORIES = [
   "frontend",
   "backend",
@@ -11,18 +16,8 @@ export interface PropsLang {
   currentLocale: string;
 }
 
-export interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  moreInformation: string;
-}
-
-export interface FormOpinions {
-  name: string;
-  job: string;
-  description: string;
-}
+export type FormData = z.infer<ReturnType<typeof contactSchema>>;
+export type FormOpinions = z.infer<ReturnType<typeof opinionsSchema>>;
 
 export interface NavbarItem {
   to: string;
@@ -68,6 +63,8 @@ export interface ProjectsTranslations {
 export interface Testimonial extends FormOpinions {
   comment_id: number;
   direction: "left" | "bottom";
+  country_flag: string;
+  created_at: string;
 }
 
 export interface UseDataProjects extends PropsLang {

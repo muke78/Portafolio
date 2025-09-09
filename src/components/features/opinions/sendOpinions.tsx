@@ -5,7 +5,6 @@ import type {
   PropsLang,
 } from "@/interfaces/currentLang.interface";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
-import { postCommentsServices } from "@/services/comments/comments.services";
 
 import { useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
@@ -36,10 +35,13 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
   const onSubmit = async (save: FormOpinions) => {
     setIsLoading(true);
-
-    const { name, job, description } = save;
-
-    await postCommentsServices({ name, job, description });
+    await fetch("/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(save),
+    });
 
     setIsLoading(false);
     setIsSubmitted(true);
@@ -104,11 +106,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
           {/* Formulario */}
           <div className="p-8 space-y-6">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              method="POST"
-              className="space-y-6"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Campo Nombre */}
               <motion.div variants={itemVariants} className="space-y-2">
                 <label className="flex items-center text-sm font-medium mb-2">

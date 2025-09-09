@@ -3,7 +3,6 @@ import type {
   PropsLang,
   Testimonial,
 } from "@/interfaces/currentLang.interface";
-import { listCommentsServices } from "@/services/comments/comments.services";
 
 import { useEffect, useState } from "react";
 
@@ -61,9 +60,15 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 
   useEffect(() => {
     async function fetchData() {
-      const result = await listCommentsServices();
-      setData(result.data as Testimonial[]);
-      setLoading(false);
+      try {
+        const result = await fetch("/api/comments");
+        const comments = await result.json();
+        setData(comments.data as Testimonial[]);
+      } catch (error) {
+        console.error("Error al cargar comentarios:", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchData();

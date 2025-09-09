@@ -7,7 +7,6 @@ import {
 import { SkeletonProjectsCard } from "@/components/features/projects/items/SkeletonProjectsCard";
 import { getI18N } from "@/i18n";
 import type { Projects, PropsLang } from "@/interfaces/currentLang.interface";
-import { listProjectsServices } from "@/services/projects/projects.services";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -66,14 +65,23 @@ export const TabsProyectos = ({ currentLocale }: PropsLang) => {
 
   useEffect(() => {
     async function fetchData() {
-      setLoading(true);
-      const result = await listProjectsServices({ currentLocale });
-      setData(result.data.rows as Projects[]);
+      try {
+        setLoading(true);
 
-      if (data.length > 0) {
-        setPreviousDataLength(data.length);
+        const result = await fetch(
+          `/api/projects?currentLocale=${currentLocale}`,
+        );
+        const projects = await result.json();
+        setData(projects.data.rows as Projects[]);
+
+        if (projects.data.rows.length > 0) {
+          setPreviousDataLength(projects.data.rows.length);
+        }
+      } catch (error) {
+        console.error("Error al cargar proyectos:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchData();
   }, [currentLocale]);

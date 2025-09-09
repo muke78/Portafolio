@@ -2,7 +2,6 @@ import type {
   Experiences,
   PropsLang,
 } from "@/interfaces/currentLang.interface";
-import { listExperiencesServices } from "@/services/experiences/experiences.services";
 
 import { useEffect, useState } from "react";
 
@@ -13,16 +12,19 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
-        const result = await listExperiencesServices({ currentLocale });
-        setData(result.data);
+        const result = await fetch(
+          `/api/experiences?currentLocale=${currentLocale}`,
+        );
+        const experiences = await result.json();
+        setData(experiences.data);
       } catch (error) {
         console.error("Error cargando experiencias:", error);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     fetchData();
   }, [currentLocale]);
