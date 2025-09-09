@@ -12,7 +12,7 @@
     "prepare": "husky",
     "format": "pnpm exec biome format --write ./src",
     "lint": "pnpm exec biome lint --write ./src",
-    "check_": "pnpm exec biome lint --write ./src"
+    "check_": "pnpm exec biome check --write ./src"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
