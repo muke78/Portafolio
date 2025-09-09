@@ -1,3 +1,8 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence, motion } from "framer-motion";
+import { Briefcase, MessageSquare, Send, User } from "lucide-react";
+import { useId, useState } from "react";
+import { type FieldError, useForm } from "react-hook-form";
 import { SubmittedOpinion } from "@/components/features/opinions/SubmittedOpinion";
 import { getI18N } from "@/i18n";
 import type {
@@ -6,16 +11,14 @@ import type {
 } from "@/interfaces/currentLang.interface";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
 
-import { useState } from "react";
-import { type FieldError, useForm } from "react-hook-form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion } from "framer-motion";
-import { Briefcase, MessageSquare, Send, User } from "lucide-react";
-
 export const SendOpinions = ({ currentLocale }: PropsLang) => {
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+
+	// Ids dinamicos para la accesibilidad (a11y)
+	const nameId = useId();
+	const jobId = useId();
+	const descriptionId = useId();
 
 	const i18n = getI18N({ currentLocale });
 
@@ -109,12 +112,16 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 						<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 							{/* Campo Nombre */}
 							<motion.div variants={itemVariants} className="space-y-2">
-								<label className="flex items-center text-sm font-medium mb-2">
+								<label
+									className="flex items-center text-sm font-medium mb-2"
+									htmlFor={nameId}
+								>
 									<User className="w-4 h-4 mr-2 text-secondary" />
 									{i18n.FORM.INPUT_NAME}{" "}
 									<span className="text-base font-bold text-error ml-1">*</span>
 								</label>
 								<motion.input
+									id={nameId}
 									type="text"
 									placeholder={i18n.OPINIONS.OPINIONS_FORM_NAME_PLACEHOLDER}
 									className="input lg:input-lg input-md w-full"
@@ -134,7 +141,10 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
 							{/* Campo Puesto (Opcional) */}
 							<motion.div variants={itemVariants} className="space-y-2">
-								<label className="flex items-center text-sm font-medium mb-2">
+								<label
+									className="flex items-center text-sm font-medium mb-2"
+									htmlFor={jobId}
+								>
 									<Briefcase className="w-4 h-4 mr-2 text-secondary" />
 									{i18n.FORM.INPUT_JOB}
 									<span className="text-gray-400 text-xs ml-2">
@@ -142,6 +152,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 									</span>
 								</label>
 								<motion.input
+									id={jobId}
 									type="text"
 									placeholder={i18n.OPINIONS.OPINIONS_FORM_JOB_PLACEHOLDER}
 									className="input lg:input-lg input-md w-full"
@@ -161,12 +172,16 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
 							{/* Campo Descripción */}
 							<motion.div variants={itemVariants} className="space-y-2">
-								<label className="flex items-center text-sm font-medium mb-2">
+								<label
+									className="flex items-center text-sm font-medium mb-2"
+									htmlFor={descriptionId}
+								>
 									<MessageSquare className="w-4 h-4 mr-2 text-secondary" />
 									{i18n.FORM.INPUT_TELL_EXPERIENCE}{" "}
 									<span className="text-base font-bold text-error ml-1">*</span>
 								</label>
 								<motion.textarea
+									id={descriptionId}
 									rows={4}
 									placeholder={i18n.OPINIONS.OPINIONS_FORM_EXP_PLACEHOLDER}
 									className="textarea lg:textarea-lg textarea-md w-full"

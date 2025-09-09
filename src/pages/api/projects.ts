@@ -1,7 +1,7 @@
-import { api } from "@/config/api";
+import { API_SECRET_TOKEN } from "astro:env/server";
 
 import type { APIRoute } from "astro";
-import { API_SECRET_TOKEN } from "astro:env/server";
+import { api } from "@/config/api";
 
 export const GET: APIRoute = async ({ request }) => {
 	const url = new URL(request.url);

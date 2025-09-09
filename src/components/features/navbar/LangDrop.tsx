@@ -1,16 +1,14 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { getI18N } from "@/i18n";
 import { languages } from "@/i18n/ui";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-import { useEffect, useRef, useState } from "react";
-
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-
 export const LangDrop = ({ currentLocale }: PropsLang) => {
 	const [selectedLang, setSelectedLang] = useState<string>(currentLocale);
 	const [isOpen, setIsOpen] = useState(false);
-	const [i18n, setI18n] = useState(() =>
+	const [_i18n, setI18n] = useState(() =>
 		getI18N({ currentLocale: currentLocale }),
 	);
 
@@ -27,7 +25,7 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 
 		setSelectedLang(lang);
 		setI18n(getI18N({ currentLocale: lang }));
-	}, []);
+	}, [currentLocale]);
 
 	// Cerrar dropdown si se hace click afuera
 	useEffect(() => {
@@ -150,7 +148,7 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 											key={key}
 											onClick={() => selectLanguage(key)}
 											className={`
-                      flex items-center gap-3 w-full px-4 py-3 text-left 
+                      flex items-center gap-3 w-full px-4 py-3 text-left cursor-pointer
                       hover:bg-base-100/40 transition-all duration-200 group
                       ${selectedLang === key ? "bg-blue-500/20 text-blue-400" : "text-base-content"}
                     `}

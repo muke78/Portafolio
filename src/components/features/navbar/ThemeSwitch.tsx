@@ -1,9 +1,7 @@
-import { useTheme } from "@/hooks/useTheme";
-
-import { useState } from "react";
-
 import { AnimatePresence, motion } from "framer-motion";
 import { MoonStar, Sun } from "lucide-react";
+import { useState } from "react";
+import { useTheme } from "@/hooks/useTheme";
 
 export const ThemeDrop = () => {
 	const { theme, toggleTheme, mounted } = useTheme();
@@ -107,9 +105,10 @@ export const ThemeDrop = () => {
 				<AnimatePresence>
 					{isHovering && (
 						<motion.div className="absolute inset-0 pointer-events-none">
+							{/* // biome-ignore-all  lint/suspicious/noArrayIndexKey: reason */}
 							{[...Array(6)].map((_, i) => (
 								<motion.div
-									key={i}
+									key={`particle-${i}`}
 									className={`absolute w-1 h-1 rounded-full ${
 										isDark ? "bg-indigo-400/60" : "bg-amber-400/60"
 									}`}

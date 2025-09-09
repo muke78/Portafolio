@@ -1,9 +1,7 @@
+import { Github, Globe } from "lucide-react";
+import { useCallback, useState } from "react";
 import { getI18N } from "@/i18n";
 import type { PropsLangWithData } from "@/interfaces/currentLang.interface";
-
-import { useCallback, useMemo, useState } from "react";
-
-import { Github, Globe } from "lucide-react";
 
 export const ItemDataProjects = ({
 	currentLocale,
@@ -57,6 +55,7 @@ export const ItemDataProjects = ({
 							{/* Botón GitHub */}
 							<div className="absolute right-12 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 								<button
+									type="button"
 									onClick={() => window.open(link_repo, "_blank")}
 									rel="noopener noreferrer"
 									className={`btn btn-sm btn-soft ${
@@ -71,6 +70,7 @@ export const ItemDataProjects = ({
 							{/* Botón Live Demo */}
 							<div className="absolute right-0 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 								<button
+									type="button"
 									onClick={() => window.open(link_web, "_blank")}
 									rel="noopener noreferrer"
 									className={`btn btn-sm btn-soft ${

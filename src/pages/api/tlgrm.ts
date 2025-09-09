@@ -1,7 +1,7 @@
-import { api } from "@/config/api";
+import { API_SECRET_TOKEN } from "astro:env/server";
 
 import type { APIRoute } from "astro";
-import { API_SECRET_TOKEN } from "astro:env/server";
+import { api } from "@/config/api";
 
 export const POST: APIRoute = async ({ request }) => {
 	const body = await request.json();

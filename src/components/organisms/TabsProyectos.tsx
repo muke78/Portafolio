@@ -1,3 +1,5 @@
+import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import {
 	Backend,
 	Companies,
@@ -7,10 +9,6 @@ import {
 import { SkeletonProjectsCard } from "@/components/features/projects/items/SkeletonProjectsCard";
 import { getI18N } from "@/i18n";
 import type { Projects, PropsLang } from "@/interfaces/currentLang.interface";
-
-import { useEffect, useMemo, useState } from "react";
-
-import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
 
 export const TabsProyectos = ({ currentLocale }: PropsLang) => {
 	const [activeTab, setActiveTab] = useState<string>("frontend");

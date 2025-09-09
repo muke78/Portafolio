@@ -1,12 +1,10 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { ItemsNav } from "@/components/features/navbar/ItemsNav";
 import { LangDrop } from "@/components/features/navbar/LangDrop";
 import { ThemeDrop } from "@/components/features/navbar/ThemeSwitch";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
-
-import { useEffect, useRef, useState } from "react";
-
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
 
 export const Nav = ({ currentLocale }: PropsLang) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -43,6 +41,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 	}, [isOpen]);
 
 	return (
+		/* biome-ignore-start lint/a11y/noRedundantRoles: necessary for Vercel accessibility check */
 		<nav
 			className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-base-content/5 border-b border-base-content/10 z-40"
 			role="navigation"
@@ -74,7 +73,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 
 				{/* Controles Mobile */}
 				<div className="min-[1000px]:hidden flex items-center space-x-3">
-					<div className="max-[430px]:hidden flex items-center space-x-3">
+					<div className="max-[360px]:hidden flex items-center space-x-3">
 						<LangDrop currentLocale={currentLocale} />
 						<ThemeDrop />
 					</div>
