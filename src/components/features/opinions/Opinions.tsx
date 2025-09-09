@@ -1,5 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { Quote } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 
 import { useEffect, useState } from "react";
 import { getI18N } from "@/i18n";
@@ -209,7 +210,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 					</motion.div>
 				) : (
 					// Grid de testimonios mejorado
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-4 p-4">
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-6 p-4">
 						{data.map((testimonial, _index) => (
 							<motion.div
 								key={testimonial.comment_id}
@@ -223,35 +224,83 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 									scale: 1.03,
 									transition: { duration: 0.3, ease: "easeOut" },
 								}}
-								className="group relative break-inside-avoid card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent p-4"
+								className="group relative break-inside-avoid card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl hover:border-secondary/30 transition-all duration-300 overflow-hidden"
 							>
-								{/* Header con Quote */}
-								<div className="flex items-start gap-4 mb-5">
-									<motion.div
-										className="flex-shrink-0 p-2.5 group-hover:scale-[1.2] group-hover:rotate-12 transition-all duration-500 ease-in-out "
-										transition={{ duration: 0.9 }}
-									>
-										<Quote className="w-10 h-10 text-secondary" />
-									</motion.div>
+								{/* Header con Quote y Badge de fecha */}
+								<div className="card-body p-6">
+									<div className="flex items-start justify-between mb-4">
+										<motion.div
+											className="flex-shrink-0 p-2 rounded-lg bg-secondary/10 group-hover:bg-secondary/20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 ease-in-out"
+											transition={{ duration: 0.9 }}
+										>
+											<Quote className="w-6 h-6 text-secondary" />
+										</motion.div>
 
-									<div className="flex-1 min-w-0">
-										<h3 className="font-semibold text-base-content text-lg leading-tight mb-2 truncate">
-											{testimonial.name}
-										</h3>
-										<p className="text-sm text-base-content/70 font-medium">
-											{testimonial.job}
+										{/* Badge de fecha */}
+										<div className="badge badge-secondary badge-sm text-base-200">
+											{new Date(testimonial.created_at).toLocaleDateString(
+												"es-ES",
+												{
+													day: "numeric",
+													month: "short",
+													year: "numeric",
+												},
+											)}
+										</div>
+									</div>
+
+									{/* Información del usuario */}
+									<div className="flex items-center gap-3 mb-4">
+										<div className="flex-1 min-w-0">
+											<div className="flex items-center gap-2 mb-1">
+												<h3 className="font-bold text-base-content text-lg leading-tight truncate">
+													{testimonial.name}
+												</h3>
+												{/* Bandera del país */}
+												<ReactCountryFlag
+													countryCode={testimonial.country_flag}
+													svg
+													style={{
+														width: "2em",
+														height: "2em",
+													}}
+													title={testimonial.country_flag}
+												/>
+											</div>
+											<p className="text-sm text-base-content/60 font-medium truncate">
+												{testimonial.job}
+											</p>
+										</div>
+									</div>
+
+									{/* Contenido del testimonio */}
+									<div className="flex-1">
+										<p className="text-base-content/80 leading-relaxed text-sm line-clamp-4 mb-4">
+											"{testimonial.description}"
 										</p>
+									</div>
+
+									{/* Footer con indicador de país completo */}
+									<div className="flex items-center justify-between pt-4 border-t border-base-300/50">
+										<div className="flex items-center gap-2 text-xs text-base-content/50">
+											{/* Bandera del país */}
+											<ReactCountryFlag
+												countryCode={testimonial.country_flag}
+												svg
+												style={{
+													width: "1em",
+													height: "1em",
+												}}
+												title={testimonial.country_flag}
+											/>
+											<span>{testimonial.country_flag}</span>
+										</div>
 									</div>
 								</div>
 
-								{/* Contenido */}
-								<p className="text-base-content/70 break-words leading-relaxed text-sm m-2">
-									{testimonial.description}
-								</p>
-
 								{/* Indicador animado */}
 								<motion.div
-									className="absolute bottom-0 left-6 right-6 h-0.5"
+									className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary to-accent"
 									initial={{ scaleX: 0, opacity: 0 }}
 									whileHover={{
 										scaleX: 1,
@@ -265,7 +314,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 
 								{/* Efecto de brillo sutil */}
 								<motion.div
-									className="absolute inset-0 rounded-xl pointer-events-none"
+									className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
 									initial={false}
 								/>
 							</motion.div>
