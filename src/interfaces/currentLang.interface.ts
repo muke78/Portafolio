@@ -1,7 +1,6 @@
+import type { z } from "zod";
 import type { contactSchema } from "@/schemas/contactSchema";
 import type { opinionsSchema } from "@/schemas/opinionsSchema";
-
-import { z } from "zod";
 
 export const CATEGORIES = [
 	"frontend",

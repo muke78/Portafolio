@@ -1,11 +1,10 @@
+import { Building, Clock, MapPin } from "lucide-react";
+
+import { useEffect, useState } from "react";
 import type {
 	Experiences,
 	PropsLang,
 } from "@/interfaces/currentLang.interface";
-
-import { useEffect, useState } from "react";
-
-import { Building, Clock, MapPin } from "lucide-react";
 
 export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 	const [data, setData] = useState<Experiences[]>([]); // tipa tu array según tu DTO

@@ -1,7 +1,6 @@
+import { z } from "zod";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
-
-import { z } from "zod";
 
 export const contactSchema = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });

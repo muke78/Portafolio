@@ -1,13 +1,11 @@
+import { Briefcase, GraduationCap, PencilRuler, UserRound } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Educacion } from "@/components/features/aboutMe/Educacion";
 import { Experiencia } from "@/components/features/aboutMe/Experiencia";
 import { Habilidades } from "@/components/features/aboutMe/Habilidades";
 import { SobreMi } from "@/components/features/aboutMe/SobreMi";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
-
-import { useEffect, useState } from "react";
-
-import { Briefcase, GraduationCap, PencilRuler, UserRound } from "lucide-react";
 
 export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 	const [activeTab, setActiveTab] = useState<string>("experiencia");
@@ -42,6 +40,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 			{/* Contenedor de los botones con un ancho fijo */}
 			<div className="flex justify-center items-center lg:justify-start lg:items-start md:justify-start md:items-start gap-4">
 				<button
+					type="button"
 					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "sobreMi" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
 					onClick={() => setActiveTab("sobreMi")}
 				>
@@ -59,6 +58,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 				</button>
 
 				<button
+					type="button"
 					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "educacion" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
 					onClick={() => setActiveTab("educacion")}
 				>
@@ -76,6 +76,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 				</button>
 
 				<button
+					type="button"
 					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "experiencia" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
 					onClick={() => setActiveTab("experiencia")}
 				>
@@ -95,6 +96,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 				</button>
 
 				<button
+					type="button"
 					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "habilidades" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
 					onClick={() => setActiveTab("habilidades")}
 				>

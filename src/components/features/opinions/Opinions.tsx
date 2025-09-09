@@ -1,13 +1,12 @@
+import { motion, type Variants } from "framer-motion";
+import { Quote } from "lucide-react";
+
+import { useEffect, useState } from "react";
 import { getI18N } from "@/i18n";
 import type {
 	PropsLang,
 	Testimonial,
 } from "@/interfaces/currentLang.interface";
-
-import { useEffect, useState } from "react";
-
-import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -20,14 +19,14 @@ const containerVariants = {
 	},
 };
 
-const cardVariants = {
+const cardVariants: Record<"left" | "bottom", Variants> = {
 	left: {
 		hidden: { opacity: 0, x: -50, scale: 0.95 },
 		visible: {
 			opacity: 1,
 			x: 0,
 			scale: 1,
-			transition: { duration: 0.6, ease: "easeOut" },
+			transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
 		},
 	},
 	bottom: {
@@ -36,19 +35,19 @@ const cardVariants = {
 			opacity: 1,
 			y: 0,
 			scale: 1,
-			transition: { duration: 0.6, ease: "easeOut" },
+			transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
 		},
 	},
 };
 
-const emptyStateVariants = {
+const emptyStateVariants: Variants = {
 	hidden: { opacity: 0, y: 30 },
 	visible: {
 		opacity: 1,
 		y: 0,
 		transition: {
 			duration: 0.8,
-			ease: "easeOut",
+			ease: [0.25, 0.1, 0.25, 1],
 		},
 	},
 };
@@ -72,7 +71,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 		}
 
 		fetchData();
-	}, [currentLocale]);
+	}, []);
 
 	if (loading) return <span className="loading loading-ring loading-xl"></span>;
 
@@ -211,7 +210,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 				) : (
 					// Grid de testimonios mejorado
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-4 p-4">
-						{data.map((testimonial, index) => (
+						{data.map((testimonial, _index) => (
 							<motion.div
 								key={testimonial.comment_id}
 								variants={

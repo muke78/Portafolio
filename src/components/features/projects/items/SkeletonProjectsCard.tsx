@@ -37,8 +37,9 @@ export const SkeletonProjectsCard = () => {
 					{/* Card actions skeleton - Responsive avatar sizes */}
 					<div className="card-actions justify-start">
 						<div className="avatar-group -space-x-2 xs:-space-x-3">
+							{/* biome-ignore lint/react/useKey */}
 							{[...Array(5)].map((_, idx) => (
-								<div key={idx} className="avatar">
+								<div key={`skeleton-${idx}`} className="avatar">
 									<div className="w-5 h-5 xs:w-6 xs:h-6 sm:w-8 sm:h-8 bg-base-300 rounded-full border-2 border-base-100"></div>
 								</div>
 							))}

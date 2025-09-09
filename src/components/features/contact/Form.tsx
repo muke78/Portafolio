@@ -1,14 +1,12 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { Mail, Phone, Send } from "lucide-react";
+import { type FieldError, useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 import { useTheme } from "@/hooks/useTheme";
 import { getI18N } from "@/i18n";
 import type { FormData, PropsLang } from "@/interfaces/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
-
-import { type FieldError, useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
-import { Mail, Phone, Send } from "lucide-react";
 
 export const Form = ({ currentLocale }: PropsLang) => {
 	const { theme } = useTheme();
@@ -92,6 +90,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								target="_blank"
 								aria-label="Enviar correo a Erick González"
 								className="flex"
+								rel="noopener"
 							>
 								erickm.gonzalez.rivera@gmail.com
 							</a>
@@ -110,6 +109,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								target="_blank"
 								aria-label="Enviar mensaje a Erick González por WhatsApp"
 								className="flex"
+								rel="noopener"
 							>
 								+52-551-190 9105
 							</a>
