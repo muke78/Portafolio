@@ -4,14 +4,14 @@ import type { APIRoute } from "astro";
 import { API_SECRET_TOKEN } from "astro:env/server";
 
 export const GET: APIRoute = async ({ request }) => {
-  const url = new URL(request.url);
-  const currentLocale = url.searchParams.get("currentLocale");
+	const url = new URL(request.url);
+	const currentLocale = url.searchParams.get("currentLocale");
 
-  const { data } = await api.get(`/projects?currentLocale=${currentLocale}`, {
-    headers: {
-      Authorization: `Bearer ${API_SECRET_TOKEN}`,
-    },
-  });
+	const { data } = await api.get(`/projects?currentLocale=${currentLocale}`, {
+		headers: {
+			Authorization: `Bearer ${API_SECRET_TOKEN}`,
+		},
+	});
 
-  return new Response(JSON.stringify(data), { status: 200 });
+	return new Response(JSON.stringify(data), { status: 200 });
 };
