@@ -8,7 +8,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 echo "🔍 Verificando archivos antes del commit..."
-echo "📦 Formateando código con Prettier..."
+echo "📦 Formateando código con Biome..."
 
 pnpm exec biome format --write ./src || exit 1
 
