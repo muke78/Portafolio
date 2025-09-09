@@ -1,17 +1,8 @@
 ---
 import { Opinions } from '@/components/features/opinions/Opinions'
-import { api } from '@/config/api'
-import { API_SECRET_TOKEN } from "astro:env/server";
-
 const {currentLocale}  = Astro
-
-const { data } = await api.get("/comments", {
-  headers: {
-    Authorization: `Bearer ${API_SECRET_TOKEN}`,
-  },
-});
 ---
 
 <div class="isolate flex w-7xl items-start justify-start gap-4 lg:p-9 md:p-8 sm:p-4 p-4 mt-16">
-    <Opinions client:load currentLocale={currentLocale} data={data.data}/>
+    <Opinions client:load currentLocale={currentLocale}/>
 </div>

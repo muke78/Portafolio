@@ -1,10 +1,9 @@
 import { getI18N } from "@/i18n";
 import type {
-  PropsLangTestimonials,
+  PropsLang,
   Testimonial,
 } from "@/interfaces/currentLang.interface";
 
-// import { listCommentsServices } from "@/services/comments/comments.services";
 import { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
@@ -54,17 +53,26 @@ const emptyStateVariants = {
   },
 };
 
-export const Opinions = ({ currentLocale, data }: PropsLangTestimonials) => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+export const Opinions = ({ currentLocale }: PropsLang) => {
+  const [data, setData] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const i18n = getI18N({ currentLocale });
 
   useEffect(() => {
-    if (data) {
-      setTestimonials(data);
+    async function fetchData() {
+      try {
+        const result = await fetch("/api/comments");
+        const comments = await result.json();
+        setData(comments.data.data as Testimonial[]);
+      } catch (error) {
+        console.error("Error al cargar comentarios:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false);
-  }, [data, currentLocale]);
+
+    fetchData();
+  }, [currentLocale]);
 
   if (loading) return <span className="loading loading-ring loading-xl"></span>;
 
@@ -112,7 +120,7 @@ export const Opinions = ({ currentLocale, data }: PropsLangTestimonials) => {
         variants={containerVariants}
         viewport={{ once: true }}
       >
-        {testimonials.length === 0 ? (
+        {data.length === 0 ? (
           // Estado vacío mejorado
           <motion.div
             className="flex flex-col items-center justify-center min-h-[400px] px-8 py-12"
@@ -203,7 +211,7 @@ export const Opinions = ({ currentLocale, data }: PropsLangTestimonials) => {
         ) : (
           // Grid de testimonios mejorado
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-4 p-4">
-            {testimonials.map((testimonial, index) => (
+            {data.map((testimonial, index) => (
               <motion.div
                 key={testimonial.comment_id}
                 variants={

@@ -39,17 +39,11 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
     e: FormEvent<HTMLFormElement>,
   ) => {
     setIsLoading(true);
-
-    // const { name, job, description } = save;
-
-    // await postCommentsServices({ name, job, description });
-
     const formData = new FormData(e.target as HTMLFormElement);
-    const response = await fetch("/api/comments", {
+    await fetch("/api/comments", {
       method: "POST",
       body: formData,
     });
-    const data = await response.json();
 
     setIsLoading(false);
     setIsSubmitted(true);

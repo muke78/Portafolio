@@ -12,10 +12,10 @@ export interface PropsLang {
 }
 
 export interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  moreInformation: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  moreInformation?: string;
 }
 
 export interface FormOpinions {
