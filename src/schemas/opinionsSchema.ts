@@ -11,6 +11,10 @@ export const opinionsSchema = ({ currentLocale }: PropsLang) => {
 			.string()
 			.min(14, i18n.OPINIONS.OPINIONS_FORM_VALID_MORE_INFORMATION_MIN)
 			.max(500, i18n.OPINIONS.OPINIONS_FORM_VALID_MORE_INFORMATION_MAX),
+		country: z.string().min(1, i18n.OPINIONS.OPINIONS_FORM_VALID_COUNTRY_EMPTY),
+		country_flag: z
+			.string()
+			.length(2, i18n.OPINIONS.OPINIONS_FORM_VALID_COUNTRY_FLAG_LENGTH),
 	});
 	return schema;
 };

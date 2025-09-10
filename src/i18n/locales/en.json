@@ -58,7 +58,16 @@
 
 		"OPINIONS_SEND_SUCCESSFULL": "Thank you for your comment!",
 		"OPINIONS_SEND_SUCCESSFULL_INFORMATION": "Your response has been sent successfully. We appreciate your time and feedback.",
-		"OPINIONS_REDIRECT_COMMENTS": "Go to comments"
+		"OPINIONS_REDIRECT_COMMENTS": "Go to comments",
+
+		"OPINIONS_REDIRECT_COMMENTS_PAGE": "Leave me a comment!",
+		"OPINIONS_NOT_FOUND_COUNTRY": "Astronaut in orbit",
+
+		"OPINIONS_TITLE_SELECT_COUNTRY": "Country",
+		"OPINIONS_PLACEHOLDER_SELECT_COUNTRY": "Select a country",
+
+		"OPINIONS_FORM_VALID_COUNTRY_EMPTY": "The country cannot be empty",
+		"OPINIONS_FORM_VALID_COUNTRY_FLAG_LENGTH": "The code does not match the flag entry"
 	},
 	"FORM": {
 		"FORM_TITLE": "Contact",

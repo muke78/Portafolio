@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Check } from "lucide-react";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
 
-const successVariants = {
+const successVariants: Variants = {
 	hidden: { opacity: 0, scale: 0.8 },
 	visible: {
 		opacity: 1,

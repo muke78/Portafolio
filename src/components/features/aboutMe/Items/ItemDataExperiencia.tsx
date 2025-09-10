@@ -1,6 +1,7 @@
 import { Building, Clock, MapPin } from "lucide-react";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import type {
 	Experiences,
 	PropsLang,
@@ -43,10 +44,15 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 					time,
 					location,
 				}) => (
-					<div
+					<motion.div
 						key={experience_id}
 						className="card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
-            hover:shadow-xl hover:scale-[1.03] hover:brightness-105 transition-all duration-500 ease-in-out  p-8 rounded-2xl"
+            hover:shadow-xl hover:brightness-105 transition-discrete duration-500 ease-in-out  p-8 rounded-2xl"
+						whileHover={{
+							y: -8,
+							scale: 1.03,
+							transition: { duration: 0.5, ease: "easeInOut" },
+						}}
 					>
 						<div className="flex items-center gap-4 mb-4">
 							<img
@@ -83,7 +89,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 								<span>{location}</span>
 							</div>
 						</div>
-					</div>
+					</motion.div>
 				),
 			)}
 		</div>

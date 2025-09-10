@@ -149,7 +149,7 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 											onClick={() => selectLanguage(key)}
 											className={`
                       flex items-center gap-3 w-full px-4 py-3 text-left cursor-pointer
-                      hover:bg-base-100/40 transition-all duration-200 group
+                      hover:bg-base-100/40 transition-discrete duration-200 group
                       ${selectedLang === key ? "bg-blue-500/20 text-blue-400" : "text-base-content"}
                     `}
 											initial={{ opacity: 0, x: -20 }}

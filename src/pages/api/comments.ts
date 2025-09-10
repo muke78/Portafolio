@@ -11,6 +11,8 @@ export const POST: APIRoute = async ({ request }) => {
 			name: body.name,
 			job: body.job,
 			description: body.description,
+			country: body.country,
+			country_flag: body.country_flag,
 		},
 		{
 			headers: {
