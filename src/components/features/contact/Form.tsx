@@ -197,6 +197,9 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<fieldset className="fieldset">
 								<legend className="fieldset-legend">
 									{i18n.FORM.INPUT_MORE_INFORMATION}
+									<span className="text-gray-400 text-xs">
+										({i18n.FORM.INPUT_JOB_INPUT_OPTIONAL})
+									</span>
 								</legend>
 								<motion.textarea
 									className="textarea w-full field-sizing-content bg-base-200"

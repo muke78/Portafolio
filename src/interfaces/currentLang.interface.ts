@@ -74,3 +74,8 @@ export interface UseDataProjects extends PropsLang {
 export interface PropsLangWithData extends PropsLang {
 	data: Projects[] | null;
 }
+
+export interface CountryFlagProps {
+	countryCode?: string;
+	size?: string;
+}

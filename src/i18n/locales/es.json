@@ -58,7 +58,16 @@
 
 		"OPINIONS_SEND_SUCCESSFULL": "¡Gracias por tu comentario!",
 		"OPINIONS_SEND_SUCCESSFULL_INFORMATION": "Tu respuesta se ha enviado correctamente. Apreciamos tu tiempo y retroalimentación.",
-		"OPINIONS_REDIRECT_COMMENTS": "Ir a los comentarios"
+		"OPINIONS_REDIRECT_COMMENTS": "Ir a los comentarios",
+
+		"OPINIONS_REDIRECT_COMMENTS_PAGE": "¡Dejame un comentario!",
+		"OPINIONS_NOT_FOUND_COUNTRY": "Astronauta en orbita",
+
+		"OPINIONS_TITLE_SELECT_COUNTRY": "País",
+		"OPINIONS_PLACEHOLDER_SELECT_COUNTRY": "Selecciona un país",
+
+		"OPINIONS_FORM_VALID_COUNTRY_EMPTY": "El país no puede estar vacío",
+		"OPINIONS_FORM_VALID_COUNTRY_FLAG_LENGTH": "No coincide el codigo con la entrada de banderas"
 	},
 	"FORM": {
 		"FORM_TITLE": "Contacto",

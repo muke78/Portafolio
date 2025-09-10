@@ -1,6 +1,5 @@
 import { motion, type Variants } from "framer-motion";
 import { MessageSquare, Quote } from "lucide-react";
-import ReactCountryFlag from "react-country-flag";
 
 import { useEffect, useState } from "react";
 import { getI18N } from "@/i18n";
@@ -8,6 +7,7 @@ import type {
 	PropsLang,
 	Testimonial,
 } from "@/interfaces/currentLang.interface";
+import { CountryFlag } from "@/components/features/opinions/Items/CountryFlag";
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -124,7 +124,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 					aria-label="Página secundaria para dejar un comentario sobre mi trabajo"
 				>
 					<MessageSquare className="w-5 h-5" />
-					¡Dejame un comentario!
+					{i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 				</motion.a>
 			</motion.div>
 
@@ -271,18 +271,10 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 												<h3 className="font-bold text-base-content text-lg leading-tight truncate">
 													{testimonial.name}
 												</h3>
-												{/* Bandera del país */}
-												{testimonial.country_flag &&
-												/^[A-Z]{2}$/.test(testimonial.country_flag) ? (
-													<ReactCountryFlag
-														countryCode={testimonial.country_flag}
-														svg
-														style={{ width: "1em", height: "1em" }}
-														title={testimonial.country_flag}
-													/>
-												) : (
-													<span className="w-4 h-4">🌐</span>
-												)}
+												<CountryFlag
+													countryCode={testimonial.country_flag}
+													size="1em"
+												/>
 											</div>
 											<p className="text-sm text-base-content/60 font-medium truncate">
 												{testimonial.job}
@@ -301,22 +293,14 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 									<div className="flex items-center justify-between pt-4 border-t border-base-300/50">
 										<div className="flex items-center gap-2 text-xs text-base-content/50">
 											{/* Bandera del país */}
-											{testimonial.country_flag &&
-											/^[A-Z]{2}$/.test(testimonial.country_flag) ? (
-												<ReactCountryFlag
-													countryCode={testimonial.country_flag}
-													svg
-													style={{ width: "1em", height: "1em" }}
-													title={testimonial.country_flag}
-												/>
-											) : (
-												<span className="w-4 h-4">🌐</span>
-											)}
-
+											<CountryFlag
+												countryCode={testimonial.country_flag}
+												size="1em"
+											/>
 											<span>
 												{testimonial.country
 													? testimonial.country
-													: "Astronauta en orbita"}
+													: i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
 											</span>
 										</div>
 									</div>

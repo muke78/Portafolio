@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Briefcase, Globe, MessageSquare, Send, User } from "lucide-react";
-import { useEffect, useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 import { SubmittedOpinion } from "@/components/features/opinions/SubmittedOpinion";
 import { getI18N } from "@/i18n";
@@ -24,6 +24,10 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 	const jobId = useId();
 	const descriptionId = useId();
 	const countryId = useId();
+
+	const countryMap = useMemo(() => {
+		return new Map(countries.map((c) => [c.code, c]));
+	}, []);
 
 	const i18n = getI18N({ currentLocale });
 
@@ -57,6 +61,22 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 		setIsLoading(false);
 		setIsSubmitted(true);
 		reset();
+	};
+
+	const handleCountryChange = (
+		e: React.ChangeEvent<HTMLSelectElement>,
+	): void => {
+		const code: string = e.target.value;
+		setSelected(code);
+
+		const country = countryMap.get(code);
+
+		if (country) {
+			setValue("country", country.name, {
+				shouldValidate: true,
+			});
+			setValue("country_flag", country.code);
+		}
 	};
 
 	const containerVariants = {
@@ -193,7 +213,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 										htmlFor={countryId}
 									>
 										<Globe className="w-4 h-4 mr-2 text-secondary" />
-										País
+										{i18n.OPINIONS.OPINIONS_TITLE_SELECT_COUNTRY}
 										<span className="text-base font-bold text-error ml-1">
 											*
 										</span>
@@ -205,23 +225,11 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 											id={countryId}
 											className="select lg:select-lg select-md w-full pr-12"
 											value={selected}
-											onChange={(e) => {
-												const code = e.target.value;
-												setSelected(code);
-
-												const country = countries.find((c) => c.code === code);
-
-												if (country) {
-													setValue("country", country.name, {
-														shouldValidate: true,
-													});
-													setValue("country_flag", country.code);
-												}
-											}}
+											onChange={(e) => handleCountryChange(e)}
 											whileFocus={{ scale: 1.02 }}
 										>
 											<option value="" disabled>
-												Selecciona un país
+												{i18n.OPINIONS.OPINIONS_PLACEHOLDER_SELECT_COUNTRY}
 											</option>
 											{countries.map((country) => (
 												<option key={country.code} value={country.code}>
@@ -279,7 +287,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 													}}
 													title={selected}
 												/>
-												{countries.find((c) => c.code === selected)?.name}
+												{countryMap.get(selected)?.name}
 											</span>
 										</motion.p>
 									)}
