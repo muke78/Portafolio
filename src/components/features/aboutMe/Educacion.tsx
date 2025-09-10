@@ -1,5 +1,6 @@
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
+import { motion } from "framer-motion";
 
 export const Educacion = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });
@@ -8,10 +9,15 @@ export const Educacion = ({ currentLocale }: PropsLang) => {
 			<span className="font-bold text-5xl">
 				{i18n.EDUCATION.EDUCATION_TITLE}
 			</span>
-			<div
+			<motion.div
 				className="grid grid-cols-1 w-full card bg-base-100 shadow-md border border-transparent 
-      hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:scale-[1.03] 
-      hover:brightness-105 transition-all duration-500 ease-in-out  mt-4 animate__animated animate__zoomIn"
+      hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl
+      hover:brightness-105 transition-discrete duration-500 ease-in-out  mt-4 animate__animated animate__zoomIn"
+				whileHover={{
+					y: -8,
+					scale: 1.03,
+					transition: { duration: 0.5, ease: "easeInOut" },
+				}}
 			>
 				<img
 					className="rounded-t-lg w-full"
@@ -36,7 +42,7 @@ export const Educacion = ({ currentLocale }: PropsLang) => {
 						</p>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</div>
 	);
 };

@@ -63,8 +63,8 @@ export const ItemsNav = ({ currentLocale, onItemClick }: ItemsNavProps) => {
 					<li
 						key={list.to}
 						className={`
-              relative transition-all w-min-content p-1
-              before:w-0 before:h-1 before:absolute before:bottom-0 before:right-0 before:bg-neutral before:transition-all before:duration-500
+              relative transition-discrete w-min-content p-1
+              before:w-0 before:h-1 before:absolute before:bottom-0 before:right-0 before:bg-neutral before:transition-discrete before:duration-500
               hover:before:w-full hover:before:left-0 before:rounded-full
               ${isActive ? "text-primary font-bold before:w-full before:bg-primary" : ""}
             `}

@@ -2,6 +2,7 @@ import { Github, Globe } from "lucide-react";
 import { useCallback, useState } from "react";
 import { getI18N } from "@/i18n";
 import type { PropsLangWithData } from "@/interfaces/currentLang.interface";
+import { motion } from "framer-motion";
 
 export const ItemDataProjects = ({
 	currentLocale,
@@ -28,11 +29,16 @@ export const ItemDataProjects = ({
 					description,
 					fork,
 				}) => (
-					<div
+					<motion.div
 						className="card bg-base-100 shadow-sm border border-transparent 
             hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
-            hover:shadow-2xl hover:scale-[1.03] hover:brightness-105 transition-all duration-500 ease-in-out "
+            hover:shadow-2xl hover:brightness-105 transition-discrete duration-500 ease-in-out "
 						key={project_id}
+						whileHover={{
+							y: -8,
+							scale: 1.03,
+							transition: { duration: 0.3, ease: "easeInOut" },
+						}}
 					>
 						<figure className="relative overflow-hidden group cursor-pointer">
 							<img
@@ -97,7 +103,7 @@ export const ItemDataProjects = ({
 								<div className="avatar-group -space-x-2 py-3">
 									{images_topics.map((topic) => (
 										<div
-											className="avatar border-2 hover:-translate-y-3 transition-all duration-500 ease-in-out"
+											className="avatar border-2 hover:-translate-y-3 transition-discrete duration-500 ease-in-out"
 											key={topic}
 										>
 											<div className="w-9">
@@ -118,7 +124,7 @@ export const ItemDataProjects = ({
 								</div>
 							</div>
 						</div>
-					</div>
+					</motion.div>
 				),
 			)}
 		</div>

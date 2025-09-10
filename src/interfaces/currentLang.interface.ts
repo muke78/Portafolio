@@ -63,6 +63,7 @@ export interface Testimonial extends FormOpinions {
 	comment_id: number;
 	direction: "left" | "bottom";
 	country_flag: string;
+	country: string;
 	created_at: string;
 }
 

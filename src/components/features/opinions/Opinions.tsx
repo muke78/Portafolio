@@ -1,5 +1,5 @@
 import { motion, type Variants } from "framer-motion";
-import { Quote } from "lucide-react";
+import { MessageSquare, Quote } from "lucide-react";
 import ReactCountryFlag from "react-country-flag";
 
 import { useEffect, useState } from "react";
@@ -80,13 +80,14 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 		<div className="relative w-full overflow-hidden p-4">
 			{/* Header Section */}
 			<motion.div
-				className="flex flex-col text-center mb-12 p-4"
+				className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12"
 				initial={{ opacity: 0, y: -50 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.6 }}
 			>
+				{/* Subtitle */}
 				<motion.div
-					className="inline-block px-4 py-2 bg-primary/20 text-base-content text-sm rounded-full mb-6 mx-auto backdrop-blur-sm border border-primary/20"
+					className="inline-block px-4 py-2 bg-primary/20 text-base-content text-sm rounded-full mb-6 backdrop-blur-sm border border-primary/20"
 					initial={{ scale: 0, opacity: 0 }}
 					animate={{ scale: 1, opacity: 1 }}
 					transition={{ delay: 0.3, duration: 0.5, ease: "backOut" }}
@@ -94,6 +95,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 					{i18n.OPINIONS.OPINIONS_SUBTITLE}
 				</motion.div>
 
+				{/* Title */}
 				<motion.h2
 					className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-base-content to-base-content/70 bg-clip-text text-transparent"
 					initial={{ opacity: 0, y: 20 }}
@@ -103,14 +105,27 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 					{i18n.OPINIONS.OPINIONS_TITLE}
 				</motion.h2>
 
+				{/* Sub-subtitle */}
 				<motion.p
-					className="text-xl text-base-content/90 font-medium max-w-2xl mx-auto"
+					className="text-xl text-base-content/90 font-medium max-w-2xl mx-auto mb-6"
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.5, duration: 0.6 }}
 				>
 					{i18n.OPINIONS.OPINIONS_SUB_SUBTILE}
 				</motion.p>
+
+				{/* Botón con icono */}
+				<motion.a
+					initial={{ opacity: 0, x: -20 }}
+					animate={{ opacity: 1, x: 0 }}
+					className="btn btn-primary btn-md flex items-center gap-2"
+					href={`/${currentLocale}/comments`}
+					aria-label="Página secundaria para dejar un comentario sobre mi trabajo"
+				>
+					<MessageSquare className="w-5 h-5" />
+					¡Dejame un comentario!
+				</motion.a>
 			</motion.div>
 
 			{/* Content Section */}
@@ -222,18 +237,18 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 								whileHover={{
 									y: -8,
 									scale: 1.03,
-									transition: { duration: 0.3, ease: "easeOut" },
+									transition: { duration: 0.5, ease: "easeInOut" },
 								}}
-								className="group relative break-inside-avoid card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl hover:border-secondary/30 transition-all duration-300 overflow-hidden"
+								className="group relative break-inside-avoid card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl hover:border-secondary/30 transition-discrete duration-500 overflow-hidden"
 							>
 								{/* Header con Quote y Badge de fecha */}
 								<div className="card-body p-6">
 									<div className="flex items-start justify-between mb-4">
 										<motion.div
-											className="flex-shrink-0 p-2 rounded-lg bg-secondary/10 group-hover:bg-secondary/20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 ease-in-out"
+											className="flex-shrink-0 p-2 rounded-lg bg-secondary/10 group-hover:bg-secondary/20 group-hover:scale-110 group-hover:rotate-12 transition-discrete duration-500 ease-in-out"
 											transition={{ duration: 0.9 }}
 										>
-											<Quote className="w-6 h-6 text-secondary" />
+											<Quote className="w-8 h-8 text-secondary" />
 										</motion.div>
 
 										{/* Badge de fecha */}
@@ -257,15 +272,17 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 													{testimonial.name}
 												</h3>
 												{/* Bandera del país */}
-												<ReactCountryFlag
-													countryCode={testimonial.country_flag}
-													svg
-													style={{
-														width: "2em",
-														height: "2em",
-													}}
-													title={testimonial.country_flag}
-												/>
+												{testimonial.country_flag &&
+												/^[A-Z]{2}$/.test(testimonial.country_flag) ? (
+													<ReactCountryFlag
+														countryCode={testimonial.country_flag}
+														svg
+														style={{ width: "1em", height: "1em" }}
+														title={testimonial.country_flag}
+													/>
+												) : (
+													<span className="w-4 h-4">🌐</span>
+												)}
 											</div>
 											<p className="text-sm text-base-content/60 font-medium truncate">
 												{testimonial.job}
@@ -275,7 +292,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 
 									{/* Contenido del testimonio */}
 									<div className="flex-1">
-										<p className="text-base-content/80 leading-relaxed text-sm line-clamp-4 mb-4">
+										<p className="text-base-content/80 leading-relaxed text-sm  mb-4">
 											"{testimonial.description}"
 										</p>
 									</div>
@@ -284,16 +301,23 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 									<div className="flex items-center justify-between pt-4 border-t border-base-300/50">
 										<div className="flex items-center gap-2 text-xs text-base-content/50">
 											{/* Bandera del país */}
-											<ReactCountryFlag
-												countryCode={testimonial.country_flag}
-												svg
-												style={{
-													width: "1em",
-													height: "1em",
-												}}
-												title={testimonial.country_flag}
-											/>
-											<span>{testimonial.country_flag}</span>
+											{testimonial.country_flag &&
+											/^[A-Z]{2}$/.test(testimonial.country_flag) ? (
+												<ReactCountryFlag
+													countryCode={testimonial.country_flag}
+													svg
+													style={{ width: "1em", height: "1em" }}
+													title={testimonial.country_flag}
+												/>
+											) : (
+												<span className="w-4 h-4">🌐</span>
+											)}
+
+											<span>
+												{testimonial.country
+													? testimonial.country
+													: "Astronauta en orbita"}
+											</span>
 										</div>
 									</div>
 								</div>

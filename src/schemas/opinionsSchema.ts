@@ -11,6 +11,8 @@ export const opinionsSchema = ({ currentLocale }: PropsLang) => {
 			.string()
 			.min(14, i18n.OPINIONS.OPINIONS_FORM_VALID_MORE_INFORMATION_MIN)
 			.max(500, i18n.OPINIONS.OPINIONS_FORM_VALID_MORE_INFORMATION_MAX),
+		country: z.string().min(1, "El pais no puede estar vacio"),
+		country_flag: z.string().min(1),
 	});
 	return schema;
 };

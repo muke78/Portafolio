@@ -3,6 +3,7 @@ import type { PropsLang } from "@/interfaces/currentLang.interface";
 import { dataTabsAcercaDeEN } from "@/utils/en/dataTabsAcercaDeEN";
 import { dataTabsAcercaDe } from "@/utils/es/dataTabsAcercaDe";
 import { dataTabsAcercaDeFR } from "@/utils/fr/dataTabsAcercaDeFR";
+import { motion } from "framer-motion";
 
 const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
 	es: dataTabsAcercaDe,
@@ -25,12 +26,17 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 	return (
 		<>
 			{memorization.map(({ title, images }, index) => (
-				<div
+				<motion.div
 					key={title}
 					className={`card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
-            hover:shadow-xl hover:scale-[1.03] hover:brightness-105 transition-all duration-500 ease-in-out  p-8 ${
+            hover:shadow-xl hover:brightness-105 transition-discrete duration-500 ease-in-out  p-8 ${
 							index === memorization.length - 1 ? "lg:col-span-2" : ""
 						}`}
+					whileHover={{
+						y: -8,
+						scale: 1.03,
+						transition: { duration: 0.5, ease: "easeInOut" },
+					}}
 				>
 					<div className="flex flex-col justify-start items-start gap-2">
 						<span className="text-2xl font-semibold">{title}</span>
@@ -64,7 +70,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 							);
 						})}
 					</div>
-				</div>
+				</motion.div>
 			))}
 		</>
 	);
