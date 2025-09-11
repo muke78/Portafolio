@@ -16,11 +16,9 @@ export const GET: APIRoute = async ({ request }) => {
 
 		return new Response(JSON.stringify(data), { status: 200 });
 	} catch (error) {
-		console.error("Error fetching projects:", error.message);
 		return new Response(
 			JSON.stringify({
-				message: "Backend no disponible, intenta más tarde.",
-				error,
+				message: "No se pudo obtener los proyectos",
 			}),
 			{ status: 503 },
 		);

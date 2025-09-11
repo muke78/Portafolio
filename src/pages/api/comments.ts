@@ -35,9 +35,8 @@ export const POST: APIRoute = async ({ request }) => {
 			},
 		);
 	} catch (error) {
-		console.error("Error post comment:", error.message);
 		return new Response(
-			JSON.stringify({ message: "No se pudo enviar el comentario.", error }),
+			JSON.stringify({ message: "No se pudo enviar el comentario." }),
 			{ status: 503 },
 		);
 	}
@@ -53,11 +52,9 @@ export const GET: APIRoute = async () => {
 
 		return new Response(JSON.stringify(data), { status: 200 });
 	} catch (error) {
-		console.error("Error fetching comments:", error.message);
 		return new Response(
 			JSON.stringify({
-				message: "Backend no disponible, intenta más tarde.",
-				error,
+				message: "No se pudo obtener los comentarios",
 			}),
 			{ status: 503 },
 		);

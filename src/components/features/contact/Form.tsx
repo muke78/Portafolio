@@ -90,7 +90,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								target="_blank"
 								aria-label="Enviar correo a Erick González"
 								className="flex"
-								rel="noopener"
+								rel="noopener noreferrer"
 							>
 								erickm.gonzalez.rivera@gmail.com
 							</a>
@@ -109,7 +109,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								target="_blank"
 								aria-label="Enviar mensaje a Erick González por WhatsApp"
 								className="flex"
-								rel="noopener"
+								rel="noopener noreferrer"
 							>
 								+52-551-190 9105
 							</a>

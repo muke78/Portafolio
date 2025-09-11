@@ -60,9 +60,9 @@ export const ItemDataProjects = ({
 
 							{/* Botón GitHub */}
 							<div className="absolute right-12 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-								<button
-									type="button"
-									onClick={() => window.open(link_repo, "_blank")}
+								<a
+									href={link_repo}
+									target="_blank"
 									rel="noopener noreferrer"
 									className={`btn btn-sm btn-soft ${
 										!link_repo ? "btn-disabled" : "hover:btn-secondary"
@@ -70,14 +70,14 @@ export const ItemDataProjects = ({
 									aria-label={slug}
 								>
 									<Github size={18} />
-								</button>
+								</a>
 							</div>
 
 							{/* Botón Live Demo */}
 							<div className="absolute right-0 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-								<button
-									type="button"
-									onClick={() => window.open(link_web, "_blank")}
+								<a
+									href={link_web}
+									target="_blank"
 									rel="noopener noreferrer"
 									className={`btn btn-sm btn-soft ${
 										!link_web ? "btn-disabled" : "hover:btn-secondary"
@@ -85,7 +85,7 @@ export const ItemDataProjects = ({
 									aria-label={slug}
 								>
 									<Globe size={18} />
-								</button>
+								</a>
 							</div>
 						</figure>
 						<div className="card-body">

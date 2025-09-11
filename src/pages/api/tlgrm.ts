@@ -36,9 +36,8 @@ export const POST: APIRoute = async ({ request }) => {
 			},
 		);
 	} catch (error) {
-		console.error("Error posting tlgrm:", error.message);
 		return new Response(
-			JSON.stringify({ message: "No se pudo enviar la información.", error }),
+			JSON.stringify({ message: "No se pudo enviar la información." }),
 			{ status: 503 },
 		);
 	}
