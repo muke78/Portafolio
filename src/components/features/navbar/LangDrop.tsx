@@ -66,7 +66,6 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
         `}
 				whileTap={{ scale: 0.95 }}
 				whileHover={{ scale: 1.02 }}
-				aria-label="Selector para elegir entre tres diferentes idiomas"
 			>
 				{/* Bandera */}
 				<motion.div

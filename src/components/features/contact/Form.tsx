@@ -88,7 +88,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<a
 								href="mailto:erickm.gonzalez.rivera@gmail.com"
 								target="_blank"
-								aria-label="Enviar correo a Erick González"
+								aria-label="erickm.gonzalez.rivera@gmail.com"
 								className="flex"
 								rel="noopener noreferrer"
 							>
@@ -107,7 +107,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<a
 								href="https://wa.me/+527203966119"
 								target="_blank"
-								aria-label="Enviar mensaje a Erick González por WhatsApp"
+								aria-label="+52-551-190 9105"
 								className="flex"
 								rel="noopener noreferrer"
 							>

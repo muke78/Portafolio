@@ -53,7 +53,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 					animate={{ opacity: 1, x: 0 }}
 					className="font-semibold text-2xl text-base-content"
 					href={`/${currentLocale}/home`}
-					aria-label="Pagina principal, portafolio de Erick González"
+					aria-label="Khelde."
 				>
 					Khelde.
 				</motion.a>

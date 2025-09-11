@@ -117,11 +117,12 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 
 				{/* Botón con icono */}
 				<motion.a
+					type="button"
 					initial={{ opacity: 0, x: -20 }}
 					animate={{ opacity: 1, x: 0 }}
 					className="btn btn-primary btn-md flex items-center gap-2"
 					href={`/${currentLocale}/comments`}
-					aria-label="Página secundaria para dejar un comentario sobre mi trabajo"
+					aria-label={i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 				>
 					<MessageSquare className="w-5 h-5" />
 					{i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
@@ -297,7 +298,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 												countryCode={testimonial.country_flag}
 												size="1em"
 											/>
-											<span>
+											<span className="text-base-content/80 text-sm">
 												{testimonial.country
 													? testimonial.country
 													: i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
