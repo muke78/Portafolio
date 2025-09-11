@@ -1,5 +1,6 @@
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import compress from "astro-compress";
 import { defineConfig, envField } from "astro/config";
@@ -29,11 +30,14 @@ export default defineConfig({
       Logger: true,
     }),
   ],
+
   compressHTML: true,
   prefetch: true,
+
   devToolbar: {
     enabled: false,
   },
+
   i18n: {
     defaultLocale: "es",
     locales: ["es", "en", "fr"],
@@ -41,6 +45,7 @@ export default defineConfig({
       prefixDefaultLocale: true,
     },
   },
+
   vite: {
     define: {
       "process.env.NODE_ENV": JSON.stringify(
@@ -66,12 +71,19 @@ export default defineConfig({
       },
     },
   },
+
   env: {
     schema: {
       VITE_API_URL: envField.string({
         context: "client",
         access: "public",
       }),
+      API_SECRET_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+      }),
     },
   },
+  output: "server",
+  adapter: vercel(),
 });

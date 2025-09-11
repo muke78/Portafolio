@@ -4,27 +4,34 @@ import "@/styles/styles.css";
 import "@/styles/app.css";
 import "swiper/swiper-bundle.css";
 import {
-  dataTitlePage,
-  dataTitlePageEN,
-  dataTitlePageFR,
+	dataTitlePage,
+	dataTitlePageEN,
+	dataTitlePageFR,
 } from "@/utils/dataTitlePage";
 
 const pathSegments = Astro.url.pathname.split("/");
 const { currentLocale } = Astro;
 
 const titles =
-  currentLocale === "en"
-    ? dataTitlePageEN
-    : currentLocale === "fr"
-      ? dataTitlePageFR
-      : dataTitlePage;
+	currentLocale === "en"
+		? dataTitlePageEN
+		: currentLocale === "fr"
+			? dataTitlePageFR
+			: dataTitlePage;
 
-const pageIndex = pathSegments[2] === "about" ? 1 : pathSegments[2] === "projects" ? 2 : pathSegments[2] === "contact" ? 3 : 0;
+const pageIndex =
+	pathSegments[2] === "about"
+		? 1
+		: pathSegments[2] === "projects"
+			? 2
+			: pathSegments[2] === "contact"
+				? 3
+				: 0;
 
 const titleLang = titles[pageIndex];
 
 function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 const capitalizedTitle = capitalizeFirstLetter(titleLang);
@@ -43,7 +50,7 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     <meta property="og:title" content="Portafolio de Erick Gonzalez" />
     <meta
       property="og:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web junior con experiencia en frontend y backend. Mira mis proyectos y habilidades."
+      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
     />
     <meta property="og:image" content="https://khelde.vercel.app/kdl.webp" />
     <meta
@@ -62,7 +69,7 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     <meta property="twitter:title" content="Portafolio de Erick Gonzalez" />
     <meta
       property="twitter:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web junior con experiencia en frontend y backend. Mira mis proyectos y habilidades."
+      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
     />
     <meta
       property="twitter:image:alt"
@@ -74,7 +81,7 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     <meta property="og:title" content="Portafolio de Erick Gonzalez" />
     <meta
       property="og:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web junior con experiencia en frontend y backend. Mira mis proyectos y habilidades."
+      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
     />
     <!-- Metadatos personalizados para IA u otras plataformas -->
     <meta property="ia:markup_url" content="https://khelde.vercel.app/markup" />

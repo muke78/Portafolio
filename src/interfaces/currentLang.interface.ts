@@ -1,79 +1,81 @@
+import type { z } from "zod";
+import type { contactSchema } from "@/schemas/contactSchema";
+import type { opinionsSchema } from "@/schemas/opinionsSchema";
+
 export const CATEGORIES = [
-  "frontend",
-  "backend",
-  "companies",
-  "dataAnalyst",
+	"frontend",
+	"backend",
+	"companies",
+	"dataAnalyst",
 ] as const;
 
 export const LOCALES = ["en", "es", "fr"] as const;
 
 export interface PropsLang {
-  currentLocale: string;
+	currentLocale: string;
 }
 
-export interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  moreInformation: string;
-}
-
-export interface FormOpinions {
-  name: string;
-  job: string;
-  description: string;
-}
+export type FormData = z.infer<ReturnType<typeof contactSchema>>;
+export type FormOpinions = z.infer<ReturnType<typeof opinionsSchema>>;
 
 export interface NavbarItem {
-  to: string;
-  label: string;
+	to: string;
+	label: string;
 }
 
 export interface ItemsNavProps extends PropsLang {
-  onItemClick?: () => void;
+	onItemClick?: () => void;
 }
 
 export interface Projects {
-  project_id: number;
-  slug: string;
-  category: (typeof CATEGORIES)[number];
-  card_image: string;
-  images_topics: string[];
-  link_repo: string;
-  link_web: string;
-  title: string;
-  description: string;
-  fork: boolean;
+	project_id: number;
+	slug: string;
+	category: (typeof CATEGORIES)[number];
+	card_image: string;
+	images_topics: string[];
+	link_repo: string;
+	link_web: string;
+	title: string;
+	description: string;
+	fork: boolean;
 }
 
 export interface Experiences {
-  experience_id: number;
-  work: string;
-  title: string;
-  description: string;
-  img: string;
-  alt: string;
-  time: string;
-  location: string;
+	experience_id: number;
+	work: string;
+	title: string;
+	description: string;
+	img: string;
+	alt: string;
+	time: string;
+	location: string;
 }
 
 export interface ProjectsTranslations {
-  translate_project_id: number;
-  project_id: number;
-  locale: (typeof LOCALES)[number];
-  title: string;
-  description: string;
+	translate_project_id: number;
+	project_id: number;
+	locale: (typeof LOCALES)[number];
+	title: string;
+	description: string;
 }
 
 export interface Testimonial extends FormOpinions {
-  comment_id: number;
-  direction: "left" | "bottom";
+	comment_id: number;
+	direction: "left" | "bottom";
+	country_flag: string;
+	country: string;
+	created_at: string;
 }
 
 export interface UseDataProjects extends PropsLang {
-  activeTab: string;
+	activeTab: string;
 }
 
 export interface PropsLangWithData extends PropsLang {
-  data: Projects[] | null;
+	data: Projects[] | null;
+}
+
+export interface CountryFlagProps {
+	countryCode?: string;
+	size?: string;
 }
