@@ -3,8 +3,8 @@
 Se realizó el portafolio con la tecnología de [Astro](https://astro.build/) y con la librería de [React](https://es.react.dev/) montada a Astro, con [Tailwind](https://tailwindui.com/) en su interfaz desde @tailwindcss/vite con Tailwind CSS 4.1.3.
 
 - Se montó [DaisyUI](https://daisyui.com/) sobre Tailwind para manejar los temas de la aplicación (v5.0.6).
-- Versión estable `v.3.0.2` release, próximas y futuras actualizaciones.
-- Próxima actualización `v.3.0.3` o `v.3.0.x` o `v.3.x.x`.
+- Versión estable `v.3.1.3` release, próximas y futuras actualizaciones.
+- Próxima actualización `v.3.1.4` o `v.3.1.x` o `v.3.x.x`.
 - Se utiliza la herramienta de reenvío de puertos desde host de túnel para revisar los cambios del servidor en tiempo real desde un celular.
 
 # 🔷 Diagrama de flujo de procesos para entender el portfolio
@@ -43,12 +43,10 @@ flowchart TD
         click IL "https://github.com/muke78/portafolio/blob/main/src/i18n/index.ts"
         IU["i18n UI"]:::i18n
         click IU "https://github.com/muke78/portafolio/blob/main/src/i18n/ui.ts"
-        LN["Language Data Utilities EN"]:::i18n
-        click LN "https://github.com/muke78/portafolio/tree/main/src/utils/en"
-        LE["Language Data Utilities ES"]:::i18n
-        click LE "https://github.com/muke78/portafolio/tree/main/src/utils/es"
-        LF["Language Data Utilities FR"]:::i18n
-        click LF "https://github.com/muke78/portafolio/tree/main/src/utils/fr"
+        IUT["i18n Utils"]:::i18n
+        click IUT "https://github.com/muke78/portafolio/blob/main/src/i18n/utils.ts"
+        LU["Language Data Utilities"]:::i18n
+        click LU "https://github.com/muke78/portafolio/tree/main/src/utils/en"
     end
 
     %% Content & Layout (Page Routing)
@@ -84,12 +82,11 @@ flowchart TD
     TH ---|"manages"| S
     IL ---|"supplies"| P
     L ---|"provides"| IL
-    IU ---|"is used by"| P
-    LN ---|"i18n english"| P
-    LE ---|"i18n spanish"| P
-    LF ---|"i18n frances"| P
+    IU ---|"renders"| P
+    IUT ---|"supports"| IL
+    LU ---|"feeds"| P
     P -->|"consumes"| UD
-    UD -->|"uses"| DT
+    UD -->|"defines"| DT
     PA -->|"serves"| P
     AE -->|"integrates"| PA
     IU ---|"influences"| S
@@ -112,15 +109,17 @@ flowchart TD
 
 ## 📋 Tabla de Contenidos
 
-- [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)
+- [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
 - [📁 Estructura del Proyecto](#-estructura-del-proyecto)
-- [⚙️ Requisitos Previos](#-requisitos-previos)
+- [⚙️ Requisitos Previos](#️-requisitos-previos)
 - [🔧 Instalación](#-instalación)
 - [💻 Desarrollo Local](#-desarrollo-local)
-- [🗄️ Base de Datos](#-base-de-datos)
+- [🗄️ Base de Datos](#️-base-de-datos)
 - [🌐 Internacionalización](#-internacionalización)
 - [🎨 Temas](#-temas)
-- [📦 Producción](#-producción)
+- [📄 Licencia](#-licencia)
+- [🤝 Contribuir](#-contribuir)
+- [📞 Contacto](#-contacto)
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -129,9 +128,6 @@ flowchart TD
 - **Estilos**:
   - [Tailwind CSS](https://tailwindcss.com/) v4.1.3
   - [DaisyUI](https://daisyui.com/) v5.0.6
-- **Base de Datos**:
-  - [Drizzle ORM](https://orm.drizzle.team/) v0.44.4
-  - [LibSQL](https://turso.tech/libsql)
 - **Animaciones**:
   - [Framer Motion](https://www.framer.com/motion/)
   - [Swiper](https://swiperjs.com/)
@@ -235,20 +231,6 @@ Los archivos de traducción se encuentran en `locales`.
 ## 🎨 Temas
 
 El proyecto incluye un sistema de temas usando DaisyUI con soporte para modo claro y oscuro.
-
-## 📦 Producción
-
-- Construye el proyecto:
-
-```bash
-    pnpm build
-```
-
-- Previsualiza la build:
-
-```bash
-    pnpm preview
-```
 
 ## 📄 Licencia
 
