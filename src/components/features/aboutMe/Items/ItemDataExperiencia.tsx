@@ -46,7 +46,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 				}) => (
 					<motion.div
 						key={experience_id}
-						className="card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
+						className="card bg-base-100 shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
             hover:shadow-xl hover:brightness-105 transition-discrete duration-500 ease-in-out  p-8 rounded-2xl"
 						whileHover={{
 							y: -8,

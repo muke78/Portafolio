@@ -120,7 +120,7 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 					type="button"
 					initial={{ opacity: 0, x: -20 }}
 					animate={{ opacity: 1, x: 0 }}
-					className="btn btn-primary btn-md flex items-center gap-2"
+					className="btn btn-md flex items-center gap-2 bg-gradient-to-r from-primary to-accent text-base-200"
 					href={`/${currentLocale}/comments`}
 					aria-label={i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 				>

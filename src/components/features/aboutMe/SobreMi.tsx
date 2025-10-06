@@ -9,7 +9,7 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
 		<div className="w-full flex flex-col p-4">
 			<span className="font-bold text-5xl"> {i18n.ABOUTME.ABOUT_TITLE}</span>
 			<motion.div
-				className="grid grid-cols-1 w-full card bg-base-100 shadow-md border border-transparent 
+				className="grid grid-cols-1 w-full card bg-base-100 shadow-md 
              hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
              hover:shadow-2xl hover:brightness-105 
              transition-discrete duration-500 ease-in-out 

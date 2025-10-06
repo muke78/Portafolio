@@ -28,7 +28,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 			{memorization.map(({ title, images }, index) => (
 				<motion.div
 					key={title}
-					className={`card bg-base-100 shadow-md border border-transparent hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
+					className={`card bg-base-100 shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
             hover:shadow-xl hover:brightness-105 transition-discrete duration-500 ease-in-out  p-8 ${
 							index === memorization.length - 1 ? "lg:col-span-2" : ""
 						}`}
@@ -45,7 +45,10 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 							return (
 								<div key={image} className="flex flex-wrap gap-2 mt-5">
 									{techNames.map((tech) => (
-										<div key={tech} className="flex flex-col items-center">
+										<div
+											key={tech}
+											className="flex flex-col items-center hover:-translate-y-3 transition-discrete duration-500 ease-in-out"
+										>
 											{!loadedImages[tech] && (
 												<div className="skeleton h-12 w-12"></div>
 											)}

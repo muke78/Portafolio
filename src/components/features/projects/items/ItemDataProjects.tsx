@@ -30,7 +30,7 @@ export const ItemDataProjects = ({
 					fork,
 				}) => (
 					<motion.div
-						className="card bg-base-100 shadow-sm border border-transparent 
+						className="card bg-base-100 shadow-sm
             hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent 
             hover:shadow-2xl hover:brightness-105 transition-discrete duration-500 ease-in-out "
 						key={project_id}

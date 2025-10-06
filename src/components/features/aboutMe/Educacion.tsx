@@ -10,7 +10,7 @@ export const Educacion = ({ currentLocale }: PropsLang) => {
 				{i18n.EDUCATION.EDUCATION_TITLE}
 			</span>
 			<motion.div
-				className="grid grid-cols-1 w-full card bg-base-100 shadow-md border border-transparent 
+				className="grid grid-cols-1 w-full card bg-base-100 shadow-md 
       hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl
       hover:brightness-105 transition-discrete duration-500 ease-in-out  mt-4 animate__animated animate__zoomIn"
 				whileHover={{
