@@ -169,6 +169,9 @@ export const Opinions = ({ currentLocale }: PropsLang) => {
 									repeat: Infinity,
 									ease: "easeInOut",
 								}}
+								loading="lazy"
+								decoding="async"
+								draggable="false"
 							/>
 
 							{/* Círculo decorativo giratorio */}

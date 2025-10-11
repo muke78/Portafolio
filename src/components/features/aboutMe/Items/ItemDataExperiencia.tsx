@@ -60,6 +60,8 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 								alt={alt}
 								className="w-12 h-12 rounded-full bg-base-200 object-cover"
 								loading="lazy"
+								decoding="async"
+								draggable="false"
 							/>
 							<div className="flex flex-col">
 								<h2 className="text-lg font-semibold text-base-content">

@@ -62,6 +62,8 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 												alt={`Icon for ${tech}`}
 												onLoad={() => handleImageLoad(tech)}
 												loading="lazy"
+												decoding="async"
+												draggable="false"
 											/>
 
 											<span className="text-xs mt-1 text-base-content">

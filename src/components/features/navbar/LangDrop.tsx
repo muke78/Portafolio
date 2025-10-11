@@ -77,6 +77,9 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 						src={languages[selectedLang].img.src}
 						alt={`Bandera de ${languages[selectedLang].label}`}
 						className="w-5 h-5 rounded-full object-cover shadow-sm"
+						loading="lazy"
+						decoding="async"
+						draggable="false"
 					/>
 				</motion.div>
 
@@ -171,6 +174,9 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 													src={img.src}
 													alt={`Bandera de ${label}`}
 													className="w-6 h-6 rounded-full object-cover shadow-sm"
+													loading="lazy"
+													decoding="async"
+													draggable="false"
 												/>
 
 												{/* Indicador de selección */}

@@ -24,6 +24,8 @@ export const Educacion = ({ currentLocale }: PropsLang) => {
 					src="/UPVM.webp"
 					alt="Universidad Politecnica del Valle de Mexico"
 					loading="lazy"
+					decoding="async"
+					draggable="false"
 				/>
 				<div className="p-5">
 					<div className="flex justify-between">
