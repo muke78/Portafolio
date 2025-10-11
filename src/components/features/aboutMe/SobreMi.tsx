@@ -30,6 +30,8 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
 						objectFit: "cover",
 					}}
 					loading="lazy"
+					decoding="async"
+					draggable="false"
 				/>
 				<div className="p-5">
 					<div className="flex justify-between">

@@ -54,8 +54,10 @@ export const ItemDataProjects = ({
 									height: "200px",
 									objectFit: "cover",
 								}}
-								loading="lazy"
 								onLoad={() => handleImageLoad(card_image)}
+								loading="lazy"
+								decoding="async"
+								draggable="false"
 							/>
 
 							{/* Botón GitHub */}
@@ -117,6 +119,8 @@ export const ItemDataProjects = ({
 													alt={topic}
 													onLoad={() => handleImageLoad(topic)}
 													loading="lazy"
+													decoding="async"
+													draggable="false"
 												/>
 											</div>
 										</div>
