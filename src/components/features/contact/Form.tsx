@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { Mail, Phone, Send } from "lucide-react";
+import { Mail, Send, Github, Linkedin, MessageCircle } from "lucide-react";
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { useTheme } from "@/hooks/useTheme";
@@ -78,6 +78,68 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
 				<ul className="space-y-2">
 					<li className="flex items-center gap-4">
+						<span className="text-3xl text-secondary">
+							{<Github size={36} />}
+						</span>
+						<span>
+							<strong className="text-sm text-base-content/90">
+								{/* {i18n.FORM.FORM_OPTIONS_CONTACT_PHONE} */}
+								Github
+							</strong>{" "}
+							<a
+								href="https://github.com/muke78"
+								target="_blank"
+								aria-label="Saber mas acerca de mis repositorios y lo que he hecho"
+								className="flex"
+								rel="noopener noreferrer"
+							>
+								muke78
+							</a>
+						</span>
+					</li>
+
+					<li className="flex items-center gap-4">
+						<span className="text-3xl text-secondary">
+							{<Linkedin size={36} />}
+						</span>
+						<span>
+							<strong className="text-sm text-base-content/90">
+								{/* {i18n.FORM.FORM_OPTIONS_CONTACT_PHONE} */}
+								Linkedin
+							</strong>{" "}
+							<a
+								href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
+								target="_blank"
+								aria-label="Saber mas acerca de experiencia"
+								className="flex"
+								rel="noopener noreferrer"
+							>
+								Erick Miguel Gonzalez Rivera
+							</a>
+						</span>
+					</li>
+
+					<li className="flex items-center gap-4">
+						<span className="text-3xl text-secondary">
+							{<MessageCircle size={36} />}
+						</span>
+						<span>
+							<strong className="text-sm text-base-content/90">
+								{i18n.FORM.FORM_OPTIONS_CONTACT_PHONE}
+							</strong>{" "}
+							<a
+								href="https://wa.me/+527203966119"
+								target="_blank"
+								aria-label="+52-551-190 9105"
+								className="flex"
+								rel="noopener noreferrer"
+							>
+								+52-551-190 9105
+							</a>
+						</span>
+					</li>
+
+					<li className="flex items-center gap-4">
 						<span className="text-3xl text-secondary ">
 							{<Mail size={36} />}
 						</span>
@@ -93,25 +155,6 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								rel="noopener noreferrer"
 							>
 								erickm.gonzalez.rivera@gmail.com
-							</a>
-						</span>
-					</li>
-					<li className="flex items-center gap-4">
-						<span className="text-3xl text-secondary">
-							{<Phone size={36} />}
-						</span>
-						<span>
-							<strong className="text-sm text-base-content/90">
-								{i18n.FORM.FORM_OPTIONS_CONTACT_PHONE}
-							</strong>{" "}
-							<a
-								href="https://wa.me/+527203966119"
-								target="_blank"
-								aria-label="+52-551-190 9105"
-								className="flex"
-								rel="noopener noreferrer"
-							>
-								+52-551-190 9105
 							</a>
 						</span>
 					</li>
