@@ -11,7 +11,7 @@ const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
 	fr: dataTabsAcercaDeFR,
 };
 
-export const ItemSKills = ({ currentLocale }: PropsLang) => {
+export const ItemSkills = ({ currentLocale }: PropsLang) => {
 	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
 	const memorization = useMemo(
