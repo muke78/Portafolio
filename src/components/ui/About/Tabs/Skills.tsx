@@ -1,4 +1,4 @@
-import { ItemSKills } from "@/components/ui/About/Items/ItemSkills.tsx";
+import { ItemSkills } from "@/components/ui/About/Items/ItemSkills.tsx";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/interfaces/currentLang.interface";
 
@@ -13,7 +13,7 @@ export const Skills = ({ currentLocale }: PropsLang) => {
 
 			<div className="animate__animated animate__zoomIn">
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 p-4 gap-4">
-					<ItemSKills currentLocale={currentLocale} />
+					<ItemSkills currentLocale={currentLocale} />
 				</div>
 			</div>
 		</div>
