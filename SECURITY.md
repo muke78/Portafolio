@@ -1,7 +1,7 @@
 ## Navegadores compatibles
 
 > [!IMPORTANT]
-> En el proyecto se ocupan componenetes nativos, haciendo ya facil su lectura en la mayoria de navegadores
+> En el proyecto se ocupan componentes nativos, haciendo ya facil su lectura en la mayoria de navegadores
 
 | Navegador             | Supported          |
 | --------------------- | ------------------ |
