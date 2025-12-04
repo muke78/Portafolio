@@ -1,39 +1,53 @@
 ---
-import { Nav } from "@/components/organisms/Nav";
-import Acerca from "@/components/templates/Acerca.astro";
-import Contactos from "@/components/templates/Contacto.astro";
-import Header from "@/components/templates/Header.astro";
-import Opiniones from "@/components/templates/Opiniones.astro";
-import Proyectos from "@/components/templates/Proyectos.astro";
+import { Nav } from "@/components/ui/Navbar/Nav";
+import About from "@/components/ui/About/About.astro";
+import Contact from "@/components/ui/Contact/Contact.astro";
+import Home from "@/components/ui/Home/Home.astro";
+import Opinions from "@/components/ui/Opinions/Opiniones.astro";
+import Projects from "@/components/ui/Projects/Projects.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const { currentLocale } = Astro;
 ---
 
 <Layout>
-  <header class="relative w-full" role="banner"> 
+  <header class="relative w-full" role="banner">
     <div class="w-full lg:p-0 md:p-10 p-10">
-      <Nav client:load currentLocale={currentLocale}/>
+      <Nav client:load currentLocale={currentLocale} />
     </div>
     <main role="main">
       <section class="w-full h-full">
-        <div class="hero bg-base-300 min-h-screen scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="home">
-          <Header />
+        <div
+          class="hero bg-base-300 min-h-screen scroll-m-4 lg:scroll-m-0 md:scroll-m-0"
+          id="home"
+        >
+          <Home />
         </div>
-        <div class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="about">
-          <Acerca />
+        <div
+          class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0"
+          id="about"
+        >
+          <About />
         </div>
-        <div class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="projects">
-          <Proyectos />
+        <div
+          class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0"
+          id="projects"
+        >
+          <Projects />
         </div>
-        <div class="hero bg-base-300 min-h-screen flex justify-center items-start" id="opinions">
-          <Opiniones />
+        <div
+          class="hero bg-base-300 min-h-screen flex justify-center items-start"
+          id="opinions"
+        >
+          <Opinions />
         </div>
-        <div class="hero bg-base-300 min-h-screen scroll-m-14 lg:scroll-m-12 md:scroll-m-0" id="contact">
-          <Contactos />
+        <div
+          class="hero bg-base-300 min-h-screen scroll-m-14 lg:scroll-m-12 md:scroll-m-0"
+          id="contact"
+        >
+          <Contact />
         </div>
       </section>
     </main>
   </header>
 </Layout>
-

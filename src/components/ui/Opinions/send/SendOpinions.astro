@@ -1,0 +1,11 @@
+---
+import SendOpinions from "@/components/ui/Opinions/send/SendOpinions.astro";
+
+const { currentLocale } = Astro;
+---
+
+<div
+    class="card not-first:isolate flex justify-center items-center w-full h-screen overflow-y-auto"
+>
+    <SendOpinions client:load currentLocale={currentLocale} />
+</div>
