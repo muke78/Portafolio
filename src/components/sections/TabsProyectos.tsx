@@ -1,5 +1,6 @@
-﻿import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
+﻿import { Building, ChartArea, HardDrive, Layout, Loader2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
 	Backend,
 	Companies,
@@ -103,15 +104,23 @@ export const TabsProyectos = ({
 	}, [data]);
 
 	if (!mounted) {
-		return <span className="loading loading-ring loading-xl"></span>;
+		return (
+			<Loader2
+				className="animate-spin text-primary"
+				size={40}
+				aria-label="Cargando"
+			/>
+		);
 	}
 
 	return (
 		<div className="flex flex-col lg:flex-col lg:w-full">
 			{/* Contenedor de los botones con un ancho fijo */}
 			<div className="flex justify-center items-center lg:justify-start lg:items-start md:justify-start md:items-start gap-4">
-				<button
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "frontend" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
+				<Button
+					type="button"
+					variant={activeTab === "frontend" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("frontend")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -125,10 +134,12 @@ export const TabsProyectos = ({
 					<span className="hidden md:inline lg:inline">
 						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F}
 					</span>
-				</button>
+				</Button>
 
-				<button
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "backend" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
+				<Button
+					type="button"
+					variant={activeTab === "backend" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("backend")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -142,10 +153,12 @@ export const TabsProyectos = ({
 					<span className="hidden md:inline lg:inline">
 						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B}
 					</span>
-				</button>
+				</Button>
 
-				<button
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "companies" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
+				<Button
+					type="button"
+					variant={activeTab === "companies" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("companies")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -159,10 +172,12 @@ export const TabsProyectos = ({
 					<span className="hidden md:inline lg:inline">
 						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C}
 					</span>
-				</button>
+				</Button>
 
-				<button
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "dataAnalyst" ? "btn-primary" : "btn-outline"} lg:text-lg md:text-base text-sm`}
+				<Button
+					type="button"
+					variant={activeTab === "dataAnalyst" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("dataAnalyst")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -176,10 +191,10 @@ export const TabsProyectos = ({
 					<span className="hidden md:inline lg:inline">
 						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D}
 					</span>
-				</button>
+				</Button>
 			</div>
 			{/* Separador solo visible en pantallas grandes */}
-			<div className="divider divider-vertical lg:divider-vertical"></div>
+			<hr className="my-4 border-border" />
 			{/* Contenedor del contenido del tab con un ancho flexible */}
 			<div className="flex-1 w-full p-4">
 				{loading ? (

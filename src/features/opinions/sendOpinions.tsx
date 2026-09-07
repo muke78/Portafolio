@@ -2,6 +2,8 @@
 import { Briefcase, Globe, MessageSquare, Send, User } from "lucide-react";
 import { useId, useMemo, useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { SubmittedOpinion } from "@/features/opinions/SubmittedOpinion";
 import { getI18N } from "@/i18n";
 import type { FormOpinions, PropsLang } from "@/types/currentLang.interface";
@@ -82,16 +84,16 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 	return (
 		<div className="min-h-screen w-full flex items-center justify-center py-4 px-3 sm:px-4">
 			<div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto my-auto">
-				<div className="bg-base-100 rounded-xl shadow-xl overflow-hidden">
+				<div className="bg-card rounded-xl shadow-xl overflow-hidden">
 					{/* Header con gradiente - Más compacto */}
 					<div className="bg-gradient-to-br from-primary via-secondary/70 to-accent p-3 sm:p-4 lg:p-6 text-center">
 						<div>
-							<MessageSquare className="w-12 h-12 text-base-200 mx-auto mb-3" />
+							<MessageSquare className="w-12 h-12 text-white mx-auto mb-3" />
 						</div>
-						<h2 className="lg:text-3xl md:text-2xl text-xl font-bold text-base-200">
+						<h2 className="lg:text-3xl md:text-2xl text-xl font-bold text-white">
 							{i18n.OPINIONS.OPINIONS_FORM_TITLE}
 						</h2>
-						<p className="lg:text-2xl md:text-xl text-md text-base-200/80 mt-2">
+						<p className="lg:text-2xl md:text-xl text-md text-white/80 mt-2">
 							{i18n.OPINIONS.OPINIONS_FORM_SUBTITLE}
 						</p>
 					</div>
@@ -107,17 +109,19 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 								>
 									<User className="w-4 h-4 mr-2 text-secondary" />
 									{i18n.FORM.INPUT_NAME}{" "}
-									<span className="text-base font-bold text-error ml-1">*</span>
+									<span className="text-base font-bold text-destructive ml-1">
+										*
+									</span>
 								</label>
-								<input
+								<Input
 									id={nameId}
 									type="text"
 									placeholder={i18n.OPINIONS.OPINIONS_FORM_NAME_PLACEHOLDER}
-									className="input lg:input-lg input-md w-full"
+									className="lg:h-11 h-10"
 									{...register("name")}
 								/>
 								{errors.name && (
-									<div className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
+									<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
 										{(errors.name as FieldError)?.message}
 									</div>
 								)}
@@ -133,22 +137,22 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 									>
 										<Briefcase className="w-4 h-4 mr-2 text-secondary" />
 										{i18n.FORM.INPUT_JOB}
-										<span className="text-gray-400 text-xs ml-2">
+										<span className="text-muted-foreground text-xs ml-2">
 											({i18n.FORM.INPUT_JOB_INPUT_OPTIONAL})
 										</span>
-										<span className="text-base font-bold text-error ml-1">
+										<span className="text-base font-bold text-destructive ml-1">
 											&nbsp;
 										</span>
 									</label>
-									<input
+									<Input
 										id={jobId}
 										type="text"
 										placeholder={i18n.OPINIONS.OPINIONS_FORM_JOB_PLACEHOLDER}
-										className="input lg:input-lg input-md w-full"
+										className="lg:h-11 h-10"
 										{...register("job")}
 									/>
 									{errors.job && (
-										<p className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
+										<p className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
 											{(errors.job as FieldError)?.message}
 										</p>
 									)}
@@ -162,7 +166,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 									>
 										<Globe className="w-4 h-4 mr-2 text-secondary" />
 										{i18n.OPINIONS.OPINIONS_TITLE_SELECT_COUNTRY}
-										<span className="text-base font-bold text-error ml-1">
+										<span className="text-base font-bold text-destructive ml-1">
 											*
 										</span>
 									</label>
@@ -171,7 +175,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 									<div className="relative">
 										<select
 											id={countryId}
-											className="select lg:select-lg select-md w-full pr-12"
+											className="h-9 lg:h-11 w-full pr-12 rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
 											value={selected}
 											onChange={(e) => handleCountryChange(e)}
 										>
@@ -186,7 +190,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 										</select>
 										{/* Error del país */}
 										{errors.country && (
-											<div className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
+											<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
 												{(errors.country as FieldError)?.message}
 											</div>
 										)}
@@ -209,7 +213,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
 									{/* País seleccionado con bandera */}
 									{selected && (
-										<p className="mt-2 text-sm text-gray-600 flex items-center gap-2">
+										<p className="mt-2 text-sm text-muted-foreground flex items-center gap-2">
 											País seleccionado:
 											<span className="font-semibold flex items-center gap-1">
 												<ReactCountryFlag
@@ -236,17 +240,19 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 								>
 									<MessageSquare className="w-4 h-4 mr-2 text-secondary" />
 									{i18n.FORM.INPUT_TELL_EXPERIENCE}{" "}
-									<span className="text-base font-bold text-error ml-1">*</span>
+									<span className="text-base font-bold text-destructive ml-1">
+										*
+									</span>
 								</label>
-								<textarea
+								<Textarea
 									id={descriptionId}
 									rows={4}
 									placeholder={i18n.OPINIONS.OPINIONS_FORM_EXP_PLACEHOLDER}
-									className="textarea lg:textarea-lg textarea-md w-full"
+									className="lg:text-lg"
 									{...register("description")}
 								/>
 								{errors.description && (
-									<div className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
+									<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
 										{(errors.description as FieldError)?.message}
 									</div>
 								)}
@@ -255,7 +261,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 							<button
 								type="submit"
 								disabled={isLoading}
-								className="btn xl:btn-xl lg:btn-lg btn-md bg-gradient-to-r from-primary via-secondary/70 to-accent text-base-200 btn-wide max-w-full hover:scale-[1.02] active:scale-95 transition-transform duration-200"
+								className="inline-flex items-center justify-center rounded-lg xl:h-12 lg:h-11 h-10 w-full max-w-full bg-gradient-to-r from-primary via-secondary/70 to-accent text-white font-medium hover:scale-[1.02] active:scale-95 transition-transform duration-200 disabled:opacity-50 disabled:pointer-events-none"
 							>
 								{isLoading ? (
 									<div className="flex items-center space-x-2">

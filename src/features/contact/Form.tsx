@@ -2,14 +2,13 @@
 import { Mail, Send, Github, Linkedin, MessageCircle } from "lucide-react";
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
-import { useTheme } from "@/hooks/useTheme";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { getI18N } from "@/i18n";
 import type { FormData, PropsLang } from "@/types/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
 
 export const Form = ({ currentLocale }: PropsLang) => {
-	const { theme } = useTheme();
-
 	const i18n = getI18N({ currentLocale });
 	const sendInformationValid = `${i18n.FORM.FORM_SEND_INFORMATION_CORRECT}`;
 	const errorSendInformation = `${i18n.FORM.FORM_SEND_INFORMATION_INCORRECT}`;
@@ -55,8 +54,8 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-3 md:gap-3 lg:p-9 md:p-8 p-4">
-			<div className="col-start-1 row-start-1 md:col-span-1 md:row-span-1 rounded-md space-y-1 text-base-content">
-				<small className="block font-medium text-base-content/90">
+			<div className="col-start-1 row-start-1 md:col-span-1 md:row-span-1 rounded-md space-y-1 text-foreground">
+				<small className="block font-medium text-muted-foreground">
 					{i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
 				</small>
 
@@ -71,7 +70,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 					</span>
 				</h2>
 
-				<p className="text-base leading-relaxed text-base-content/70 my-8">
+				<p className="text-base leading-relaxed text-muted-foreground my-8">
 					{i18n.FORM.FORM_SUBTITLE_SUBHEAD}
 				</p>
 
@@ -81,7 +80,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							{<Github size={36} />}
 						</span>
 						<span>
-							<strong className="text-sm text-base-content/90">
+							<strong className="text-sm text-muted-foreground">
 								{/* {i18n.FORM.FORM_OPTIONS_CONTACT_PHONE} */}
 								Github
 							</strong>{" "}
@@ -102,7 +101,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							{<Linkedin size={36} />}
 						</span>
 						<span>
-							<strong className="text-sm text-base-content/90">
+							<strong className="text-sm text-muted-foreground">
 								{/* {i18n.FORM.FORM_OPTIONS_CONTACT_PHONE} */}
 								Linkedin
 							</strong>{" "}
@@ -123,7 +122,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							{<MessageCircle size={36} />}
 						</span>
 						<span>
-							<strong className="text-sm text-base-content/90">
+							<strong className="text-sm text-muted-foreground">
 								{i18n.FORM.FORM_OPTIONS_CONTACT_PHONE}
 							</strong>{" "}
 							<a
@@ -143,7 +142,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							{<Mail size={36} />}
 						</span>
 						<span>
-							<strong className="text-sm text-base-content/90">
+							<strong className="text-sm text-muted-foreground">
 								{i18n.FORM.FORM_OPTIONS_CONTACT_EMAIL}
 							</strong>{" "}
 							<a
@@ -160,89 +159,81 @@ export const Form = ({ currentLocale }: PropsLang) => {
 				</ul>
 			</div>
 
-			<div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-base-200 p-5 lg:p-10 md:p-9 sm:p-8">
+			<div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-muted p-5 lg:p-10 md:p-9 sm:p-8">
 				<form onSubmit={handleSubmit(onSubmit)} method="POST">
 					<div className="grid grid-cols-1 gap-4">
-						<div>
-							<fieldset className="fieldset">
-								<legend className="fieldset-legend">
-									{i18n.FORM.INPUT_NAME}{" "}
-									<span className="text-base font-bold text-error">*</span>
-								</legend>
-								<input
-									type="text"
-									className="input w-full bg-base-200"
-									placeholder={i18n.FORM.INPUT_NAME}
-									{...register("name")}
-								/>
-								{errors.name && (
-									<div className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
-										{(errors.name as FieldError)?.message}
-									</div>
-								)}
-							</fieldset>
+						<div className="space-y-2">
+							<label className="text-sm font-medium">
+								{i18n.FORM.INPUT_NAME}{" "}
+								<span className="text-base font-bold text-destructive">*</span>
+							</label>
+							<Input
+								type="text"
+								className="bg-background"
+								placeholder={i18n.FORM.INPUT_NAME}
+								{...register("name")}
+							/>
+							{errors.name && (
+								<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
+									{(errors.name as FieldError)?.message}
+								</div>
+							)}
 						</div>
-						<div>
-							<fieldset className="fieldset">
-								<legend className="fieldset-legend">
-									{i18n.FORM.INPUT_EMAIL}{" "}
-									<span className="text-base font-bold text-error">*</span>
-								</legend>
-								<input
-									type="email"
-									className="input w-full bg-base-200"
-									placeholder={i18n.FORM.INPUT_EMAIL}
-									{...register("email")}
-								/>
-								{errors.email && (
-									<div className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
-										{(errors.email as FieldError)?.message}
-									</div>
-								)}
-							</fieldset>
+						<div className="space-y-2">
+							<label className="text-sm font-medium">
+								{i18n.FORM.INPUT_EMAIL}{" "}
+								<span className="text-base font-bold text-destructive">*</span>
+							</label>
+							<Input
+								type="email"
+								className="bg-background"
+								placeholder={i18n.FORM.INPUT_EMAIL}
+								{...register("email")}
+							/>
+							{errors.email && (
+								<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
+									{(errors.email as FieldError)?.message}
+								</div>
+							)}
 						</div>
-						<div>
-							<fieldset className="fieldset">
-								<legend className="fieldset-legend">
-									{i18n.FORM.INPUT_PHONE}{" "}
-									<span className="text-base font-bold text-error">*</span>
-								</legend>
-								<input
-									type="number"
-									className="input w-full bg-base-200"
-									placeholder={i18n.FORM.INPUT_PHONE}
-									{...register("phone")}
-								/>
-								{errors.phone && (
-									<div className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
-										{(errors.phone as FieldError)?.message}
-									</div>
-								)}
-							</fieldset>
+						<div className="space-y-2">
+							<label className="text-sm font-medium">
+								{i18n.FORM.INPUT_PHONE}{" "}
+								<span className="text-base font-bold text-destructive">*</span>
+							</label>
+							<Input
+								type="number"
+								className="bg-background"
+								placeholder={i18n.FORM.INPUT_PHONE}
+								{...register("phone")}
+							/>
+							{errors.phone && (
+								<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
+									{(errors.phone as FieldError)?.message}
+								</div>
+							)}
 						</div>
-						<div>
-							<fieldset className="fieldset">
-								<legend className="fieldset-legend">
-									{i18n.FORM.INPUT_MORE_INFORMATION}
-									<span className="text-gray-400 text-xs">
-										({i18n.FORM.INPUT_JOB_INPUT_OPTIONAL})
-									</span>
-								</legend>
-								<textarea
-									className="textarea w-full field-sizing-content bg-base-200"
-									placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
-									{...register("moreInformation")}
-								></textarea>
-								{errors.moreInformation && (
-									<div className="badge badge-error h-auto font-semibold text-sm mt-1 flex items-center">
-										{(errors.moreInformation as FieldError)?.message}
-									</div>
-								)}
-							</fieldset>
+						<div className="space-y-2">
+							<label className="text-sm font-medium">
+								{i18n.FORM.INPUT_MORE_INFORMATION}
+								<span className="text-muted-foreground text-xs">
+									({i18n.FORM.INPUT_JOB_INPUT_OPTIONAL})
+								</span>
+							</label>
+							<Textarea
+								className="bg-background"
+								placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
+								{...register("moreInformation")}
+							/>
+							{errors.moreInformation && (
+								<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
+									{(errors.moreInformation as FieldError)?.message}
+								</div>
+							)}
 						</div>
 						<button
 							type="submit"
-							className="btn bg-gradient-to-r from-primary to-accent text-base-200 btn-wide max-w-full mt-2"
+							className="inline-flex items-center justify-center gap-2 rounded-lg h-10 w-full max-w-full mt-2 bg-gradient-to-r from-primary to-accent text-white font-medium hover:scale-[1.02] active:scale-95 transition-transform duration-200"
 						>
 							<Send className="w-5 h-5" />
 							{i18n.FORM.BUTTON_LABEL}
@@ -252,8 +243,9 @@ export const Form = ({ currentLocale }: PropsLang) => {
 					<Toaster
 						toastOptions={{
 							style: {
-								background: `${theme === "night" ? "#0f172a" : theme === "nord" ? "#2e3440" : "#eceff4"}`,
-								color: `${theme === "night" ? "#eceff4" : theme === "nord" ? "#eceff4" : "#0f172a"}`,
+								background: "var(--card)",
+								color: "var(--card-foreground)",
+								border: "1px solid var(--border)",
 							},
 						}}
 						reverseOrder={false}

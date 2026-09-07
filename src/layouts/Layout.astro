@@ -105,17 +105,20 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var dark = stored
+          ? stored === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
   </head>
-  <body class="bg-base-300">
+  <body class="bg-background text-foreground">
     <div>
       <slot />
     </div>
-    <script>
-      (function () {
-        const theme = localStorage.getItem("theme") || "winter";
-        document.documentElement.setAttribute("data-theme", theme);
-      })();
-    </script>
     <script src="../js/ascii.js"></script>
   </body>
 </html>

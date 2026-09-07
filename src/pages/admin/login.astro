@@ -3,28 +3,34 @@ import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout>
-  <main class="min-h-screen flex items-center justify-center px-4 bg-base-300">
+  <main class="min-h-screen flex items-center justify-center px-4 bg-background">
     <form
       id="login-form"
-      class="card bg-base-100 shadow-xl w-full max-w-sm p-8 flex flex-col gap-4"
+      class="rounded-xl border border-border bg-card shadow-xl w-full max-w-sm p-8 flex flex-col gap-4"
     >
       <h1 class="text-2xl font-bold text-center">Admin</h1>
-      <p class="text-sm text-base-content/70 text-center">
+      <p class="text-sm text-muted-foreground text-center">
         Acceso restringido
       </p>
-      <fieldset class="fieldset">
-        <legend class="fieldset-legend">Contraseña</legend>
+      <div class="space-y-2">
+        <label for="password" class="text-sm font-medium">Contraseña</label>
         <input
+          id="password"
           type="password"
           name="password"
           required
           autocomplete="current-password"
-          class="input w-full"
+          class="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
           placeholder="••••••••"
         />
-      </fieldset>
-      <button type="submit" class="btn btn-primary w-full">Entrar</button>
-      <p id="login-error" class="text-sm text-error text-center hidden">
+      </div>
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center h-9 w-full rounded-lg bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/80"
+      >
+        Entrar
+      </button>
+      <p id="login-error" class="text-sm text-destructive text-center hidden">
         Contraseña incorrecta
       </p>
     </form>

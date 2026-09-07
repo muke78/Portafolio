@@ -1,5 +1,6 @@
 ﻿import { ChevronDown } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { PropsLang } from "@/types/currentLang.interface";
 import { dataTabsAcercaDeEN } from "@/data/locales/en/dataTabsAcercaDeEN";
 import { dataTabsAcercaDe } from "@/data/locales/es/dataTabsAcercaDe";
@@ -38,17 +39,17 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 				return (
 					<div
 						key={title}
-						className="rounded-xl border border-base-content/10 bg-base-100/60 backdrop-blur-sm overflow-hidden"
+						className="rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden"
 					>
 						<button
 							type="button"
 							onClick={() => toggle(index)}
-							className="w-full flex items-center justify-between px-5 py-4 hover:bg-base-content/5 transition-colors"
+							className="w-full flex items-center justify-between px-5 py-4 hover:bg-muted transition-colors"
 							aria-expanded={open}
 						>
 							<span className="text-lg font-medium text-left">{title}</span>
 							<span className="flex items-center gap-3">
-								<span className="text-xs text-base-content/60">
+								<span className="text-xs text-muted-foreground">
 									{techs.length}
 								</span>
 								<ChevronDown
@@ -70,7 +71,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 											className="flex flex-col items-center gap-1 w-16"
 										>
 											{!loadedImages[tech] && (
-												<div className="skeleton h-10 w-10 rounded-md" />
+												<Skeleton className="h-10 w-10 rounded-md" />
 											)}
 											<img
 												className={`w-10 h-10 transition-opacity duration-200 ${
@@ -87,7 +88,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 												width={40}
 												height={40}
 											/>
-											<span className="text-[10px] text-base-content/70 truncate w-full text-center">
+											<span className="text-[10px] text-muted-foreground truncate w-full text-center">
 												{tech}
 											</span>
 										</div>
