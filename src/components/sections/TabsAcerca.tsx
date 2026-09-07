@@ -1,5 +1,12 @@
-﻿import { Briefcase, GraduationCap, PencilRuler, UserRound } from "lucide-react";
+﻿import {
+	Briefcase,
+	GraduationCap,
+	Loader2,
+	PencilRuler,
+	UserRound,
+} from "lucide-react";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Educacion } from "@/features/aboutMe/Educacion";
 import { Experiencia } from "@/features/aboutMe/Experiencia";
 import { Habilidades } from "@/features/aboutMe/Habilidades";
@@ -28,7 +35,13 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 	}, [activeTab, mounted]);
 
 	if (!mounted) {
-		return <span className="loading loading-ring loading-xl"></span>;
+		return (
+			<Loader2
+				className="animate-spin text-primary"
+				size={40}
+				aria-label="Cargando"
+			/>
+		);
 	}
 
 	const getShortText = (text: string, length: number) => {
@@ -39,9 +52,10 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 		<div className="flex flex-col lg:flex-col lg:w-full">
 			{/* Contenedor de los botones con un ancho fijo */}
 			<div className="flex justify-center items-center lg:justify-start lg:items-start md:justify-start md:items-start gap-4">
-				<button
+				<Button
 					type="button"
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "sobreMi" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
+					variant={activeTab === "sobreMi" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("sobreMi")}
 				>
 					<span className=" sm:inline md:inline lg:inline">
@@ -55,11 +69,12 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 					<span className="hidden md:inline lg:inline">
 						{i18n.ABOUTME.ABOUT_TITLE}
 					</span>
-				</button>
+				</Button>
 
-				<button
+				<Button
 					type="button"
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "educacion" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
+					variant={activeTab === "educacion" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("educacion")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -73,11 +88,12 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 					<span className="hidden md:inline lg:inline">
 						{i18n.EDUCATION.EDUCATION_TITLE}
 					</span>
-				</button>
+				</Button>
 
-				<button
+				<Button
 					type="button"
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "experiencia" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
+					variant={activeTab === "experiencia" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("experiencia")}
 				>
 					<span className=" sm:inline md:inline lg:inline">
@@ -93,11 +109,12 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 					<span className="hidden md:inline lg:inline">
 						{i18n.ABOUTME.EXPERIENCE}
 					</span>
-				</button>
+				</Button>
 
-				<button
+				<Button
 					type="button"
-					className={`btn lg:btn-lg md:btn-md sm:btn-sm rounded-full ${activeTab === "habilidades" ? "btn-primary " : "btn-outline"} lg:text-lg md:text-base text-sm`}
+					variant={activeTab === "habilidades" ? "default" : "outline"}
+					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
 					onClick={() => setActiveTab("habilidades")}
 				>
 					<span className=" sm:inline md:inline lg:inline">
@@ -111,13 +128,13 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 					<span className="hidden md:inline lg:inline">
 						{i18n.SKILLS.SKILLS_TITLE}
 					</span>
-				</button>
+				</Button>
 			</div>
 
 			{/* Separador solo visible en pantallas grandes */}
-			<div className="divider divider-vertical lg:divider-vertical"></div>
+			<hr className="my-4 border-border" />
 			{/* Contenedor del contenido del tab con un ancho flexible */}
-			<div className="flex-1 w-full hero-content anim-zoom-in">
+			<div className="flex-1 w-full flex flex-col anim-zoom-in">
 				{activeTab === "experiencia" && (
 					<Experiencia currentLocale={currentLocale} />
 				)}

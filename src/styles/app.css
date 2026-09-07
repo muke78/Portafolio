@@ -1,6 +1,148 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-	themes:
-		winter --default,
-		night --prefersdark;
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+	--font-heading: var(--font-sans);
+	--font-sans: "Geist Variable", sans-serif;
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+	--color-info: var(--info);
+	--color-info-foreground: var(--info-foreground);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--color-foreground: var(--foreground);
+	--color-background: var(--background);
+	--radius-sm: calc(var(--radius) * 0.6);
+	--radius-md: calc(var(--radius) * 0.8);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) * 1.4);
+	--radius-2xl: calc(var(--radius) * 1.8);
+	--radius-3xl: calc(var(--radius) * 2.2);
+	--radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Khelde brand palette, ported 1:1 from the previous daisyUI "winter"
+ * (light) / "night" (dark) themes so the navy + celeste identity carries
+ * over exactly - only the token names changed (daisyUI base-* -> shadcn
+ * background/card/muted, daisyUI primary/secondary/accent kept as-is).
+ */
+:root {
+	--background: oklch(1 0 0);
+	--foreground: oklch(20.768% 0.039 265.754);
+	--card: oklch(98.5% 0.005 260);
+	--card-foreground: oklch(20.768% 0.039 265.754);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(20.768% 0.039 265.754);
+	--primary: oklch(60% 0.14 232.661);
+	--primary-foreground: oklch(1 0 0);
+	--secondary: oklch(68.011% 0.158 276.934);
+	--secondary-foreground: oklch(1 0 0);
+	--muted: oklch(95.5% 0.008 260);
+	--muted-foreground: oklch(45% 0.02 265.754);
+	--accent: oklch(72.36% 0.176 350.048);
+	--accent-foreground: oklch(1 0 0);
+	--destructive: oklch(58% 0.22 22.18);
+	--success: oklch(55% 0.15 160);
+	--success-foreground: oklch(1 0 0);
+	--info: oklch(58% 0.16 231.6);
+	--info-foreground: oklch(1 0 0);
+	--border: oklch(90% 0.012 260);
+	--input: oklch(90% 0.012 260);
+	--ring: oklch(60% 0.14 232.661);
+	--chart-1: oklch(75.351% 0.138 232.661);
+	--chart-2: oklch(68.011% 0.158 276.934);
+	--chart-3: oklch(72.36% 0.176 350.048);
+	--chart-4: oklch(55% 0.15 160);
+	--chart-5: oklch(84.71% 0.199 83.87);
+	--radius: 0.625rem;
+	--sidebar: oklch(98.5% 0.005 260);
+	--sidebar-foreground: oklch(20.768% 0.039 265.754);
+	--sidebar-primary: oklch(60% 0.14 232.661);
+	--sidebar-primary-foreground: oklch(1 0 0);
+	--sidebar-accent: oklch(95.5% 0.008 260);
+	--sidebar-accent-foreground: oklch(20.768% 0.039 265.754);
+	--sidebar-border: oklch(90% 0.012 260);
+	--sidebar-ring: oklch(60% 0.14 232.661);
+}
+
+.dark {
+	--background: oklch(20.768% 0.039 265.754);
+	--foreground: oklch(84.153% 0.007 265.754);
+	--card: oklch(19.353% 0.037 265.755);
+	--card-foreground: oklch(84.153% 0.007 265.754);
+	--popover: oklch(19.353% 0.037 265.755);
+	--popover-foreground: oklch(84.153% 0.007 265.754);
+	--primary: oklch(75.351% 0.138 232.661);
+	--primary-foreground: oklch(20.768% 0.039 265.754);
+	--secondary: oklch(68.011% 0.158 276.934);
+	--secondary-foreground: oklch(15% 0.03 265.754);
+	--muted: oklch(17.865% 0.034 265.755);
+	--muted-foreground: oklch(65% 0.018 265.754);
+	--accent: oklch(72.36% 0.176 350.048);
+	--accent-foreground: oklch(15% 0.03 265.754);
+	--destructive: oklch(71.76% 0.221 22.18);
+	--success: oklch(64.8% 0.15 160);
+	--success-foreground: oklch(15% 0.03 160);
+	--info: oklch(72.06% 0.191 231.6);
+	--info-foreground: oklch(15% 0.03 231.6);
+	--border: oklch(1 0 0 / 10%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(75.351% 0.138 232.661);
+	--chart-1: oklch(75.351% 0.138 232.661);
+	--chart-2: oklch(68.011% 0.158 276.934);
+	--chart-3: oklch(72.36% 0.176 350.048);
+	--chart-4: oklch(64.8% 0.15 160);
+	--chart-5: oklch(84.71% 0.199 83.87);
+	--sidebar: oklch(19.353% 0.037 265.755);
+	--sidebar-foreground: oklch(84.153% 0.007 265.754);
+	--sidebar-primary: oklch(75.351% 0.138 232.661);
+	--sidebar-primary-foreground: oklch(20.768% 0.039 265.754);
+	--sidebar-accent: oklch(17.865% 0.034 265.755);
+	--sidebar-accent-foreground: oklch(84.153% 0.007 265.754);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: oklch(75.351% 0.138 232.661);
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+	html {
+		@apply font-sans;
+	}
 }

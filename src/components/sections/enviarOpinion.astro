@@ -4,6 +4,6 @@ import { SendOpinions } from "@/features/opinions/sendOpinions";
 const { currentLocale } = Astro;
 ---
 
-<div class="card not-first:isolate flex justify-center items-center w-full h-screen overflow-y-auto">
+<div class="not-first:isolate flex justify-center items-center w-full h-screen overflow-y-auto">
     <SendOpinions client:load currentLocale={currentLocale}/>
 </div>

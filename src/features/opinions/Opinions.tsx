@@ -1,4 +1,4 @@
-import { MessageSquare, Quote } from "lucide-react";
+import { Loader2, MessageSquare, Quote } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getI18N } from "@/i18n";
 import type {
@@ -32,25 +32,32 @@ export const Opinions = ({
 		fetchData();
 	}, [initialData.length]);
 
-	if (loading) return <span className="loading loading-ring loading-xl"></span>;
+	if (loading)
+		return (
+			<Loader2
+				className="animate-spin text-primary"
+				size={40}
+				aria-label="Cargando"
+			/>
+		);
 
 	return (
 		<div className="relative w-full overflow-hidden p-4">
 			<div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12 anim-fade-in">
-				<div className="inline-block px-4 py-2 bg-primary/20 text-base-content text-sm rounded-full mb-6 backdrop-blur-sm border border-primary/20">
+				<div className="inline-block px-4 py-2 bg-primary/20 text-foreground text-sm rounded-full mb-6 backdrop-blur-sm border border-primary/20">
 					{i18n.OPINIONS.OPINIONS_SUBTITLE}
 				</div>
 
-				<h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-base-content to-base-content/70 bg-clip-text text-transparent">
+				<h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
 					{i18n.OPINIONS.OPINIONS_TITLE}
 				</h2>
 
-				<p className="text-xl text-base-content/90 font-medium max-w-2xl mx-auto mb-6">
+				<p className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto mb-6">
 					{i18n.OPINIONS.OPINIONS_SUB_SUBTILE}
 				</p>
 
 				<a
-					className="btn btn-md flex items-center gap-2 bg-gradient-to-r from-primary to-accent text-base-200"
+					className="inline-flex items-center justify-center h-9 px-4 rounded-lg gap-2 bg-gradient-to-r from-primary to-accent text-primary-foreground font-medium transition-opacity hover:opacity-90"
 					href={`/${currentLocale}/comments`}
 					aria-label={i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 				>
@@ -82,7 +89,7 @@ export const Opinions = ({
 						</div>
 
 						<div className="text-center space-y-4 max-w-md">
-							<h3 className="text-2xl font-semibold text-base-content/80 mb-3">
+							<h3 className="text-2xl font-semibold text-muted-foreground mb-3">
 								{i18n.OPINIONS.OPINIONS_NOT_FOUND}
 							</h3>
 							<p className="text-sm text-primary/90 leading-relaxed">
@@ -95,15 +102,15 @@ export const Opinions = ({
 						{data.map((testimonial) => (
 							<div
 								key={testimonial.comment_id}
-								className="group relative break-inside-avoid card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl hover:border-secondary/30 hover:-translate-y-2 transition-all duration-500 overflow-hidden anim-fade-in"
+								className="group relative break-inside-avoid rounded-xl bg-card shadow-lg border border-border hover:shadow-xl hover:border-secondary/30 hover:-translate-y-2 transition-all duration-500 overflow-hidden anim-fade-in"
 							>
-								<div className="card-body p-6">
+								<div className="flex flex-col p-6">
 									<div className="flex items-start justify-between mb-4">
 										<div className="flex-shrink-0 p-2 rounded-lg bg-secondary/10 group-hover:bg-secondary/20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 ease-in-out">
 											<Quote className="w-8 h-8 text-secondary" />
 										</div>
 
-										<div className="badge badge-secondary badge-sm text-base-200">
+										<div className="inline-flex items-center rounded-full bg-secondary text-secondary-foreground text-xs px-2.5 py-0.5">
 											{new Date(testimonial.created_at).toLocaleDateString(
 												"es-ES",
 												{
@@ -118,7 +125,7 @@ export const Opinions = ({
 									<div className="flex items-center gap-3 mb-4">
 										<div className="flex-1 min-w-0">
 											<div className="flex items-center gap-2 mb-1">
-												<h3 className="font-bold text-base-content text-lg leading-tight truncate">
+												<h3 className="font-bold text-foreground text-lg leading-tight truncate">
 													{testimonial.name}
 												</h3>
 												<CountryFlag
@@ -126,25 +133,25 @@ export const Opinions = ({
 													size="1em"
 												/>
 											</div>
-											<p className="text-sm text-base-content/60 font-medium truncate">
+											<p className="text-sm text-muted-foreground font-medium truncate">
 												{testimonial.job}
 											</p>
 										</div>
 									</div>
 
 									<div className="flex-1">
-										<p className="text-base-content/80 leading-relaxed text-sm mb-4">
+										<p className="text-muted-foreground leading-relaxed text-sm mb-4">
 											"{testimonial.description}"
 										</p>
 									</div>
 
-									<div className="flex items-center justify-between pt-4 border-t border-base-300/50">
-										<div className="flex items-center gap-2 text-xs text-base-content/50">
+									<div className="flex items-center justify-between pt-4 border-t border-border/50">
+										<div className="flex items-center gap-2 text-xs text-muted-foreground">
 											<CountryFlag
 												countryCode={testimonial.country_flag}
 												size="1em"
 											/>
-											<span className="text-base-content/80 text-sm">
+											<span className="text-muted-foreground text-sm">
 												{testimonial.country
 													? testimonial.country
 													: i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}

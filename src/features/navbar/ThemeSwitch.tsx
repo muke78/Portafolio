@@ -1,4 +1,5 @@
 import { MoonStar, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/useTheme";
 
 export const ThemeDrop = () => {
@@ -6,33 +7,33 @@ export const ThemeDrop = () => {
 
 	if (!mounted) {
 		return (
-			<button
+			<Button
 				type="button"
+				variant="outline"
+				size="icon"
 				aria-hidden="true"
-				className="btn btn-circle bg-base-content/5 border border-base-content/10"
 				tabIndex={-1}
+				className="rounded-full"
 			>
 				<span className="opacity-0">
 					<Sun size={20} />
 				</span>
-			</button>
+			</Button>
 		);
 	}
 
-	const isDark = theme === "night";
+	const isDark = theme === "dark";
 
 	return (
-		<button
+		<Button
 			type="button"
+			variant="outline"
+			size="icon"
 			onClick={toggleTheme}
-			className={`btn btn-circle border transition-colors duration-200 ${
-				isDark
-					? "bg-indigo-500/10 hover:bg-indigo-500/20 border-indigo-400/20 text-indigo-400"
-					: "bg-amber-400/10 hover:bg-amber-400/20 border-amber-400/20 text-amber-500"
-			}`}
+			className="rounded-full"
 			aria-label={`Cambiar a tema ${isDark ? "claro" : "oscuro"}`}
 		>
 			{isDark ? <MoonStar size={20} /> : <Sun size={20} />}
-		</button>
+		</Button>
 	);
 };

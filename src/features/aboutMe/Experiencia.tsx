@@ -12,7 +12,7 @@ export const Experiencia = ({ currentLocale }: PropsLang) => {
 			</span>
 
 			<div className="anim-zoom-in">
-				<div className="flex flex-col hero-content gap-4 pt-4">
+				<div className="flex flex-col gap-4 pt-4">
 					<ItemDataExperiencia currentLocale={currentLocale} />
 				</div>
 			</div>

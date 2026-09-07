@@ -7,7 +7,7 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
 	return (
 		<div className="w-full flex flex-col p-4">
 			<span className="font-bold text-5xl"> {i18n.ABOUTME.ABOUT_TITLE}</span>
-			<div className="grid grid-cols-1 w-full card bg-base-100 shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out mt-4 anim-zoom-in">
+			<div className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out mt-4 anim-zoom-in">
 				<img
 					className="rounded-t-lg"
 					src="/Aboutme.webp"
@@ -25,8 +25,7 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
 					<div className="flex justify-between">
 						<span className="text-2xl">{i18n.ABOUTME.ABOUT_TITLE_CARD}</span>
 					</div>
-					<p className="badge badge-secondary text-base-200 text-base font-medium my-2">
-						{" "}
+					<p className="inline-flex items-center rounded-full bg-secondary text-secondary-foreground text-base font-medium my-2 px-3 py-1 w-fit">
 						{i18n.ABOUTME.ABOUT_SUBTITLE}
 					</p>
 					<div>

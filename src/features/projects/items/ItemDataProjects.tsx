@@ -30,7 +30,7 @@ export const ItemDataProjects = ({
 				}) => (
 					<div
 						key={project_id}
-						className="card bg-base-100 shadow-sm hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out"
+						className="flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out"
 					>
 						<figure className="relative overflow-hidden group cursor-pointer">
 							<img
@@ -57,8 +57,10 @@ export const ItemDataProjects = ({
 									href={link_repo}
 									target="_blank"
 									rel="noopener noreferrer"
-									className={`btn btn-sm btn-soft ${
-										!link_repo ? "btn-disabled" : "hover:btn-secondary"
+									className={`inline-flex items-center justify-center rounded-lg bg-background/80 backdrop-blur px-2 py-1.5 transition-colors ${
+										!link_repo
+											? "pointer-events-none opacity-40"
+											: "hover:bg-secondary hover:text-secondary-foreground"
 									}`}
 									aria-label={slug}
 								>
@@ -71,8 +73,10 @@ export const ItemDataProjects = ({
 									href={link_web}
 									target="_blank"
 									rel="noopener noreferrer"
-									className={`btn btn-sm btn-soft ${
-										!link_web ? "btn-disabled" : "hover:btn-secondary"
+									className={`inline-flex items-center justify-center rounded-lg bg-background/80 backdrop-blur px-2 py-1.5 transition-colors ${
+										!link_web
+											? "pointer-events-none opacity-40"
+											: "hover:bg-secondary hover:text-secondary-foreground"
 									}`}
 									aria-label={slug}
 								>
@@ -80,25 +84,25 @@ export const ItemDataProjects = ({
 								</a>
 							</div>
 						</figure>
-						<div className="card-body">
-							<h2 className="card-title text-2xl">
+						<div className="flex flex-col gap-2 p-4">
+							<h2 className="flex items-center gap-2 text-2xl font-semibold">
 								{title}
 								{fork && (
-									<div className="badge badge-secondary text-base-200 font-medium">
+									<span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
 										{i18n.PROJECTS.PROJECTS_BADGE_FORK}
-									</div>
+									</span>
 								)}
 							</h2>
 							<p>{description}</p>
 
-							<div className="card-actions justify-start">
-								<div className="avatar-group -space-x-2 py-3">
+							<div className="flex flex-wrap items-center justify-start">
+								<div className="flex -space-x-2 py-3">
 									{images_topics.map((topic) => (
 										<div
-											className="avatar border-2 hover:-translate-y-3 transition-transform duration-500 ease-in-out"
+											className="rounded-full border-2 border-card overflow-hidden hover:-translate-y-3 transition-transform duration-500 ease-in-out"
 											key={topic}
 										>
-											<div className="w-9">
+											<div className="w-9 h-9 rounded-full overflow-hidden">
 												<img
 													className={`leading-6 transition-opacity duration-500 ease-in-out ${
 														loadedImages[topic]

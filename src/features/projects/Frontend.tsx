@@ -10,7 +10,7 @@ export const Frontend = ({ currentLocale, data }: PropsLangWithData) => {
 				{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F}
 			</span>
 			<div>
-				<div className="flex flex-col hero-content gap-4 pt-4 anim-zoom-in">
+				<div className="flex flex-col gap-4 pt-4 anim-zoom-in">
 					<ItemDataProjects currentLocale={currentLocale} data={data} />
 				</div>
 			</div>

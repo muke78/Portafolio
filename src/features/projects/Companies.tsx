@@ -11,7 +11,7 @@ export const Companies = ({ currentLocale, data }: PropsLangWithData) => {
 			</span>
 
 			<div>
-				<div className="flex flex-col hero-content gap-4 pt-4 anim-zoom-in">
+				<div className="flex flex-col gap-4 pt-4 anim-zoom-in">
 					<ItemDataProjects currentLocale={currentLocale} data={data} />
 				</div>
 			</div>
