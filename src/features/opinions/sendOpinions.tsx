@@ -86,7 +86,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 			<div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto my-auto">
 				<div className="bg-card rounded-xl shadow-xl overflow-hidden">
 					{/* Header con gradiente - Más compacto */}
-					<div className="bg-gradient-to-br from-primary via-secondary/70 to-accent p-3 sm:p-4 lg:p-6 text-center">
+					<div className="bg-primary p-3 sm:p-4 lg:p-6 text-center">
 						<div>
 							<MessageSquare className="w-12 h-12 text-white mx-auto mb-3" />
 						</div>
@@ -261,7 +261,7 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 							<button
 								type="submit"
 								disabled={isLoading}
-								className="inline-flex items-center justify-center rounded-lg xl:h-12 lg:h-11 h-10 w-full max-w-full bg-gradient-to-r from-primary via-secondary/70 to-accent text-white font-medium hover:scale-[1.02] active:scale-95 transition-transform duration-200 disabled:opacity-50 disabled:pointer-events-none"
+								className="inline-flex items-center justify-center rounded-lg xl:h-12 lg:h-11 h-10 w-full max-w-full bg-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-95 transition-transform duration-200 disabled:opacity-50 disabled:pointer-events-none"
 							>
 								{isLoading ? (
 									<div className="flex items-center space-x-2">

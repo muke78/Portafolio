@@ -5,7 +5,7 @@ export const Educacion = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });
 	return (
 		<div className="flex flex-col p-4">
-			<span className="font-bold text-5xl">
+			<span className="font-serif-display text-[clamp(28px,4vw,48px)] font-normal">
 				{i18n.EDUCATION.EDUCATION_TITLE}
 			</span>
 			<div className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out mt-4 anim-zoom-in">

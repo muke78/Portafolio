@@ -1,4 +1,4 @@
-﻿---
+---
 import {
 	Github,
 	Linkedin,
@@ -7,124 +7,111 @@ import {
 	MoveRight,
 	SquareArrowOutUpRight,
 } from "lucide-react";
-import Bubble from "@/components/ui/Bubble.astro";
 import { getI18N } from "@/i18n";
 import { Image } from "astro:assets";
 
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
+
+// "Erick González" -> italicize the last word (matches the source
+// design's name treatment) without hardcoding the split for every
+// locale — the name itself doesn't translate.
+const nameParts = i18n.HEADER.HEADER_NAME.split(" ");
+const firstName = nameParts.slice(0, -1).join(" ") || nameParts[0];
+const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 ---
 
-<div class="relative overflow-hidden flex flex-col lg:flex-row-reverse items-center mt-10">
-	<Bubble color="accent" position="top-56 left-48" delay={3} duration={5} />
-	<Bubble color="primary" position="right-48" delay={1.5} duration={7} />
-	<Bubble color="secondary" position="bottom-96" delay={0.5} duration={26} />
-
-	<div class="inline-flex anim-fade-in">
-		<div
-			class="ring-primary ring-offset-background w-36 min-[480px]:w-40 sm:w-56 md:w-[250px] lg:w-[350px] xl:w-[450px] aspect-square rounded-full ring-4 border-dashed ring-offset-8 overflow-hidden"
-		>
-			<Image
-				src="/e9721e9d-cfa4-47ce-9f2c-40ec23335d62.webp"
-				width={672}
-				height={672}
-				alt="muke78"
-				draggable="false"
-				class="h-full w-full object-cover"
-			/>
+<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-12 items-start pt-8 pb-14">
+	<div>
+		<div class="flex flex-wrap items-center gap-5 mb-6">
+			<span class="eyebrow">— {i18n.HEADER.HEADER_SUBTITLE}</span>
 		</div>
-	</div>
-	<div
-		class="flex flex-col justify-evenly lg:p-9 md:p-8 p-4 anim-zoom-in"
-	>
-		<span
-			class="text-3xl lg:text-4xl font-light block text-center md:text-center lg:text-start px-4 lg:p-0"
-			>{i18n.HEADER.HEADER_SUBTITLE}</span
-		>
-		<h1
-			class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl font-bold text-nowrap text-center md:text-center lg:text-start px-4 lg:p-0"
-		>
-			{i18n.HEADER.HEADER_TITLE}
+
+		<h1 class="font-serif-display text-[clamp(56px,8.4vw,120px)] anim-fade-in">
+			{firstName}
+			{lastName && <><br /><span class="italic text-primary">{lastName}</span></>}
 		</h1>
-		<span
-			class="text-4xl xl:text-8xl lg:text-7xl md:text-6xl sm:text-5xl text-center md:text-center lg:text-start leading-snug font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent px-4 lg:p-0"
-		>
-			{i18n.HEADER.HEADER_NAME}
-		</span>
-		<p
-			class="text-base xl:text-xl lg:text-lg font-semibold text-foreground text-center md:text-center lg:text-start px-4 lg:p-0 my-8"
-		>
+
+		<p class="khelde-lead mt-6 text-muted-foreground">
 			{i18n.HEADER.HEADER_ABOUT}
 		</p>
-		<!-- Botones -->
-		<div
-			class="flex flex-col md:flex-row justify-center items-center md:justify-around gap-2 px-4 lg:p-0 mt-2"
-		>
-			<div class="flex justify-center items-center w-full md:w-1/2">
-				<a
-					href={`/${currentLocale}/home#projects`}
-					class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 font-medium text-primary-foreground transition-colors hover:bg-primary/80 lg:text-lg md:text-base w-full"
-				>
-					{i18n.HEADER.HEADER_BUTTON}
-					<span> {(<MoveRight size={22} />)} </span>
-				</a>
-			</div>
-			<div class="flex justify-center items-center w-full md:w-1/2">
-				<a
-					href="https://q8mthsih9ooiwevt.public.blob.vercel-storage.com/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
-					target="_blank"
-					class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-4 py-2.5 font-medium text-foreground transition-colors hover:bg-muted lg:text-lg md:text-base w-full"
-					aria-label="Ver cv para saber mas acerca de mi"
-				>
-					{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
-					<span>{(<SquareArrowOutUpRight size={20} />)} </span>
-				</a>
-			</div>
+
+		<div class="flex flex-wrap items-center gap-3 mt-8">
+			<a
+				href={`/${currentLocale}/home#projects`}
+				class="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-3 text-sm font-medium transition-opacity hover:opacity-85"
+			>
+				{i18n.HEADER.HEADER_BUTTON}
+				<MoveRight size={16} />
+			</a>
+			<a
+				href={`/${currentLocale}/home#contact`}
+				class="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground"
+			>
+				{i18n.HEADER.HEADER_TALK}
+			</a>
+			<a
+				href="https://q8mthsih9ooiwevt.public.blob.vercel-storage.com/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground"
+				aria-label="Ver cv para saber mas acerca de mi"
+			>
+				{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
+				<SquareArrowOutUpRight size={15} />
+			</a>
 		</div>
 
-		<div
-			class="flex justify-center md:justify-center lg:justify-start mt-4 gap-4 px-4 lg:p-0"
-		>
+		<div class="flex items-center gap-5 mt-9">
 			<a
 				href="https://github.com/muke78"
 				target="_blank"
+				rel="noopener noreferrer"
 				aria-label="Saber mas acerca de mis repositorios y lo que he hecho"
-				class="hover:scale-110 transition-transform"
+				class="text-muted-foreground transition-colors hover:text-primary"
 			>
-				<span class="hover:text-primary"
-					>{(<Github size={36} />)}
-				</span>
+				<Github size={22} />
 			</a>
 			<a
 				href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
 				target="_blank"
+				rel="noopener noreferrer"
 				aria-label="Saber mas acerca de experiencia"
-				class="hover:scale-110 transition-transform"
+				class="text-muted-foreground transition-colors hover:text-primary"
 			>
-				<span class="hover:text-primary"
-					>{(<Linkedin size={36} />)}
-				</span>
+				<Linkedin size={22} />
 			</a>
 			<a
 				href="https://wa.me/+525511909105"
 				target="_blank"
+				rel="noopener noreferrer"
 				aria-label="Número de teléfono"
-				class="hover:scale-110 transition-transform"
+				class="text-muted-foreground transition-colors hover:text-primary"
 			>
-				<span class="hover:text-primary">
-					{(<MessageCircle size={36} />)}
-				</span>
+				<MessageCircle size={22} />
 			</a>
 			<a
 				href="mailto:erickm.gonzalez.rivera@gmail.com"
 				target="_blank"
+				rel="noopener noreferrer"
 				aria-label="Correo electrónico"
-				class="hover:scale-110 transition-transform"
+				class="text-muted-foreground transition-colors hover:text-primary"
 			>
-				<span class="hover:text-primary">
-					{(<Mail size={36} />)}
-				</span>
+				<Mail size={22} />
 			</a>
+		</div>
+	</div>
+
+	<div class="relative mx-auto w-full max-w-[320px] lg:max-w-none anim-zoom-in">
+		<div class="aspect-[4/5] overflow-hidden rounded-sm border border-border bg-muted">
+			<Image
+				src="/e9721e9d-cfa4-47ce-9f2c-40ec23335d62.webp"
+				width={640}
+				height={800}
+				alt="muke78"
+				draggable="false"
+				class="h-full w-full object-cover"
+			/>
 		</div>
 	</div>
 </div>

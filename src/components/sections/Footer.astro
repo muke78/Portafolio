@@ -1,0 +1,95 @@
+---
+import { getI18N } from "@/i18n";
+import { dataListNavbar } from "@/data/locales/es/dataNavbar";
+import { dataListNavbarEN } from "@/data/locales/en/dataNavbarEN";
+import { dataListNavbarFR } from "@/data/locales/fr/dataNavbarFR";
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
+
+const navByLocale = {
+	es: dataListNavbar,
+	en: dataListNavbarEN,
+	fr: dataListNavbarFR,
+} as const;
+const navItems =
+	navByLocale[currentLocale as keyof typeof navByLocale] ?? dataListNavbar;
+
+const year = new Date().getFullYear();
+---
+
+<section class="wordmark-reveal h-[60vh] min-h-[360px] flex items-center justify-center">
+	<div class="wordmark-galaxy hidden md:block">
+		<svg width="520" height="520" viewBox="0 0 200 200" class="galaxy-svg" role="presentation">
+			<defs>
+				<radialGradient id="footer-halo" cx="50%" cy="50%" r="50%">
+					<stop offset="0%" stop-color="currentColor" stop-opacity="0.32"></stop>
+					<stop offset="60%" stop-color="currentColor" stop-opacity="0.08"></stop>
+					<stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
+				</radialGradient>
+			</defs>
+			<circle cx="100" cy="100" r="98" fill="url(#footer-halo)"></circle>
+		</svg>
+	</div>
+	<div class="relative z-[1] flex items-baseline">
+		<span class="wordmark">Khelde<span class="dot">.</span></span>
+	</div>
+	<div class="wordmark-meta">
+		<span><span class="pulse-dot inline-block w-1.5 h-1.5 rounded-full bg-primary mr-2 align-middle"></span>EG · {year} · MX</span>
+		<span>Hecho a mano · Ciudad de México</span>
+	</div>
+</section>
+
+<footer class="border-t border-border py-14 bg-background">
+	<div class="mx-auto max-w-[1240px] px-6">
+		<div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr] gap-10 mb-14">
+			<p class="font-serif-display text-[clamp(20px,2.2vw,28px)] max-w-[32ch]">
+				«{i18n.OPINIONS.OPINIONS_SUBTITLE}»
+			</p>
+			<div>
+				<h5 class="font-mono text-[11px] uppercase tracking-wide text-muted-foreground mb-4">Sitio</h5>
+				<ul class="flex flex-col gap-2">
+					{navItems.map((item) => (
+						<li>
+							<a href={item.to} class="text-sm text-muted-foreground transition-colors hover:text-primary">
+								{item.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+			<div>
+				<h5 class="font-mono text-[11px] uppercase tracking-wide text-muted-foreground mb-4">Elsewhere</h5>
+				<ul class="flex flex-col gap-2">
+					<li><a href="https://github.com/muke78" target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">GitHub</a></li>
+					<li><a href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/" target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">LinkedIn</a></li>
+					<li><a href="mailto:erickm.gonzalez.rivera@gmail.com" class="text-sm text-muted-foreground transition-colors hover:text-primary">Email</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border font-mono text-[11px] text-muted-foreground">
+			<span>© {year} ERICK GONZÁLEZ · KHELDE</span>
+			<a href="/admin/login" class="inline-flex items-center gap-1.5 transition-colors hover:text-primary">
+				<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> ACCESO ADMIN
+			</a>
+		</div>
+	</div>
+</footer>
+
+<script>
+	const el = document.querySelector<HTMLElement>(".wordmark-reveal");
+	const word = el?.querySelector<HTMLElement>(".wordmark");
+	if (el && word && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		const onScroll = () => {
+			const rect = el.getBoundingClientRect();
+			const vh = window.innerHeight;
+			const center = rect.top + rect.height / 2;
+			const progress = (vh / 2 - center) / (vh / 2 + rect.height / 2);
+			const shift = progress * 80;
+			const scale = 1 + Math.abs(progress) * 0.04;
+			word.style.transform = `translate3d(${-shift}px, 0, 0) scale(${scale})`;
+		};
+		window.addEventListener("scroll", onScroll, { passive: true });
+		onScroll();
+	}
+</script>

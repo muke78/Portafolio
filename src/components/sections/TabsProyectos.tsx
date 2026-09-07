@@ -193,10 +193,8 @@ export const TabsProyectos = ({
 					</span>
 				</Button>
 			</div>
-			{/* Separador solo visible en pantallas grandes */}
-			<hr className="my-4 border-border" />
 			{/* Contenedor del contenido del tab con un ancho flexible */}
-			<div className="flex-1 w-full p-4">
+			<div className="flex-1 w-full mt-10">
 				{loading ? (
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 lg:gap-6 p-2 xs:p-4 sm:p-6">
 						{skeletonItems.map((_, i) => (

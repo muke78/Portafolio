@@ -4,7 +4,8 @@
 		"HEADER_SUBTITLE": "Full-stack Developer",
 		"HEADER_NAME": "Erick Gonzalez",
 		"HEADER_ABOUT": "Information Technology Engineer, specialized in FullStack development and data analysis. With more than two years of experience creating efficient, scalable and well-structured applications.",
-		"HEADER_BUTTON": "See Projects"
+		"HEADER_BUTTON": "See Projects",
+		"HEADER_TALK": "Let's talk"
 	},
 	"ABOUTME": {
 		"ABOUT_TITLE": "About me",
@@ -21,6 +22,7 @@
 		"EDUCATION_TITLE": "Education"
 	},
 	"PROJECTS": {
+		"PROJECTS_TITLE": "Projects",
 		"PROJECTS_TITLE_BUTTON_F": "Frontend",
 		"PROJECTS_TITLE_BUTTON_B": "Backend",
 		"PROJECTS_TITLE_BUTTON_C": "Companies",

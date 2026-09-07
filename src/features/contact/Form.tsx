@@ -53,19 +53,18 @@ export const Form = ({ currentLocale }: PropsLang) => {
 	};
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 gap-3 md:gap-3 lg:p-9 md:p-8 p-4">
-			<div className="col-start-1 row-start-1 md:col-span-1 md:row-span-1 rounded-md space-y-1 text-foreground">
-				<small className="block font-medium text-muted-foreground">
+		<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+			<div className="space-y-1 text-foreground">
+				<small className="font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
 					{i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
 				</small>
 
-				<h2 className="text-4xl lg:text-6xl font-bold leading-tight">
+				<h2 className="font-serif-display text-4xl lg:text-6xl leading-[0.98]">
 					{i18n.FORM.FORM_TITLE_HEAD_STRONG}{" "}
-					<span className="text-4xl lg:text-6xl font-light">
-						{" "}
+					<span className="italic text-muted-foreground">
 						{i18n.FORM.FORM_TITLE_HEAD_STRONG_SECOND}
 					</span>
-					<span className="block text-4xl lg:text-6xl font-light">
+					<span className="block italic text-muted-foreground">
 						{i18n.FORM.FORM_TITLE_HEAD_STRONG_THRID}
 					</span>
 				</h2>
@@ -159,7 +158,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 				</ul>
 			</div>
 
-			<div className="col-start-1 row-start-2 md:col-start-2 md:row-start-1 md:col-span-1 md:row-span-1 rounded-xl bg-muted p-5 lg:p-10 md:p-9 sm:p-8">
+			<div className="rounded-xl bg-muted p-5 lg:p-10 md:p-9 sm:p-8">
 				<form onSubmit={handleSubmit(onSubmit)} method="POST">
 					<div className="grid grid-cols-1 gap-4">
 						<div className="space-y-2">
@@ -233,7 +232,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 						</div>
 						<button
 							type="submit"
-							className="inline-flex items-center justify-center gap-2 rounded-lg h-10 w-full max-w-full mt-2 bg-gradient-to-r from-primary to-accent text-white font-medium hover:scale-[1.02] active:scale-95 transition-transform duration-200"
+							className="inline-flex items-center justify-center gap-2 rounded-full h-11 w-full max-w-full mt-2 bg-primary text-primary-foreground font-medium hover:opacity-85 active:scale-[0.98] transition-all duration-200"
 						>
 							<Send className="w-5 h-5" />
 							{i18n.FORM.BUTTON_LABEL}
