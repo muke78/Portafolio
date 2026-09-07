@@ -57,8 +57,9 @@ export default defineConfig({
       sourcemap: process.env.NODE_ENV !== "production",
       rollupOptions: {
         output: {
-          manualChunks: {
-            react: ["react", "react-dom"],
+          manualChunks(id) {
+            if (id.includes("node_modules/react-dom")) return "react";
+            if (id.includes("node_modules/react")) return "react";
           },
         },
       },
