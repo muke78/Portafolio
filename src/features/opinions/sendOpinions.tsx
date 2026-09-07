@@ -1,4 +1,4 @@
-﻿import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Briefcase, Globe, MessageSquare, Send, User } from "lucide-react";
 import { useId, useMemo, useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
@@ -11,9 +11,12 @@ import { opinionsSchema } from "@/schemas/opinionsSchema";
 import { countries } from "@/data/countries";
 import ReactCountryFlag from "react-country-flag";
 
-export const SendOpinions = ({ currentLocale }: PropsLang) => {
+type SendOpinionsProps = PropsLang & { onClose?: () => void };
+
+export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 	const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
 
 	const [selected, setSelected] = useState<string>("");
 
@@ -48,17 +51,23 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 
 	const onSubmit = async (save: FormOpinions) => {
 		setIsLoading(true);
-		await fetch("/api/comments", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(save),
-		});
-
-		setIsLoading(false);
-		setIsSubmitted(true);
-		reset();
+		setSubmitError(null);
+		try {
+			const res = await fetch("/api/comments", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(save),
+			});
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+			setIsSubmitted(true);
+			reset();
+		} catch {
+			setSubmitError(i18n.FORM.FORM_SEND_INFORMATION_INCORRECT);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const handleCountryChange = (
@@ -78,206 +87,172 @@ export const SendOpinions = ({ currentLocale }: PropsLang) => {
 	};
 
 	if (isSubmitted) {
-		return <SubmittedOpinion currentLocale={currentLocale} />;
+		return (
+			<SubmittedOpinion
+				currentLocale={currentLocale}
+				compact
+				onClose={onClose}
+			/>
+		);
 	}
 
 	return (
-		<div className="min-h-screen w-full flex items-center justify-center py-4 px-3 sm:px-4">
-			<div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto my-auto">
-				<div className="bg-card rounded-xl shadow-xl overflow-hidden">
-					{/* Header con gradiente - Más compacto */}
-					<div className="bg-primary p-3 sm:p-4 lg:p-6 text-center">
-						<div>
-							<MessageSquare className="w-12 h-12 text-white mx-auto mb-3" />
-						</div>
-						<h2 className="lg:text-3xl md:text-2xl text-xl font-bold text-white">
-							{i18n.OPINIONS.OPINIONS_FORM_TITLE}
-						</h2>
-						<p className="lg:text-2xl md:text-xl text-md text-white/80 mt-2">
-							{i18n.OPINIONS.OPINIONS_FORM_SUBTITLE}
-						</p>
-					</div>
-
-					{/* Formulario */}
-					<div className="p-8 space-y-6">
-						<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-							{/* Campo Nombre - Ancho completo */}
-							<div className="space-y-2">
-								<label
-									className="flex items-center text-sm font-medium mb-2"
-									htmlFor={nameId}
-								>
-									<User className="w-4 h-4 mr-2 text-secondary" />
-									{i18n.FORM.INPUT_NAME}{" "}
-									<span className="text-base font-bold text-destructive ml-1">
-										*
-									</span>
-								</label>
-								<Input
-									id={nameId}
-									type="text"
-									placeholder={i18n.OPINIONS.OPINIONS_FORM_NAME_PLACEHOLDER}
-									className="lg:h-11 h-10"
-									{...register("name")}
-								/>
-								{errors.name && (
-									<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
-										{(errors.name as FieldError)?.message}
-									</div>
-								)}
-							</div>
-
-							{/* Fila con Puesto y País */}
-							<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-								{/* Campo Puesto (Opcional) - Media anchura */}
-								<div className="space-y-2">
-									<label
-										className="flex items-center text-sm font-medium mb-2"
-										htmlFor={jobId}
-									>
-										<Briefcase className="w-4 h-4 mr-2 text-secondary" />
-										{i18n.FORM.INPUT_JOB}
-										<span className="text-muted-foreground text-xs ml-2">
-											({i18n.FORM.INPUT_JOB_INPUT_OPTIONAL})
-										</span>
-										<span className="text-base font-bold text-destructive ml-1">
-											&nbsp;
-										</span>
-									</label>
-									<Input
-										id={jobId}
-										type="text"
-										placeholder={i18n.OPINIONS.OPINIONS_FORM_JOB_PLACEHOLDER}
-										className="lg:h-11 h-10"
-										{...register("job")}
-									/>
-									{errors.job && (
-										<p className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
-											{(errors.job as FieldError)?.message}
-										</p>
-									)}
-								</div>
-
-								{/* Campo País - Media anchura */}
-								<div className="space-y-2">
-									<label
-										className="flex items-center text-sm font-medium mb-2"
-										htmlFor={countryId}
-									>
-										<Globe className="w-4 h-4 mr-2 text-secondary" />
-										{i18n.OPINIONS.OPINIONS_TITLE_SELECT_COUNTRY}
-										<span className="text-base font-bold text-destructive ml-1">
-											*
-										</span>
-									</label>
-
-									{/* Select personalizado con banderas */}
-									<div className="relative">
-										<select
-											id={countryId}
-											className="h-9 lg:h-11 w-full pr-12 rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
-											value={selected}
-											onChange={(e) => handleCountryChange(e)}
-										>
-											<option value="" disabled>
-												{i18n.OPINIONS.OPINIONS_PLACEHOLDER_SELECT_COUNTRY}
-											</option>
-											{countries.map((country) => (
-												<option key={country.code} value={country.code}>
-													{country.name}
-												</option>
-											))}
-										</select>
-										{/* Error del país */}
-										{errors.country && (
-											<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
-												{(errors.country as FieldError)?.message}
-											</div>
-										)}
-
-										{/* Bandera del país seleccionado */}
-										{selected && (
-											<div className="absolute right-10 top-1/2 transform -translate-y-1/2 pointer-events-none">
-												<ReactCountryFlag
-													countryCode={selected}
-													svg
-													style={{
-														width: "1.5em",
-														height: "1.5em",
-													}}
-													title={selected}
-												/>
-											</div>
-										)}
-									</div>
-
-									{/* País seleccionado con bandera */}
-									{selected && (
-										<p className="mt-2 text-sm text-muted-foreground flex items-center gap-2">
-											País seleccionado:
-											<span className="font-semibold flex items-center gap-1">
-												<ReactCountryFlag
-													countryCode={selected}
-													svg
-													style={{
-														width: "1em",
-														height: "1em",
-													}}
-													title={selected}
-												/>
-												{countryMap.get(selected)?.name}
-											</span>
-										</p>
-									)}
-								</div>
-							</div>
-
-							{/* Campo Descripción - Ancho completo */}
-							<div className="space-y-2">
-								<label
-									className="flex items-center text-sm font-medium mb-2"
-									htmlFor={descriptionId}
-								>
-									<MessageSquare className="w-4 h-4 mr-2 text-secondary" />
-									{i18n.FORM.INPUT_TELL_EXPERIENCE}{" "}
-									<span className="text-base font-bold text-destructive ml-1">
-										*
-									</span>
-								</label>
-								<Textarea
-									id={descriptionId}
-									rows={4}
-									placeholder={i18n.OPINIONS.OPINIONS_FORM_EXP_PLACEHOLDER}
-									className="lg:text-lg"
-									{...register("description")}
-								/>
-								{errors.description && (
-									<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-sm font-medium px-2 py-1 mt-1">
-										{(errors.description as FieldError)?.message}
-									</div>
-								)}
-							</div>
-
-							<button
-								type="submit"
-								disabled={isLoading}
-								className="inline-flex items-center justify-center rounded-lg xl:h-12 lg:h-11 h-10 w-full max-w-full bg-primary text-primary-foreground font-medium hover:scale-[1.02] active:scale-95 transition-transform duration-200 disabled:opacity-50 disabled:pointer-events-none"
-							>
-								{isLoading ? (
-									<div className="flex items-center space-x-2">
-										<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-										<span>{i18n.OPINIONS.OPINIONS_LOAD_SEND_INFORMATION}</span>
-									</div>
-								) : (
-									<div className="flex items-center space-x-2">
-										<Send className="w-5 h-5" />
-										<span>{i18n.OPINIONS.OPINIONS_SEND_INFORMATION}</span>
-									</div>
-								)}
-							</button>
-						</form>
-					</div>
+		<div className="bg-card rounded-xl overflow-hidden">
+			<div className="bg-primary px-5 py-4 flex items-center gap-3">
+				<MessageSquare className="w-6 h-6 text-white shrink-0" />
+				<div>
+					<h2 className="text-base font-semibold text-white leading-tight">
+						{i18n.OPINIONS.OPINIONS_FORM_TITLE}
+					</h2>
+					<p className="text-xs text-white/80 leading-snug">
+						{i18n.OPINIONS.OPINIONS_FORM_SUBTITLE}
+					</p>
 				</div>
+			</div>
+
+			<div className="p-5">
+				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+					<div className="space-y-1.5">
+						<label
+							className="flex items-center text-xs font-medium"
+							htmlFor={nameId}
+						>
+							<User className="w-3.5 h-3.5 mr-1.5 text-secondary" />
+							{i18n.FORM.INPUT_NAME}{" "}
+							<span className="text-destructive ml-1">*</span>
+						</label>
+						<Input
+							id={nameId}
+							type="text"
+							placeholder={i18n.OPINIONS.OPINIONS_FORM_NAME_PLACEHOLDER}
+							className="h-9"
+							{...register("name")}
+						/>
+						{errors.name && (
+							<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-xs font-medium px-2 py-1">
+								{(errors.name as FieldError)?.message}
+							</div>
+						)}
+					</div>
+
+					<div className="space-y-1.5">
+						<label
+							className="flex items-center text-xs font-medium"
+							htmlFor={jobId}
+						>
+							<Briefcase className="w-3.5 h-3.5 mr-1.5 text-secondary" />
+							{i18n.FORM.INPUT_JOB}
+							<span className="text-muted-foreground ml-1">
+								({i18n.FORM.INPUT_JOB_INPUT_OPTIONAL})
+							</span>
+						</label>
+						<Input
+							id={jobId}
+							type="text"
+							placeholder={i18n.OPINIONS.OPINIONS_FORM_JOB_PLACEHOLDER}
+							className="h-9"
+							{...register("job")}
+						/>
+						{errors.job && (
+							<p className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-xs font-medium px-2 py-1">
+								{(errors.job as FieldError)?.message}
+							</p>
+						)}
+					</div>
+
+					<div className="space-y-1.5">
+						<label
+							className="flex items-center text-xs font-medium"
+							htmlFor={countryId}
+						>
+							<Globe className="w-3.5 h-3.5 mr-1.5 text-secondary" />
+							{i18n.OPINIONS.OPINIONS_TITLE_SELECT_COUNTRY}
+							<span className="text-destructive ml-1">*</span>
+						</label>
+
+						<div className="relative">
+							<select
+								id={countryId}
+								className="h-9 w-full pr-10 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+								value={selected}
+								onChange={(e) => handleCountryChange(e)}
+							>
+								<option value="" disabled>
+									{i18n.OPINIONS.OPINIONS_PLACEHOLDER_SELECT_COUNTRY}
+								</option>
+								{countries.map((country) => (
+									<option key={country.code} value={country.code}>
+										{country.name}
+									</option>
+								))}
+							</select>
+							{errors.country && (
+								<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-xs font-medium px-2 py-1 mt-1">
+									{(errors.country as FieldError)?.message}
+								</div>
+							)}
+							{selected && (
+								<div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none">
+									<ReactCountryFlag
+										countryCode={selected}
+										svg
+										style={{ width: "1.2em", height: "1.2em" }}
+										title={selected}
+									/>
+								</div>
+							)}
+						</div>
+					</div>
+
+					<div className="space-y-1.5">
+						<label
+							className="flex items-center text-xs font-medium"
+							htmlFor={descriptionId}
+						>
+							<MessageSquare className="w-3.5 h-3.5 mr-1.5 text-secondary" />
+							{i18n.FORM.INPUT_TELL_EXPERIENCE}{" "}
+							<span className="text-destructive ml-1">*</span>
+						</label>
+						<Textarea
+							id={descriptionId}
+							rows={3}
+							placeholder={i18n.OPINIONS.OPINIONS_FORM_EXP_PLACEHOLDER}
+							{...register("description")}
+						/>
+						{errors.description && (
+							<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-xs font-medium px-2 py-1">
+								{(errors.description as FieldError)?.message}
+							</div>
+						)}
+					</div>
+
+					{submitError && (
+						<div
+							role="alert"
+							className="rounded-md bg-destructive/10 text-destructive text-xs font-medium px-3 py-2"
+						>
+							{submitError}
+						</div>
+					)}
+
+					<button
+						type="submit"
+						disabled={isLoading}
+						className="inline-flex items-center justify-center gap-2 rounded-lg h-10 w-full bg-primary text-primary-foreground font-medium text-sm transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+					>
+						{isLoading ? (
+							<>
+								<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+								<span>{i18n.OPINIONS.OPINIONS_LOAD_SEND_INFORMATION}</span>
+							</>
+						) : (
+							<>
+								<Send className="w-4 h-4" />
+								<span>{i18n.OPINIONS.OPINIONS_SEND_INFORMATION}</span>
+							</>
+						)}
+					</button>
+				</form>
 			</div>
 		</div>
 	);

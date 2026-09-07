@@ -278,34 +278,10 @@ export function Cosmos() {
 
 			<div
 				className="cosmos-obj"
-				data-depth="-0.06"
-				style={{ top: "-22%", right: "-18%", opacity: 0.85 }}
-			>
-				<Galaxy size={520} seed={7} tilt={48} rotate={-18} />
-			</div>
-
-			<div
-				className="cosmos-obj"
-				data-depth="0.04"
-				style={{ top: "180%", left: "-20%", opacity: 0.65 }}
-			>
-				<Galaxy size={420} seed={31} tilt={28} rotate={42} />
-			</div>
-
-			<div
-				className="cosmos-obj"
 				data-depth="-0.02"
 				style={{ top: "320%", right: "-15%", opacity: 0.55 }}
 			>
 				<Nebula />
-			</div>
-
-			<div
-				className="cosmos-obj"
-				data-depth="-0.1"
-				style={{ top: "380%", right: "-18%", opacity: 0.7 }}
-			>
-				<Galaxy size={360} seed={113} tilt={68} rotate={-10} />
 			</div>
 
 			<svg

@@ -114,6 +114,12 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     </script>
   </head>
   <body class="bg-background text-foreground overflow-x-hidden">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-primary focus:text-primary-foreground focus:px-5 focus:py-3 focus:text-sm focus:font-medium"
+    >
+      Saltar al contenido
+    </a>
     <BackgroundEffects client:idle />
     <div class="relative z-[2]">
       <slot />

@@ -2,9 +2,9 @@
 import { Nav } from "@/components/sections/Nav";
 import Acerca from "@/components/sections/Acerca.astro";
 import Contactos from "@/components/sections/Contacto.astro";
+import { CommentWidget } from "@/features/opinions/CommentWidget";
 import Footer from "@/components/sections/Footer.astro";
 import Header from "@/components/sections/Header.astro";
-import MantraRibbon from "@/components/sections/MantraRibbon.astro";
 import Opiniones from "@/components/sections/Opiniones.astro";
 import Proyectos from "@/components/sections/Proyectos.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -14,11 +14,10 @@ const { currentLocale } = Astro;
 
 <Layout>
   <Nav client:idle currentLocale={currentLocale} />
-  <main role="main" class="pt-[72px]">
+  <main id="main-content" role="main" class="pt-[72px]">
     <div class="mx-auto max-w-[1240px] px-6 scroll-mt-[88px]" id="home">
       <Header />
     </div>
-    <MantraRibbon />
     <div id="about" class="scroll-mt-[88px]">
       <Acerca />
     </div>
@@ -33,4 +32,5 @@ const { currentLocale } = Astro;
     </div>
   </main>
   <Footer />
+  <CommentWidget client:idle currentLocale={currentLocale} />
 </Layout>

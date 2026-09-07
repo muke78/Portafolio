@@ -1,9 +1,0 @@
----
-import { SendOpinions } from "@/features/opinions/sendOpinions";
-
-const { currentLocale } = Astro;
----
-
-<div class="flex justify-center items-center w-full px-6 py-16">
-    <SendOpinions client:load currentLocale={currentLocale}/>
-</div>

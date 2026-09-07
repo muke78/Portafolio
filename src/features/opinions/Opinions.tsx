@@ -56,14 +56,17 @@ export const Opinions = ({
 					{i18n.OPINIONS.OPINIONS_SUB_SUBTILE}
 				</p>
 
-				<a
-					className="inline-flex items-center justify-center h-11 px-5 rounded-full gap-2 bg-primary text-primary-foreground text-sm font-medium transition-opacity hover:opacity-85"
-					href={`/${currentLocale}/comments`}
+				<button
+					type="button"
+					className="inline-flex items-center justify-center h-11 px-5 rounded-full gap-2 bg-primary text-primary-foreground text-sm font-medium transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					onClick={() =>
+						window.dispatchEvent(new CustomEvent("khelde:open-comment-widget"))
+					}
 					aria-label={i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 				>
 					<MessageSquare className="w-4 h-4" />
 					{i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
-				</a>
+				</button>
 			</div>
 
 			<div>
@@ -102,15 +105,17 @@ export const Opinions = ({
 						className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
 						style={
 							{
-								"--marquee-duration": `${Math.max(24, data.length * 6)}s`,
+								"--marquee-duration": `${Math.max(50, data.length * 14)}s`,
 							} as CSSProperties
 						}
 					>
-						<div className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused]">
+						<div className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]">
 							{[...data, ...data].map((testimonial, i) => (
 								<div
 									key={`${testimonial.comment_id}-${i}`}
-									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden transition-colors hover:border-primary/40"
+									tabIndex={0}
+									aria-label={`${testimonial.name}: ${testimonial.description}`}
+									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden transition-colors hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
 								>
 									<div className="flex flex-col p-6">
 										<div className="flex items-start justify-between mb-4">

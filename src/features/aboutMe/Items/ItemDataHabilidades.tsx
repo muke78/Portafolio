@@ -1,4 +1,3 @@
-﻿import { ChevronDown } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { PropsLang } from "@/types/currentLang.interface";
@@ -15,86 +14,66 @@ const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
 const extractTech = (images: string[]): string[] =>
 	images.flatMap((image) => image.split("?i=")[1]?.split(",") ?? []);
 
+// Todas las categorías se muestran siempre (sin acordeón) - con tantos
+// iconos, la densidad se controla achicando cada chip en vez de
+// esconder contenido detrás de un click.
 export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 	const categories = useMemo(
 		() => langTraduceData[currentLocale] || dataTabsAcercaDe,
 		[currentLocale],
 	);
 
-	const [activeIndex, setActiveIndex] = useState<number>(0);
 	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
 	const handleImageLoad = useCallback((tech: string) => {
 		setLoadedImages((prev) => ({ ...prev, [tech]: true }));
 	}, []);
 
-	const toggle = (index: number) =>
-		setActiveIndex((prev) => (prev === index ? -1 : index));
-
 	return (
-		<div className="col-span-full flex flex-col gap-2">
-			{categories.map(({ title, images }, index) => {
+		<div className="col-span-full flex flex-col">
+			{categories.map(({ title, images }) => {
 				const techs = extractTech(images);
-				const open = activeIndex === index;
 				return (
 					<div
 						key={title}
-						className="rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden"
+						className="py-5 border-b border-border last:border-b-0"
 					>
-						<button
-							type="button"
-							onClick={() => toggle(index)}
-							className="w-full flex items-center justify-between px-5 py-4 hover:bg-muted transition-colors"
-							aria-expanded={open}
-						>
-							<span className="text-lg font-medium text-left">{title}</span>
-							<span className="flex items-center gap-3">
-								<span className="text-xs text-muted-foreground">
-									{techs.length}
-								</span>
-								<ChevronDown
-									size={18}
-									className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-								/>
+						<div className="flex items-baseline gap-2 mb-4">
+							<span className="text-base font-medium">{title}</span>
+							<span className="text-xs font-mono text-muted-foreground">
+								{techs.length}
 							</span>
-						</button>
-						<div
-							className={`grid transition-[grid-template-rows] duration-300 ease-out ${
-								open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-							}`}
-						>
-							<div className="overflow-hidden">
-								<div className="flex flex-wrap gap-3 p-5 pt-2">
-									{techs.map((tech) => (
-										<div
-											key={tech}
-											className="flex flex-col items-center gap-1 w-16"
-										>
-											{!loadedImages[tech] && (
-												<Skeleton className="h-10 w-10 rounded-md" />
-											)}
-											<img
-												className={`w-10 h-10 transition-opacity duration-200 ${
-													loadedImages[tech]
-														? "opacity-100"
-														: "opacity-0 absolute pointer-events-none"
-												}`}
-												src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
-												alt={tech}
-												onLoad={() => handleImageLoad(tech)}
-												loading="lazy"
-												decoding="async"
-												draggable="false"
-												width={40}
-												height={40}
-											/>
-											<span className="text-[10px] text-muted-foreground truncate w-full text-center">
-												{tech}
-											</span>
-										</div>
-									))}
+						</div>
+						<div className="flex flex-wrap gap-3">
+							{techs.map((tech) => (
+								<div
+									key={tech}
+									title={tech}
+									className="flex items-center gap-2 rounded-full border border-border bg-muted/50 pl-2 pr-4 py-2"
+								>
+									<span className="relative flex h-7 w-7 shrink-0 items-center justify-center">
+										{!loadedImages[tech] && (
+											<Skeleton className="absolute inset-0 rounded-full" />
+										)}
+										<img
+											className={`h-7 w-7 rounded-full object-contain transition-opacity duration-200 ${
+												loadedImages[tech] ? "opacity-100" : "opacity-0"
+											}`}
+											src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
+											alt=""
+											onLoad={() => handleImageLoad(tech)}
+											loading="lazy"
+											decoding="async"
+											draggable="false"
+											width={28}
+											height={28}
+										/>
+									</span>
+									<span className="text-sm text-muted-foreground whitespace-nowrap">
+										{tech}
+									</span>
 								</div>
-							</div>
+							))}
 						</div>
 					</div>
 				);

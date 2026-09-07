@@ -179,34 +179,6 @@
 }
 
 /* ============================================================
-   MARQUEE RIBBON
-   ============================================================ */
-.ribbon-track {
-	display: flex;
-	gap: 48px;
-	white-space: nowrap;
-	animation: ribbon-scroll 38s linear infinite;
-}
-.ribbon-track span {
-	display: inline-flex;
-	align-items: center;
-	gap: 48px;
-}
-@keyframes ribbon-scroll {
-	from {
-		transform: translateX(0);
-	}
-	to {
-		transform: translateX(-50%);
-	}
-}
-@media (prefers-reduced-motion: reduce) {
-	.ribbon-track {
-		animation: none;
-	}
-}
-
-/* ============================================================
    TESTIMONIALS MARQUEE
    ============================================================ */
 @keyframes testimonial-marquee {

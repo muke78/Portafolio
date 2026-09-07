@@ -39,14 +39,14 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 		<div class="flex flex-wrap items-center gap-3 mt-8">
 			<a
 				href={`/${currentLocale}/home#projects`}
-				class="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-3 text-sm font-medium transition-opacity hover:opacity-85"
+				class="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-3 text-sm font-medium transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 			>
 				{i18n.HEADER.HEADER_BUTTON}
 				<MoveRight size={16} />
 			</a>
 			<a
 				href={`/${currentLocale}/home#contact`}
-				class="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground"
+				class="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 			>
 				{i18n.HEADER.HEADER_TALK}
 			</a>
@@ -54,7 +54,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				href="https://q8mthsih9ooiwevt.public.blob.vercel-storage.com/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground"
+				class="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 				aria-label="Ver cv para saber mas acerca de mi"
 			>
 				{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
@@ -68,7 +68,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Saber mas acerca de mis repositorios y lo que he hecho"
-				class="text-muted-foreground transition-colors hover:text-primary"
+				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<Github size={22} />
 			</a>
@@ -77,7 +77,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Saber mas acerca de experiencia"
-				class="text-muted-foreground transition-colors hover:text-primary"
+				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<Linkedin size={22} />
 			</a>
@@ -86,7 +86,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Número de teléfono"
-				class="text-muted-foreground transition-colors hover:text-primary"
+				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<MessageCircle size={22} />
 			</a>
@@ -95,7 +95,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Correo electrónico"
-				class="text-muted-foreground transition-colors hover:text-primary"
+				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<Mail size={22} />
 			</a>
