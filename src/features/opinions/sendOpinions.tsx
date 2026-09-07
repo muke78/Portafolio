@@ -3,6 +3,13 @@ import { Briefcase, Globe, MessageSquare, Send, User } from "lucide-react";
 import { useId, useMemo, useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { SubmittedOpinion } from "@/features/opinions/SubmittedOpinion";
 import { getI18N } from "@/i18n";
@@ -70,10 +77,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 		}
 	};
 
-	const handleCountryChange = (
-		e: React.ChangeEvent<HTMLSelectElement>,
-	): void => {
-		const code: string = e.target.value;
+	const handleCountryChange = (code: string): void => {
 		setSelected(code);
 
 		const country = countryMap.get(code);
@@ -170,35 +174,51 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 							<span className="text-destructive ml-1">*</span>
 						</label>
 
-						<div className="relative">
-							<select
-								id={countryId}
-								className="h-9 w-full pr-10 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-								value={selected}
-								onChange={(e) => handleCountryChange(e)}
-							>
-								<option value="" disabled>
-									{i18n.OPINIONS.OPINIONS_PLACEHOLDER_SELECT_COUNTRY}
-								</option>
-								{countries.map((country) => (
-									<option key={country.code} value={country.code}>
-										{country.name}
-									</option>
-								))}
-							</select>
+						<div>
+							<Select value={selected} onValueChange={handleCountryChange}>
+								<SelectTrigger id={countryId} className="h-9 w-full">
+									<SelectValue
+										placeholder={
+											i18n.OPINIONS.OPINIONS_PLACEHOLDER_SELECT_COUNTRY
+										}
+									>
+										{(value: string) => {
+											const country = countryMap.get(value);
+											if (!country) {
+												return i18n.OPINIONS
+													.OPINIONS_PLACEHOLDER_SELECT_COUNTRY;
+											}
+											return (
+												<>
+													<ReactCountryFlag
+														countryCode={country.code}
+														svg
+														style={{ width: "1.1em", height: "1.1em" }}
+														title={country.code}
+													/>
+													{country.name}
+												</>
+											);
+										}}
+									</SelectValue>
+								</SelectTrigger>
+								<SelectContent>
+									{countries.map((country) => (
+										<SelectItem key={country.code} value={country.code}>
+											<ReactCountryFlag
+												countryCode={country.code}
+												svg
+												style={{ width: "1.1em", height: "1.1em" }}
+												title={country.code}
+											/>
+											{country.name}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 							{errors.country && (
 								<div className="inline-flex items-center gap-1 rounded-md bg-destructive/10 text-destructive text-xs font-medium px-2 py-1 mt-1">
 									{(errors.country as FieldError)?.message}
-								</div>
-							)}
-							{selected && (
-								<div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none">
-									<ReactCountryFlag
-										countryCode={selected}
-										svg
-										style={{ width: "1.2em", height: "1.2em" }}
-										title={selected}
-									/>
 								</div>
 							)}
 						</div>
