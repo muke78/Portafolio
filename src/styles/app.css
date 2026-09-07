@@ -452,22 +452,6 @@
 	pointer-events: none;
 	transform: translate(-3%, 8%);
 }
-.wordmark-meta {
-	position: absolute;
-	left: clamp(20px, 4vw, 56px);
-	right: clamp(20px, 4vw, 56px);
-	bottom: 24px;
-	z-index: 2;
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	gap: 8px;
-	font-family: var(--font-mono);
-	font-size: 11px;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
-	color: rgba(245, 242, 236, 0.55);
-}
 .wordmark-galaxy {
 	position: absolute;
 	top: 50%;
