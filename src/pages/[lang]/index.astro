@@ -1,5 +1,4 @@
 ---
 const { currentLocale } = Astro;
+return Astro.redirect(`/${currentLocale}/home`, 302);
 ---
-
-<meta http-equiv="refresh" content={`0;url=/${currentLocale}/home`} />

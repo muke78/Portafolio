@@ -1,0 +1,22 @@
+﻿---
+import { TabsProyectos } from "@/components/sections/TabsProyectos";
+import { API_SECRET_TOKEN } from "astro:env/server";
+import { api } from "@/lib/api";
+import type { Projects } from "@/types/currentLang.interface";
+
+const { currentLocale } = Astro;
+
+let initialData: Projects[] = [];
+try {
+	const { data } = await api.get(`/projects?currentLocale=${currentLocale}`, {
+		headers: { Authorization: `Bearer ${API_SECRET_TOKEN}` },
+	});
+	initialData = (data?.data?.rows ?? []) as Projects[];
+} catch (err) {
+	console.error("SSR proyectos fetch failed", err);
+}
+---
+
+<div class="isolate flex w-7xl items-start justify-start gap-4 lg:p-9 md:p-8 sm:p-4 p-2 mt-16">
+    <TabsProyectos client:visible currentLocale={currentLocale} initialData={initialData}/>
+</div>

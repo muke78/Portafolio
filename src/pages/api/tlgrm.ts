@@ -1,7 +1,7 @@
 import { API_SECRET_TOKEN } from "astro:env/server";
 
 import type { APIRoute } from "astro";
-import { api } from "@/config/api";
+import { api } from "@/lib/api";
 
 export const POST: APIRoute = async ({ request }) => {
 	try {

@@ -25,3 +25,7 @@ pnpm-debug.log*
 .idea/
 
 .vercel
+
+# claude code local-only settings
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
