@@ -1,0 +1,30 @@
+---
+import { getI18N } from "@/i18n";
+
+const { currentLocale } = Astro;
+const i18n = getI18N({ currentLocale });
+const mantra = i18n.OPINIONS.OPINIONS_SUBTITLE;
+---
+
+<div
+	class="border-y border-border overflow-hidden py-3.5"
+	style={{ background: "color-mix(in oklab, var(--primary) 8%, var(--background))" }}
+	aria-hidden="true"
+>
+	<div class="ribbon-track font-serif italic text-[22px] text-foreground">
+		<span>
+			{Array.from({ length: 4 }).map(() => (
+				<span class="inline-flex items-center gap-12 pr-12">
+					<span class="not-italic text-primary">✦</span> {mantra}
+				</span>
+			))}
+		</span>
+		<span aria-hidden="true">
+			{Array.from({ length: 4 }).map(() => (
+				<span class="inline-flex items-center gap-12 pr-12">
+					<span class="not-italic text-primary">✦</span> {mantra}
+				</span>
+			))}
+		</span>
+	</div>
+</div>

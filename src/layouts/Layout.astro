@@ -2,6 +2,7 @@
 import "@/styles/styles.css";
 import "@/styles/app.css";
 import "swiper/swiper-bundle.css";
+import { BackgroundEffects } from "@/components/three/BackgroundEffects";
 import {
 	dataTitlePage,
 	dataTitlePageEN,
@@ -102,9 +103,6 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     <link rel="canonical" href="https://khelde.vercel.app/es" />
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <!-- Fuentes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script is:inline>
       (function () {
         var stored = localStorage.getItem("theme");
@@ -116,7 +114,8 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
     </script>
   </head>
   <body class="bg-background text-foreground overflow-x-hidden">
-    <div>
+    <BackgroundEffects client:idle />
+    <div class="relative z-[2]">
       <slot />
     </div>
     <script src="../js/ascii.js"></script>

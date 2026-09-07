@@ -2,7 +2,9 @@
 import { Nav } from "@/components/sections/Nav";
 import Acerca from "@/components/sections/Acerca.astro";
 import Contactos from "@/components/sections/Contacto.astro";
+import Footer from "@/components/sections/Footer.astro";
 import Header from "@/components/sections/Header.astro";
+import MantraRibbon from "@/components/sections/MantraRibbon.astro";
 import Opiniones from "@/components/sections/Opiniones.astro";
 import Proyectos from "@/components/sections/Proyectos.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -11,29 +13,24 @@ const { currentLocale } = Astro;
 ---
 
 <Layout>
-  <header class="relative w-full" role="banner"> 
-    <div class="w-full lg:p-0 md:p-10 p-10">
-      <Nav client:idle currentLocale={currentLocale}/>
+  <Nav client:idle currentLocale={currentLocale} />
+  <main role="main" class="pt-[72px]">
+    <div class="mx-auto max-w-[1240px] px-6 scroll-mt-[88px]" id="home">
+      <Header />
     </div>
-    <main role="main">
-      <section class="w-full h-full">
-        <div class="flex items-center justify-center bg-background min-h-screen scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="home">
-          <Header />
-        </div>
-        <div class="bg-background min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="about">
-          <Acerca />
-        </div>
-        <div class="bg-background min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="projects">
-          <Proyectos />
-        </div>
-        <div class="bg-background min-h-screen flex justify-center items-start" id="opinions">
-          <Opiniones />
-        </div>
-        <div class="flex items-center justify-center bg-background min-h-screen scroll-m-14 lg:scroll-m-12 md:scroll-m-0" id="contact">
-          <Contactos />
-        </div>
-      </section>
-    </main>
-  </header>
+    <MantraRibbon />
+    <div id="about" class="scroll-mt-[88px]">
+      <Acerca />
+    </div>
+    <div id="projects" class="scroll-mt-[88px]">
+      <Proyectos />
+    </div>
+    <div id="opinions" class="scroll-mt-[88px]">
+      <Opiniones />
+    </div>
+    <div id="contact" class="scroll-mt-[88px]">
+      <Contactos />
+    </div>
+  </main>
+  <Footer />
 </Layout>
-

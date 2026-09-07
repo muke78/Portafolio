@@ -1,4 +1,4 @@
-﻿---
+---
 import { Opinions } from "@/features/opinions/Opinions";
 import { API_SECRET_TOKEN } from "astro:env/server";
 import { api } from "@/lib/api";
@@ -17,6 +17,6 @@ try {
 }
 ---
 
-<div class="isolate flex w-7xl items-start justify-start gap-4 lg:p-9 md:p-8 sm:p-4 p-4 mt-16">
-    <Opinions client:visible currentLocale={currentLocale} initialData={initialData}/>
+<div class="w-full py-20 md:py-28">
+	<Opinions client:visible currentLocale={currentLocale} initialData={initialData} />
 </div>

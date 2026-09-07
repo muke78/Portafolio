@@ -1,9 +1,9 @@
-﻿---
+---
 import { Form } from "@/features/contact/Form";
 
 const { currentLocale } = Astro;
 ---
 
-<div class="flex justify-center lg:p-9 md:p-8 sm:p-4 p-2 mt-16">
+<div class="mx-auto max-w-[1240px] px-6 w-full py-20 md:py-28">
   <Form client:visible currentLocale={currentLocale} />
 </div>

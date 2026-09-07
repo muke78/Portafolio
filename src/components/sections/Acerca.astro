@@ -1,9 +1,9 @@
-﻿---
+---
 import { TabsAcerca } from "@/components/sections/TabsAcerca";
 
 const { currentLocale } = Astro;
 ---
 
-<div class="isolate flex w-7xl items-start justify-start gap-4 lg:p-9 md:p-8 sm:p-4 p-2 mt-16">
-    <TabsAcerca client:visible currentLocale={currentLocale}/>
+<div class="mx-auto max-w-[1240px] px-6 w-full py-20 md:py-28">
+	<TabsAcerca client:visible currentLocale={currentLocale} />
 </div>

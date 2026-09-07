@@ -4,7 +4,8 @@
 		"HEADER_SUBTITLE": "Desarrollador Full-Stack",
 		"HEADER_NAME": "Erick González",
 		"HEADER_ABOUT": "Ingeniero en Tecnologías de la Información titulado, especializado en desarrollo Full-Stack y análisis de datos. Con más de dos años de experiencia creando aplicaciones eficientes, escalables y bien estructuradas.",
-		"HEADER_BUTTON": "Ver proyectos"
+		"HEADER_BUTTON": "Ver proyectos",
+		"HEADER_TALK": "Hablemos"
 	},
 	"ABOUTME": {
 		"ABOUT_TITLE": "Acerca de mí",
@@ -21,6 +22,7 @@
 		"EDUCATION_TITLE": "Educación"
 	},
 	"PROJECTS": {
+		"PROJECTS_TITLE": "Proyectos",
 		"PROJECTS_TITLE_BUTTON_F": "Frontend",
 		"PROJECTS_TITLE_BUTTON_B": "Backend",
 		"PROJECTS_TITLE_BUTTON_C": "Empresas",

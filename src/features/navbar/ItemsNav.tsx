@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ItemsNavProps, NavbarItem } from "@/types/currentLang.interface";
 import { dataListNavbarEN } from "@/data/locales/en/dataNavbarEN";
 import { dataListNavbar } from "@/data/locales/es/dataNavbar";
@@ -10,7 +10,7 @@ const langTraduceData: Record<string, typeof dataListNavbar> = {
 	fr: dataListNavbarFR,
 };
 
-const NAV_HEIGHT = 80;
+const NAV_HEIGHT = 72;
 
 export const ItemsNav = ({ currentLocale, onItemClick }: ItemsNavProps) => {
 	const [activeSection, setActiveSection] = useState<string>("");
@@ -57,21 +57,21 @@ export const ItemsNav = ({ currentLocale, onItemClick }: ItemsNavProps) => {
 			{memorization.map((list) => {
 				const isActive = activeSection === list.to;
 				return (
-					<li
-						key={list.to}
-						className={`
-              relative transition-discrete w-min-content p-1
-              before:w-0 before:h-1 before:absolute before:bottom-0 before:right-0 before:bg-muted-foreground before:transition-discrete before:duration-500
-              hover:before:w-full hover:before:left-0 before:rounded-full
-              ${isActive ? "text-primary font-bold before:w-full before:bg-primary" : ""}
-            `}
-					>
+					<li key={list.to} className="relative">
 						<a
 							href={list.to}
 							aria-label={`Ir a ${list.label}`}
 							onClick={handleClick}
+							className={`relative inline-block rounded-full px-3 py-2 text-[13px] transition-colors ${
+								isActive
+									? "text-foreground"
+									: "text-muted-foreground hover:text-foreground"
+							}`}
 						>
 							{list.label}
+							{isActive && (
+								<span className="absolute inset-x-3 -bottom-0.5 h-px bg-primary" />
+							)}
 						</a>
 					</li>
 				);

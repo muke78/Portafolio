@@ -1,5 +1,5 @@
 import { Loader2, MessageSquare, Quote } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import { getI18N } from "@/i18n";
 import type {
 	PropsLangWithOpinions,
@@ -42,26 +42,26 @@ export const Opinions = ({
 		);
 
 	return (
-		<div className="relative w-full overflow-hidden p-4">
-			<div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12 anim-fade-in">
-				<div className="inline-block px-4 py-2 bg-primary/20 text-foreground text-sm rounded-full mb-6 backdrop-blur-sm border border-primary/20">
-					{i18n.OPINIONS.OPINIONS_SUBTITLE}
-				</div>
+		<div className="relative w-full overflow-hidden">
+			<div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-14 px-4 anim-fade-in">
+				<span className="eyebrow mb-4">
+					— {i18n.OPINIONS.OPINIONS_SUBTITLE}
+				</span>
 
-				<h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+				<h2 className="font-serif-display text-[clamp(32px,4.5vw,56px)] mb-4">
 					{i18n.OPINIONS.OPINIONS_TITLE}
 				</h2>
 
-				<p className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto mb-6">
+				<p className="text-lg text-muted-foreground mb-7">
 					{i18n.OPINIONS.OPINIONS_SUB_SUBTILE}
 				</p>
 
 				<a
-					className="inline-flex items-center justify-center h-9 px-4 rounded-lg gap-2 bg-gradient-to-r from-primary to-accent text-primary-foreground font-medium transition-opacity hover:opacity-90"
+					className="inline-flex items-center justify-center h-11 px-5 rounded-full gap-2 bg-primary text-primary-foreground text-sm font-medium transition-opacity hover:opacity-85"
 					href={`/${currentLocale}/comments`}
 					aria-label={i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 				>
-					<MessageSquare className="w-5 h-5" />
+					<MessageSquare className="w-4 h-4" />
 					{i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 				</a>
 			</div>
@@ -98,72 +98,78 @@ export const Opinions = ({
 						</div>
 					</div>
 				) : (
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-6 p-4">
-						{data.map((testimonial) => (
-							<div
-								key={testimonial.comment_id}
-								className="group relative break-inside-avoid rounded-xl bg-card shadow-lg border border-border hover:shadow-xl hover:border-secondary/30 hover:-translate-y-2 transition-all duration-500 overflow-hidden anim-fade-in"
-							>
-								<div className="flex flex-col p-6">
-									<div className="flex items-start justify-between mb-4">
-										<div className="flex-shrink-0 p-2 rounded-lg bg-secondary/10 group-hover:bg-secondary/20 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 ease-in-out">
-											<Quote className="w-8 h-8 text-secondary" />
+					<div
+						className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+						style={
+							{
+								"--marquee-duration": `${Math.max(24, data.length * 6)}s`,
+							} as CSSProperties
+						}
+					>
+						<div className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused]">
+							{[...data, ...data].map((testimonial, i) => (
+								<div
+									key={`${testimonial.comment_id}-${i}`}
+									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden transition-colors hover:border-primary/40"
+								>
+									<div className="flex flex-col p-6">
+										<div className="flex items-start justify-between mb-4">
+											<div className="flex-shrink-0 rounded-lg bg-muted p-2">
+												<Quote className="w-6 h-6 text-primary" />
+											</div>
+
+											<div className="inline-flex items-center rounded-full border border-border text-muted-foreground text-xs font-mono px-2.5 py-0.5">
+												{new Date(testimonial.created_at).toLocaleDateString(
+													"es-ES",
+													{
+														day: "numeric",
+														month: "short",
+														year: "numeric",
+													},
+												)}
+											</div>
 										</div>
 
-										<div className="inline-flex items-center rounded-full bg-secondary text-secondary-foreground text-xs px-2.5 py-0.5">
-											{new Date(testimonial.created_at).toLocaleDateString(
-												"es-ES",
-												{
-													day: "numeric",
-													month: "short",
-													year: "numeric",
-												},
-											)}
+										<div className="flex items-center gap-3 mb-4">
+											<div className="flex-1 min-w-0">
+												<div className="flex items-center gap-2 mb-1">
+													<h3 className="font-medium text-foreground text-base leading-tight truncate">
+														{testimonial.name}
+													</h3>
+													<CountryFlag
+														countryCode={testimonial.country_flag}
+														size="1em"
+													/>
+												</div>
+												<p className="text-sm text-muted-foreground truncate">
+													{testimonial.job}
+												</p>
+											</div>
 										</div>
-									</div>
 
-									<div className="flex items-center gap-3 mb-4">
-										<div className="flex-1 min-w-0">
-											<div className="flex items-center gap-2 mb-1">
-												<h3 className="font-bold text-foreground text-lg leading-tight truncate">
-													{testimonial.name}
-												</h3>
+										<div className="flex-1">
+											<p className="text-muted-foreground leading-relaxed text-sm mb-4 line-clamp-4">
+												"{testimonial.description}"
+											</p>
+										</div>
+
+										<div className="flex items-center justify-between pt-4 border-t border-border">
+											<div className="flex items-center gap-2 text-xs text-muted-foreground">
 												<CountryFlag
 													countryCode={testimonial.country_flag}
 													size="1em"
 												/>
+												<span className="text-sm">
+													{testimonial.country
+														? testimonial.country
+														: i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
+												</span>
 											</div>
-											<p className="text-sm text-muted-foreground font-medium truncate">
-												{testimonial.job}
-											</p>
-										</div>
-									</div>
-
-									<div className="flex-1">
-										<p className="text-muted-foreground leading-relaxed text-sm mb-4">
-											"{testimonial.description}"
-										</p>
-									</div>
-
-									<div className="flex items-center justify-between pt-4 border-t border-border/50">
-										<div className="flex items-center gap-2 text-xs text-muted-foreground">
-											<CountryFlag
-												countryCode={testimonial.country_flag}
-												size="1em"
-											/>
-											<span className="text-muted-foreground text-sm">
-												{testimonial.country
-													? testimonial.country
-													: i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
-											</span>
 										</div>
 									</div>
 								</div>
-
-								<div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary to-accent scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
-								<div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-							</div>
-						))}
+							))}
+						</div>
 					</div>
 				)}
 			</div>

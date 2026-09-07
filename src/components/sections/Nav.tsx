@@ -19,16 +19,16 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 
 	return (
 		<nav
-			className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-background/70 border-b border-border z-40"
+			className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-background/80 border-b border-border z-40"
 			role="navigation"
 		>
-			<div className="max-w-7xl mx-auto h-20 flex justify-between items-center px-6">
+			<div className="max-w-[1480px] mx-auto h-[72px] flex justify-between items-center px-6">
 				<a
-					className="font-semibold text-2xl text-foreground"
+					className="font-serif-display text-[22px] text-foreground flex items-baseline"
 					href={`/${currentLocale}/home`}
 					aria-label="Khelde."
 				>
-					Khelde.
+					Khelde<span className="text-primary">.</span>
 				</a>
 
 				<div className="hidden min-[1000px]:flex items-center space-x-8">
