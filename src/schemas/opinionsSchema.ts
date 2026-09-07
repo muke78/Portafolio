@@ -1,6 +1,6 @@
-import { z } from "zod";
+﻿import { z } from "zod";
 import { getI18N } from "@/i18n";
-import type { PropsLang } from "@/interfaces/currentLang.interface";
+import type { PropsLang } from "@/types/currentLang.interface";
 
 export const opinionsSchema = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });

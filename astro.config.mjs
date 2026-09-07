@@ -54,7 +54,7 @@ export default defineConfig({
     },
     build: {
       minify: "esbuild",
-      sourcemap: true,
+      sourcemap: process.env.NODE_ENV !== "production",
       rollupOptions: {
         output: {
           manualChunks: {
@@ -79,6 +79,14 @@ export default defineConfig({
         access: "public",
       }),
       API_SECRET_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      ADMIN_PASSWORD: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      ADMIN_SESSION_SECRET: envField.string({
         context: "server",
         access: "secret",
       }),

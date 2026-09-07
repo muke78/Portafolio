@@ -1,0 +1,57 @@
+---
+interface Props {
+	color?: "primary" | "secondary" | "accent";
+	position?: string;
+	delay?: number;
+	duration?: number;
+}
+
+const {
+	color = "primary",
+	position = "",
+	delay = 0,
+	duration = 8,
+}: Props = Astro.props;
+
+const colorClass =
+	color === "primary"
+		? "bg-primary"
+		: color === "secondary"
+			? "bg-secondary"
+			: "bg-accent";
+---
+
+<div
+	class:list={[
+		"bubble absolute xl:size-64 lg:size-48 md:size-28 sm:size-20 size-12 rounded-full opacity-40 z-[-1] blur-[100px] pointer-events-none",
+		colorClass,
+		position,
+	]}
+	style={`animation-delay: ${delay}s; animation-duration: ${duration}s;`}
+>
+</div>
+
+<style>
+	@keyframes bubble-float {
+		0%,
+		100% {
+			opacity: 0.6;
+			transform: scale(0.895);
+		}
+		50% {
+			opacity: 0.7;
+			transform: scale(1.23);
+		}
+	}
+
+	.bubble {
+		animation: bubble-float ease-in-out infinite alternate;
+		will-change: transform, opacity;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bubble {
+			animation: none;
+		}
+	}
+</style>

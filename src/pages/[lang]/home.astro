@@ -1,10 +1,10 @@
 ---
-import { Nav } from "@/components/organisms/Nav";
-import Acerca from "@/components/templates/Acerca.astro";
-import Contactos from "@/components/templates/Contacto.astro";
-import Header from "@/components/templates/Header.astro";
-import Opiniones from "@/components/templates/Opiniones.astro";
-import Proyectos from "@/components/templates/Proyectos.astro";
+import { Nav } from "@/components/sections/Nav";
+import Acerca from "@/components/sections/Acerca.astro";
+import Contactos from "@/components/sections/Contacto.astro";
+import Header from "@/components/sections/Header.astro";
+import Opiniones from "@/components/sections/Opiniones.astro";
+import Proyectos from "@/components/sections/Proyectos.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const { currentLocale } = Astro;
@@ -13,7 +13,7 @@ const { currentLocale } = Astro;
 <Layout>
   <header class="relative w-full" role="banner"> 
     <div class="w-full lg:p-0 md:p-10 p-10">
-      <Nav client:load currentLocale={currentLocale}/>
+      <Nav client:idle currentLocale={currentLocale}/>
     </div>
     <main role="main">
       <section class="w-full h-full">

@@ -1,0 +1,52 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout>
+  <main class="min-h-screen flex items-center justify-center px-4 bg-base-300">
+    <form
+      id="login-form"
+      class="card bg-base-100 shadow-xl w-full max-w-sm p-8 flex flex-col gap-4"
+    >
+      <h1 class="text-2xl font-bold text-center">Admin</h1>
+      <p class="text-sm text-base-content/70 text-center">
+        Acceso restringido
+      </p>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Contraseña</legend>
+        <input
+          type="password"
+          name="password"
+          required
+          autocomplete="current-password"
+          class="input w-full"
+          placeholder="••••••••"
+        />
+      </fieldset>
+      <button type="submit" class="btn btn-primary w-full">Entrar</button>
+      <p id="login-error" class="text-sm text-error text-center hidden">
+        Contraseña incorrecta
+      </p>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById("login-form") as HTMLFormElement;
+    const err = document.getElementById("login-error") as HTMLParagraphElement;
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      err.classList.add("hidden");
+      const fd = new FormData(form);
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: fd.get("password") }),
+      });
+      if (res.ok) {
+        window.location.href = "/admin";
+      } else {
+        err.classList.remove("hidden");
+      }
+    });
+  </script>
+</Layout>
