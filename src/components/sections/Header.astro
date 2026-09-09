@@ -22,7 +22,18 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 ---
 
 <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-12 items-start pt-8 pb-14">
-	<div>
+	<div class="relative">
+		<!--
+			Text-protection scrim: the galaxy/cosmos canvas sits fixed behind
+			the whole page, and its bright core can drift under this column.
+			This gradient (opaque background color fading to transparent)
+			guarantees the headline/description stay readable no matter where
+			the animation currently is, without hiding the visual outright.
+		-->
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute -inset-x-8 -inset-y-10 -z-10 bg-[linear-gradient(115deg,var(--background)_38%,color-mix(in_oklch,var(--background),transparent_45%)_62%,transparent_85%)]"
+		></div>
 		<div class="flex flex-wrap items-center gap-5 mb-6">
 			<span class="eyebrow">— {i18n.HEADER.HEADER_SUBTITLE}</span>
 		</div>
@@ -55,7 +66,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				class="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-				aria-label="Ver cv para saber mas acerca de mi"
+				aria-label={i18n.HEADER.HEADER_CV_ARIA_LABEL}
 			>
 				{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
 				<SquareArrowOutUpRight size={15} />
@@ -67,7 +78,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				href="https://github.com/muke78"
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="Saber mas acerca de mis repositorios y lo que he hecho"
+				aria-label={i18n.HEADER.HEADER_GITHUB_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<Github size={22} />
@@ -76,7 +87,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="Saber mas acerca de experiencia"
+				aria-label={i18n.HEADER.HEADER_LINKEDIN_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<Linkedin size={22} />
@@ -85,7 +96,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				href="https://wa.me/+525511909105"
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="Número de teléfono"
+				aria-label={i18n.HEADER.HEADER_WHATSAPP_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<MessageCircle size={22} />
@@ -94,7 +105,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				href="mailto:erickm.gonzalez.rivera@gmail.com"
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="Correo electrónico"
+				aria-label={i18n.HEADER.HEADER_EMAIL_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
 				<Mail size={22} />

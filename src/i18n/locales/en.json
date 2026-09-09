@@ -1,11 +1,32 @@
 {
+	"META": {
+		"META_TITLE": "Erick González — Full-Stack Developer",
+		"META_DESCRIPTION": "Erick González's portfolio, a web developer with experience in frontend and backend. Check out my projects and skills.",
+		"META_IMAGE_ALT": "Erick González's logo, web developer."
+	},
+	"COMMON": {
+		"SKIP_TO_CONTENT": "Skip to content"
+	},
+	"NAVBAR": {
+		"NAVBAR_SELECT_LANGUAGE": "Select language",
+		"NAVBAR_FLAG_OF": "Flag of",
+		"NAVBAR_CHANGE_TO": "Change to",
+		"NAVBAR_LANGUAGES_AVAILABLE": "languages available",
+		"NAVBAR_OPEN_MENU": "Open menu",
+		"NAVBAR_MENU": "Menu"
+	},
 	"HEADER": {
 		"HEADER_TITLE": "Hello there",
 		"HEADER_SUBTITLE": "Full-stack Developer",
 		"HEADER_NAME": "Erick Gonzalez",
 		"HEADER_ABOUT": "Information Technology Engineer, specialized in FullStack development and data analysis. With more than two years of experience creating efficient, scalable and well-structured applications.",
 		"HEADER_BUTTON": "See Projects",
-		"HEADER_TALK": "Let's talk"
+		"HEADER_TALK": "Let's talk",
+		"HEADER_CV_ARIA_LABEL": "View CV to learn more about me",
+		"HEADER_GITHUB_ARIA_LABEL": "Learn more about my repositories and what I've built",
+		"HEADER_LINKEDIN_ARIA_LABEL": "Learn more about my experience",
+		"HEADER_WHATSAPP_ARIA_LABEL": "Phone number",
+		"HEADER_EMAIL_ARIA_LABEL": "Email address"
 	},
 	"ABOUTME": {
 		"ABOUT_TITLE": "About me",
@@ -30,7 +51,9 @@
 		"PROJECTS_BADGE_FORK": "Collaboration"
 	},
 	"404": {
-		"404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later."
+		"404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later.",
+		"404_IMG_ALT": "Page not found",
+		"404_IMG_ARIA_LABEL": "The requested route was not found"
 	},
 	"UNIVERSITY": {
 		"UNIVERSITY_TITLE": "Polytechnic University of the Valley of Mexico (UPVM)",

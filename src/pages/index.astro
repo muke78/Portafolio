@@ -1,5 +1,6 @@
 ---
-const { currentLocale } = Astro;
----
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 
-<meta http-equiv="refresh" content={`0;url=/${currentLocale}/home`} />
+const { currentLocale } = Astro;
+return Astro.redirect(`/${currentLocale ?? DEFAULT_LOCALE}/home`, 302);
+---

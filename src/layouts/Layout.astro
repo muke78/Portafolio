@@ -3,38 +3,14 @@ import "@/styles/styles.css";
 import "@/styles/app.css";
 import "swiper/swiper-bundle.css";
 import { BackgroundEffects } from "@/components/three/BackgroundEffects";
-import {
-	dataTitlePage,
-	dataTitlePageEN,
-	dataTitlePageFR,
-} from "@/data/dataTitlePage";
+import { getI18N } from "@/i18n";
 
-const pathSegments = Astro.url.pathname.split("/");
-const { currentLocale } = Astro;
+const { currentLocale, url, site } = Astro;
+const i18n = getI18N({ currentLocale });
 
-const titles =
-	currentLocale === "en"
-		? dataTitlePageEN
-		: currentLocale === "fr"
-			? dataTitlePageFR
-			: dataTitlePage;
-
-const pageIndex =
-	pathSegments[2] === "about"
-		? 1
-		: pathSegments[2] === "projects"
-			? 2
-			: pathSegments[2] === "contact"
-				? 3
-				: 0;
-
-const titleLang = titles[pageIndex];
-
-function capitalizeFirstLetter(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-const capitalizedTitle = capitalizeFirstLetter(titleLang);
+const siteOrigin = site ?? new URL("https://khelde.vercel.app");
+const canonicalUrl = new URL(url.pathname, siteOrigin).toString();
+const ogImageUrl = new URL("/kdl.webp", siteOrigin).toString();
 ---
 
 <!doctype html>
@@ -42,65 +18,32 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{capitalizedTitle}</title>
-    <meta name="description" content="Web developer JR - IT Engineer" />
+    <title>{i18n.META.META_TITLE}</title>
+    <meta name="description" content={i18n.META.META_DESCRIPTION} />
     <!-- Open Graph Meta Tags (para Facebook, LinkedIn, y otras redes) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://khelde.vercel.app/es/home" />
-    <meta property="og:title" content="Portafolio de Erick Gonzalez" />
-    <meta
-      property="og:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
-    />
-    <meta property="og:image" content="https://khelde.vercel.app/kdl.webp" />
-    <meta
-      property="og:image:alt"
-      content="Logo de Erick Gonzalez, desarrollador web."
-    />
-    <meta property="og:site_name" content="Portafolio Erick Gonzalez" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={i18n.META.META_TITLE} />
+    <meta property="og:description" content={i18n.META.META_DESCRIPTION} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={i18n.META.META_IMAGE_ALT} />
+    <meta property="og:site_name" content={i18n.META.META_TITLE} />
 
     <!-- Twitter Meta Tags -->
     <meta property="twitter:card" content="summary_large_image">
-     <meta
-      property="twitter:image"
-      content="https://khelde.vercel.app/kdl.webp"
-    />
-    <meta property="twitter:url" content="https://khelde.vercel.app/es/home" />
-    <meta property="twitter:title" content="Portafolio de Erick Gonzalez" />
-    <meta
-      property="twitter:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
-    />
-    <meta
-      property="twitter:image:alt"
-      content="Logo de Erick Gonzalez, desarrollador web."
-    />
+     <meta property="twitter:image" content={ogImageUrl} />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={i18n.META.META_TITLE} />
+    <meta property="twitter:description" content={i18n.META.META_DESCRIPTION} />
+    <meta property="twitter:image:alt" content={i18n.META.META_IMAGE_ALT} />
 
-    <!-- Metadatos para WhatsApp (Usa los mismos que para Open Graph) -->
-    <meta property="og:image" content="https://khelde.vercel.app/kdl.webp" />
-    <meta property="og:title" content="Portafolio de Erick Gonzalez" />
-    <meta
-      property="og:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
-    />
-    <!-- Metadatos personalizados para IA u otras plataformas -->
-    <meta property="ia:markup_url" content="https://khelde.vercel.app/markup" />
-    <meta
-      property="ia:markup_url_dev"
-      content="https://khelde.vercel.app/markup_dev"
-    />
-    <meta property="ia:rules_url" content="https://khelde.vercel.app/rules" />
-    <meta
-      property="ia:rules_url_dev"
-      content="https://khelde.vercel.app/rules_dev"
-    />
     <!-- Metadatos adicionales -->
     <meta name="theme-color" content="#6f37cf" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="muke78" />
     <meta name="copyright" content="Copyright © 2025" />
     <link rel="icon" type="image/svg+xml" href="/kdl.webp" />
-    <link rel="canonical" href="https://khelde.vercel.app/es" />
+    <link rel="canonical" href={canonicalUrl} />
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
     <script is:inline>
@@ -118,7 +61,7 @@ const capitalizedTitle = capitalizeFirstLetter(titleLang);
       href="#main-content"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-primary focus:text-primary-foreground focus:px-5 focus:py-3 focus:text-sm focus:font-medium"
     >
-      Saltar al contenido
+      {i18n.COMMON.SKIP_TO_CONTENT}
     </a>
     <BackgroundEffects client:idle />
     <div class="relative z-[2]">
