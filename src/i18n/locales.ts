@@ -14,9 +14,9 @@ export const isLocale = (value: string): value is Locale =>
 
 export const LOCALE_META: Record<
 	Locale,
-	{ label: string; countryCode: string; sitemapLocale: string }
+	{ label: string; countryCode: string; bcp47: string }
 > = {
-	es: { label: "Español", countryCode: "ES", sitemapLocale: "es-ES" },
-	en: { label: "English", countryCode: "US", sitemapLocale: "en-US" },
-	fr: { label: "Français", countryCode: "FR", sitemapLocale: "fr-FR" },
+	es: { label: "Español", countryCode: "ES", bcp47: "es-ES" },
+	en: { label: "English", countryCode: "US", bcp47: "en-US" },
+	fr: { label: "Français", countryCode: "FR", bcp47: "fr-FR" },
 };
