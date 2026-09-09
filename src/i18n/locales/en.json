@@ -5,7 +5,8 @@
 		"META_IMAGE_ALT": "Erick González's logo, web developer."
 	},
 	"COMMON": {
-		"SKIP_TO_CONTENT": "Skip to content"
+		"SKIP_TO_CONTENT": "Skip to content",
+		"LOADING": "Loading"
 	},
 	"NAVBAR": {
 		"NAVBAR_SELECT_LANGUAGE": "Select language",

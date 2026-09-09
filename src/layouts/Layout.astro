@@ -8,9 +8,24 @@ import { getI18N } from "@/i18n";
 const { currentLocale, url, site } = Astro;
 const i18n = getI18N({ currentLocale });
 
+const currentYear = new Date().getFullYear();
 const siteOrigin = site ?? new URL("https://khelde.vercel.app");
 const canonicalUrl = new URL(url.pathname, siteOrigin).toString();
 const ogImageUrl = new URL("/kdl.webp", siteOrigin).toString();
+
+const personSchema = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: i18n.HEADER.HEADER_NAME,
+	jobTitle: i18n.ABOUTME.ABOUT_TITLE_CARD,
+	description: i18n.META.META_DESCRIPTION,
+	url: siteOrigin.toString(),
+	image: ogImageUrl,
+	sameAs: [
+		"https://github.com/muke78",
+		"https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/",
+	],
+};
 ---
 
 <!doctype html>
@@ -41,11 +56,13 @@ const ogImageUrl = new URL("/kdl.webp", siteOrigin).toString();
     <meta name="theme-color" content="#6f37cf" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="muke78" />
-    <meta name="copyright" content="Copyright © 2025" />
-    <link rel="icon" type="image/svg+xml" href="/kdl.webp" />
+    <meta name="copyright" content={`Copyright © ${currentYear}`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalUrl} />
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <!-- Structured data (SEO) -->
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script is:inline>
       (function () {
         var stored = localStorage.getItem("theme");

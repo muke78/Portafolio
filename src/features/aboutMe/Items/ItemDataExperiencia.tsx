@@ -1,10 +1,12 @@
 import { Building, Clock, Loader2, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
+import { getI18N } from "@/i18n";
 import type { Experiences, PropsLang } from "@/types/currentLang.interface";
 
 export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 	const [data, setData] = useState<Experiences[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
+	const i18n = getI18N({ currentLocale });
 
 	useEffect(() => {
 		async function fetchData() {
@@ -29,7 +31,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 			<Loader2
 				className="animate-spin text-primary"
 				size={40}
-				aria-label="Cargando"
+				aria-label={i18n.COMMON.LOADING}
 			/>
 		);
 
