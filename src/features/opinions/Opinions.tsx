@@ -37,7 +37,7 @@ export const Opinions = ({
 			<Loader2
 				className="animate-spin text-primary"
 				size={40}
-				aria-label="Cargando"
+				aria-label={i18n.COMMON.LOADING}
 			/>
 		);
 
@@ -78,8 +78,8 @@ export const Opinions = ({
 						<div className="relative mb-8">
 							<img
 								src="/no_data.svg"
-								alt="No hay información disponible"
-								aria-label="No hay información disponible por el momento"
+								alt={i18n.OPINIONS.OPINIONS_NOT_FOUND}
+								aria-label={i18n.OPINIONS.OPINIONS_NOT_FOUND_DESCRIPTION}
 								className="w-52 h-52 mx-auto opacity-70"
 								loading="lazy"
 								decoding="async"

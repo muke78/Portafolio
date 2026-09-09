@@ -14,9 +14,11 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
 				<img
 					className="rounded-t-lg"
 					src="/Aboutme.webp"
-					alt="Acerca de mí"
+					alt={i18n.ABOUTME.ABOUT_TITLE}
+					width={1600}
+					height={400}
 					style={{
-						width: "1918px",
+						width: "100%",
 						height: "400px",
 						objectFit: "cover",
 					}}

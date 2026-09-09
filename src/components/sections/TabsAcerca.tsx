@@ -39,7 +39,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 			<Loader2
 				className="animate-spin text-primary"
 				size={40}
-				aria-label="Cargando"
+				aria-label={i18n.COMMON.LOADING}
 			/>
 		);
 	}

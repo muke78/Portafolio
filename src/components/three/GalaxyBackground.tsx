@@ -1,4 +1,19 @@
 import { useEffect, useRef } from "react";
+import {
+	AdditiveBlending,
+	BufferAttribute,
+	BufferGeometry,
+	CanvasTexture,
+	Color,
+	Group,
+	PerspectiveCamera,
+	Points,
+	Scene,
+	ShaderMaterial,
+	Sprite,
+	SpriteMaterial,
+	WebGLRenderer,
+} from "three";
 
 /**
  * GALAXY 3D — Three.js showpiece.
@@ -22,28 +37,24 @@ import { useEffect, useRef } from "react";
  *  · Approaching the footer's big "Khelde" wordmark → rises back up,
  *    centered, like a sunset behind the word.
  *
- * `three` is dynamically imported so it never lands in the initial
- * JS bundle - this component is meant to be mounted from a
- * client:idle island, and the import happens after that.
+ * Named imports (not `import * as THREE`/dynamic `import("three")`)
+ * are deliberate: three ships as one ~700KB monolithic ESM file, and
+ * only named-binding imports let Rollup tree-shake the loaders/
+ * controls/post-processing/etc. this component never touches. This
+ * component only ever mounts from a client:idle island, so Astro's
+ * own idle-gated island loading already keeps it off the critical
+ * path - a manual dynamic import here bought no extra deferral, just
+ * an opaque `any`-typed namespace object that defeated tree-shaking.
  */
 export const GalaxyBackground = () => {
 	const wrapRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		if (!wrapRef.current) return;
 
-		let disposed = false;
-		let cleanup: (() => void) | undefined;
-
-		import("three").then((THREE) => {
-			if (disposed || !wrapRef.current) return;
-			cleanup = mountGalaxy(THREE, wrapRef.current);
-		});
-
-		return () => {
-			disposed = true;
-			cleanup?.();
-		};
+		const cleanup = mountGalaxy(wrapRef.current);
+		return cleanup;
 	}, []);
 
 	return (
@@ -142,8 +153,7 @@ const STAR_FRAGMENT_SHADER = /* glsl */ `
   }
 `;
 
-// biome-ignore lint/suspicious/noExplicitAny: three's module namespace type is unwieldy to import just for this
-function makeGlowTexture(THREE: any) {
+function makeGlowTexture() {
 	const size = 128;
 	const canvas = document.createElement("canvas");
 	canvas.width = size;
@@ -164,14 +174,13 @@ function makeGlowTexture(THREE: any) {
 	gradient.addColorStop(1, "rgba(140,92,255,0)");
 	ctx.fillStyle = gradient;
 	ctx.fillRect(0, 0, size, size);
-	const tex = new THREE.CanvasTexture(canvas);
+	const tex = new CanvasTexture(canvas);
 	tex.needsUpdate = true;
 	return tex;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: three's module namespace type is unwieldy to import just for this
-function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
-	const renderer = new THREE.WebGLRenderer({
+function mountGalaxy(wrap: HTMLDivElement) {
+	const renderer = new WebGLRenderer({
 		alpha: true,
 		antialias: true,
 		powerPreference: "high-performance",
@@ -180,8 +189,8 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 	renderer.setClearColor(0x000000, 0);
 	wrap.appendChild(renderer.domElement);
 
-	const scene = new THREE.Scene();
-	const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+	const scene = new Scene();
+	const camera = new PerspectiveCamera(50, 1, 0.1, 100);
 	camera.position.set(4.6, 3.2, 6.8);
 	camera.lookAt(0, 0, 0);
 
@@ -237,28 +246,28 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 		aTwinkle[i] = Math.random();
 	}
 
-	const geo = new THREE.BufferGeometry();
+	const geo = new BufferGeometry();
 	geo.setAttribute(
 		"position",
-		new THREE.BufferAttribute(new Float32Array(count * 3), 3),
+		new BufferAttribute(new Float32Array(count * 3), 3),
 	);
-	geo.setAttribute("aRadiusRatio", new THREE.BufferAttribute(aRadiusRatio, 1));
-	geo.setAttribute("aBranch", new THREE.BufferAttribute(aBranch, 1));
-	geo.setAttribute("aOffset", new THREE.BufferAttribute(aOffset, 3));
-	geo.setAttribute("aSize", new THREE.BufferAttribute(aSize, 1));
-	geo.setAttribute("aTwinkle", new THREE.BufferAttribute(aTwinkle, 1));
+	geo.setAttribute("aRadiusRatio", new BufferAttribute(aRadiusRatio, 1));
+	geo.setAttribute("aBranch", new BufferAttribute(aBranch, 1));
+	geo.setAttribute("aOffset", new BufferAttribute(aOffset, 3));
+	geo.setAttribute("aSize", new BufferAttribute(aSize, 1));
+	geo.setAttribute("aTwinkle", new BufferAttribute(aTwinkle, 1));
 
 	const colors = {
-		uColorInside: { value: new THREE.Color("#FFC896") },
-		uColorOutside: { value: new THREE.Color("#8C5CFF") },
-		uColorHot: { value: new THREE.Color("#FFFFFF") },
+		uColorInside: { value: new Color("#FFC896") },
+		uColorOutside: { value: new Color("#8C5CFF") },
+		uColorHot: { value: new Color("#FFFFFF") },
 	};
 
 	// Crisp core layer - small, sharp, bright.
-	const matCore = new THREE.ShaderMaterial({
+	const matCore = new ShaderMaterial({
 		transparent: true,
 		depthWrite: false,
-		blending: THREE.AdditiveBlending,
+		blending: AdditiveBlending,
 		uniforms: {
 			uTime: { value: 0 },
 			uSize: { value: 20.0 },
@@ -271,10 +280,10 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 
 	// Soft halo layer - same particles, larger + dimmer, gives a
 	// cheap bloom-like glow without a postprocessing pipeline.
-	const matHalo = new THREE.ShaderMaterial({
+	const matHalo = new ShaderMaterial({
 		transparent: true,
 		depthWrite: false,
-		blending: THREE.AdditiveBlending,
+		blending: AdditiveBlending,
 		uniforms: {
 			uTime: { value: 0 },
 			uSize: { value: 58.0 },
@@ -285,8 +294,8 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 		fragmentShader: FRAGMENT_SHADER,
 	});
 
-	const pointsCore = new THREE.Points(geo, matCore);
-	const pointsHalo = new THREE.Points(geo, matHalo);
+	const pointsCore = new Points(geo, matCore);
+	const pointsHalo = new Points(geo, matHalo);
 
 	// Ambient starfield - sparse points scattered in a big sphere around
 	// the galaxy, no spiral math, just gentle twinkle. Adds depth so the
@@ -305,14 +314,14 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 		starSize[i] = 0.4 + Math.random() * 1.1;
 		starTwinkle[i] = Math.random();
 	}
-	const starGeo = new THREE.BufferGeometry();
-	starGeo.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
-	starGeo.setAttribute("aSize", new THREE.BufferAttribute(starSize, 1));
-	starGeo.setAttribute("aTwinkle", new THREE.BufferAttribute(starTwinkle, 1));
-	const matStars = new THREE.ShaderMaterial({
+	const starGeo = new BufferGeometry();
+	starGeo.setAttribute("position", new BufferAttribute(starPositions, 3));
+	starGeo.setAttribute("aSize", new BufferAttribute(starSize, 1));
+	starGeo.setAttribute("aTwinkle", new BufferAttribute(starTwinkle, 1));
+	const matStars = new ShaderMaterial({
 		transparent: true,
 		depthWrite: false,
-		blending: THREE.AdditiveBlending,
+		blending: AdditiveBlending,
 		uniforms: {
 			uTime: { value: 0 },
 			uSize: { value: 14.0 },
@@ -321,19 +330,19 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 		vertexShader: STAR_VERTEX_SHADER,
 		fragmentShader: STAR_FRAGMENT_SHADER,
 	});
-	const pointsStars = new THREE.Points(starGeo, matStars);
+	const pointsStars = new Points(starGeo, matStars);
 
 	// Soft nucleus glow - a camera-facing sprite with a radial-gradient
 	// canvas texture, sitting right at the core for an actual bright
 	// "galactic bulge" glow instead of just dense points.
-	const glowTexture = makeGlowTexture(THREE);
+	const glowTexture = makeGlowTexture();
 	const coreGlow = glowTexture
-		? new THREE.Sprite(
-				new THREE.SpriteMaterial({
+		? new Sprite(
+				new SpriteMaterial({
 					map: glowTexture,
 					transparent: true,
 					depthWrite: false,
-					blending: THREE.AdditiveBlending,
+					blending: AdditiveBlending,
 					opacity: 0.72,
 				}),
 			)
@@ -343,7 +352,7 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 	// of the hero text readable without leaning on the scrim alone.
 	if (coreGlow) coreGlow.scale.set(1.9, 1.9, 1);
 
-	const galaxyGroup = new THREE.Group();
+	const galaxyGroup = new Group();
 	galaxyGroup.rotation.x = 0.58;
 	galaxyGroup.add(pointsHalo);
 	galaxyGroup.add(pointsCore);

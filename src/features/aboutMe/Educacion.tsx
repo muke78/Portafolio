@@ -10,9 +10,11 @@ export const Educacion = ({ currentLocale }: PropsLang) => {
 			</span>
 			<div className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out mt-4 anim-zoom-in">
 				<img
-					className="rounded-t-lg w-full"
+					className="rounded-t-lg w-full h-auto"
 					src="/UPVM.webp"
-					alt="Universidad Politecnica del Valle de Mexico"
+					alt={i18n.UNIVERSITY.UNIVERSITY_TITLE}
+					width={940}
+					height={220}
 					loading="lazy"
 					decoding="async"
 					draggable="false"

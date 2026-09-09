@@ -5,7 +5,8 @@
 		"META_IMAGE_ALT": "Logo de Erick González, desarrollador web."
 	},
 	"COMMON": {
-		"SKIP_TO_CONTENT": "Saltar al contenido"
+		"SKIP_TO_CONTENT": "Saltar al contenido",
+		"LOADING": "Cargando"
 	},
 	"NAVBAR": {
 		"NAVBAR_SELECT_LANGUAGE": "Seleccionar idioma",
