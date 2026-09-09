@@ -188,6 +188,20 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 	const isMobile = window.innerWidth < 768;
 	const count = isMobile ? 13000 : 26000;
 	const branches = 4;
+	// Real spiral galaxies aren't perfectly symmetric - a couple of arms
+	// usually dominate ("grand design") while the others are fainter.
+	// Weighting branch picks instead of a flat i % branches gives that
+	// same organic imbalance instead of a too-tidy pinwheel.
+	const branchWeights = [1, 0.62, 0.82, 0.46];
+	const branchWeightSum = branchWeights.reduce((a, b) => a + b, 0);
+	const pickBranch = () => {
+		let r = Math.random() * branchWeightSum;
+		for (let b = 0; b < branches; b++) {
+			r -= branchWeights[b];
+			if (r <= 0) return b;
+		}
+		return branches - 1;
+	};
 
 	const aRadiusRatio = new Float32Array(count);
 	const aBranch = new Float32Array(count);
@@ -199,7 +213,9 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 		// Bias more particles toward the core for a proper bright bulge.
 		const radiusRatio = Math.random() ** 1.7;
 		aRadiusRatio[i] = radiusRatio;
-		aBranch[i] = i % branches;
+		// Slight per-particle angular jitter on top of the branch index so
+		// arms aren't perfectly clean lines - a bit of flocculent texture.
+		aBranch[i] = pickBranch() + (Math.random() - 0.5) * 0.05;
 
 		// Horizontal scatter around the branch line - tight near the core,
 		// looser toward the rim so each arm reads as a swarm of stars
@@ -318,11 +334,14 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 					transparent: true,
 					depthWrite: false,
 					blending: THREE.AdditiveBlending,
-					opacity: 0.9,
+					opacity: 0.72,
 				}),
 			)
 		: null;
-	if (coreGlow) coreGlow.scale.set(2.8, 2.8, 1);
+	// Smaller/dimmer than the first pass - reads as a glowing nucleus
+	// instead of a flashlight blown across the frame, and leaves more
+	// of the hero text readable without leaning on the scrim alone.
+	if (coreGlow) coreGlow.scale.set(1.9, 1.9, 1);
 
 	const galaxyGroup = new THREE.Group();
 	galaxyGroup.rotation.x = 0.58;
@@ -361,6 +380,12 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 	findWordmark();
 	const findTimer = wordmark ? null : window.setTimeout(findWordmark, 800);
 
+	// Rest position is nudged right/down from dead-center so the bright
+	// core sits nearer the portrait column (desktop) instead of square
+	// behind the headline/description - the text scrim in Header.astro
+	// covers the rest. Scroll still carries it on to the corner as before.
+	const restTxVw = 16;
+	const restTyVh = 3;
 	const cornerTxVw = 36;
 	const cornerTyVh = 38;
 	const cornerScale = 0.22;
@@ -377,8 +402,8 @@ function mountGalaxy(THREE: any, wrap: HTMLDivElement) {
 		const scrollY = window.scrollY || 0;
 
 		const phaseA = clamp(scrollY / (vh * 0.9), 0, 1);
-		const aTxVw = phaseA * cornerTxVw;
-		const aTyVh = phaseA * cornerTyVh;
+		const aTxVw = lerp(restTxVw, cornerTxVw, phaseA);
+		const aTyVh = lerp(restTyVh, cornerTyVh, phaseA);
 		const aScale = 1 - phaseA * (1 - cornerScale);
 
 		let phaseB = 0;
