@@ -1,107 +1,8 @@
 # 🚀 Portafolio Personal
 
-Se realizó el portafolio con la tecnología de [Astro](https://astro.build/) y con la librería de [React](https://es.react.dev/) montada a Astro, con [Tailwind](https://tailwindui.com/) en su interfaz desde @tailwindcss/vite con Tailwind CSS 4.1.3.
+Portafolio construido con [Astro](https://astro.build/) (SSR, `output: "server"`) e islas de [React](https://react.dev/) para las partes interactivas, con [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first, vía `@tailwindcss/vite`) y componentes [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/). Desplegado en [Vercel](https://vercel.com/).
 
-- Se montó [DaisyUI](https://daisyui.com/) sobre Tailwind para manejar los temas de la aplicación (v5.0.6).
-- Versión estable `v.3.1.3` release, próximas y futuras actualizaciones.
-- Próxima actualización `v.3.1.4` o `v.3.1.x` o `v.3.x.x`.
-- Se utiliza la herramienta de reenvío de puertos desde host de túnel para revisar los cambios del servidor en tiempo real desde un celular.
-
-# 🔷 Diagrama de flujo de procesos para entender el portfolio
-
-```mermaid
-flowchart TD
-    %% Build Engine
-    AE["Astro Build Engine"]:::build
-    click AE "https://github.com/muke78/portafolio/blob/main/astro.config.mjs"
-
-    %% React Components Hierarchy
-    subgraph "React Components Hierarchy"
-        A["Atoms"]:::react
-        click A "https://github.com/muke78/portafolio/tree/main/src/components/atoms"
-        F["Features"]:::react
-        click F "https://github.com/muke78/portafolio/tree/main/src/components/features"
-        O["Organisms"]:::react
-        click O "https://github.com/muke78/portafolio/tree/main/src/components/organisms"
-        T["Templates"]:::react
-        click T "https://github.com/muke78/portafolio/tree/main/src/components/templates"
-    end
-
-    %% Styling & Theme Management
-    S["Tailwind/DaisyUI Styling"]:::styling
-    click S "https://github.com/muke78/portafolio/blob/main/tailwind.config.js"
-    SC["Styles"]:::styling
-    click SC "https://github.com/muke78/portafolio/blob/main/src/styles/styles.css"
-    TH["Theme Hook (useTheme)"]:::hook
-    click TH "https://github.com/muke78/portafolio/blob/main/src/hooks/useTheme.ts"
-
-    %% Internationalization (i18n) Modules
-    subgraph "Internationalization (i18n)"
-        L["Locale Definitions"]:::i18n
-        click L "https://github.com/muke78/portafolio/tree/main/src/i18n/locales"
-        IL["i18n Logic"]:::i18n
-        click IL "https://github.com/muke78/portafolio/blob/main/src/i18n/index.ts"
-        IU["i18n UI"]:::i18n
-        click IU "https://github.com/muke78/portafolio/blob/main/src/i18n/ui.ts"
-        IUT["i18n Utils"]:::i18n
-        click IUT "https://github.com/muke78/portafolio/blob/main/src/i18n/utils.ts"
-        LU["Language Data Utilities"]:::i18n
-        click LU "https://github.com/muke78/portafolio/tree/main/src/utils/en"
-    end
-
-    %% Content & Layout (Page Routing)
-    subgraph "Content & Layout"
-        P["Pages"]:::pages
-        click P "https://github.com/muke78/portafolio/tree/main/src/pages"
-        LAY["Layout"]:::pages
-        click LAY "https://github.com/muke78/portafolio/blob/main/src/layouts/Layout.astro"
-    end
-
-    %% Utility & Data Management
-    UD["Utilities & Data"]:::utility
-    click UD "https://github.com/muke78/portafolio/tree/main/src/utils"
-    DT["Data Types"]:::utility
-    click DT "https://github.com/muke78/portafolio/tree/main/src/types"
-
-    %% Public Assets & Configurations
-    PA["Public Assets & Configurations"]:::public
-    click PA "https://github.com/muke78/portafolio/tree/main/public"
-    RT["robots.txt"]:::public
-    click RT "https://github.com/muke78/portafolio/blob/main/robots.txt"
-
-    %% Connections
-    AE -->|"compiles"| LAY
-    LAY -->|"uses"| T
-    T -->|"includes"| O
-    O -->|"composedOf"| F
-    F -->|"contains"| A
-    S ---|"styles"| A
-    S ---|"styles"| F
-    S ---|"styles"| O
-    S ---|"styles"| T
-    TH ---|"manages"| S
-    IL ---|"supplies"| P
-    L ---|"provides"| IL
-    IU ---|"renders"| P
-    IUT ---|"supports"| IL
-    LU ---|"feeds"| P
-    P -->|"consumes"| UD
-    UD -->|"defines"| DT
-    PA -->|"serves"| P
-    AE -->|"integrates"| PA
-    IU ---|"influences"| S
-
-    %% Class definitions
-    classDef build fill:#f9d423,stroke:#333,stroke-width:2px;
-    classDef react fill:#bbdef0,stroke:#1e88e5,stroke-width:2px;
-    classDef styling fill:#f8bbd0,stroke:#d81b60,stroke-width:2px;
-    classDef hook fill:#c5e1a5,stroke:#7cb342,stroke-width:2px;
-    classDef i18n fill:#ffe082,stroke:#ffa000,stroke-width:2px;
-    classDef pages fill:#dcedc8,stroke:#8bc34a,stroke-width:2px;
-    classDef utility fill:#d1c4e9,stroke:#673ab7,stroke-width:2px;
-    classDef public fill:#b2ebf2,stroke:#0097a7,stroke-width:2px;
-
-```
+Contenido (proyectos, experiencia, comentarios) servido desde un backend propio externo, consumido a través de un proxy interno en `/api/*` que agrega el token de autenticación server-side.
 
 ## 🏯 Lighthouse y optimización de la página
 
@@ -114,55 +15,42 @@ flowchart TD
 - [⚙️ Requisitos Previos](#️-requisitos-previos)
 - [🔧 Instalación](#-instalación)
 - [💻 Desarrollo Local](#-desarrollo-local)
-- [🗄️ Base de Datos](#️-base-de-datos)
 - [🌐 Internacionalización](#-internacionalización)
 - [🎨 Temas](#-temas)
+- [🔐 Panel de administración](#-panel-de-administración)
 - [📄 Licencia](#-licencia)
 - [🤝 Contribuir](#-contribuir)
 - [📞 Contacto](#-contacto)
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **Framework**: [Astro](https://astro.build/) v5.4.2
-- **UI Framework**: [React](https://reactjs.org/) v18.3.1
-- **Estilos**:
-  - [Tailwind CSS](https://tailwindcss.com/) v4.1.3
-  - [DaisyUI](https://daisyui.com/) v5.0.6
-- **Animaciones**:
-  - [Framer Motion](https://www.framer.com/motion/)
-  - [Swiper](https://swiperjs.com/)
-  - [Animate.css](https://animate.style/)
-- **Formularios**:
-  - [React Hook Form](https://react-hook-form.com/)
-  - [Zod](https://zod.dev/)
-- **Otros**:
-  - [TypeScript](https://www.typescriptlang.org/)
-  - [Lucide Icons](https://lucide.dev/)
-  - [React Icons](https://react-icons.github.io/react-icons/)
+- **Framework**: [Astro](https://astro.build/) v7 (SSR, adaptador [`@astrojs/vercel`](https://docs.astro.build/en/guides/integrations-guide/vercel/))
+- **UI**: [React](https://react.dev/) v18 (islas vía `@astrojs/react`)
+- **Estilos**: [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/)
+- **3D**: [Three.js](https://threejs.org/) (fondo animado, montado como isla `client:idle`)
+- **Formularios**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+- **Otros**: [TypeScript](https://www.typescriptlang.org/), [Lucide Icons](https://lucide.dev/), [react-country-flag](https://www.npmjs.com/package/react-country-flag), [Swiper](https://swiperjs.com/)
+- **Calidad**: [Biome](https://biomejs.dev/) (lint/format) + [Husky](https://typicode.github.io/husky/) (git hooks)
 
 ## 📁 Estructura del Proyecto
 
 ```bash
 src/
-├── components/           # Componentes React organizados por Atomic Design
-│   ├── atoms/           # Componentes básicos
-│   ├── features/        # Características específicas
-│   ├── organisms/       # Componentes compuestos
-│   └── templates/       # Plantillas Astro
-├── db/                  # Configuración de la base de datos
-├── hooks/               # Hooks personalizados de React
-├── i18n/                # Configuración de internacionalización
-├── layouts/             # Layouts de Astro
-├── pages/               # Rutas y páginas (es, en, fr)
-├── schemas/             # Esquemas de validación Zod
-├── styles/              # Estilos globales
-├── types/               # Tipos TypeScript
-└── utils/               # Utilidades y datos estáticos
+├── components/           # Componentes compartidos (secciones, ui/ = primitives shadcn, three/ = fondo 3D)
+├── features/             # Lógica por dominio (aboutMe, projects, opinions, contact, navbar, admin)
+├── i18n/                 # Traducciones (locales/*.json) y locales.ts (fuente única de verdad de idiomas)
+├── layouts/               # Layouts de Astro (Layout.astro: <head>, meta, JSON-LD)
+├── lib/                  # Utilidades server-side (sesión admin, rate limit, cliente del backend)
+├── middleware.ts         # Validación de locale + guard del panel admin
+├── pages/                # Rutas: /[lang]/home, /admin/*, /api/*
+├── schemas/               # Esquemas de validación Zod
+├── styles/               # Estilos globales (Tailwind v4 + tokens del tema)
+└── types/                # Tipos TypeScript compartidos
 ```
 
 ## ⚙️ Requisitos Previos
 
-- Node.js (v18 o superior)
+- Node.js >= 22.12.0
 - pnpm
 - Git
 
@@ -181,7 +69,7 @@ src/
     pnpm install
 ```
 
-- Copia el archivo de variables de entorno:
+- Copia el archivo de variables de entorno y complétalo (ver `astro.config.mjs` → `env.schema` para la lista completa y su documentación):
 
 ```bash
     cp .env.example .env
@@ -197,40 +85,27 @@ src/
 
 - El sitio estará disponible en [http://localhost:4321](http://localhost:4321)
 
-## 🗄️ Base de Datos
-
-- Configuración de Drizzle
-- Genera las migraciones:
-
-```bash
-    pnpm db:generate
-```
-
-- Aplica las migraciones:
-
-```bash
-    pnpm db:migrate
-```
-
-- Visualiza la base de datos (opcional):
-
-```bash
-    pnpm db:studio
-```
-
 ## 🌐 Internacionalización
 
-El proyecto soporta múltiples idiomas:
+El proyecto soporta múltiples idiomas, definidos en `src/i18n/locales.ts` (única fuente de verdad, usada tanto por el enrutamiento de Astro como por el selector de idioma):
 
-- 🇪🇸 Español (es)
+- 🇪🇸 Español (es) — por defecto
 - 🇺🇸 Inglés (en)
 - 🇫🇷 Francés (fr)
 
-Los archivos de traducción se encuentran en `locales`.
+Las traducciones viven en `src/i18n/locales/{es,en,fr}.json`. El enrutamiento de idioma es `manual` (no automático) — la validación de un segmento de idioma desconocido en `/[lang]/*` ocurre en `src/middleware.ts`, que también protege `/admin/*`.
 
 ## 🎨 Temas
 
-El proyecto incluye un sistema de temas usando DaisyUI con soporte para modo claro y oscuro.
+Claro/oscuro vía la clase `.dark` en `<html>` (Tailwind v4 `@custom-variant dark`), con persistencia en `localStorage` y detección de `prefers-color-scheme` como valor por defecto.
+
+## 🔐 Panel de administración
+
+`/admin/login` protege `/admin` y `/api/admin/*` con una cookie de sesión firmada (HMAC, `src/lib/adminSession.ts`):
+
+- Sesión de vida corta (2h), comparación de contraseña en tiempo constante, y una lista de revocación en memoria (logout invalida el token del lado del servidor, no solo borra la cookie).
+- Rate limiting en memoria sobre `/api/admin/login` (5 intentos / 5 min por IP).
+- Ambas listas en memoria no sobreviven un cold start en serverless — es una mitigación de mejor esfuerzo adecuada para un panel de un solo administrador, no una garantía dura.
 
 ## 📄 Licencia
 

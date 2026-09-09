@@ -1,16 +1,25 @@
-import { Loader2, LogOut, Plus, RefreshCw, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { LogOut, Plus, RefreshCw, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ResourceFieldInput } from "@/features/admin/ResourceFieldInput";
+import {
+	draftFromItem,
+	emptyDraft,
+	RESOURCE_FIELDS,
+	RESOURCES,
+	type Resource,
+} from "@/features/admin/resourceFields";
+import { LOCALES, LOCALE_META } from "@/i18n/locales";
 
-type Resource = "projects" | "experiences" | "comments";
-
-const RESOURCES: { key: Resource; label: string }[] = [
-	{ key: "projects", label: "Proyectos" },
-	{ key: "experiences", label: "Experiencias" },
-	{ key: "comments", label: "Comentarios" },
-];
-
+// biome-ignore lint/suspicious/noExplicitAny: item shape comes from an external, admin-proxied backend
 const getId = (item: any): string | number | null =>
 	item?.id ??
 	item?.project_id ??
@@ -18,70 +27,92 @@ const getId = (item: any): string | number | null =>
 	item?.comment_id ??
 	null;
 
+// biome-ignore lint/suspicious/noExplicitAny: item shape comes from an external, admin-proxied backend
+const getTitle = (item: any, id: string | number | null): string =>
+	item?.title ?? item?.name ?? item?.work ?? `#${id ?? "?"}`;
+
 export const AdminDashboard = () => {
 	const [active, setActive] = useState<Resource>("projects");
+	const [locale, setLocale] = useState<string>("es");
+	// biome-ignore lint/suspicious/noExplicitAny: item shape comes from an external, admin-proxied backend
 	const [items, setItems] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [draft, setDraft] = useState<string>("{}");
+	const [draft, setDraft] = useState<Record<string, unknown>>(
+		emptyDraft(active),
+	);
 	const [editingId, setEditingId] = useState<string | number | null>(null);
+
+	const fields = useMemo(() => RESOURCE_FIELDS[active], [active]);
 
 	const load = useCallback(async () => {
 		setLoading(true);
 		setError(null);
 		try {
 			const res = await fetch(
-				`/api/admin/resource?resource=${active}&currentLocale=es`,
+				`/api/admin/resource?resource=${active}&currentLocale=${locale}`,
 			);
 			if (!res.ok) throw new Error(`${res.status}`);
 			const data = await res.json();
 			const rows = data?.data?.rows ?? data?.data ?? data ?? [];
 			setItems(Array.isArray(rows) ? rows : []);
+			// biome-ignore lint/suspicious/noExplicitAny: caught error is untyped by nature
 		} catch (e: any) {
 			setError(`No se pudo cargar: ${e.message ?? e}`);
 		} finally {
 			setLoading(false);
 		}
-	}, [active]);
+	}, [active, locale]);
 
 	useEffect(() => {
 		load();
-		setDraft("{}");
+		setDraft(emptyDraft(active));
 		setEditingId(null);
-	}, [load]);
+	}, [load, active]);
+
+	const updateField = (key: string, value: unknown) => {
+		setDraft((prev) => ({ ...prev, [key]: value }));
+	};
+
+	const missingRequired = fields
+		.filter((f) => f.required)
+		.filter((f) => {
+			const v = draft[f.key];
+			return v === undefined || v === null || v === "";
+		});
 
 	const submit = async () => {
 		setError(null);
-		let body: unknown;
-		try {
-			body = JSON.parse(draft);
-		} catch {
-			setError("JSON inválido");
+		if (missingRequired.length > 0) {
+			setError(
+				`Faltan campos obligatorios: ${missingRequired.map((f) => f.label).join(", ")}`,
+			);
 			return;
 		}
 		const isEdit = editingId !== null;
 		const url = isEdit
-			? `/api/admin/resource?resource=${active}&id=${editingId}`
-			: `/api/admin/resource?resource=${active}`;
+			? `/api/admin/resource?resource=${active}&id=${editingId}&currentLocale=${locale}`
+			: `/api/admin/resource?resource=${active}&currentLocale=${locale}`;
 		const res = await fetch(url, {
 			method: isEdit ? "PUT" : "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(body),
+			body: JSON.stringify(draft),
 		});
 		if (!res.ok) {
 			setError(`Error ${res.status}`);
 			return;
 		}
-		setDraft("{}");
+		setDraft(emptyDraft(active));
 		setEditingId(null);
 		load();
 	};
 
 	const remove = async (id: string | number) => {
 		if (!confirm("¿Eliminar?")) return;
-		const res = await fetch(`/api/admin/resource?resource=${active}&id=${id}`, {
-			method: "DELETE",
-		});
+		const res = await fetch(
+			`/api/admin/resource?resource=${active}&id=${id}&currentLocale=${locale}`,
+			{ method: "DELETE" },
+		);
 		if (!res.ok) {
 			setError(`Error eliminando ${res.status}`);
 			return;
@@ -89,10 +120,10 @@ export const AdminDashboard = () => {
 		load();
 	};
 
+	// biome-ignore lint/suspicious/noExplicitAny: item shape comes from an external, admin-proxied backend
 	const edit = (item: any) => {
-		const id = getId(item);
-		setEditingId(id);
-		setDraft(JSON.stringify(item, null, 2));
+		setEditingId(getId(item));
+		setDraft(draftFromItem(active, item));
 	};
 
 	const logout = async () => {
@@ -103,11 +134,25 @@ export const AdminDashboard = () => {
 	return (
 		<div className="min-h-screen bg-background text-foreground">
 			<header className="border-b border-border bg-card">
-				<div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+				<div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
 					<h1 className="text-xl font-semibold">Admin · Khelde</h1>
-					<Button type="button" variant="outline" size="sm" onClick={logout}>
-						<LogOut size={16} /> Salir
-					</Button>
+					<div className="flex items-center gap-3">
+						<Select value={locale} onValueChange={setLocale}>
+							<SelectTrigger size="sm" className="w-36">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{LOCALES.map((l) => (
+									<SelectItem key={l} value={l}>
+										{LOCALE_META[l].label}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+						<Button type="button" variant="outline" size="sm" onClick={logout}>
+							<LogOut size={16} /> Salir
+						</Button>
+					</div>
 				</div>
 			</header>
 
@@ -143,7 +188,7 @@ export const AdminDashboard = () => {
 										size="sm"
 										onClick={() => {
 											setEditingId(null);
-											setDraft("{}");
+											setDraft(emptyDraft(active));
 										}}
 									>
 										Cancelar
@@ -151,13 +196,28 @@ export const AdminDashboard = () => {
 								)}
 							</div>
 						</div>
-						<Textarea
-							className="font-mono text-sm min-h-[260px] bg-background"
-							value={draft}
-							onChange={(e) => setDraft(e.target.value)}
-							placeholder='{"title":"...","description":"..."}'
-						/>
-						<div className="flex justify-end mt-3">
+
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+							{fields.map((field) => (
+								<div
+									key={field.key}
+									className={
+										field.type === "textarea" || field.type === "tags"
+											? "sm:col-span-2"
+											: ""
+									}
+								>
+									<ResourceFieldInput
+										id={`field-${field.key}`}
+										field={field}
+										value={draft[field.key]}
+										onChange={updateField}
+									/>
+								</div>
+							))}
+						</div>
+
+						<div className="flex justify-end mt-4">
 							<Button type="button" onClick={submit}>
 								<Plus size={16} />
 								{editingId !== null ? "Guardar" : "Crear"}
@@ -171,26 +231,27 @@ export const AdminDashboard = () => {
 							Lista ({items.length})
 						</h2>
 						{loading ? (
-							<Loader2
-								className="animate-spin text-primary"
-								size={28}
-								aria-label="Cargando"
-							/>
+							<div className="flex flex-col gap-2">
+								{[0, 1, 2].map((i) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: static placeholder count, index is stable
+									<Skeleton key={i} className="h-14 w-full rounded-lg" />
+								))}
+							</div>
 						) : items.length === 0 ? (
 							<p className="text-muted-foreground text-sm">Sin datos</p>
 						) : (
 							<ul className="flex flex-col gap-2 max-h-[60vh] overflow-auto">
 								{items.map((item) => {
 									const id = getId(item);
-									const title =
-										item?.title ?? item?.name ?? item?.work ?? `#${id ?? "?"}`;
 									return (
 										<li
 											key={String(id)}
 											className="flex items-center justify-between border border-border rounded-lg px-4 py-2 hover:bg-muted"
 										>
 											<div className="flex-1 min-w-0">
-												<p className="font-medium truncate">{title}</p>
+												<p className="font-medium truncate">
+													{getTitle(item, id)}
+												</p>
 												<p className="text-xs text-muted-foreground">
 													id: {String(id)}
 												</p>
