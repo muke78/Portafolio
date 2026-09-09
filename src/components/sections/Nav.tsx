@@ -8,6 +8,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
+import { getI18N } from "@/i18n";
 import { ItemsNav } from "@/features/navbar/ItemsNav";
 import { LangDrop } from "@/features/navbar/LangDrop";
 import { ThemeDrop } from "@/features/navbar/ThemeSwitch";
@@ -16,6 +17,7 @@ import type { PropsLang } from "@/types/currentLang.interface";
 export const Nav = ({ currentLocale }: PropsLang) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const closeSidebar = () => setIsOpen(false);
+	const i18n = getI18N({ currentLocale });
 
 	return (
 		<nav
@@ -54,7 +56,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 									type="button"
 									variant="outline"
 									size="icon"
-									aria-label="Abrir menú"
+									aria-label={i18n.NAVBAR.NAVBAR_OPEN_MENU}
 								/>
 							}
 						>
@@ -66,7 +68,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 							className="w-80 max-w-[85vw] flex flex-col"
 						>
 							<SheetHeader>
-								<SheetTitle>Menú</SheetTitle>
+								<SheetTitle>{i18n.NAVBAR.NAVBAR_MENU}</SheetTitle>
 							</SheetHeader>
 
 							<div className="flex-1 px-6 overflow-y-auto">

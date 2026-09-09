@@ -1,11 +1,32 @@
 {
+	"META": {
+		"META_TITLE": "Erick González — Développeur Full-Stack",
+		"META_DESCRIPTION": "Portfolio d'Erick González, développeur web avec de l'expérience en frontend et backend. Découvrez mes projets et compétences.",
+		"META_IMAGE_ALT": "Logo d'Erick González, développeur web."
+	},
+	"COMMON": {
+		"SKIP_TO_CONTENT": "Aller au contenu"
+	},
+	"NAVBAR": {
+		"NAVBAR_SELECT_LANGUAGE": "Sélectionner la langue",
+		"NAVBAR_FLAG_OF": "Drapeau de",
+		"NAVBAR_CHANGE_TO": "Passer à",
+		"NAVBAR_LANGUAGES_AVAILABLE": "langues disponibles",
+		"NAVBAR_OPEN_MENU": "Ouvrir le menu",
+		"NAVBAR_MENU": "Menu"
+	},
 	"HEADER": {
 		"HEADER_TITLE": "Bonjour",
 		"HEADER_SUBTITLE": "Développeur full-stack",
 		"HEADER_NAME": "Érick González",
 		"HEADER_ABOUT": "Ingénieur diplômé en technologies de l'information, spécialisé dans le développement FullStack et l'analyse de données. Avec plus de deux ans d'expérience dans la création d'applications efficaces, évolutives et bien structurées.",
 		"HEADER_BUTTON": "Voir les projets",
-		"HEADER_TALK": "Discutons"
+		"HEADER_TALK": "Discutons",
+		"HEADER_CV_ARIA_LABEL": "Voir le CV pour en savoir plus sur moi",
+		"HEADER_GITHUB_ARIA_LABEL": "En savoir plus sur mes dépôts et ce que j'ai créé",
+		"HEADER_LINKEDIN_ARIA_LABEL": "En savoir plus sur mon expérience",
+		"HEADER_WHATSAPP_ARIA_LABEL": "Numéro de téléphone",
+		"HEADER_EMAIL_ARIA_LABEL": "Adresse e-mail"
 	},
 	"ABOUTME": {
 		"ABOUT_TITLE": "À propos de moi",
@@ -30,7 +51,9 @@
 		"PROJECTS_BADGE_FORK": "Collaboration"
 	},
 	"404": {
-		"404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard."
+		"404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard.",
+		"404_IMG_ALT": "Page introuvable",
+		"404_IMG_ARIA_LABEL": "L'itinéraire demandé est introuvable"
 	},
 	"UNIVERSITY": {
 		"UNIVERSITY_TITLE": "Université Polytechnique de la Vallée de Mexico (UPVM)",

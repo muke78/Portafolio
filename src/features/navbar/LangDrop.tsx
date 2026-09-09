@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { ReactCountryFlag } from "react-country-flag";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -11,20 +12,18 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getI18N } from "@/i18n";
-import { languages } from "@/i18n/ui";
+import { isLocale, LOCALE_META, LOCALES } from "@/i18n/locales";
 import type { PropsLang } from "@/types/currentLang.interface";
 
 export const LangDrop = ({ currentLocale }: PropsLang) => {
 	const [selectedLang, setSelectedLang] = useState<string>(currentLocale);
-	const [_i18n, setI18n] = useState(() =>
+	const [i18n, setI18n] = useState(() =>
 		getI18N({ currentLocale: currentLocale }),
 	);
 
 	useEffect(() => {
 		const langFromPath = window.location.pathname.split("/")[1];
-		const lang = Object.keys(languages).includes(langFromPath)
-			? langFromPath
-			: currentLocale;
+		const lang = isLocale(langFromPath) ? langFromPath : currentLocale;
 
 		setSelectedLang(lang);
 		setI18n(getI18N({ currentLocale: lang }));
@@ -32,11 +31,13 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 
 	const selectLanguage = (lang: string) => {
 		if (lang === selectedLang) return;
-		const currentHash = window.location.hash;
-		const currentSearch = window.location.search;
-		const newPath = `/${lang}/${window.location.pathname.split("/").slice(2).join("/")}${currentSearch}${currentHash}`;
-		window.location.href = newPath;
+		// Preserva query string y hash al cambiar de idioma.
+		const { search, hash, pathname } = window.location;
+		const restOfPath = pathname.split("/").slice(2).join("/");
+		window.location.href = `/${lang}/${restOfPath}${search}${hash}`;
 	};
+
+	const activeMeta = LOCALE_META[isLocale(selectedLang) ? selectedLang : "es"];
 
 	return (
 		<DropdownMenu>
@@ -47,16 +48,18 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 						variant="outline"
 						className="gap-2 rounded-xl px-3"
 					>
-						<img
-							src={languages[selectedLang].img.src}
-							alt={`Bandera de ${languages[selectedLang].label}`}
-							className="h-5 w-5 rounded-full object-cover shadow-sm"
-							loading="lazy"
-							decoding="async"
-							draggable="false"
+						<ReactCountryFlag
+							countryCode={activeMeta.countryCode}
+							svg
+							style={{
+								width: "1.15em",
+								height: "1.15em",
+								borderRadius: "9999px",
+							}}
+							title={`${i18n.NAVBAR.NAVBAR_FLAG_OF} ${activeMeta.label}`}
 						/>
 						<span className="hidden min-[440px]:inline text-base font-medium">
-							{languages[selectedLang].label}
+							{activeMeta.label}
 						</span>
 						<ChevronDown size={18} className="text-muted-foreground" />
 					</Button>
@@ -66,35 +69,40 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 			<DropdownMenuContent align="end" className="w-48">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel className="text-xs uppercase tracking-wider text-muted-foreground">
-						Seleccionar idioma
+						{i18n.NAVBAR.NAVBAR_SELECT_LANGUAGE}
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
-					{Object.entries(languages).map(([key, { label, img }]) => (
-						<DropdownMenuItem
-							key={key}
-							onClick={() => selectLanguage(key)}
-							aria-label={`Cambiar a ${label}`}
-							className="gap-3"
-							data-selected={selectedLang === key || undefined}
-						>
-							<img
-								src={img.src}
-								alt={`Bandera de ${label}`}
-								className="h-6 w-6 rounded-full object-cover shadow-sm"
-								loading="lazy"
-								decoding="async"
-								draggable="false"
-							/>
-							<span className="font-medium">{label}</span>
-							{selectedLang === key && (
-								<span className="ml-auto h-2 w-2 rounded-full bg-primary" />
-							)}
-						</DropdownMenuItem>
-					))}
+					{LOCALES.map((key) => {
+						const meta = LOCALE_META[key];
+						return (
+							<DropdownMenuItem
+								key={key}
+								onClick={() => selectLanguage(key)}
+								aria-label={`${i18n.NAVBAR.NAVBAR_CHANGE_TO} ${meta.label}`}
+								className="gap-3"
+								data-selected={selectedLang === key || undefined}
+							>
+								<ReactCountryFlag
+									countryCode={meta.countryCode}
+									svg
+									style={{
+										width: "1.25em",
+										height: "1.25em",
+										borderRadius: "9999px",
+									}}
+									title={`${i18n.NAVBAR.NAVBAR_FLAG_OF} ${meta.label}`}
+								/>
+								<span className="font-medium">{meta.label}</span>
+								{selectedLang === key && (
+									<span className="ml-auto h-2 w-2 rounded-full bg-primary" />
+								)}
+							</DropdownMenuItem>
+						);
+					})}
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<div className="px-2 py-1.5 text-xs font-normal text-muted-foreground">
-					{Object.keys(languages).length} idiomas disponibles
+					{LOCALES.length} {i18n.NAVBAR.NAVBAR_LANGUAGES_AVAILABLE}
 				</div>
 			</DropdownMenuContent>
 		</DropdownMenu>

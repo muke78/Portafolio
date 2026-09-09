@@ -1,4 +1,5 @@
 import type { z } from "zod";
+import type { Locale } from "@/i18n/locales";
 import type { contactSchema } from "@/schemas/contactSchema";
 import type { opinionsSchema } from "@/schemas/opinionsSchema";
 
@@ -8,8 +9,6 @@ export const CATEGORIES = [
 	"companies",
 	"dataAnalyst",
 ] as const;
-
-export const LOCALES = ["en", "es", "fr"] as const;
 
 export interface PropsLang {
 	currentLocale: string;
@@ -54,7 +53,7 @@ export interface Experiences {
 export interface ProjectsTranslations {
 	translate_project_id: number;
 	project_id: number;
-	locale: (typeof LOCALES)[number];
+	locale: Locale;
 	title: string;
 	description: string;
 }

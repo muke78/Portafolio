@@ -4,6 +4,11 @@ import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import compress from "astro-compress";
 import { defineConfig, envField } from "astro/config";
+import { DEFAULT_LOCALE, LOCALE_META, LOCALES } from "./src/i18n/locales.ts";
+
+const sitemapLocales = Object.fromEntries(
+  LOCALES.map((locale) => [locale, LOCALE_META[locale].sitemapLocale]),
+);
 
 export default defineConfig({
   site: "https://khelde.vercel.app",
@@ -14,12 +19,8 @@ export default defineConfig({
     }),
     sitemap({
       i18n: {
-        defaultLocale: "es",
-        locales: {
-          en: "en-US",
-          es: "es-ES",
-          fr: "fr-CA",
-        },
+        defaultLocale: DEFAULT_LOCALE,
+        locales: sitemapLocales,
       },
     }),
     compress({
@@ -39,11 +40,14 @@ export default defineConfig({
   },
 
   i18n: {
-    defaultLocale: "es",
-    locales: ["es", "en", "fr"],
-    routing: {
-      prefixDefaultLocale: true,
-    },
+    defaultLocale: DEFAULT_LOCALE,
+    locales: [...LOCALES],
+    // "manual": routes outside [lang]/* (like /admin, /api/*) used to get
+    // swallowed by Astro's automatic locale-prefix routing and 404 even
+    // though they're real pages. Manual mode disables that automatic
+    // interception; locale validation for /[lang]/* now happens in our
+    // own middleware.ts instead.
+    routing: "manual",
   },
 
   vite: {
