@@ -1,11 +1,13 @@
-import { Loader2, MessageSquare, Quote } from "lucide-react";
+import { MessageSquare, Quote } from "lucide-react";
 import { type CSSProperties, useEffect, useState } from "react";
 import { getI18N } from "@/i18n";
+import { LOCALE_META, isLocale } from "@/i18n/locales";
 import type {
 	PropsLangWithOpinions,
 	Testimonial,
 } from "@/types/currentLang.interface";
 import { CountryFlag } from "@/features/opinions/Items/CountryFlag";
+import { SkeletonTestimonialCard } from "@/features/opinions/SkeletonTestimonialCard";
 
 export const Opinions = ({
 	currentLocale,
@@ -14,6 +16,8 @@ export const Opinions = ({
 	const [data, setData] = useState<Testimonial[]>(initialData);
 	const [loading, setLoading] = useState<boolean>(initialData.length === 0);
 	const i18n = getI18N({ currentLocale });
+	const dateLocale =
+		LOCALE_META[isLocale(currentLocale) ? currentLocale : "es"].bcp47;
 
 	useEffect(() => {
 		if (initialData.length > 0) return;
@@ -32,14 +36,22 @@ export const Opinions = ({
 		fetchData();
 	}, [initialData.length]);
 
-	if (loading)
+	if (loading) {
 		return (
-			<Loader2
-				className="animate-spin text-primary"
-				size={40}
+			<div
+				className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+				aria-busy="true"
 				aria-label={i18n.COMMON.LOADING}
-			/>
+			>
+				<div className="flex w-max gap-6 py-4">
+					{/* biome-ignore lint/suspicious/noArrayIndexKey: static placeholder count, index is stable */}
+					{[0, 1, 2, 3].map((i) => (
+						<SkeletonTestimonialCard key={i} />
+					))}
+				</div>
+			</div>
 		);
+	}
 
 	return (
 		<div className="relative w-full overflow-hidden">
@@ -125,7 +137,7 @@ export const Opinions = ({
 
 											<div className="inline-flex items-center rounded-full border border-border text-muted-foreground text-xs font-mono px-2.5 py-0.5">
 												{new Date(testimonial.created_at).toLocaleDateString(
-													"es-ES",
+													dateLocale,
 													{
 														day: "numeric",
 														month: "short",

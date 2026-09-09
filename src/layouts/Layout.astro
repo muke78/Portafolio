@@ -62,7 +62,7 @@ const personSchema = {
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
     <!-- Structured data (SEO) -->
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />
     <script is:inline>
       (function () {
         var stored = localStorage.getItem("theme");

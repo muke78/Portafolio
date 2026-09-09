@@ -6,8 +6,8 @@ import compress from "astro-compress";
 import { defineConfig, envField } from "astro/config";
 import { DEFAULT_LOCALE, LOCALE_META, LOCALES } from "./src/i18n/locales.ts";
 
-const sitemapLocales = Object.fromEntries(
-  LOCALES.map((locale) => [locale, LOCALE_META[locale].sitemapLocale]),
+const bcp47s = Object.fromEntries(
+  LOCALES.map((locale) => [locale, LOCALE_META[locale].bcp47]),
 );
 
 export default defineConfig({
@@ -20,7 +20,7 @@ export default defineConfig({
     sitemap({
       i18n: {
         defaultLocale: DEFAULT_LOCALE,
-        locales: sitemapLocales,
+        locales: bcp47s,
       },
     }),
     compress({
