@@ -16,7 +16,7 @@ import { getI18N } from "@/i18n";
 import type { FormOpinions, PropsLang } from "@/types/currentLang.interface";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
 import { countries } from "@/data/countries";
-import ReactCountryFlag from "react-country-flag";
+import { ReactCountryFlag } from "react-country-flag";
 
 type SendOpinionsProps = PropsLang & { onClose?: () => void };
 

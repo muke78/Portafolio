@@ -281,17 +281,6 @@
 	will-change: transform;
 	color: var(--primary);
 }
-@keyframes gx-rotate {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-}
-.galaxy-svg .gx-spin {
-	animation: gx-rotate 280s linear infinite;
-}
 @keyframes neb-breathe {
 	0%,
 	100% {
@@ -350,7 +339,6 @@
 	opacity: 0.55;
 }
 @media (prefers-reduced-motion: reduce) {
-	.galaxy-svg .gx-spin,
 	.nebula-svg,
 	.cosmos-stars .star,
 	.cosmos-dust .dust {
@@ -461,7 +449,4 @@
 	pointer-events: none;
 	opacity: 0.5;
 	color: var(--primary);
-}
-.wordmark-galaxy .galaxy-svg .gx-spin {
-	animation-duration: 180s;
 }
