@@ -131,11 +131,35 @@ de seguir construyendo", mismo espíritu que la sección 1.
       TypeScript marca deprecado (se quita en TS 7.0) — quitado, el alias
       `@/*` sigue resolviendo igual (`paths` no necesita `baseUrl` desde
       TS 4.1), verificado con `tsc --noEmit` + `astro check` (0 errores).
-- [ ] **Limpieza de dependencias no usadas** en `package.json`. Requiere
-      verificar cada candidato contra imports reales antes de borrar (un
-      checker automático como `depcheck` da falsos positivos con paquetes
-      que se usan solo por config — `tailwindcss`, `@biomejs/biome`, tipos
-      `@types/*` — no borrar a ciegas por lo que reporte la herramienta).
+- [x] **Limpieza de dependencias no usadas** en `package.json`. `depcheck`
+      reportó 10 candidatas; verificadas una por una contra imports reales
+      (no solo `.ts`/`.tsx`, también `@import` en CSS) antes de tocar nada:
+      - **Falsos positivos, se quedan**: `@astrojs/check` (necesario para
+        el script `check`, depcheck no ve dependencias solo-CLI),
+        `@astrojs/ts-plugin` y `tailwindcss` (uso vía `tsconfig.json`/
+        pipeline de build, no import de código), `@fontsource-variable/geist`,
+        `@fontsource-variable/geist-mono`, `@fontsource/instrument-serif`,
+        `tw-animate-css` (los 4 vía `@import` en `app.css`, que `depcheck`
+        no rastrea).
+      - **`shadcn` — casi se borra por error**: no hay ningún `import` de
+        JS/TS, parecía candidata real (es normalmente un CLI que se
+        invoca con `dlx`). Se quitó, `pnpm run build` **falló** —
+        `app.css` hace `@import "shadcn/tailwind.css"`, el paquete
+        físico sí hace falta en disco aunque nada lo importe en código.
+        Reinstalada, movida a `devDependencies` (uso solo en build, no en
+        runtime — más correcto que donde vivía antes).
+      - **`swiper` — mismo patrón, encontrado por el build, no por grep**:
+        `Layout.astro` tenía `import "swiper/swiper-bundle.css"` suelto,
+        sin ningún componente `Swiper`/`SwiperSlide` en toda la app (el
+        carrusel de testimonios se reemplazó por el marquee hace tiempo).
+        Ese import y ~40 líneas de CSS `.swiper-*` muerto en
+        `styles.css` eran belleza sin dueño — se borraron los dos, y con
+        eso `swiper` sí quedó real y verificablemente sin uso. Borrado.
+      - **`dotenv` — borrado limpio**: sin ninguna referencia en todo el
+        repo; Astro ya carga `.env` nativo (`astro:env`), nunca hizo falta.
+      - Verificado después de cada cambio con `pnpm run build` (no solo
+        `astro check` — el build es el que de verdad detecta un import de
+        CSS roto, `astro check` no lo cachó) + `pnpm test:unit`.
 - [ ] **`pnpm audit`**: correrlo, documentar cada CVE real que aparezca
       (paquete, severidad, si hay fix disponible vía `pnpm update` o si
       hace falta esperar/cambiar de librería). Si algo aparece de
