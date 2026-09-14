@@ -3,7 +3,14 @@ import type { APIRoute } from "astro";
 import { api } from "@/lib/api";
 import { isRateLimited } from "@/lib/rateLimit";
 
-const READABLE = new Set(["projects", "experiences", "comments"]);
+const READABLE = new Set([
+	"projects",
+	"experiences",
+	"comments",
+	"about",
+	"education",
+	"skills",
+]);
 const WRITABLE_PUBLIC = new Set(["comments"]);
 
 // Vector real del hackeo de 800 comentarios: este POST es publico, sin
