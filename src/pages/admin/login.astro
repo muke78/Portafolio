@@ -13,6 +13,18 @@ import Layout from "@/layouts/Layout.astro";
         Acceso restringido
       </p>
       <div class="space-y-2">
+        <label for="email" class="text-sm font-medium">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          required
+          autocomplete="username"
+          class="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
+          placeholder="tu@correo.com"
+        />
+      </div>
+      <div class="space-y-2">
         <label for="password" class="text-sm font-medium">Contraseña</label>
         <input
           id="password"
@@ -46,7 +58,10 @@ import Layout from "@/layouts/Layout.astro";
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: fd.get("password") }),
+        body: JSON.stringify({
+          email: fd.get("email"),
+          password: fd.get("password"),
+        }),
       });
       if (res.ok) {
         window.location.href = "/admin";

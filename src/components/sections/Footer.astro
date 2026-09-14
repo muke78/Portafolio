@@ -63,8 +63,16 @@ const year = new Date().getFullYear();
 				</ul>
 			</div>
 		</div>
-		<div class="flex flex-wrap items-center gap-4 pt-6 border-t border-border font-mono text-[11px] text-muted-foreground">
+		<div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border font-mono text-[11px] text-muted-foreground">
 			<span>© {year} ERICK GONZÁLEZ · KHELDE</span>
+			<!-- Temporal: reactivado a pedido explícito para probar el login/JWT
+			     de Fase 4c en vivo. docs/TODO.md §5.4 sigue diciendo que el
+			     acceso discreto real (footer/otro lugar) se decide recién en esa
+			     fase - volver a ocultar este link antes de mergear a dev si el
+			     panel no está listo para exponerse todavía. -->
+			<a href="/admin/login" class="inline-flex items-center gap-1.5 transition-colors hover:text-primary">
+				<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> ACCESO ADMIN
+			</a>
 		</div>
 	</div>
 </footer>

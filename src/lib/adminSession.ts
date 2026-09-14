@@ -12,9 +12,21 @@ const sign = (payload: string, secret: string): string => {
 	return createHmac("sha256", secret).update(payload).digest("hex");
 };
 
-export const buildSessionToken = (secret: string): string => {
+// The Hono-issued JWT is itself "header.payload.signature" - embedding it
+// raw would break the "split by dot" parsing below (it has two dots of
+// its own). base64url-encoding it collapses it into one opaque segment,
+// so the outer token stays a clean 3-part `${exp}.${honoJwtB64}.${sig}`
+// - and the HMAC signs exp+jwt together, so the embedded JWT can't be
+// swapped out without invalidating the outer signature.
+const encodeHonoJwt = (honoJwt: string): string =>
+	Buffer.from(honoJwt, "utf8").toString("base64url");
+
+const decodeHonoJwt = (encoded: string): string =>
+	Buffer.from(encoded, "base64url").toString("utf8");
+
+export const buildSessionToken = (secret: string, honoJwt: string): string => {
 	const exp = Date.now() + MAX_AGE_SECONDS * 1000;
-	const payload = String(exp);
+	const payload = `${exp}.${encodeHonoJwt(honoJwt)}`;
 	const sig = sign(payload, secret);
 	return `${payload}.${sig}`;
 };
@@ -43,22 +55,43 @@ export const revokeSessionToken = (token: string | undefined): void => {
 	pruneExpiredRevocations();
 };
 
-export const verifySessionToken = (
+// Shared by verifySessionToken/getHonoJwt so both agree on exactly what
+// "valid" means (signature, then expiry) - returns the raw exp string on
+// success, null on any failure, without ever throwing on a malformed
+// cookie value.
+const verifyAndGetExp = (
 	token: string | undefined,
 	secret: string,
-): boolean => {
-	if (!token) return false;
-	if (revokedTokens.has(token)) return false;
-	const [payload, sig] = token.split(".");
-	if (!payload || !sig) return false;
+): { exp: string; honoJwtB64: string } | null => {
+	if (!token) return null;
+	if (revokedTokens.has(token)) return null;
+	const [exp, honoJwtB64, sig] = token.split(".");
+	if (!exp || !honoJwtB64 || !sig) return null;
+	const payload = `${exp}.${honoJwtB64}`;
 	const expected = sign(payload, secret);
 	const a = encoder.encode(sig);
 	const b = encoder.encode(expected);
-	if (a.length !== b.length) return false;
-	if (!timingSafeEqual(a, b)) return false;
-	const exp = Number(payload);
-	if (!Number.isFinite(exp) || Date.now() > exp) return false;
-	return true;
+	if (a.length !== b.length) return null;
+	if (!timingSafeEqual(a, b)) return null;
+	const expNum = Number(exp);
+	if (!Number.isFinite(expNum) || Date.now() > expNum) return null;
+	return { exp, honoJwtB64 };
+};
+
+export const verifySessionToken = (
+	token: string | undefined,
+	secret: string,
+): boolean => verifyAndGetExp(token, secret) !== null;
+
+/** Extracts the Hono-issued JWT embedded in a valid session cookie, or
+ * null if the cookie is missing/tampered/expired/revoked. */
+export const getHonoJwt = (
+	token: string | undefined,
+	secret: string,
+): string | null => {
+	const verified = verifyAndGetExp(token, secret);
+	if (!verified) return null;
+	return decodeHonoJwt(verified.honoJwtB64);
 };
 
 export const SESSION_COOKIE = COOKIE_NAME;

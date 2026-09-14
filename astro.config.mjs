@@ -100,10 +100,6 @@ export default defineConfig({
         context: "server",
         access: "secret",
       }),
-      ADMIN_PASSWORD: envField.string({
-        context: "server",
-        access: "secret",
-      }),
       ADMIN_SESSION_SECRET: envField.string({
         context: "server",
         access: "secret",
