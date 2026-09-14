@@ -31,9 +31,9 @@ en `docs/02` y `docs/03`.
 | 1 | [01-server-islands.md](01-server-islands.md) | Server Islands (`server:defer`) | **Adoptar después** — candidato claro: `Experiencia` (hoy hace fetch en cliente con spinner). Depende de 02 (caching) para dar todo su valor. |
 | 2 | [02-caching.md](02-caching.md) | Route caching / cache provider | **Adoptar ahora, alcance acotado** — provider de Vercel ya existe en el paquete instalado, solo falta encenderlo. La ruta `/[lang]/home` se queda sin cachear hasta que 01 separe las secciones dinámicas. |
 | 3 | [03-sessions.md](03-sessions.md) | Astro Sessions (`astro:session`) | **Adoptar en Fase 6** (endurecimiento admin) — reemplaza el `Map` en memoria de `adminSession.ts`, que no sobrevive cold start, por un driver real respaldado en Turso. |
-| 4 | [04-images.md](04-images.md) | `<Image>`/`<Picture>` (`astro:assets`) | **Adoptar ahora** — hay un bug real: el `<Image>` de `Header.astro` no se está optimizando. 4 `<img>` crudos evitables, 2 que deben seguir crudos a propósito. |
+| 4 | [04-images.md](04-images.md) | `<Image>`/`<Picture>` (`astro:assets`) | **Hecho (parcial)** — hero optimizado, más un segundo bug real encontrado y arreglado (`/_image` 404eaba por el middleware). `Educacion`/`SobreMi` quedan deferidos — requieren tocar la arquitectura de `TabsAcerca`, no solo la imagen. |
 | 5 | [05-data-fetching.md](05-data-fetching.md) | `fetch()` en `.astro` | **Ya se usa bien en 2 de 3 casos** — `Experiencia` es la excepción, mismo hallazgo que en 01. |
-| 6 | [06-zod-astro-module.md](06-zod-astro-module.md) | `astro/zod` | **Adoptar ahora, cambio trivial** — mismo Zod v4 que ya usan, una dependencia menos. |
+| 6 | [06-zod-astro-module.md](06-zod-astro-module.md) | `astro/zod` | **No adoptar — bloqueador real** — probado en vivo: rompe `zodResolver` (`@hookform/resolvers`) con un error de tipos genuino, no solo teórico. `zod` se queda como dependencia directa. |
 | 7 | [07-view-transitions.md](07-view-transitions.md) | `<ClientRouter />` | **Solo evaluar, no adoptar todavía** — riesgo real de interferir con el fix de anclas recién hecho. Esperar a tener cobertura de test sólida (doc 8). |
 | 8 | [08-testing-strategy.md](08-testing-strategy.md) | Vitest + Playwright + Nightwatch | **Adoptar Vitest ahora, descartar Nightwatch** — Nightwatch es alternativa a Playwright, no complemento; correr los dos duplica mantenimiento sin ganar cobertura. |
 
@@ -42,7 +42,7 @@ en `docs/02` y `docs/03`.
 No son 8 tareas sueltas — hay dependencias reales entre ellas:
 
 ```
-06 (zod)  ─── independiente, se puede hacer ya, cualquier momento
+06 (zod)  ─── descartado, ver el doc — no se hace
 04 (images) ── independiente, se puede hacer ya
 08 (testing) ── independiente, da la red de seguridad para todo lo demás
 

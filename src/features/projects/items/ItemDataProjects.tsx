@@ -37,6 +37,8 @@ export const ItemDataProjects = ({
 							<img
 								src={`https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev/${card_image}`}
 								alt={slug}
+								width={400}
+								height={200}
 								className={`transition-transform duration-300 ease-in-out group-hover:scale-[1.03] ${
 									loadedImages[card_image]
 										? "opacity-100"

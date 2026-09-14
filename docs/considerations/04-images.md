@@ -108,19 +108,45 @@ consciente, no un pendiente:
 **404.svg**: decorativo, SVG vectorial (no pesa nada, no tiene variantes de
 resolución que generar). Dejarlo como está — no es prioridad.
 
-## Veredicto
+## Veredicto — hecho, con un ajuste de alcance
 
-**Adoptar ahora**, alcance acotado a lo que realmente se puede optimizar en
-build time:
+1. [x] **Foto del hero movida y optimizada** — `public/e9721e9d-....webp` →
+   `src/assets/img/hero-portrait.webp`, importada como módulo en
+   `Header.astro`, `width`/`height` ya no hacen falta a mano (inferidos).
+   Confirmado en el build: `dist/client/_astro/hero-portrait.BpJnFKXH.webp`
+   — nombre con hash de contenido, prueba de que el pipeline real la está
+   procesando (antes era una copia estática sin tocar).
+   - **Bug real encontrado al probarlo en vivo, no en el papel**: la
+     imagen daba 404 después del cambio. Causa: el endpoint interno de
+     Astro para servir imágenes optimizadas (`/_image?href=...`) nunca
+     estaba exento en `middleware.ts` — el `localeGuard` lo trataba como
+     un segmento de locale desconocido y lo mandaba a la página 404. Nadie
+     lo había notado porque este era el primer `<Image>` del proyecto que
+     apuntaba a un archivo real dentro de `src/assets/`. Arreglado
+     agregando `"_image"` a `NON_LOCALE_ROOTS` en `middleware.ts`.
+2. [x] `width`/`height` agregados a los dos `<img>` de R2
+   (`ItemDataProjects.tsx`, `ItemDataExperiencia.tsx`) — sin depender de
+   nada del backend, como ya se anticipaba.
+3. [ ] **`/UPVM.webp` y `/Aboutme.webp` (Educacion.tsx/SobreMi.tsx):
+   deferido, no descartado.** La opción "subir el `<Image>` al `.astro`
+   padre" resultó más invasiva de lo que parecía en el papel:
+   `TabsAcerca.tsx` hidrata como grupo (`client:visible`) y decide qué tab
+   mostrar con estado de React — separar la imagen de cabecera de
+   `Educacion.tsx`/`SobreMi.tsx` hacia el `.astro` padre implica pasar esa
+   imagen ya renderizada como children/slot a través de la frontera de
+   hidratación, o convertir esos dos componentes enteros a `.astro` y
+   reestructurar cómo `TabsAcerca` decide qué renderizar — un cambio de
+   arquitectura real, no un ajuste de imagen. Se deja pendiente, de menor
+   prioridad que el resto de la sección 3 del `docs/TODO.md` — ambas
+   imágenes ya tienen `width`/`height` explícitos hoy (sin CLS), solo les
+   falta la optimización de formato/peso.
+4. **No** se metieron las imágenes de R2 al pipeline de `astro:assets` —
+   confirmado, el plan correcto para esas sigue en `docs/02`.
 
-1. Mover la foto del hero a `src/assets/` + importarla — arregla el bug
-   real en la imagen más importante de LCP de todo el sitio.
-2. Mismo tratamiento para `/UPVM.webp` y `/Aboutme.webp`, subiendo el
-   `<Image>` a los `.astro` padres.
-3. Agregar `width`/`height` explícitos a los dos `<img>` de R2 — cero
-   dependencia de nada más.
-4. **No** intentar meter las imágenes de R2 al pipeline de `astro:assets` —
-   confirmado que el plan correcto para esas ya está en `docs/02`.
+Verificado: `astro check` (0 errores), `pnpm run build`, `pnpm test:unit`
+(34/34), y pasada en vivo en el browser (home, proyectos, experiencia) sin
+errores de consola — incluyendo confirmar que el 404 del `/_image` quedó
+resuelto después del fix de middleware.
 
 ## Referencias cruzadas
 
