@@ -31,13 +31,15 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
 	const onSubmit = async (data: FormData) => {
 		try {
-			await fetch("/api/tlgrm", {
+			const res = await fetch("/api/tlgrm", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify(data),
 			});
+
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
 			toast.success(sendInformationValid, {
 				duration: 5000,
