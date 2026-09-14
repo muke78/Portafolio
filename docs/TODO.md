@@ -64,26 +64,73 @@ queda archivado junto con el resto de `considerations/` (es el 08 de esa
 carpeta), pero como **tarea** es la primera de todas, no la última. No se
 duplica contenido aquí, solo el orden.
 
-- [ ] Instalar y configurar Vitest (`vitest.config.ts` vía
+- [x] Instalar y configurar Vitest (`vitest.config.ts` vía
       `getViteConfig()`, scripts `test:unit`/`test:unit:watch`).
-- [ ] Unit tests reales para los 4 candidatos ya identificados:
+- [x] Unit tests reales para los 5 candidatos ya identificados:
       `contactSchema.ts`, `opinionsSchema.ts`, `adminSession.ts`,
-      `rateLimit.ts`, `i18n/index.ts` (`getI18N`).
-- [ ] Ejecutar por fin Playwright de verdad — los 5 specs ya escritos
-      (`tests/e2e/*.spec.ts`) nunca corrieron contra un browser real
-      (bloqueado en sandbox, `cdn.playwright.dev` inalcanzable). Correrlos
-      en una máquina/CI con red antes de dar esto por hecho.
-- [ ] Ampliar Playwright más allá de los 5 specs actuales — "todo el
-      portafolio" todavía deja fuera: envío del formulario de contacto
-      (éxito y fallo), cambio de tema claro/oscuro, navegación entre tabs
-      de Acerca de mí (Educación/Experiencia/Habilidades), tab de
-      Proyectos, envío de una opinión nueva vía `CommentWidget`, y una
-      pasada de responsive (mobile/tablet) en al menos home y admin/login.
-- [ ] Nightwatch: no se instala — decisión ya tomada y justificada en
+      `rateLimit.ts`, `i18n/index.ts` (`getI18N`) — 33 tests, 5 archivos,
+      corriendo en verde (`pnpm test:unit`).
+- [x] Ampliar Playwright más allá de los 5 specs originales — 5 specs
+      nuevos: `contact-form.spec.ts` (éxito/fallo, con
+      `page.route()` mockeando `/api/tlgrm` para no disparar Telegram
+      real en cada corrida), `theme-switch.spec.ts`, `tabs-navigation.spec.ts`
+      (Acerca de mí + Proyectos), `opinions-submit.spec.ts` (éxito/fallo,
+      mock de `/api/comments`), `responsive.spec.ts` (375px/768px, sin
+      overflow horizontal, sheet móvil). 10 specs en total.
+- [x] Bug real encontrado escribiendo `contact-form.spec.ts` y arreglado
+      en el mismo cambio: `Form.tsx` nunca revisaba `res.ok` antes de
+      mostrar el toast de éxito — mismo bug que ya se había arreglado en
+      `sendOpinions.tsx`, quedó sin tocar en el formulario de contacto.
+- [ ] **Sigue bloqueado**: correr los 10 specs contra un browser real.
+      `pnpm exec playwright install chromium` se reintentó en esta sesión
+      — el host ya es alcanzable (antes ni eso), pero la descarga del
+      binario (~150MB) sigue cortándose a los 30s. Confirmado que es la
+      sandbox, no el setup. Los 10 specs están verificados solo por
+      `tsc --noEmit` + `astro check` (0 errores). Correr de verdad en una
+      máquina/CI con red real antes de dar la tarea por completamente
+      cerrada.
+- [x] Nightwatch: no se instala — decisión ya tomada y justificada en
       `docs/considerations/08-testing-strategy.md`.
+- [ ] Coverage de los unit tests (`@vitest/coverage-v8`) — ver sección 1.5,
+      para saber qué tanto del código real cubren estos tests o si son
+      solo unos fragmentos.
 
-**Version objetivo**: `minor` — ej. `v3.2.0`, cuando Vitest + la suite
-ampliada de Playwright corren en verde de verdad, no solo compilan.
+**Version objetivo**: `minor` — ej. `v3.3.0` (`v3.2.0` ya se usó para el
+snapshot de Fase 0-6 al cerrar la sesión anterior) — recién cuando los 10
+specs de Playwright corran en verde de verdad, no solo compilen.
+
+---
+
+## 1.5 Higiene del proyecto: coverage, dependencias, auditoría de seguridad
+
+Tres tareas chicas, independientes entre sí y de todo lo demás — cada una
+en su propia rama/PR. Se agrupan aquí porque las tres son "limpieza antes
+de seguir construyendo", mismo espíritu que la sección 1.
+
+- [ ] **Coverage de tests**: instalar `@vitest/coverage-v8`, configurar
+      `test.coverage` en `vitest.config.ts`, script `test:unit:coverage`.
+      El punto es medible, no solo "tener coverage": hoy los unit tests
+      cubren 5 archivos puntuales (`src/lib/`, `src/schemas/`,
+      `src/i18n/index.ts`) — el reporte real va a mostrar que la enorme
+      mayoría de `src/` (componentes React, páginas `.astro`) queda en
+      0%, porque esa parte la cubre Playwright, no Vitest. No confundir
+      "bajo % de coverage de Vitest" con "poco testeado" — son capas
+      distintas, el número solo tiene sentido leído junto con cuántos
+      specs de Playwright están corriendo.
+- [ ] **Limpieza de dependencias no usadas** en `package.json`. Requiere
+      verificar cada candidato contra imports reales antes de borrar (un
+      checker automático como `depcheck` da falsos positivos con paquetes
+      que se usan solo por config — `tailwindcss`, `@biomejs/biome`, tipos
+      `@types/*` — no borrar a ciegas por lo que reporte la herramienta).
+- [ ] **`pnpm audit`**: correrlo, documentar cada CVE real que aparezca
+      (paquete, severidad, si hay fix disponible vía `pnpm update` o si
+      hace falta esperar/cambiar de librería). Si algo aparece de
+      severidad alta/crítica con fix disponible, se resuelve en la misma
+      rama; si el fix implica un bump mayor con riesgo de romper algo, se
+      documenta como su propia tarea en vez de forzarlo aquí.
+
+**Version objetivo**: `patch` cada una (`v3.3.1`, `v3.3.2`, `v3.3.3` o
+similar) — son mantenimiento, no capacidad nueva.
 
 ---
 
