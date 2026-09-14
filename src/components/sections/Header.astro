@@ -1,6 +1,6 @@
 ---
+import { SiGithub } from "@icons-pack/react-simple-icons";
 import {
-	Github,
 	Linkedin,
 	Mail,
 	MessageCircle,
@@ -81,7 +81,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				aria-label={i18n.HEADER.HEADER_GITHUB_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
-				<Github size={22} />
+				<SiGithub size={22} aria-hidden="true" />
 			</a>
 			<a
 				href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
@@ -90,7 +90,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				aria-label={i18n.HEADER.HEADER_LINKEDIN_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
-				<Linkedin size={22} />
+				<Linkedin size={22} aria-hidden="true" />
 			</a>
 			<a
 				href="https://wa.me/+525511909105"

@@ -6,12 +6,14 @@ import compress from "astro-compress";
 import { defineConfig, envField } from "astro/config";
 import { DEFAULT_LOCALE, LOCALE_META, LOCALES } from "./src/i18n/locales.ts";
 
+const SITE_URL = "https://khelde.vercel.app";
+
 const bcp47s = Object.fromEntries(
   LOCALES.map((locale) => [locale, LOCALE_META[locale].bcp47]),
 );
 
 export default defineConfig({
-  site: "https://khelde.vercel.app",
+  site: SITE_URL,
   integrations: [
     react({
       include: ["**/react/*", "**/components/**/*"],
@@ -22,6 +24,17 @@ export default defineConfig({
         defaultLocale: DEFAULT_LOCALE,
         locales: bcp47s,
       },
+      // The [lang]/home route is fully dynamic SSR (no getStaticPaths,
+      // no prerender) - deliberately kept that way so admin-panel edits
+      // show up live without a redeploy. Astro's sitemap integration
+      // only discovers static routes on its own, so without this the
+      // sitemap only ever listed "/" and the admin routes. The three
+      // locale URLs are a small, fixed, known set - list them directly
+      // instead of forcing prerendering just for sitemap discovery.
+      customPages: LOCALES.map((locale) => `${SITE_URL}/${locale}/home`),
+      // /admin/* is disallowed in robots.txt - don't also advertise it
+      // in the sitemap.
+      filter: (page) => !page.includes("/admin"),
     }),
     compress({
       CSS: true,

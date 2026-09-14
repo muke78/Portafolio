@@ -6,7 +6,7 @@ export const contactSchema = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });
 	const schema = z.object({
 		name: z.string().min(5, i18n.FORM.FORM_VALID_NAME),
-		email: z.string().email(i18n.FORM.FORM_VALID_EMAIL),
+		email: z.email(i18n.FORM.FORM_VALID_EMAIL),
 		phone: z
 			.string()
 			.min(7, i18n.FORM.FORM_VALID_PHONE_MIN)
