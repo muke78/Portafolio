@@ -38,8 +38,8 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "astro": "^7.3.1",
-    "astro-compress": "^2.3.6",
-    "axios": "^1.11.0",
+    "astro-compress": "^2.4.3",
+    "axios": "^1.20.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.2.6",
     "husky": "^9.1.7",
@@ -70,6 +70,10 @@
       "@tailwindcss/oxide",
       "esbuild",
       "sharp"
-    ]
+    ],
+    "overrides": {
+      "sharp": ">=0.35.4",
+      "svgo": ">=4.1.0"
+    }
   }
 }
