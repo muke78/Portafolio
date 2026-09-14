@@ -50,6 +50,33 @@ export interface Experiences {
 	location: string;
 }
 
+// Fase 5b: shapes de GET /about, /education, /skills (Backend_Portafolio,
+// docs/06-about-education-skills.md) - reemplazan el codigo estatico que
+// antes vivia en i18n (ABOUTME.*/UNIVERSITY.*) y en
+// src/data/locales/*/dataTabsAcercaDe*.ts.
+export interface About {
+	about_id: number;
+	image: string;
+	title_card: string;
+	subtitle: string;
+	description: string;
+}
+
+export interface Education {
+	education_id: number;
+	institution: string;
+	subtitle: string;
+	description: string;
+	image: string;
+	period: string;
+}
+
+export interface Skill {
+	skill_id: number;
+	title: string;
+	images_topics: string[];
+}
+
 export interface ProjectsTranslations {
 	translate_project_id: number;
 	project_id: number;

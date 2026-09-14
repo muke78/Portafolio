@@ -31,10 +31,8 @@
 	},
 	"ABOUTME": {
 		"ABOUT_TITLE": "Acerca de mí",
-		"ABOUT_ABOUT_DESCRIPTION": "Soy un desarrollador web especializado en la creación de aplicaciones completas desde el diseño de interfaces hasta la implementación de lógica en el servidor. Tengo experiencia en bases de datos y en el despliegue de aplicaciones, asegurando un rendimiento óptimo y una experiencia de usuario fluida. Además, domino el control de versiones a través de Git y utilizo Power BI para el análisis de datos, lo que me permite tomar decisiones informadas basadas en métricas.",
 		"ABOUT_DOWNLOAD_CV": "Ver CV",
 		"ABOUT_TITLE_CARD": "Ingeniero en Tecnologías de la Información. Desarrollador Full-Stack.",
-		"ABOUT_SUBTITLE": "Autónomo",
 		"EXPERIENCE": "Experiencia"
 	},
 	"SKILLS": {
@@ -55,11 +53,6 @@
 		"404_BODY": "¡Ups! La página que estás buscando aún no está en órbita, regresa después",
 		"404_IMG_ALT": "No se encontró la página",
 		"404_IMG_ARIA_LABEL": "No se encontró la ruta especificada"
-	},
-	"UNIVERSITY": {
-		"UNIVERSITY_TITLE": "Universidad Politécnica del Valle de México (UPVM)",
-		"UNIVERSITY_SUBTITLE": "Ingeniería en Tecnologías de la Información",
-		"UNIVERSITY_TEXT": "Durante mi tiempo en la universidad, aprendí sobre diversas áreas de TI, como mantenimiento de equipos, redes, programación orientada a objetos, desarrollo móvil con Xamarin, ciberseguridad, ingeniería de requisitos y bases de datos. También trabajé con Arduino en robótica. Sin embargo, lo que más me interesó fue el desarrollo web. Aunque solo aprendí conceptos básicos de jQuery, siempre tuve el deseo de seguir aprendiendo sobre este tema. Actualmente, soy autodidacta y me esfuerzo por aprender algo nuevo cada día."
 	},
 	"OPINIONS": {
 		"OPINIONS_SUBTITLE": "Ten mucha paciencia contigo mismo y no te compares demasiado con los demás.",
