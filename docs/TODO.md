@@ -254,8 +254,14 @@ ejecución):
 
 ```
 Paso 1 (independientes, cualquier momento, bajo riesgo):
-  → considerations/06-zod-astro-module.md   (cambio trivial, 1 dependencia menos)
-  → considerations/04-images.md             (bug real: <Image> del hero sin optimizar)
+  → considerations/06-zod-astro-module.md   [x] DESCARTADO — bloqueador real
+    con @hookform/resolvers, probado en vivo, ver el doc. zod se queda como
+    dependencia directa.
+  → considerations/04-images.md             [x] HECHO (parcial) — hero movido
+    a src/assets/ + optimizado, y un segundo bug real encontrado al
+    probarlo: /_image daba 404 porque middleware.ts nunca lo eximía del
+    localeGuard (arreglado). Educacion/SobreMi quedan deferidos, requieren
+    tocar la arquitectura de TabsAcerca, no solo la imagen.
 
 Paso 2 (preparan terreno):
   → considerations/02-caching.md   — SOLO el alcance acotado que ya marca el doc

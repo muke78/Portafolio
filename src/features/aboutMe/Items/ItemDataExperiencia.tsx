@@ -56,6 +56,8 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 							<img
 								src={`https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev/${img}`}
 								alt={alt}
+								width={48}
+								height={48}
 								className="w-12 h-12 rounded-full bg-muted object-cover"
 								loading="lazy"
 								decoding="async"

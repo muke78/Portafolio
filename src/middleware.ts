@@ -7,7 +7,11 @@ import { SESSION_COOKIE, verifySessionToken } from "@/lib/adminSession";
 // must never be caught by the locale guard below. "404" has to be here
 // too - ctx.rewrite("/404") re-enters this same middleware, and without
 // the exemption it would rewrite to /404 forever ("Loop Detected").
-const NON_LOCALE_ROOTS = ["admin", "api", "404"];
+// "_image" is Astro's own on-demand image transform endpoint
+// (astro:assets <Image>/<Picture>) - without this exemption every
+// optimized image 404s the moment a real one is used, since its request
+// path doesn't look like a file and isn't a locale either.
+const NON_LOCALE_ROOTS = ["admin", "api", "404", "_image"];
 
 // i18n routing is set to "manual" in astro.config.mjs specifically so
 // that /admin and /api/* aren't swallowed by Astro's automatic
