@@ -107,16 +107,30 @@ Tres tareas chicas, independientes entre sí y de todo lo demás — cada una
 en su propia rama/PR. Se agrupan aquí porque las tres son "limpieza antes
 de seguir construyendo", mismo espíritu que la sección 1.
 
-- [ ] **Coverage de tests**: instalar `@vitest/coverage-v8`, configurar
-      `test.coverage` en `vitest.config.ts`, script `test:unit:coverage`.
-      El punto es medible, no solo "tener coverage": hoy los unit tests
-      cubren 5 archivos puntuales (`src/lib/`, `src/schemas/`,
-      `src/i18n/index.ts`) — el reporte real va a mostrar que la enorme
-      mayoría de `src/` (componentes React, páginas `.astro`) queda en
-      0%, porque esa parte la cubre Playwright, no Vitest. No confundir
-      "bajo % de coverage de Vitest" con "poco testeado" — son capas
-      distintas, el número solo tiene sentido leído junto con cuántos
-      specs de Playwright están corriendo.
+- [x] **Coverage de tests**: `@vitest/coverage-v8` instalado, `test.coverage`
+      en `vitest.config.ts` acotado a `src/lib/**`, `src/schemas/**`,
+      `src/i18n/index.ts` (a propósito — componentes React y páginas
+      `.astro` los cubre Playwright, no Vitest; incluirlos aquí solo
+      mostraría un muro de 0% de código que esta capa nunca debió cubrir).
+      Script `pnpm test:unit:coverage`. Números reales (verificados contra
+      el JSON crudo, no solo la tabla de terminal — ver nota abajo):
+      **94.1% statements, 100% functions, 87.9% branches** sobre los 7
+      archivos que sí toca (incluye `src/lib/utils.ts`, importado
+      transitivamente).
+      **Quirk documentado**: el reporter `text` de esta versión de Vitest
+      (5.0.0) no imprime en la tabla de terminal las filas de
+      `schemas/` ni `i18n/index.ts` aunque su cobertura SÍ está completa y
+      correcta — confirmado leyendo `coverage/coverage-final.json` crudo y
+      el reporte `coverage/index.html` (ambos completos, los 7 archivos
+      presentes). El resumen agregado ("All files") sí es correcto, es
+      puramente la tabla por-archivo la que no renderiza esas filas. No es
+      un problema de esta configuración — es un bug/limitación de esa
+      versión del reporter en Windows; para ver el desglose real usar
+      `coverage/index.html`, no la tabla de terminal.
+      De paso, arreglado: `tsconfig.json` tenía `baseUrl: "."` que
+      TypeScript marca deprecado (se quita en TS 7.0) — quitado, el alias
+      `@/*` sigue resolviendo igual (`paths` no necesita `baseUrl` desde
+      TS 4.1), verificado con `tsc --noEmit` + `astro check` (0 errores).
 - [ ] **Limpieza de dependencias no usadas** en `package.json`. Requiere
       verificar cada candidato contra imports reales antes de borrar (un
       checker automático como `depcheck` da falsos positivos con paquetes

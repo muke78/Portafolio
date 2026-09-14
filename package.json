@@ -20,7 +20,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:unit": "vitest run",
-    "test:unit:watch": "vitest"
+    "test:unit:watch": "vitest",
+    "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -61,6 +62,7 @@
     "@playwright/test": "^1.63.0",
     "@types/node": "^24.2.1",
     "@types/three": "^0.185.4",
+    "@vitest/coverage-v8": "^5.0.0",
     "tailwindcss": "4.3.3",
     "vitest": "^5.0.0"
   },
