@@ -48,6 +48,12 @@ comments (comment_id, name, job, description, country, country_flag, status, dir
 
 contact_messages (message_id, name, email, phone, more_information, status, created_at)
 -- status nuevo: 'unread' | 'read' | 'replied'
+-- more_information = el requerimiento/mensaje que manda el visitante.
+-- Tabla CONDICIONAL: depende de la decisión pendiente en
+-- 02-panel-admin-requisitos.md (Contacto) - si el canal termina siendo
+-- WhatsApp puro (redirect sin backend), esta tabla no se crea. Solo aplica
+-- si se elige el centro de mensajes en el panel admin, solo o combinado
+-- con WhatsApp.
 ```
 
 **Pendiente de confirmar contigo/revisando el esquema real de Turso**: cómo

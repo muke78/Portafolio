@@ -129,14 +129,34 @@ ruta no obvia + todo lo del punto 1?
 ### Contacto
 
 - Hoy: el formulario público solo dispara un mensaje de Telegram vía Hono
-  (`POST /tlgrm`) — no queda ningún registro consultable, no hay forma de
-  ver en el panel "quién me ha escrito".
-- Pediste un refactor: que los mensajes de contacto se **persistan** en
-  Turso (tabla `contact_messages`: nombre, email, teléfono, mensaje, fecha,
-  y un estado tipo `unread`/`read`/`replied`) y el panel admin los liste.
-  Telegram puede seguir funcionando **en paralelo** como notificación en
-  tiempo real (te avisa al instante) sin que sea la única fuente de
-  verdad — no hace falta elegir entre uno u otro.
+  (`POST /tlgrm`, API de BotFather) — no queda ningún registro consultable,
+  no hay forma de ver en el panel "quién me ha escrito".
+- Dijiste explícito que Telegram/BotFather **ya no debería ser el canal**.
+  Quedan dos direcciones reales, todavía sin decidir cuál (o si se
+  combinan):
+  1. **Redirigir a WhatsApp**: el formulario deja de mandar `POST` a Hono y
+     en su lugar arma un link `wa.me/<numero>?text=<mensaje prellenado>` —
+     cero backend nuevo, cero tabla nueva, el mensaje te llega directo al
+     WhatsApp. Contra: no queda ningún registro en el sitio de quién
+     escribió — si el visitante cierra WhatsApp sin mandar, no hay rastro.
+  2. **Centro de mensajes en el panel admin**: el formulario sigue
+     mandando `POST` a Hono, pero persiste en Turso — tabla
+     `contact_messages` (ver
+     [`04-migracion-datos.md`](./04-migracion-datos.md)) — y el panel
+     admin nuevo tiene una vista tipo bandeja de entrada: quién escribió,
+     qué pidió (el requerimiento), cuándo, y su estado
+     (`unread`/`read`/`replied`). Esto es lo que ya estaba planeado en la
+     versión anterior de este documento; sigue siendo válido si se elige
+     esta ruta.
+  - Las dos no son del todo excluyentes: se podría redirigir a WhatsApp
+    **y** loguear el intento en `contact_messages` antes de redirigir (el
+    formulario manda un `POST` liviano a Hono solo para registrar, luego
+    abre WhatsApp) — combina cero fricción para el visitante con que a ti
+    sí te quede registro. Es una tercera opción real, no una ocurrencia.
+- **Pendiente de decidir contigo**: ¿WhatsApp puro, centro de mensajes
+  puro, o la combinación? Si termina siendo WhatsApp puro (opción 1 sola),
+  la tabla `contact_messages` de la Fase 5 de `docs/TODO.md` deja de hacer
+  falta — hay que confirmar esto antes de construirla, no después.
 
 ## Modelo de operación
 

@@ -210,7 +210,8 @@ la sección 2 ya encaminados antes de tocar Turso de verdad.
 
 Del contrato de `docs/03-diseno-api.md`: `education` +
 `education_translations`, `skills`, `about_me` (+ traducciones),
-`contact_messages`, `uploads`.
+`contact_messages` (condicional — ver 5.4, depende de WhatsApp vs. centro
+de mensajes), `uploads`.
 
 Y una que no estaba explícita ahí y hace falta ahora que hay más superficie
 de API: **tabla de usuarios/login** (`users` o `admin_users`). Hoy el login
@@ -246,8 +247,15 @@ Con la tabla de usuarios y las tablas nuevas ya escribiendo datos reales:
 - [ ] Formularios tipados por recurso para `education`/`about_me`/`skills`
       (ya arrancado parcialmente en `src/features/admin/`).
 - [ ] Upload de imágenes a R2 + conversión automática a webp desde Hono.
-- [ ] Refactor de Contacto: persistir en `contact_messages`, no depender
-      solo de Telegram.
+- [ ] Refactor de Contacto: **decisión pendiente, no asumida** — Telegram/
+      BotFather deja de ser el canal tal cual está hoy. Dos rutas reales
+      (ver `docs/02-panel-admin-requisitos.md`, sección Contacto):
+      redirigir directo a WhatsApp (sin backend nuevo, sin tabla), o un
+      centro de mensajes en el panel admin persistido en
+      `contact_messages` (con Telegram opcional en paralelo como
+      notificación). Se puede combinar ambas. Confirmar cuál antes de
+      crear la tabla en 5.2 — si es WhatsApp puro, `contact_messages` se
+      cae del plan entero.
 - [ ] Recién aquí: volver a poner el acceso al panel (footer o donde se
       decida, ver `docs/02-panel-admin-requisitos.md` sobre acceso
       discreto) — no antes.

@@ -74,11 +74,21 @@ cubrir todo lo que pediste:
 | `skills` **(nuevo)** | ✅ | ✅ | ✅ admin | ✅ admin | ✅ admin |
 | `about_me` **(nuevo)** | ✅ | ✅ | — | ✅ admin | — |
 | `comments` | ✅ (solo `published`) | ✅ (todos los estados) | ✅ público (crea `pending`) | ✅ admin (cambia `status`, edita) | ✅ admin |
-| `contact_messages` **(nuevo)** | — | ✅ admin | ✅ público (vía `/tlgrm` actual) | ✅ admin (marca leído/respondido) | ✅ admin |
+| `contact_messages` **(nuevo, condicional)** | — | ✅ admin | ✅ público | ✅ admin (marca leído/respondido) | ✅ admin |
 | `uploads` **(nuevo)** | — | — | ✅ admin (sube a R2, devuelve URL webp) | — | ✅ admin (borra de R2) |
 
 Todos los `GET` públicos llevan `?currentLocale=` igual que hoy
 (`src/pages/api/[resource].ts` ya reenvía ese parámetro).
+
+`contact_messages` está marcada **condicional**: todavía no está decidido
+si el canal de contacto se queda como un registro en Turso o pasa a ser un
+redirect directo a WhatsApp sin backend — ver la sección "Contacto" en
+[`02-panel-admin-requisitos.md`](./02-panel-admin-requisitos.md). Si se
+elige WhatsApp puro, este endpoint y la tabla completa se caen del plan; si
+se elige el centro de mensajes (o la combinación de ambos), el `POST`
+público deja de pasar por `/tlgrm` y pasa a escribir directo en
+`contact_messages`, con Telegram como notificación opcional en paralelo,
+no como único destino.
 
 Todos los endpoints marcados "admin" deben exigir el JWT de sesión
 propuesto arriba, no solo el bearer token fijo.
