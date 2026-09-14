@@ -126,37 +126,22 @@ ruta no obvia + todo lo del punto 1?
   cambiar el estado sin necesidad de borrar el registro — así se puede
   ocultar un comentario problemático sin perder el historial.
 
-### Contacto
+### Contacto — decidido y hecho
 
-- Hoy: el formulario público solo dispara un mensaje de Telegram vía Hono
-  (`POST /tlgrm`, API de BotFather) — no queda ningún registro consultable,
-  no hay forma de ver en el panel "quién me ha escrito".
-- Dijiste explícito que Telegram/BotFather **ya no debería ser el canal**.
-  Quedan dos direcciones reales, todavía sin decidir cuál (o si se
-  combinan):
-  1. **Redirigir a WhatsApp**: el formulario deja de mandar `POST` a Hono y
-     en su lugar arma un link `wa.me/<numero>?text=<mensaje prellenado>` —
-     cero backend nuevo, cero tabla nueva, el mensaje te llega directo al
-     WhatsApp. Contra: no queda ningún registro en el sitio de quién
-     escribió — si el visitante cierra WhatsApp sin mandar, no hay rastro.
-  2. **Centro de mensajes en el panel admin**: el formulario sigue
-     mandando `POST` a Hono, pero persiste en Turso — tabla
-     `contact_messages` (ver
-     [`04-migracion-datos.md`](./04-migracion-datos.md)) — y el panel
-     admin nuevo tiene una vista tipo bandeja de entrada: quién escribió,
-     qué pidió (el requerimiento), cuándo, y su estado
-     (`unread`/`read`/`replied`). Esto es lo que ya estaba planeado en la
-     versión anterior de este documento; sigue siendo válido si se elige
-     esta ruta.
-  - Las dos no son del todo excluyentes: se podría redirigir a WhatsApp
-    **y** loguear el intento en `contact_messages` antes de redirigir (el
-    formulario manda un `POST` liviano a Hono solo para registrar, luego
-    abre WhatsApp) — combina cero fricción para el visitante con que a ti
-    sí te quede registro. Es una tercera opción real, no una ocurrencia.
-- **Pendiente de decidir contigo**: ¿WhatsApp puro, centro de mensajes
-  puro, o la combinación? Si termina siendo WhatsApp puro (opción 1 sola),
-  la tabla `contact_messages` de la Fase 5 de `docs/TODO.md` deja de hacer
-  falta — hay que confirmar esto antes de construirla, no después.
+**Resuelto**: centro de mensajes, sin WhatsApp. El formulario público ya
+no dispara Telegram (`POST /tlgrm` eliminado por completo, ni como
+notificación paralela) — persiste en Turso, tabla `contact_messages` (ver
+[`04-migracion-datos.md`](./04-migracion-datos.md)), vía
+`POST /api/contact-messages`. Implementado en el repo
+`Backend_Portafolio` (tag `0.3.0`) + este repo (rate limit conectado al
+proxy público). Detalle completo en `docs/02-comentarios-y-contacto.md`
+de `Backend_Portafolio`.
+
+Lo que sigue pendiente, no de esta decisión sino de la Fase 4 (JWT de
+sesión admin): la vista tipo bandeja de entrada en el panel admin —
+`GetAllContactMessages` ya existe del lado de Hono, pero sin ruta que la
+exponga todavía (no hay forma real hoy de distinguir "admin autenticado"
+de "trae el token público fijo").
 
 ## Modelo de operación
 

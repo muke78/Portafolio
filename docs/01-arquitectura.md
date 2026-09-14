@@ -7,16 +7,13 @@
 │  Navegador  │───────▶│  Astro (Vercel)   │───────▶│   Hono   │
 │             │◀───────│  output: "server" │◀───────│ (backend)│
 └─────────────┘        └──────────────────┘        └────┬─────┘
-                        /api/[resource]  GET/POST         │
-                        /api/admin/*     (login/CRUD)      │
-                        /api/tlgrm       POST               │
+                        /api/[resource]        GET/POST    │
+                        /api/admin/*           (login/CRUD)│
+                        /api/contact-messages  POST         │
                                                             ▼
                                                      ┌──────────────┐
                                                      │ Turso (libSQL)│
                                                      └──────────────┘
-                                                            │
-                                                            ▼
-                                              Telegram Bot API (vía Hono)
 
 Imágenes de proyectos: Cloudflare R2 (URLs públicas, servidas directo al
 navegador — el frontend no pasa por Hono para leerlas, solo para el futuro
@@ -49,7 +46,9 @@ entre el navegador y Hono. Lo que cambia:
 2. **Hono gana endpoints nuevos**: subida de imágenes a R2 (con conversión
    a webp), CRUD completo para `education` (hoy no existe como recurso
    propio — ver [`04-migracion-datos.md`](./04-migracion-datos.md)),
-   gestión de mensajes de contacto persistidos (no solo Telegram).
+   gestión de mensajes de contacto persistidos — **hecho**: `contact_messages`
+   en Turso, Telegram eliminado por completo (repo `Backend_Portafolio`,
+   tag `0.3.0`, ver `docs/02-comentarios-y-contacto.md` de ese repo).
 3. **Turso se limpia y reestructura**: las tablas actuales se vacían y se
    vuelven a poblar con un esquema pensado para el panel admin, no
    arrastrando datos de prueba o inconsistentes.
@@ -64,7 +63,7 @@ Lo que probablemente recuerdas a medias es una de estas dos cosas — las dos
 son reales y aplican aquí, no son excluyentes:
 
 - **Rutas API de Astro** (`src/pages/api/**/*.ts`): esto es lo que **ya**
-  usa este proyecto (`/api/[resource].ts`, `/api/admin/*`, `/api/tlgrm.ts`).
+  usa este proyecto (`/api/[resource].ts`, `/api/admin/*`, `/api/contact-messages.ts`).
   Un archivo `.ts` en `src/pages/api/` exportando `GET`/`POST`/`PUT`/
   `DELETE` se convierte en un endpoint HTTP real. No hace falta nada nuevo
   para seguir este patrón con los recursos nuevos (education, contact
@@ -89,7 +88,7 @@ son reales y aplican aquí, no son excluyentes:
 | Proxy admin (CRUD genérico) | `src/pages/api/admin/resource.ts` |
 | Sesión admin (cookie HMAC) | `src/lib/adminSession.ts` |
 | Login/logout admin | `src/pages/api/admin/{login,logout}.ts` |
-| Rate limit de login | `src/lib/rateLimit.ts` |
-| Formulario de contacto → Hono → Telegram | `src/pages/api/tlgrm.ts` |
+| Rate limit (login, comentarios, contacto) | `src/lib/rateLimit.ts` |
+| Formulario de contacto → Hono → Turso (`contact_messages`) | `src/pages/api/contact-messages.ts` |
 | UI del panel admin | `src/features/admin/` |
 | Config de recursos del panel (campos por tipo) | `src/features/admin/resourceFields.ts` |

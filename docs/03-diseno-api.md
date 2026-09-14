@@ -73,22 +73,23 @@ cubrir todo lo que pediste:
 | `education_translations` **(nuevo)** | (embebido) | — | ✅ admin | ✅ admin | — |
 | `skills` **(nuevo)** | ✅ | ✅ | ✅ admin | ✅ admin | ✅ admin |
 | `about_me` **(nuevo)** | ✅ | ✅ | — | ✅ admin | — |
-| `comments` | ✅ (solo `published`) | ✅ (todos los estados) | ✅ público (crea `pending`) | ✅ admin (cambia `status`, edita) | ✅ admin |
-| `contact_messages` **(nuevo, condicional)** | — | ✅ admin | ✅ público | ✅ admin (marca leído/respondido) | ✅ admin |
+| `comments` | ✅ (solo `published`) hecho | ⏳ admin (todos los estados) Fase 4 | ✅ público (crea `pending`) hecho | ⏳ admin (cambia `status`, edita) Fase 4 | ⏳ admin Fase 4 |
+| `contact_messages` **(nuevo)** — hecho | — | ⏳ admin Fase 4 | ✅ público hecho | ⏳ admin (marca leído/respondido) Fase 4 | ⏳ admin Fase 4 |
 | `uploads` **(nuevo)** | — | — | ✅ admin (sube a R2, devuelve URL webp) | — | ✅ admin (borra de R2) |
 
 Todos los `GET` públicos llevan `?currentLocale=` igual que hoy
 (`src/pages/api/[resource].ts` ya reenvía ese parámetro).
 
-`contact_messages` está marcada **condicional**: todavía no está decidido
-si el canal de contacto se queda como un registro en Turso o pasa a ser un
-redirect directo a WhatsApp sin backend — ver la sección "Contacto" en
-[`02-panel-admin-requisitos.md`](./02-panel-admin-requisitos.md). Si se
-elige WhatsApp puro, este endpoint y la tabla completa se caen del plan; si
-se elige el centro de mensajes (o la combinación de ambos), el `POST`
-público deja de pasar por `/tlgrm` y pasa a escribir directo en
-`contact_messages`, con Telegram como notificación opcional en paralelo,
-no como único destino.
+`contact_messages` **decisión ya tomada y ejecutada** (repo
+Backend_Portafolio, tag 0.3.0 — ya no está condicional): centro de
+mensajes en Turso, sin redirect a WhatsApp. El `POST` público ya no pasa
+por `/tlgrm` (eliminado, junto con todo el módulo de Telegram — ni
+siquiera quedó como notificación paralela) — escribe directo en
+`contact_messages` vía `POST /api/contact-messages`. Detalle completo en
+`docs/02-comentarios-y-contacto.md` de ese repo. Las columnas marcadas
+"admin" (todos los estados, editar, borrar) siguen pendientes de ruta
+real — necesitan el JWT de sesión admin de la Fase 4, no el bearer token
+fijo actual.
 
 Todos los endpoints marcados "admin" deben exigir el JWT de sesión
 propuesto arriba, no solo el bearer token fijo.

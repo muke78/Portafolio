@@ -39,7 +39,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
 	const onSubmit = async (data: FormData) => {
 		try {
-			const res = await fetch("/api/tlgrm", {
+			const res = await fetch("/api/contact-messages", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
