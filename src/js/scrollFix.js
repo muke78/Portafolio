@@ -21,7 +21,7 @@
  * corrections land in the same place a normal jump would and animate
  * the same way.
  */
-(function () {
+(() => {
 	const SETTLE_WINDOW_MS = 4000;
 
 	function stabilizeScrollTo(hash) {

@@ -1,13 +1,13 @@
 import { MessageSquare, Quote } from "lucide-react";
 import { type CSSProperties, useEffect, useState } from "react";
+import { CountryFlag } from "@/features/opinions/Items/CountryFlag";
+import { SkeletonTestimonialCard } from "@/features/opinions/SkeletonTestimonialCard";
 import { getI18N } from "@/i18n";
-import { LOCALE_META, isLocale } from "@/i18n/locales";
+import { isLocale, LOCALE_META } from "@/i18n/locales";
 import type {
 	PropsLangWithOpinions,
 	Testimonial,
 } from "@/types/currentLang.interface";
-import { CountryFlag } from "@/features/opinions/Items/CountryFlag";
-import { SkeletonTestimonialCard } from "@/features/opinions/SkeletonTestimonialCard";
 
 export const Opinions = ({
 	currentLocale,
@@ -38,13 +38,14 @@ export const Opinions = ({
 
 	if (loading) {
 		return (
+			// biome-ignore lint/a11y/useSemanticElements: <output> isn't the right fit either (not a calculation result) - role=status on a div is the standard live-region loading pattern
 			<div
 				className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+				role="status"
 				aria-busy="true"
 				aria-label={i18n.COMMON.LOADING}
 			>
 				<div className="flex w-max gap-6 py-4">
-					{/* biome-ignore lint/suspicious/noArrayIndexKey: static placeholder count, index is stable */}
 					{[0, 1, 2, 3].map((i) => (
 						<SkeletonTestimonialCard key={i} />
 					))}
@@ -123,8 +124,11 @@ export const Opinions = ({
 					>
 						<div className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]">
 							{[...data, ...data].map((testimonial, i) => (
+								// biome-ignore lint/a11y/useSemanticElements: <fieldset> brings its own default border/padding UA styling that would fight this card's design - role=group keeps the semantics without it
 								<div
 									key={`${testimonial.comment_id}-${i}`}
+									role="group"
+									// biome-ignore lint/a11y/noNoninteractiveTabindex: intentional - focusing a card is what pauses the auto-scrolling marquee (see focus-within: below), not a click target
 									tabIndex={0}
 									aria-label={`${testimonial.name}: ${testimonial.description}`}
 									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden transition-colors hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"

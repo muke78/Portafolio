@@ -198,6 +198,7 @@ export const TabsProyectos = ({
 				{loading ? (
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 lg:gap-6 p-2 xs:p-4 sm:p-6">
 						{skeletonItems.map((_, i) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: placeholder-only list, fixed length, never reordered
 							<SkeletonProjectsCard key={i} />
 						))}
 					</div>

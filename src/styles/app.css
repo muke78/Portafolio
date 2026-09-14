@@ -342,6 +342,7 @@
 	.nebula-svg,
 	.cosmos-stars .star,
 	.cosmos-dust .dust {
+		/* biome-ignore lint/complexity/noImportantStyles: must win over any other animation declaration for accessibility */
 		animation: none !important;
 	}
 }
@@ -367,7 +368,9 @@
 	will-change: transform, opacity;
 }
 #galaxy-3d canvas {
+	/* biome-ignore lint/complexity/noImportantStyles: overrides the inline width/height Three.js sets on the canvas itself, a class can't win over inline styles otherwise */
 	width: 100% !important;
+	/* biome-ignore lint/complexity/noImportantStyles: same as width above */
 	height: 100% !important;
 	display: block;
 }

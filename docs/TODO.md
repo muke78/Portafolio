@@ -296,24 +296,59 @@ nada lo detecte localmente.
 Depende de la sección 1: no tiene sentido gatear pushes con `vitest`/
 `playwright` si esos comandos no existen o no pasan todavía.
 
-- [ ] Nuevo hook `.husky/pre-push`, que corra en orden y corte en el primer
-      fallo:
-      1. `pnpm exec biome check --write ./src` (formatea + lint, no solo
-         formato como hace hoy `pre-commit`)
-      2. `pnpm exec astro check` (type-check completo)
-      3. `pnpm run build` (confirma que el build de producción no se rompe)
-      4. `pnpm test:unit` (Vitest, rápido, sin browser)
-      5. `pnpm test:e2e` (Playwright) — **con salida clara si el binario de
-         browser no está instalado**, en vez de fallar oscuro; considerar
-         una variable de entorno (`SKIP_E2E=1 git push`) para permitir
-         saltarlo puntualmente en una máquina sin browser instalado, sin
-         quitar el paso por default.
-- [ ] Documentar en el propio hook (comentario) que esto es el "CI local"
-      — mismos pasos que debería correr cualquier pipeline de CI real si se
-      agrega uno después (GitHub Actions), para que no diverjan.
+- [x] Nuevo hook `.husky/pre-push`, corre en orden y corta en el primer
+      fallo (`set -e`): 1) `biome check --write ./src` (formatea + lint) →
+      2) `astro check` → 3) `pnpm run build` → 4) `pnpm test:unit` →
+      5) `pnpm test:e2e`, con `SKIP_E2E=1 git push` como escape hatch
+      documentado (no default) y mensaje explícito si falta el binario de
+      Chromium. Documentado en el propio hook como "CI local" — mismos
+      pasos que un pipeline de CI real (GitHub Actions) si se agrega
+      después.
+- [x] **`biome check` (no solo `format`) reveló 25 errores + ~35
+      warnings reales acumulados en todo `src/` — nunca se habían
+      corrido, `pre-commit` solo hacía `format`, nunca `check`/`lint`.
+      Los arreglé todos antes de dar el hook por terminado — de nada
+      sirve un gate que falla desde el día uno. Desglose:
+      - **Falso positivo sistemático encontrado y corregido de raíz**:
+        `noUnusedImports`/`noUnusedVariables` en archivos `.astro` marca
+        como "no usado" cualquier import/variable del frontmatter que
+        solo se use en el template (Biome no cruza esa frontera). Se
+        comprobó **en vivo**: aplicar el autofix `--unsafe` borró el
+        import de `TabsAcerca` en `Acerca.astro` (entre otros) y la
+        página tronó con `ReferenceError` al cargar — confirmado en el
+        browser, no solo `astro check`/`build` (que no lo detectaron).
+        Revertido, y las dos reglas se apagan para `**/*.astro` en
+        `biome.json` (`overrides`) — no son confiables ahí.
+      - **Mismo patrón con `noUnknownAtRules` en CSS**: Biome no conoce
+        los at-rules de Tailwind (`@apply`, `@theme`, etc.), apagado
+        para `**/*.css` vía el mismo mecanismo.
+      - **A11y real arreglado, no suprimido**: `Form.tsx` tenía 4
+        `<label>` sin asociar a su `<input>`/`<textarea>` (ni `htmlFor`
+        ni anidados) — confirmado que rompía el nombre accesible
+        (`read_page` mostraba los campos sin label). Arreglado con
+        `useId()` (mismo patrón que ya usaba `sendOpinions.tsx`), no
+        con `id` fijo (eso disparaba `useUniqueElementIds` aparte).
+      - **A11y real arreglado en el marquee de opiniones**: el div de
+        loading tenía `aria-label` que Biome marca inválido en un div
+        genérico — se le puso `role="status"` (patrón correcto para
+        indicador de carga). Cada tarjeta del marquee tenía
+        `tabIndex={0}` + `aria-label` en un div sin rol — se le puso
+        `role="group"`; el `tabIndex` es intencional (enfocar la
+        tarjeta pausa el auto-scroll vía `focus-within:`), documentado
+        con `biome-ignore` explicando por qué, no borrado.
+      - **`catch` sin usar real** en `tlgrm.ts` — variable `error` nunca
+        leída, cambiado a `catch` sin binding.
+      - **`noArrayIndexKey`/`useUniqueElementIds` en fondos decorativos**
+        (`Cosmos.tsx`, `GalaxyBackground.tsx`, skeletons) — todos
+        singletons reales (se renderizan una sola vez globalmente) o
+        listas de placeholder de longitud fija — `biome-ignore` con
+        motivo, no refactor forzado.
+      - Verificado con el pipeline completo: `astro check` (0 errores),
+        `pnpm run build`, `pnpm test:unit` (34/34), y una pasada en vivo
+        en el browser (home, contacto, opiniones, admin/login) sin
+        errores de consola.
 
-**Version objetivo**: `minor`, ej. `v3.3.0` (puede salir junto con el paso
-1 de la sección 3, ambos son infraestructura, no features visibles).
+**Version objetivo**: `minor`, ej. `v3.4.0`.
 
 ---
 

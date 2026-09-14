@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { PropsLang } from "@/types/currentLang.interface";
 import { dataTabsAcercaDeEN } from "@/data/locales/en/dataTabsAcercaDeEN";
 import { dataTabsAcercaDe } from "@/data/locales/es/dataTabsAcercaDe";
 import { dataTabsAcercaDeFR } from "@/data/locales/fr/dataTabsAcercaDeFR";
+import type { PropsLang } from "@/types/currentLang.interface";
 
 const langTraduceData: Record<string, typeof dataTabsAcercaDe> = {
 	es: dataTabsAcercaDe,

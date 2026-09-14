@@ -112,9 +112,9 @@ const emptyDraftFor = (resource: Resource): Record<string, unknown> => {
 };
 
 /** Build a draft object from an existing item, keeping only known fields. */
-// biome-ignore lint/suspicious/noExplicitAny: item shape comes from an external, admin-proxied backend
 export const draftFromItem = (
 	resource: Resource,
+	// biome-ignore lint/suspicious/noExplicitAny: item shape comes from an external, admin-proxied backend
 	item: Record<string, any>,
 ): Record<string, unknown> => {
 	const draft = emptyDraftFor(resource);

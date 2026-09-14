@@ -39,8 +39,8 @@ export const SkeletonProjectsCard = () => {
 					{/* Card actions skeleton - Responsive avatar sizes */}
 					<div className="flex flex-wrap items-center justify-start">
 						<div className="flex -space-x-2 xs:-space-x-3">
-							{/* biome-ignore lint/react/useKey */}
 							{[...Array(5)].map((_, idx) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: fixed-length placeholder list, never reordered
 								<div key={`skeleton-${idx}`}>
 									<Skeleton className="w-5 h-5 xs:w-6 xs:h-6 sm:w-8 sm:h-8 rounded-full border-2 border-card" />
 								</div>

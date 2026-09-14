@@ -58,6 +58,7 @@ export const GalaxyBackground = () => {
 	}, []);
 
 	return (
+		// biome-ignore lint/correctness/useUniqueElementIds: singleton background mount, rendered once globally from Layout.astro
 		<div
 			ref={wrapRef}
 			id="galaxy-3d"

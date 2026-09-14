@@ -19,14 +19,17 @@ function Nebula() {
 			role="presentation"
 		>
 			<defs>
+				{/* biome-ignore lint/correctness/useUniqueElementIds: Nebula is a background singleton, rendered once in Cosmos - never duplicated */}
 				<radialGradient id="neb-a" cx="30%" cy="50%" r="50%">
 					<stop offset="0%" stopColor="currentColor" stopOpacity="0.4" />
 					<stop offset="100%" stopColor="currentColor" stopOpacity="0" />
 				</radialGradient>
+				{/* biome-ignore lint/correctness/useUniqueElementIds: same as above, singleton component */}
 				<radialGradient id="neb-b" cx="70%" cy="40%" r="50%">
 					<stop offset="0%" stopColor="currentColor" stopOpacity="0.28" />
 					<stop offset="100%" stopColor="currentColor" stopOpacity="0" />
 				</radialGradient>
+				{/* biome-ignore lint/correctness/useUniqueElementIds: same as above, singleton component */}
 				<radialGradient id="neb-c" cx="55%" cy="65%" r="40%">
 					<stop offset="0%" stopColor="currentColor" stopOpacity="0.22" />
 					<stop offset="100%" stopColor="currentColor" stopOpacity="0" />
@@ -125,6 +128,7 @@ export function Cosmos() {
 				viewBox="0 0 100 100"
 				preserveAspectRatio="none"
 				data-depth="-0.15"
+				aria-hidden="true"
 			>
 				{stars.map((s, i) => (
 					<circle
@@ -147,10 +151,11 @@ export function Cosmos() {
 				viewBox="0 0 100 100"
 				preserveAspectRatio="none"
 				data-depth="-0.2"
+				aria-hidden="true"
 			>
 				{dust.map((d, i) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: static generated field, index is stable
 					<circle
+						// biome-ignore lint/suspicious/noArrayIndexKey: static generated field, index is stable
 						key={i}
 						cx={d.x}
 						cy={d.y}

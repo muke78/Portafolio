@@ -1,7 +1,7 @@
-import { defineMiddleware, sequence } from "astro:middleware";
 import { ADMIN_SESSION_SECRET } from "astro:env/server";
-import { SESSION_COOKIE, verifySessionToken } from "@/lib/adminSession";
+import { defineMiddleware, sequence } from "astro:middleware";
 import { isLocale } from "@/i18n/locales";
+import { SESSION_COOKIE, verifySessionToken } from "@/lib/adminSession";
 
 // Routes that intentionally live outside the /[lang]/* locale tree and
 // must never be caught by the locale guard below. "404" has to be here
