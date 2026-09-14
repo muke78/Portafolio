@@ -44,16 +44,16 @@ about_me (id, cover_img)
 about_me_translations (locale, description, title_card, subtitle)
 
 comments (comment_id, name, job, description, country, country_flag, status, direction, created_at)
--- status nuevo: 'pending' | 'published' | 'hidden'
+-- status: 'pending' | 'published' | 'hidden' - HECHO (repo Backend_Portafolio,
+-- tag 0.3.0). POST /comments siempre inserta "pending", GET publico filtra
+-- "published" - ver docs/02-comentarios-y-contacto.md de ese repo.
 
 contact_messages (message_id, name, email, phone, more_information, status, created_at)
--- status nuevo: 'unread' | 'read' | 'replied'
+-- status: 'unread' | 'read' | 'replied' - HECHO (repo Backend_Portafolio,
+-- tag 0.3.0). Decision ya tomada (no quedo condicional): centro de mensajes,
+-- sin WhatsApp, Telegram eliminado por completo (ni como notificacion
+-- paralela) - ver docs/02-comentarios-y-contacto.md de ese repo.
 -- more_information = el requerimiento/mensaje que manda el visitante.
--- Tabla CONDICIONAL: depende de la decisión pendiente en
--- 02-panel-admin-requisitos.md (Contacto) - si el canal termina siendo
--- WhatsApp puro (redirect sin backend), esta tabla no se crea. Solo aplica
--- si se elige el centro de mensajes en el panel admin, solo o combinado
--- con WhatsApp.
 ```
 
 **Pendiente de confirmar contigo/revisando el esquema real de Turso**: cómo

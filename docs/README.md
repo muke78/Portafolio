@@ -33,9 +33,11 @@ por escrito antes de empezar a construir.
   backend de Hono vía un proxy interno en `/api/*` que agrega el bearer
   token server-side (`src/lib/api.ts`, `API_SECRET_TOKEN`) — el navegador
   nunca ve el token.
-- **Contacto**: el formulario de `/es/home#contact` ya pasa por Hono
-  (`POST /tlgrm` en el backend), que a su vez habla con la API de Telegram
-  (BotFather). Astro nunca toca las credenciales de Telegram directamente.
+- **Contacto**: el formulario de `/es/home#contact` pasa por Hono
+  (`POST /api/contact-messages` en este repo → `POST /contact-messages` en
+  Hono), que persiste en la tabla `contact_messages` de Turso. Telegram se
+  eliminó por completo (repo `Backend_Portafolio`, tag `0.3.0`) — ya no
+  queda ni como notificación paralela.
 
 Lo que falta es: endurecer y reestructurar los endpoints de Hono, construir
 el panel admin (auth + UI + rutas CRUD), y migrar/limpiar los datos en Turso

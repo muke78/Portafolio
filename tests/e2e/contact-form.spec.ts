@@ -1,11 +1,13 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * Form.tsx POSTs to /api/tlgrm, which proxies to Hono's real Telegram
- * integration - intercepted here so the suite never fires a real message
- * to production Telegram on every CI run. This also means these tests
- * only prove the frontend's success/error handling, not that Hono/
- * Telegram themselves work - that stays a manual/backend concern.
+ * Form.tsx POSTs to /api/contact-messages, which proxies to Hono's
+ * contact_messages table (Telegram was removed entirely - see
+ * Backend_Portafolio, docs/02-comentarios-y-contacto.md). Intercepted
+ * here so the suite never writes a real row to production Turso on every
+ * CI run. This also means these tests only prove the frontend's
+ * success/error handling, not that Hono itself works - that stays a
+ * manual/backend concern.
  */
 test.describe("contact form", () => {
 	test.beforeEach(async ({ page }) => {
@@ -20,7 +22,7 @@ test.describe("contact form", () => {
 	});
 
 	test("shows a success toast when the API call succeeds", async ({ page }) => {
-		await page.route("**/api/tlgrm", (route) =>
+		await page.route("**/api/contact-messages", (route) =>
 			route.fulfill({ status: 200, body: JSON.stringify({ ok: true }) }),
 		);
 
@@ -35,7 +37,7 @@ test.describe("contact form", () => {
 	});
 
 	test("shows an error toast when the API call fails", async ({ page }) => {
-		await page.route("**/api/tlgrm", (route) =>
+		await page.route("**/api/contact-messages", (route) =>
 			route.fulfill({ status: 500, body: JSON.stringify({ ok: false }) }),
 		);
 

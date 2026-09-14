@@ -372,25 +372,24 @@ la sección 2 ya encaminados antes de tocar Turso de verdad.
 
 ### 5.1 Backup y limpieza de datos (extiende `docs/04-migracion-datos.md`)
 
-- [ ] Bajar/exportar **toda** la información actual de Turso, tabla por
-      tabla, antes de tocar nada — backup real, no solo "debería estar
-      bien".
-- [ ] Revisar cada tabla existente (`projects`, `projects_translations`,
-      `experiences`, `comments`) contra el esquema propuesto en
-      `docs/04-migracion-datos.md` — confirmar cuáles se pueden mejorar en
-      su lugar y cuáles hay que reconstruir desde cero limpias (dato de
-      prueba vs dato real, ya marcado como pendiente de revisión en ese
-      doc).
-- [ ] Confirmar si `experiences` ya tiene tabla de traducciones separada o
-      no — no se puede saber desde el frontend, hay que verlo directo en
-      el esquema real de Turso.
+- [x] Bajar/exportar **toda** la información actual de Turso, tabla por
+      tabla, antes de tocar nada — hecho (`Backend_Portafolio`,
+      `scripts/backup-turso.ts`, tag `0.2.0`). 6 tablas, 0 errores, backup
+      local fuera de git (PII real).
+- [x] Revisar cada tabla existente contra el esquema propuesto — sin datos
+      de prueba que limpiar, los conteos coinciden con lo que ya se veía
+      en producción (ver `docs/01-backup-turso.md` de ese repo).
+- [x] Confirmar si `experiences` ya tiene tabla de traducciones separada —
+      **sí existe** (`experience_translations`, 5 experiencias × 3
+      locales = 15 filas exacto), mismo patrón que `projects`. Pregunta
+      abierta resuelta.
 
 ### 5.2 Tablas nuevas
 
 Del contrato de `docs/03-diseno-api.md`: `education` +
-`education_translations`, `skills`, `about_me` (+ traducciones),
-`contact_messages` (condicional — ver 5.4, depende de WhatsApp vs. centro
-de mensajes), `uploads`.
+`education_translations`, `skills`, `about_me` (+ traducciones), `uploads`
+— siguen pendientes. `contact_messages` **ya no es condicional, ya está
+hecha** (ver 5.4) — decisión tomada: centro de mensajes, sin WhatsApp.
 
 Y una que no estaba explícita ahí y hace falta ahora que hay más superficie
 de API: **tabla de usuarios/login** (`users` o `admin_users`). Hoy el login
@@ -426,15 +425,22 @@ Con la tabla de usuarios y las tablas nuevas ya escribiendo datos reales:
 - [ ] Formularios tipados por recurso para `education`/`about_me`/`skills`
       (ya arrancado parcialmente en `src/features/admin/`).
 - [ ] Upload de imágenes a R2 + conversión automática a webp desde Hono.
-- [ ] Refactor de Contacto: **decisión pendiente, no asumida** — Telegram/
-      BotFather deja de ser el canal tal cual está hoy. Dos rutas reales
-      (ver `docs/02-panel-admin-requisitos.md`, sección Contacto):
-      redirigir directo a WhatsApp (sin backend nuevo, sin tabla), o un
-      centro de mensajes en el panel admin persistido en
-      `contact_messages` (con Telegram opcional en paralelo como
-      notificación). Se puede combinar ambas. Confirmar cuál antes de
-      crear la tabla en 5.2 — si es WhatsApp puro, `contact_messages` se
-      cae del plan entero.
+- [x] **Refactor de Contacto — decidido y hecho**: Telegram eliminado por
+      completo (ni como notificación paralela), centro de mensajes en
+      Turso (`contact_messages`, `Backend_Portafolio` tag `0.3.0`),
+      `POST /api/contact-messages` en este repo con rate limit conectado.
+      Ver `docs/02-panel-admin-requisitos.md` (sección Contacto) y
+      `docs/02-comentarios-y-contacto.md` de `Backend_Portafolio`. Falta
+      solo la vista de bandeja de entrada en el panel — depende del JWT
+      de sesión admin, no de esta decisión.
+- [x] **Moderación de comentarios — hecho** (no estaba como línea propia
+      aquí, se ejecutó junto con Contacto en la misma ronda):
+      `comments.status` (`pending`/`published`/`hidden`), `POST /comments`
+      siempre inserta `pending`, `GET /comments` público filtra
+      `published` — cierra el hallazgo 1 de
+      `docs/00-auditoria.md`/`docs/03-diseno-api.md` (causa raíz del
+      hackeo de 800 comentarios) del lado del dato, además del rate limit
+      ya conectado en este repo.
 - [ ] Recién aquí: volver a poner el acceso al panel (footer o donde se
       decida, ver `docs/02-panel-admin-requisitos.md` sobre acceso
       discreto) — no antes.
