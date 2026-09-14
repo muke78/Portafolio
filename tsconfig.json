@@ -15,5 +15,11 @@
       }
     ]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.astro",
+    "tests/**/*.ts",
+    "playwright.config.ts"
+  ]
 }

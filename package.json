@@ -16,7 +16,9 @@
     "prepare": "husky",
     "format": "pnpm exec biome format --write ./src",
     "lint": "pnpm exec biome lint --write ./src",
-    "check:biome": "pnpm exec biome check --write ./src"
+    "check:biome": "pnpm exec biome check --write ./src",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -54,6 +56,7 @@
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.11",
     "@biomejs/biome": "2.2.3",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.2.1",
     "@types/three": "^0.185.4",
     "tailwindcss": "4.3.3"

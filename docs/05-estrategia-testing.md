@@ -54,24 +54,34 @@ Para Vitest (unit tests de los schemas de Zod, por ejemplo):
 pnpm add -D vitest
 ```
 
-## Dónde vivirían los tests
+## Estado actual — ya instalado, tests ya escritos
 
+`@playwright/test` ya está en `devDependencies`, con `playwright.config.ts`
+en la raíz y los 5 archivos de la lista de arriba en `tests/e2e/`, cubriendo
+exactamente los 5 puntos de arriba. Verificados con `tsc --noEmit`
+(compilan sin errores) y ya dentro del `include` de `tsconfig.json`.
+
+**Lo único que falta es correrlos**: este entorno donde se escribió el
+código no tiene salida de red hacia `cdn.playwright.dev`, así que
+`pnpm exec playwright install chromium` falla por timeout aquí — no es un
+error del setup, es una restricción de red del sandbox. En tu máquina o en
+CI (donde ese host sí es alcanzable) corre:
+
+```bash
+pnpm exec playwright install chromium
+pnpm test:e2e        # headless
+pnpm test:e2e:ui     # con el UI runner de Playwright, para depurar
 ```
-tests/
-  e2e/
-    anchor-scroll.spec.ts
-    language-switch.spec.ts
-    admin-login.spec.ts
-    comment-widget.spec.ts
-    i18n-routing.spec.ts
-  unit/
-    contactSchema.test.ts
-    opinionsSchema.test.ts
-```
 
-## Siguiente paso
+Los tests asumen un `pnpm dev` corriendo en el puerto 4321 (o lo levantan
+ellos mismos vía el `webServer` del config) y una sesión admin sin login
+previo para el rate limit — si corres `test:e2e` varias veces seguidas
+dentro de la misma ventana de 5 minutos, el test de rate limit puede ver el
+límite ya activado desde una corrida anterior (está documentado en el
+propio test, es el comportamiento correcto del limitador en memoria, no un
+bug del test).
 
-Esto es planeación — si quieres que lo instale y deje los primeros 5 tests
-de la lista de arriba funcionando ahora mismo (corriendo contra lo que ya
-está en `dev`), lo hago en su propia rama, aparte de todo lo de Hono/Turso
-que sí está pendiente de que construyamos el backend nuevo primero.
+## Unit tests — pendiente
+
+Los de `tests/unit/` (schemas de Zod) no se escribieron todavía — quedan
+para cuando se sume Vitest, no bloquean nada de lo anterior.
