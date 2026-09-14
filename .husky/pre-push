@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# Cargar NVM (necesario en entornos donde Husky no hereda el PATH completo)
+export NVM_DIR="$HOME/.nvm"
+# Esto carga nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# Esto carga nvm para bash >=0.4.0
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# "CI local": mismos pasos que debería correr cualquier pipeline de CI real
+# si se agrega uno después (GitHub Actions) - para que no diverjan. Corre en
+# orden, corta en el primer fallo (set -e).
+set -e
+
+echo "🚀 Pipeline local antes de subir (pre-push)"
+
+echo "🔍 [1/5] Formato + lint (Biome)..."
+pnpm exec biome check --write ./src
+
+echo "🔎 [2/5] Type-check (astro check)..."
+pnpm exec astro check
+
+echo "🏗️  [3/5] Build de producción..."
+pnpm run build
+
+echo "🧪 [4/5] Unit tests (Vitest)..."
+pnpm test:unit
+
+echo "🧪 [5/5] E2E tests (Playwright)..."
+if [ "$SKIP_E2E" = "1" ]; then
+	echo "⏭️  SKIP_E2E=1 - saltando Playwright en esta máquina."
+else
+	if ! pnpm test:e2e; then
+		echo ""
+		echo "❌ Playwright falló. Si es porque falta el binario del browser"
+		echo "   (\"Executable doesn't exist\" / error de descarga), corre:"
+		echo "     pnpm exec playwright install chromium"
+		echo "   y vuelve a intentar el push. Para saltar este paso una vez"
+		echo "   en una máquina sin browser instalado (no lo hace por default):"
+		echo "     SKIP_E2E=1 git push"
+		exit 1
+	fi
+fi
+
+echo "✅ Todo en verde. Subiendo. 🎉"

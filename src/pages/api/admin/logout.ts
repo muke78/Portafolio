@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { SESSION_COOKIE, revokeSessionToken } from "@/lib/adminSession";
+import { revokeSessionToken, SESSION_COOKIE } from "@/lib/adminSession";
 
 export const POST: APIRoute = async ({ cookies }) => {
 	revokeSessionToken(cookies.get(SESSION_COOKIE)?.value);

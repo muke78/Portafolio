@@ -17,7 +17,7 @@ import {
 	RESOURCES,
 	type Resource,
 } from "@/features/admin/resourceFields";
-import { LOCALES, LOCALE_META } from "@/i18n/locales";
+import { LOCALE_META, LOCALES } from "@/i18n/locales";
 
 // biome-ignore lint/suspicious/noExplicitAny: item shape comes from an external, admin-proxied backend
 const getId = (item: any): string | number | null =>
@@ -233,7 +233,6 @@ export const AdminDashboard = () => {
 						{loading ? (
 							<div className="flex flex-col gap-2">
 								{[0, 1, 2].map((i) => (
-									// biome-ignore lint/suspicious/noArrayIndexKey: static placeholder count, index is stable
 									<Skeleton key={i} className="h-14 w-full rounded-lg" />
 								))}
 							</div>

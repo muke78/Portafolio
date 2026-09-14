@@ -1,8 +1,8 @@
 ---
-import { TabsProyectos } from "@/components/sections/TabsProyectos";
 import { API_SECRET_TOKEN } from "astro:env/server";
-import { api } from "@/lib/api";
+import { TabsProyectos } from "@/components/sections/TabsProyectos";
 import { getI18N } from "@/i18n";
+import { api } from "@/lib/api";
 import type { Projects } from "@/types/currentLang.interface";
 
 const { currentLocale } = Astro;

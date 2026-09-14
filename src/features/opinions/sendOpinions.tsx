@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Briefcase, Globe, MessageSquare, Send, User } from "lucide-react";
 import { useId, useMemo, useState } from "react";
+import { ReactCountryFlag } from "react-country-flag";
 import { type FieldError, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,12 +12,11 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { countries } from "@/data/countries";
 import { SubmittedOpinion } from "@/features/opinions/SubmittedOpinion";
 import { getI18N } from "@/i18n";
-import type { FormOpinions, PropsLang } from "@/types/currentLang.interface";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
-import { countries } from "@/data/countries";
-import { ReactCountryFlag } from "react-country-flag";
+import type { FormOpinions, PropsLang } from "@/types/currentLang.interface";
 
 type SendOpinionsProps = PropsLang & { onClose?: () => void };
 

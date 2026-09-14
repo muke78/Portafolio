@@ -8,10 +8,10 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import { getI18N } from "@/i18n";
 import { ItemsNav } from "@/features/navbar/ItemsNav";
 import { LangDrop } from "@/features/navbar/LangDrop";
 import { ThemeDrop } from "@/features/navbar/ThemeSwitch";
+import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/types/currentLang.interface";
 
 export const Nav = ({ currentLocale }: PropsLang) => {
@@ -20,10 +20,7 @@ export const Nav = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });
 
 	return (
-		<nav
-			className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-background/80 border-b border-border z-40"
-			role="navigation"
-		>
+		<nav className="fixed left-0 right-0 top-0 w-full backdrop-blur-xl bg-background/80 border-b border-border z-40">
 			<div className="max-w-[1480px] mx-auto h-[72px] flex justify-between items-center px-6">
 				<a
 					className="font-serif-display text-[22px] text-foreground flex items-baseline"

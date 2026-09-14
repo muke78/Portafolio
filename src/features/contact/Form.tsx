@@ -1,18 +1,26 @@
 ﻿import { zodResolver } from "@hookform/resolvers/zod";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import { Linkedin, Mail, MessageCircle, Send } from "lucide-react";
+import { useId } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getI18N } from "@/i18n";
-import type { FormData, PropsLang } from "@/types/currentLang.interface";
 import { contactSchema } from "@/schemas/contactSchema";
+import type { FormData, PropsLang } from "@/types/currentLang.interface";
 
 export const Form = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });
 	const sendInformationValid = `${i18n.FORM.FORM_SEND_INFORMATION_CORRECT}`;
 	const errorSendInformation = `${i18n.FORM.FORM_SEND_INFORMATION_INCORRECT}`;
+
+	// Unique per mount (same pattern as sendOpinions.tsx) so label/control
+	// pairs stay valid even if this form is ever rendered more than once.
+	const nameId = useId();
+	const emailId = useId();
+	const phoneId = useId();
+	const moreInformationId = useId();
 
 	const {
 		register,
@@ -165,11 +173,12 @@ export const Form = ({ currentLocale }: PropsLang) => {
 				<form onSubmit={handleSubmit(onSubmit)} method="POST">
 					<div className="grid grid-cols-1 gap-4">
 						<div className="space-y-2">
-							<label className="text-sm font-medium">
+							<label className="text-sm font-medium" htmlFor={nameId}>
 								{i18n.FORM.INPUT_NAME}{" "}
 								<span className="text-base font-bold text-destructive">*</span>
 							</label>
 							<Input
+								id={nameId}
 								type="text"
 								className="bg-background"
 								placeholder={i18n.FORM.INPUT_NAME}
@@ -182,11 +191,12 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							)}
 						</div>
 						<div className="space-y-2">
-							<label className="text-sm font-medium">
+							<label className="text-sm font-medium" htmlFor={emailId}>
 								{i18n.FORM.INPUT_EMAIL}{" "}
 								<span className="text-base font-bold text-destructive">*</span>
 							</label>
 							<Input
+								id={emailId}
 								type="email"
 								className="bg-background"
 								placeholder={i18n.FORM.INPUT_EMAIL}
@@ -199,11 +209,12 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							)}
 						</div>
 						<div className="space-y-2">
-							<label className="text-sm font-medium">
+							<label className="text-sm font-medium" htmlFor={phoneId}>
 								{i18n.FORM.INPUT_PHONE}{" "}
 								<span className="text-base font-bold text-destructive">*</span>
 							</label>
 							<Input
+								id={phoneId}
 								type="number"
 								className="bg-background"
 								placeholder={i18n.FORM.INPUT_PHONE}
@@ -216,13 +227,17 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							)}
 						</div>
 						<div className="space-y-2">
-							<label className="text-sm font-medium">
+							<label
+								className="text-sm font-medium"
+								htmlFor={moreInformationId}
+							>
 								{i18n.FORM.INPUT_MORE_INFORMATION}
 								<span className="text-muted-foreground text-xs">
 									({i18n.FORM.INPUT_JOB_INPUT_OPTIONAL})
 								</span>
 							</label>
 							<Textarea
+								id={moreInformationId}
 								className="bg-background"
 								placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
 								{...register("moreInformation")}

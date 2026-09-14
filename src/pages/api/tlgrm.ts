@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
 				status: 200,
 			},
 		);
-	} catch (error) {
+	} catch {
 		return new Response(
 			JSON.stringify({ message: "No se pudo enviar la información." }),
 			{ status: 503 },

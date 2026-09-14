@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import type { ItemsNavProps, NavbarItem } from "@/types/currentLang.interface";
 import { dataListNavbarEN } from "@/data/locales/en/dataNavbarEN";
 import { dataListNavbar } from "@/data/locales/es/dataNavbar";
 import { dataListNavbarFR } from "@/data/locales/fr/dataNavbarFR";
+import type { ItemsNavProps, NavbarItem } from "@/types/currentLang.interface";
 
 const langTraduceData: Record<string, typeof dataListNavbar> = {
 	es: dataListNavbar,
