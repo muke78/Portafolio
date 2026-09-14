@@ -28,12 +28,26 @@ export const CommentWidget = ({ currentLocale }: PropsLang) => {
 				triggerRef.current?.focus();
 			}
 		};
+		// mousedown (not click) fires before the trigger button's own
+		// click handler, so closing here never races with the toggle -
+		// clicking the trigger while open is excluded below and stays
+		// governed solely by its own onClick.
+		const onPointerDown = (e: PointerEvent) => {
+			const target = e.target as Node;
+			if (panelRef.current?.contains(target)) return;
+			if (triggerRef.current?.contains(target)) return;
+			setOpen(false);
+		};
 		document.addEventListener("keydown", onKeyDown);
+		document.addEventListener("pointerdown", onPointerDown);
 		const firstField = panelRef.current?.querySelector<HTMLElement>(
 			"input, textarea, select",
 		);
 		firstField?.focus();
-		return () => document.removeEventListener("keydown", onKeyDown);
+		return () => {
+			document.removeEventListener("keydown", onKeyDown);
+			document.removeEventListener("pointerdown", onPointerDown);
+		};
 	}, [open]);
 
 	return (
@@ -44,7 +58,7 @@ export const CommentWidget = ({ currentLocale }: PropsLang) => {
 					role="dialog"
 					aria-modal="true"
 					aria-label="Dejar un comentario"
-					className="w-[min(92vw,380px)] max-h-[min(80vh,640px)] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl anim-zoom-in"
+					className="w-[min(92vw,380px)] max-h-[min(80vh,640px)] overflow-y-auto rounded-2xl border border-border bg-card shadow-lg ring-1 ring-foreground/10 anim-zoom-in"
 				>
 					<SendOpinions
 						currentLocale={currentLocale}
