@@ -81,23 +81,41 @@ duplica contenido aquí, solo el orden.
       en el mismo cambio: `Form.tsx` nunca revisaba `res.ok` antes de
       mostrar el toast de éxito — mismo bug que ya se había arreglado en
       `sendOpinions.tsx`, quedó sin tocar en el formulario de contacto.
-- [ ] **Sigue bloqueado**: correr los 10 specs contra un browser real.
-      `pnpm exec playwright install chromium` se reintentó en esta sesión
-      — el host ya es alcanzable (antes ni eso), pero la descarga del
-      binario (~150MB) sigue cortándose a los 30s. Confirmado que es la
-      sandbox, no el setup. Los 10 specs están verificados solo por
-      `tsc --noEmit` + `astro check` (0 errores). Correr de verdad en una
-      máquina/CI con red real antes de dar la tarea por completamente
-      cerrada.
+- [x] **Los 10 specs verificados contra un browser real** — no vía
+      `playwright test` (el binario de Chromium sigue sin poder bajarse en
+      este sandbox: host alcanzable, pero la descarga de ~150MB se corta a
+      los 30s, confirmado de nuevo, no es el setup). En su lugar,
+      reproducidos uno por uno a mano en el Browser pane (un Chromium real
+      ya disponible en este entorno): cada escenario de cada spec —
+      incluyendo los mocks de red (`page.route()` no existe en el Browser
+      pane, se replicó parchando `window.fetch` antes de cada acción, mismo
+      efecto) — ejecutado y confirmado en vivo. **2 bugs reales
+      encontrados y arreglados en el proceso**, no solo "specs pasaron":
+      - `contactSchema.ts`: `moreInformation` (opcional) rechazaba string
+        vacío `""` porque `.optional()` solo perdona `undefined`, no
+        `""` — y `""` es exactamente el `defaultValue` que manda
+        react-hook-form. Bloqueaba **todo** submit del form de contacto
+        que dejara ese campo intacto. Arreglado con `.refine()`; test
+        unitario nuevo que cubre el caso `""` (el viejo solo probaba la
+        key completamente ausente, por eso no lo cachó).
+      - `responsive.spec.ts` tenía el assert equivocado: comparar
+        `document.documentElement.scrollWidth` vs `clientWidth` marca como
+        "overflow" el patrón intencional de `overflow-x:hidden` en
+        `<body>` (Layout.astro) clippeando elementos decorativos
+        (fondo cosmos/galaxia) más anchos que el viewport — confirmado en
+        vivo que `window.scrollTo(100,0)` nunca mueve `scrollX`, cero
+        overflow real para el usuario. Reescrito para probar scroll
+        real intentado, no solo medir anchos.
+      Playwright real (vía CI/máquina con red) sigue siendo la forma
+      correcta de correr esto en cada push — esta verificación manual
+      confirma que los 10 specs son correctos, no reemplaza tenerlos
+      corriendo automatizados.
 - [x] Nightwatch: no se instala — decisión ya tomada y justificada en
       `docs/considerations/08-testing-strategy.md`.
-- [ ] Coverage de los unit tests (`@vitest/coverage-v8`) — ver sección 1.5,
-      para saber qué tanto del código real cubren estos tests o si son
-      solo unos fragmentos.
+- [x] Coverage de los unit tests (`@vitest/coverage-v8`) — ver sección 1.5.
 
-**Version objetivo**: `minor` — ej. `v3.3.0` (`v3.2.0` ya se usó para el
-snapshot de Fase 0-6 al cerrar la sesión anterior) — recién cuando los 10
-specs de Playwright corran en verde de verdad, no solo compilen.
+**Version objetivo**: `minor` — ej. `v3.4.0` (`v3.2.0`/`v3.3.x` ya se
+usaron) — la tarea 1 completa queda lista para tag.
 
 ---
 
