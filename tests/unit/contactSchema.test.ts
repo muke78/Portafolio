@@ -20,6 +20,17 @@ describe("contactSchema", () => {
 		expect(schema.safeParse(withoutOptional).success).toBe(true);
 	});
 
+	it("accepts an empty string for moreInformation, not just a missing key", () => {
+		// Real bug this test would have caught: react-hook-form's
+		// defaultValue for this field is "" (empty string), not undefined -
+		// plain .optional() only forgives undefined, so a bare .min(7)
+		// rejected "" and silently blocked every contact form submit that
+		// left the optional field untouched. Caught live in the browser,
+		// not by the pre-fix version of this test (which only tried the
+		// key fully absent, via destructuring).
+		expect(schema.safeParse({ ...valid, moreInformation: "" }).success).toBe(true);
+	});
+
 	it("rejects a name shorter than 5 characters", () => {
 		const result = schema.safeParse({ ...valid, name: "Al" });
 		expect(result.success).toBe(false);
