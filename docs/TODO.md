@@ -401,10 +401,18 @@ en Turso: contraseña hasheada (no en texto plano en env var), campo para
 2FA cuando se decida, y es el ancla natural para logs de auditoría de quién
 hizo qué (también pendiente en el checklist de seguridad).
 
-- [ ] Diseñar tabla `users`/`admin_users` (id, email o username, hash de
-      password, campo 2FA opcional, timestamps).
-- [ ] Migrar el login de "comparar contra `ADMIN_PASSWORD`" a "verificar
-      contra el registro en Turso".
+- [x] Diseñar tabla `users`/`admin_users` (id, email, hash de password
+      Argon2id, campo 2FA reservado sin lógica, timestamps) — hecho en
+      `Backend_Portafolio` (`users`, tag `0.4.0`, ver
+      `docs/03-hono-admin-auth.md` de ese repo).
+- [x] Migrar el login de "comparar contra `ADMIN_PASSWORD`" a "verificar
+      contra el registro en Turso" — hecho en los dos lados: Hono emite el
+      JWT (`POST /auth/login`, `Backend_Portafolio` tag `0.4.0`) y este
+      repo ya no tiene `ADMIN_PASSWORD` en absoluto (`astro.config.mjs`,
+      `.env`, `.env.example`) — `src/pages/api/admin/login.ts` llama a
+      Hono con `{email, password}` y guarda el JWT devuelto embebido en la
+      cookie de sesión (`src/lib/adminSession.ts`, nuevo
+      `getHonoJwt`/`buildSessionToken(secret, honoJwt)`).
 
 ### 5.3 De aquí salen Sessions y Caching (para real, no solo documentado)
 
@@ -444,6 +452,27 @@ Con la tabla de usuarios y las tablas nuevas ya escribiendo datos reales:
 - [ ] Recién aquí: volver a poner el acceso al panel (footer o donde se
       decida, ver `docs/02-panel-admin-requisitos.md` sobre acceso
       discreto) — no antes.
+- [x] Proxy de escritura admin (`src/pages/api/admin/resource.ts`) manda el
+      JWT de Hono (`X-Admin-JWT`), no solo el `API_SECRET_TOKEN` fijo —
+      sin esto todo `POST`/`PUT`/`DELETE` del dashboard devolvía 401 desde
+      que `Backend_Portafolio` protegió esas rutas con `adminAuth`
+      (Fase 4b de ese repo). De paso: `Content-Type: application/json`
+      explícito en todo write incluido `DELETE` (hono/csrf bloquea
+      requests sin Content-Type) y se agregó `contact_messages` a la
+      whitelist de recursos (faltaba, bloqueaba la bandeja de mensajes).
+- [ ] Rediseño del dashboard (sidebar por secciones, formularios reales
+      para `education`/`about_me`/`skills`, moderación de
+      comentarios/mensajes con botones de estado en vez del formulario
+      genérico) — plan detallado en
+      `C:\Users\MikeT\.claude\plans\stateless-humming-pinwheel.md`
+      (Fase 5a/5b/5c). **Métricas/Analytics y Configuración se evaluaron
+      para esta ronda y se dejaron fuera a propósito**: Métricas porque no
+      existe tracking real de visitas hoy (agregarlo es instrumentación
+      nueva, no solo UI — mostrar números falsos o a medias es peor que no
+      mostrar nada); Configuración porque no tiene contenido definido más
+      allá de "cambiar la contraseña admin" (ya cubierto por
+      `bun run seed:admin` en `Backend_Portafolio`). Se anota aquí para
+      retomarlo cuando haya instrumentación real de analytics.
 
 **Version objetivo**: esta sección es grande, sale en varios `minor`
 seguidos (`v3.7.0` backup+tablas, `v3.8.0` users+login real, `v3.9.0`

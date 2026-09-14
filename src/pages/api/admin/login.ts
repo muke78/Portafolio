@@ -1,25 +1,14 @@
-import { ADMIN_PASSWORD, ADMIN_SESSION_SECRET } from "astro:env/server";
-import { timingSafeEqual } from "node:crypto";
+import { ADMIN_SESSION_SECRET, API_SECRET_TOKEN } from "astro:env/server";
 import type { APIRoute } from "astro";
 import {
 	buildSessionToken,
 	SESSION_COOKIE,
 	SESSION_MAX_AGE,
 } from "@/lib/adminSession";
+import { api } from "@/lib/api";
 import { isRateLimited } from "@/lib/rateLimit";
 
 const LOGIN_RATE_LIMIT = { limit: 5, windowMs: 5 * 60 * 1000 };
-
-const passwordMatches = (candidate: string, expected: string): boolean => {
-	const a = Buffer.from(candidate);
-	const b = Buffer.from(expected);
-	// timingSafeEqual throws on mismatched lengths rather than just
-	// returning false - length itself isn't the secret being protected,
-	// so it's fine to check and short-circuit on it before the
-	// constant-time comparison of the actual bytes.
-	if (a.length !== b.length) return false;
-	return timingSafeEqual(a, b);
-};
 
 export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
 	try {
@@ -38,16 +27,36 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
 		}
 
 		const body = await request.json();
+		const email: string | undefined = body?.email;
 		const password: string | undefined = body?.password;
 
-		if (!password || !passwordMatches(password, ADMIN_PASSWORD)) {
+		if (!email || !password) {
 			return new Response(JSON.stringify({ message: "Invalid credentials" }), {
 				status: 401,
 				headers: { "Content-Type": "application/json" },
 			});
 		}
 
-		const token = buildSessionToken(ADMIN_SESSION_SECRET);
+		// The real check happens in Hono, the only side with access to
+		// Turso's users table / the Argon2id hash (docs/03-hono-admin-auth.md
+		// in Backend_Portafolio). Astro never sees or stores the password.
+		let honoJwt: string;
+		try {
+			const { data } = await api.post(
+				"/auth/login",
+				{ email, password },
+				{ headers: { Authorization: `Bearer ${API_SECRET_TOKEN}` } },
+			);
+			honoJwt = data?.data?.token;
+			if (!honoJwt) throw new Error("missing token");
+		} catch {
+			return new Response(JSON.stringify({ message: "Invalid credentials" }), {
+				status: 401,
+				headers: { "Content-Type": "application/json" },
+			});
+		}
+
+		const token = buildSessionToken(ADMIN_SESSION_SECRET, honoJwt);
 		cookies.set(SESSION_COOKIE, token, {
 			httpOnly: true,
 			secure: true,
