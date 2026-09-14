@@ -1,5 +1,6 @@
 ﻿import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Send, Github, Linkedin, MessageCircle } from "lucide-react";
+import { SiGithub } from "@icons-pack/react-simple-icons";
+import { Linkedin, Mail, MessageCircle, Send } from "lucide-react";
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { Input } from "@/components/ui/input";
@@ -76,7 +77,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 				<ul className="space-y-2">
 					<li className="flex items-center gap-4">
 						<span className="text-3xl text-secondary">
-							{<Github size={36} />}
+							<SiGithub size={36} aria-hidden="true" />
 						</span>
 						<span>
 							<strong className="text-sm text-muted-foreground">
@@ -86,7 +87,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<a
 								href="https://github.com/muke78"
 								target="_blank"
-								aria-label="Saber mas acerca de mis repositorios y lo que he hecho"
+								aria-label={i18n.HEADER.HEADER_GITHUB_ARIA_LABEL}
 								className="flex"
 								rel="noopener noreferrer"
 							>
@@ -97,7 +98,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
 					<li className="flex items-center gap-4">
 						<span className="text-3xl text-secondary">
-							{<Linkedin size={36} />}
+							<Linkedin size={36} aria-hidden="true" />
 						</span>
 						<span>
 							<strong className="text-sm text-muted-foreground">
@@ -107,7 +108,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<a
 								href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
 								target="_blank"
-								aria-label="Saber mas acerca de experiencia"
+								aria-label={i18n.HEADER.HEADER_LINKEDIN_ARIA_LABEL}
 								className="flex"
 								rel="noopener noreferrer"
 							>
