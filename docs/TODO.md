@@ -160,12 +160,47 @@ de seguir construyendo", mismo espíritu que la sección 1.
       - Verificado después de cada cambio con `pnpm run build` (no solo
         `astro check` — el build es el que de verdad detecta un import de
         CSS roto, `astro check` no lo cachó) + `pnpm test:unit`.
-- [ ] **`pnpm audit`**: correrlo, documentar cada CVE real que aparezca
-      (paquete, severidad, si hay fix disponible vía `pnpm update` o si
-      hace falta esperar/cambiar de librería). Si algo aparece de
-      severidad alta/crítica con fix disponible, se resuelve en la misma
-      rama; si el fix implica un bump mayor con riesgo de romper algo, se
-      documenta como su propia tarea en vez de forzarlo aquí.
+- [x] **`pnpm audit`**: **89 vulnerabilidades → 26** (7 moderate, 18 high,
+      1 critical restantes). Cada cadena identificada y resuelta o
+      documentada, no solo "menos números":
+      - **`astro-compress` traía su propia copia vieja de `astro`/`vite`
+        embebida** (no la del proyecto) — ahí vivían los 2 CRITICAL (RCE
+        vía AVIF, XSS vía server islands) y varios HIGH (SSRF, XSS
+        reflejado). `astro-compress` `^2.3.6` → `^2.4.3`: la versión nueva
+        declara `"astro": "*"` en vez de embeber una copia — ahora usa la
+        del proyecto (ya al día). De paso trajo `svgo`/`sharp`/
+        `deepmerge-ts` más nuevos, resolviendo la mayoría de los HIGH que
+        colgaban de ahí.
+      - **`axios` `^1.11.0` → `^1.20.0`** (dependencia directa): traía 10+
+        HIGH reales (contaminación de prototipos, fuga de credenciales
+        Proxy-Authorization en redirects, ReDoS, DoS) — todos con fix
+        disponible en versiones ya publicadas, sin cambio de API para
+        cómo se usa acá (solo GET simples).
+      - **`sharp` y `svgo` forzados vía `pnpm.overrides`** a `>=0.35.4` y
+        `>=4.1.0` respectivamente (`astro-compress` 2.4.3 todavía los
+        pinaba un poco atrás de la versión parchada) — verificado que la
+        compresión de imágenes/SVG del build sigue funcionando igual
+        (`pnpm run build` completo, sin cambios de comportamiento).
+      - **Restante, documentado como riesgo aceptado, no forzado**:
+        - `@vercel/nft > @mapbox/node-pre-gyp > tar` y
+          `> @rollup/pluginutils > rollup`, y `@vercel/routing-utils > ajv`
+          — anidado en `@astrojs/vercel` (ya en su última versión,
+          `11.0.10`). Solo se ejecuta en build time, sobre los archivos
+          del propio proyecto — el vector real (tar/archivo malicioso)
+          nunca aplica en este pipeline.
+        - `shadcn > @dotenvx/dotenvx > conf > ajv > fast-uri` y
+          `shadcn > fast-glob > micromatch > picomatch` — anidado en
+          `shadcn` (ya en su última versión, `4.21.0`). Solo se ejecuta si
+          alguien corre el CLI de shadcn a mano (`pnpm dlx shadcn add`),
+          nunca en build/deploy.
+        - `astro-compress > deepmerge-ts` (HIGH, stack exhaustion) —
+          el fix real es `deepmerge-ts` 7→8 (major), `astro-compress`
+          2.4.3 todavía pinea 7.1.5. No forzado por `pnpm.overrides` sin
+          probarlo a fondo contra el bump mayor — queda como su propia
+          tarea de seguimiento, no bloquea nada de lo demás.
+        - `@astrojs/react > ... > shiki > ... > mdast-util-to-hast`
+          (moderate) — anidado en el toolchain de highlighting de código
+          de `@astrojs/react`, que ya está en su última versión (`6.0.5`).
 
 **Version objetivo**: `patch` cada una (`v3.3.1`, `v3.3.2`, `v3.3.3` o
 similar) — son mantenimiento, no capacidad nueva.
