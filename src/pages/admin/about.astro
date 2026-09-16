@@ -1,0 +1,8 @@
+---
+import { ResourceEditor } from "@/features/admin/ResourceEditor";
+import AdminLayout from "@/layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Acerca de mí">
+  <ResourceEditor resource="about" client:load />
+</AdminLayout>

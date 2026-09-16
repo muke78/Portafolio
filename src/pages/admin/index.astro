@@ -1,8 +1,88 @@
-﻿---
-import Layout from "@/layouts/Layout.astro";
-import { AdminDashboard } from "@/features/admin/AdminDashboard";
+---
+import { ADMIN_SESSION_SECRET, API_SECRET_TOKEN } from "astro:env/server";
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import { getHonoJwt, SESSION_COOKIE } from "@/lib/adminSession";
+import { api } from "@/lib/api";
+
+const jwt = getHonoJwt(
+	Astro.cookies.get(SESSION_COOKIE)?.value,
+	ADMIN_SESSION_SECRET,
+);
+const headers: Record<string, string> = {
+	Authorization: `Bearer ${API_SECRET_TOKEN}`,
+};
+if (jwt) headers["X-Admin-JWT"] = `Bearer ${jwt}`;
+
+// biome-ignore lint/suspicious/noExplicitAny: response shape comes from an external backend, count-only usage below
+const safeGet = async (path: string): Promise<any[]> => {
+	try {
+		const { data } = await api.get(path, { headers });
+		return Array.isArray(data?.data) ? data.data : [];
+	} catch {
+		return [];
+	}
+};
+
+const [projects, experiences, education, skills, comments, messages] =
+	await Promise.all([
+		safeGet("/projects?currentLocale=es"),
+		safeGet("/experiences?currentLocale=es"),
+		safeGet("/education?currentLocale=es"),
+		safeGet("/skills?currentLocale=es"),
+		safeGet("/comments/admin"),
+		safeGet("/contact-messages"),
+	]);
+
+const pendingComments = comments.filter((c) => c.status === "pending").length;
+const unreadMessages = messages.filter((m) => m.status === "unread").length;
+
+const cards = [
+	{ href: "/admin/projects", label: "Proyectos", value: projects.length },
+	{
+		href: "/admin/experiences",
+		label: "Experiencia",
+		value: experiences.length,
+	},
+	{ href: "/admin/education", label: "Educación", value: education.length },
+	{ href: "/admin/skills", label: "Habilidades", value: skills.length },
+	{
+		href: "/admin/comments",
+		label: "Opiniones pendientes",
+		value: pendingComments,
+		hint: `${comments.length} en total`,
+	},
+	{
+		href: "/admin/messages",
+		label: "Mensajes sin leer",
+		value: unreadMessages,
+		hint: `${messages.length} en total`,
+	},
+];
 ---
 
-<Layout>
-  <AdminDashboard client:load />
-</Layout>
+<AdminLayout title="Panel">
+  <div class="flex flex-col gap-6">
+    <div class="flex items-center justify-between gap-4">
+      <h1 class="text-xl font-semibold">Panel</h1>
+      <a
+        href="/admin/about"
+        class="text-sm font-medium text-primary hover:underline"
+      >
+        Editar Acerca de mí →
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {cards.map((card) => (
+        <a
+          href={card.href}
+          class="rounded-xl border border-border bg-card p-5 flex flex-col gap-1 hover:border-primary/50 transition-colors"
+        >
+          <p class="text-sm text-muted-foreground">{card.label}</p>
+          <p class="text-3xl font-semibold">{card.value}</p>
+          {card.hint && <p class="text-xs text-muted-foreground">{card.hint}</p>}
+        </a>
+      ))}
+    </div>
+  </div>
+</AdminLayout>
