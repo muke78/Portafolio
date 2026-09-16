@@ -1,9 +1,9 @@
 ﻿import { zodResolver } from "@hookform/resolvers/zod";
-import { SiGithub } from "@icons-pack/react-simple-icons";
-import { Linkedin, Mail, MessageCircle, Send } from "lucide-react";
+import { Mail, MessageCircle, Send } from "lucide-react";
 import { useId } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getI18N } from "@/i18n";
@@ -87,7 +87,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 				<ul className="space-y-2">
 					<li className="flex items-center gap-4">
 						<span className="text-3xl text-secondary">
-							<SiGithub size={36} aria-hidden="true" />
+							<GithubIcon size={36} aria-hidden="true" />
 						</span>
 						<span>
 							<strong className="text-sm text-muted-foreground">
@@ -108,7 +108,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
 					<li className="flex items-center gap-4">
 						<span className="text-3xl text-secondary">
-							<Linkedin size={36} aria-hidden="true" />
+							<LinkedinIcon size={36} aria-hidden="true" />
 						</span>
 						<span>
 							<strong className="text-sm text-muted-foreground">

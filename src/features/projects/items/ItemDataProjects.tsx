@@ -1,6 +1,6 @@
-import { SiGithub } from "@icons-pack/react-simple-icons";
 import { Globe } from "lucide-react";
 import { useCallback, useState } from "react";
+import { GithubIcon } from "@/components/icons/BrandIcons";
 import { getI18N } from "@/i18n";
 import type { PropsLangWithData } from "@/types/currentLang.interface";
 
@@ -67,7 +67,7 @@ export const ItemDataProjects = ({
 									}`}
 									aria-label={slug}
 								>
-									<SiGithub size={18} aria-hidden="true" />
+									<GithubIcon size={18} aria-hidden="true" />
 								</a>
 							</div>
 
