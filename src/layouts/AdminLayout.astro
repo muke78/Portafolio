@@ -1,0 +1,107 @@
+---
+import "@/styles/styles.css";
+import "@/styles/app.css";
+
+interface Props {
+	title?: string;
+}
+
+const { title = "Admin" } = Astro.props;
+
+const NAV_SECTIONS = [
+	{
+		label: "Overview",
+		items: [{ href: "/admin", label: "Panel" }],
+	},
+	{
+		label: "Contenido",
+		items: [
+			{ href: "/admin/about", label: "Acerca de mí" },
+			{ href: "/admin/education", label: "Educación" },
+			{ href: "/admin/experiences", label: "Experiencia" },
+			{ href: "/admin/skills", label: "Habilidades" },
+			{ href: "/admin/projects", label: "Proyectos" },
+		],
+	},
+	{
+		label: "Interacción",
+		items: [
+			{ href: "/admin/comments", label: "Opiniones" },
+			{ href: "/admin/messages", label: "Mensajes" },
+		],
+	},
+] as const;
+
+const { pathname } = Astro.url;
+const isActive = (href: string) =>
+	href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} · Khelde Admin</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var dark = stored
+          ? stored === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
+  </head>
+  <body class="bg-background text-foreground min-h-screen">
+    <div class="grid grid-cols-1 lg:grid-cols-[220px_1fr] min-h-screen">
+      <aside class="border-b lg:border-b-0 lg:border-r border-border bg-card flex flex-col">
+        <div class="px-5 h-16 flex items-center border-b border-border">
+          <span class="font-semibold">Khelde Admin</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-3 flex flex-col gap-5">
+          {NAV_SECTIONS.map((section) => (
+            <div class="flex flex-col gap-1">
+              <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {section.label}
+              </p>
+              {section.items.map((item) => (
+                <a
+                  href={item.href}
+                  class:list={[
+                    "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                    isActive(item.href)
+                      ? "bg-primary text-primary-foreground"
+                      : "text-foreground/80 hover:bg-muted",
+                  ]}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          ))}
+        </nav>
+        <div class="p-3 border-t border-border">
+          <button
+            id="admin-logout"
+            type="button"
+            class="w-full rounded-lg px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-muted transition-colors text-left"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+      </aside>
+      <main class="p-6">
+        <slot />
+      </main>
+    </div>
+    <script>
+      document.getElementById("admin-logout")?.addEventListener("click", async () => {
+        await fetch("/api/admin/logout", { method: "POST" });
+        window.location.href = "/admin/login";
+      });
+    </script>
+  </body>
+</html>

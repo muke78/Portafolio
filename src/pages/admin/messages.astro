@@ -1,0 +1,8 @@
+---
+import { MessagesInbox } from "@/features/admin/MessagesInbox";
+import AdminLayout from "@/layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Mensajes">
+  <MessagesInbox client:load />
+</AdminLayout>

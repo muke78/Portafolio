@@ -1,52 +1,96 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import AdminLayoutBare from "@/layouts/AdminLoginLayout.astro";
 ---
 
-<Layout>
-  <main class="min-h-screen flex items-center justify-center px-4 bg-background">
-    <form
-      id="login-form"
-      class="rounded-xl border border-border bg-card shadow-xl w-full max-w-sm p-8 flex flex-col gap-4"
-    >
-      <h1 class="text-2xl font-bold text-center">Admin</h1>
-      <p class="text-sm text-muted-foreground text-center">
-        Acceso restringido
-      </p>
-      <div class="space-y-2">
-        <label for="email" class="text-sm font-medium">Email</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          required
-          autocomplete="username"
-          class="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
-          placeholder="tu@correo.com"
-        />
-      </div>
-      <div class="space-y-2">
-        <label for="password" class="text-sm font-medium">Contraseña</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          required
-          autocomplete="current-password"
-          class="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
-          placeholder="••••••••"
-        />
-      </div>
-      <button
-        type="submit"
-        class="inline-flex items-center justify-center h-9 w-full rounded-lg bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/80"
+<AdminLayoutBare title="Acceso privado">
+  <div class="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] min-h-screen">
+    <aside class="hidden md:flex relative overflow-hidden flex-col border-r border-border bg-muted p-14">
+      <div
+        class="pointer-events-none absolute top-1/2 left-1/2 h-150 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style="background: radial-gradient(circle, color-mix(in oklab, var(--primary) 16%, transparent) 0%, transparent 60%);"
       >
-        Entrar
-      </button>
-      <p id="login-error" class="text-sm text-destructive text-center hidden">
-        Contraseña incorrecta
-      </p>
-    </form>
-  </main>
+      </div>
+
+      <div class="relative z-2 font-serif-display text-2xl flex items-baseline gap-3">
+        Khelde<span class="text-primary">.</span>
+      </div>
+
+      <div class="relative z-2 flex-1 flex flex-col justify-center">
+        <p class="font-serif-display text-4xl lg:text-5xl leading-[1.05] max-w-[16ch] mb-6">
+          Acceso reservado al <span class="text-primary italic">administrador.</span>
+        </p>
+        <p class="khelde-lead text-muted-foreground max-w-[38ch]">
+          Desde aquí se alimenta el portafolio: proyectos, experiencia,
+          educación, habilidades, opiniones y mensajes se editan en vivo.
+        </p>
+      </div>
+    </aside>
+
+    <main class="flex items-center justify-center px-6 py-16">
+      <form id="login-form" class="w-full max-w-sm flex flex-col gap-6">
+        <a
+          href="/"
+          class="eyebrow inline-flex items-center gap-2 w-fit hover:text-primary transition-colors"
+        >
+          <span aria-hidden="true">←</span> Volver al portafolio
+        </a>
+
+        <div>
+          <h1 class="font-serif-display text-5xl mb-3">
+            Acceso<br />privado<span class="text-primary">.</span>
+          </h1>
+          <p class="text-sm text-muted-foreground">
+            Inicia sesión para administrar el contenido del sitio.
+          </p>
+        </div>
+
+        <p
+          id="login-error"
+          class="hidden items-center gap-2 rounded-md border border-destructive/30 bg-destructive/10 px-3.5 py-2.5 text-sm text-destructive"
+        >
+          Credenciales inválidas.
+        </p>
+
+        <div class="flex flex-col gap-4">
+          <div class="space-y-1.5">
+            <label for="email" class="eyebrow">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required
+              autocomplete="username"
+              class="h-11 w-full rounded-lg border border-input bg-transparent px-3 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              placeholder="tu@correo.com"
+            />
+          </div>
+          <div class="space-y-1.5">
+            <label for="password" class="eyebrow">Contraseña</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              required
+              autocomplete="current-password"
+              class="h-11 w-full rounded-lg border border-input bg-transparent px-3 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="mt-2 inline-flex items-center justify-center gap-2 h-11 w-full rounded-lg bg-primary text-primary-foreground font-medium transition-colors hover:bg-primary/80"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="1.8"></path>
+            </svg>
+            Entrar al panel
+          </button>
+        </div>
+      </form>
+    </main>
+  </div>
 
   <script>
     const form = document.getElementById("login-form") as HTMLFormElement;
@@ -67,7 +111,34 @@ import Layout from "@/layouts/Layout.astro";
         window.location.href = "/admin";
       } else {
         err.classList.remove("hidden");
+        err.classList.add("flex");
+        form.classList.add("shake");
+        setTimeout(() => form.classList.remove("shake"), 400);
       }
     });
   </script>
-</Layout>
+</AdminLayoutBare>
+
+<style>
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-6px);
+    }
+    40% {
+      transform: translateX(6px);
+    }
+    60% {
+      transform: translateX(-3px);
+    }
+    80% {
+      transform: translateX(3px);
+    }
+  }
+  .shake {
+    animation: shake 0.4s;
+  }
+</style>
