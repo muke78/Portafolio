@@ -416,6 +416,14 @@ hizo qué (también pendiente en el checklist de seguridad).
 
 ### 5.3 De aquí salen Sessions y Caching (para real, no solo documentado)
 
+**Mitigación parcial ya aplicada (2026-09-16), no cierra esta sección**:
+`Cache-Control: no-store` en toda respuesta `/admin*`/`/api/admin*`
+(`fix/admin-cache-control`) — cierra el síntoma real observado (el botón
+"atrás" del navegador podía restaurar una página admin desde bfcache sin
+pasar por el servidor). El driver de sesión real (`db0`/Turso, abajo)
+sigue pendiente y es la solución de fondo — ver el hallazgo completo en
+`docs/considerations/03-sessions.md`.
+
 Con la tabla de usuarios y las tablas nuevas ya escribiendo datos reales:
 
 - [ ] `considerations/03-sessions.md`: driver `db0` de Astro Sessions sobre

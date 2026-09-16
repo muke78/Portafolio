@@ -94,6 +94,34 @@ que se use la opción de "override en runtime" que la guía menciona
 este proyecto (un solo admin, rotación de credenciales poco frecuente) o si
 vale la pena el entrypoint custom desde el día uno.
 
+## Hallazgo real (2026-09-16): back-forward cache del navegador
+
+Reportado en vivo por el usuario: tras loguearse y entrar a `/admin`, el
+botón "atrás" del navegador podía volver a mostrar una página admin **sin
+que se disparara ninguna petición al servidor** — el navegador la
+restauraba directo de su back-forward cache (bfcache), sin volver a pasar
+por `adminGuard`/`verifySessionToken`. No es un problema de la sesión en
+sí (`adminSession.ts` seguía siendo válida en ese momento), pero es
+exactamente el mismo síntoma que se vería si alguien cierra sesión y
+después usa "atrás": el navegador puede restaurar el snapshot autenticado
+sin volver a checar nada, porque bfcache es 100% cliente, no hay red de
+por medio.
+
+**Mitigación ya aplicada, no depende de este plan**: `middleware.ts`
+(`adminGuard`) ahora manda `Cache-Control: no-store, must-revalidate` en
+**toda** respuesta bajo `/admin*` y `/api/admin*` — login incluido, no
+solo las rutas autenticadas. Es la señal estándar entre navegadores para
+sacar una página de la elegibilidad de bfcache. Rama
+`fix/admin-cache-control`, con test e2e
+(`tests/e2e/admin-cache-control.spec.ts`) verificando el header en las
+tres ramas de respuesta (login, redirect sin sesión, 401 de API).
+
+Esto **no reemplaza** el plan de arriba (Sessions vía `db0`/Turso) — sigue
+siendo la solución de fondo (revocación real, no un `Map` en memoria por
+instancia). El header de cache es la mitigación barata e inmediata que no
+depende de que ese trabajo más grande aterrice primero; cuando se migre a
+`Astro.session`, este header se queda igual, son ortogonales.
+
 ## Referencias cruzadas
 
 - `docs/03-diseno-api.md` — el JWT que va a vivir en esta sesión.
