@@ -7,6 +7,7 @@ import {
 } from "@/lib/adminSession";
 import { api } from "@/lib/api";
 import { isRateLimited } from "@/lib/rateLimit";
+import { adminLoginSchema } from "@/schemas/adminLoginSchema";
 
 const LOGIN_RATE_LIMIT = { limit: 5, windowMs: 5 * 60 * 1000 };
 
@@ -27,15 +28,16 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
 		}
 
 		const body = await request.json();
-		const email: string | undefined = body?.email;
-		const password: string | undefined = body?.password;
-
-		if (!email || !password) {
-			return new Response(JSON.stringify({ message: "Invalid credentials" }), {
-				status: 401,
-				headers: { "Content-Type": "application/json" },
-			});
+		const parsed = adminLoginSchema.safeParse(body);
+		if (!parsed.success) {
+			return new Response(
+				JSON.stringify({
+					message: parsed.error.issues[0]?.message ?? "Datos inválidos",
+				}),
+				{ status: 400, headers: { "Content-Type": "application/json" } },
+			);
 		}
+		const { email, password } = parsed.data;
 
 		// The real check happens in Hono, the only side with access to
 		// Turso's users table / the Argon2id hash (docs/03-hono-admin-auth.md

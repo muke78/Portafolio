@@ -93,28 +93,57 @@ import AdminLayoutBare from "@/layouts/AdminLoginLayout.astro";
   </div>
 
   <script>
+    import { adminLoginSchema } from "@/schemas/adminLoginSchema";
+
     const form = document.getElementById("login-form") as HTMLFormElement;
     const err = document.getElementById("login-error") as HTMLParagraphElement;
+
+    const showError = (message: string) => {
+      err.textContent = message;
+      err.classList.remove("hidden");
+      err.classList.add("flex");
+      form.classList.add("shake");
+      setTimeout(() => form.classList.remove("shake"), 400);
+    };
+
     form?.addEventListener("submit", async (e) => {
       e.preventDefault();
       err.classList.add("hidden");
+
       const fd = new FormData(form);
+      const payload = { email: fd.get("email"), password: fd.get("password") };
+
+      // Valida en el cliente antes de gastar una llamada de red - mismo
+      // schema que valida del lado del servidor (schemas/adminLoginSchema.ts),
+      // así los dos lados nunca pueden desalinearse.
+      const parsed = adminLoginSchema.safeParse(payload);
+      if (!parsed.success) {
+        showError(parsed.error.issues[0]?.message ?? "Datos inválidos.");
+        return;
+      }
+
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: fd.get("email"),
-          password: fd.get("password"),
-        }),
+        body: JSON.stringify(parsed.data),
       });
+
       if (res.ok) {
         window.location.href = "/admin";
-      } else {
-        err.classList.remove("hidden");
-        err.classList.add("flex");
-        form.classList.add("shake");
-        setTimeout(() => form.classList.remove("shake"), 400);
+        return;
       }
+
+      if (res.status === 429) {
+        showError("Demasiados intentos. Espera unos minutos.");
+        return;
+      }
+
+      const body = await res.json().catch(() => null);
+      showError(
+        res.status === 400
+          ? (body?.message ?? "Datos inválidos.")
+          : "Credenciales inválidas.",
+      );
     });
   </script>
 </AdminLayoutBare>
