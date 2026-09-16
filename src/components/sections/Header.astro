@@ -1,14 +1,13 @@
 ---
 import { Image } from "astro:assets";
-import { SiGithub } from "@icons-pack/react-simple-icons";
 import {
-	Linkedin,
 	Mail,
 	MessageCircle,
 	MoveRight,
 	SquareArrowOutUpRight,
 } from "lucide-react";
 import heroPortrait from "@/assets/img/hero-portrait.webp";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { getI18N } from "@/i18n";
 
 const { currentLocale } = Astro;
@@ -82,7 +81,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				aria-label={i18n.HEADER.HEADER_GITHUB_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
-				<SiGithub size={22} aria-hidden="true" />
+				<GithubIcon size={22} aria-hidden="true" />
 			</a>
 			<a
 				href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
@@ -91,7 +90,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				aria-label={i18n.HEADER.HEADER_LINKEDIN_ARIA_LABEL}
 				class="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-full"
 			>
-				<Linkedin size={22} aria-hidden="true" />
+				<LinkedinIcon size={22} aria-hidden="true" />
 			</a>
 			<a
 				href="https://wa.me/+525511909105"
