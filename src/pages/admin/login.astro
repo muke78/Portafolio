@@ -1,44 +1,28 @@
 ---
 import AdminLayoutBare from "@/layouts/AdminLoginLayout.astro";
-
-const STACK = ["Astro", "Hono", "Turso", "JWT"];
 ---
 
 <AdminLayoutBare title="Acceso privado">
   <div class="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] min-h-screen">
-    <aside class="hidden md:flex relative overflow-hidden flex-col justify-between border-r border-border bg-muted p-14">
+    <aside class="hidden md:flex relative overflow-hidden flex-col border-r border-border bg-muted p-14">
       <div
-        class="pointer-events-none absolute top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        class="pointer-events-none absolute top-1/2 left-1/2 h-150 w-150 -translate-x-1/2 -translate-y-1/2 rounded-full"
         style="background: radial-gradient(circle, color-mix(in oklab, var(--primary) 16%, transparent) 0%, transparent 60%);"
       >
       </div>
 
-      <div class="relative z-[2] font-serif-display text-2xl flex items-baseline gap-3">
+      <div class="relative z-2 font-serif-display text-2xl flex items-baseline gap-3">
         Khelde<span class="text-primary">.</span>
-        <span class="eyebrow">/admin</span>
       </div>
 
-      <div class="relative z-[2]">
-        <p class="eyebrow mb-4">— Panel privado</p>
+      <div class="relative z-2 flex-1 flex flex-col justify-center">
         <p class="font-serif-display text-4xl lg:text-5xl leading-[1.05] max-w-[16ch] mb-6">
           Acceso reservado al <span class="text-primary italic">administrador.</span>
         </p>
         <p class="khelde-lead text-muted-foreground max-w-[38ch]">
           Desde aquí se alimenta el portafolio: proyectos, experiencia,
-          educación, habilidades, opiniones y mensajes se editan en vivo y se
-          guardan en Turso a través de Hono.
+          educación, habilidades, opiniones y mensajes se editan en vivo.
         </p>
-      </div>
-
-      <div class="relative z-[2] flex flex-col gap-3">
-        <p class="eyebrow">Stack</p>
-        <div class="flex flex-wrap gap-2">
-          {STACK.map((item) => (
-            <span class="font-mono text-[11px] tracking-wide uppercase px-2.5 py-1 rounded-full border border-border text-muted-foreground">
-              {item}
-            </span>
-          ))}
-        </div>
       </div>
     </aside>
 
@@ -103,8 +87,6 @@ const STACK = ["Astro", "Hono", "Turso", "JWT"];
             </svg>
             Entrar al panel
           </button>
-
-          <p class="micro text-center">Sesión válida por 2 horas.</p>
         </div>
       </form>
     </main>
