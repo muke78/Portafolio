@@ -51,7 +51,8 @@
 		"PROJECTS_TITLE_BUTTON_C": "Entreprises",
 		"PROJECTS_TITLE_BUTTON_D": "Analyse des données",
 		"PROJECTS_BADGE_FORK": "Collaboration",
-		"PROJECTS_COUNT_LABEL": "projets"
+		"PROJECTS_COUNT_LABEL": "projets",
+		"PROJECTS_EMPTY": "Des projets arrivent bientôt dans cette catégorie."
 	},
 	"MANIFESTO": {
 		"LABEL": "Ce que je fais",
@@ -79,9 +80,10 @@
 		"404_IMG_ARIA_LABEL": "L'itinéraire demandé est introuvable"
 	},
 	"OPINIONS": {
-		"OPINIONS_SUBTITLE": "Soyez très patient avec vous-même et ne vous comparez pas trop aux autres.",
+		"OPINIONS_SUBTITLE": "Les mots de collègues, clients et partenaires avec qui j'ai construit des projets.",
 		"OPINIONS_TITLE": "Avis sur mon travail",
-		"OPINIONS_SUB_SUBTILE": "Voici quelques commentaires !",
+		"OPINIONS_SUB_SUBTILE": "On a travaillé ensemble ? Racontez-moi comment ça s'est passé.",
+		"OPINIONS_COUNT_LABEL": "avis",
 
 		"OPINIONS_NOT_FOUND": "Il n'y a pas encore de témoignages.",
 		"OPINIONS_NOT_FOUND_DESCRIPTION": "Oups ! Rien ici ni là pour l'instant. Vous verrez quelque chose ici bientôt.",

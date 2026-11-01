@@ -53,12 +53,14 @@ export const CommentWidget = ({ currentLocale }: PropsLang) => {
 	return (
 		<div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
 			{open && (
+				// A compact panel that grows out of the launcher (bottom-right). It
+				// does not dim or cover the page: the reader keeps the context.
 				<div
 					ref={panelRef}
+					data-dialog
 					role="dialog"
-					aria-modal="true"
 					aria-label="Dejar un comentario"
-					className="w-[min(92vw,380px)] max-h-[min(80vh,640px)] overflow-y-auto rounded-2xl border border-border bg-card shadow-lg ring-1 ring-foreground/10"
+					className="max-h-[min(80vh,640px)] w-[min(92vw,400px)] overflow-y-auto rounded-2xl border border-border bg-card shadow-lg ring-1 ring-foreground/10"
 				>
 					<SendOpinions
 						currentLocale={currentLocale}
@@ -69,6 +71,7 @@ export const CommentWidget = ({ currentLocale }: PropsLang) => {
 
 			<button
 				ref={triggerRef}
+				data-fab
 				type="button"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}

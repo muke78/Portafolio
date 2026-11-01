@@ -51,7 +51,8 @@
 		"PROJECTS_TITLE_BUTTON_C": "Companies",
 		"PROJECTS_TITLE_BUTTON_D": "Data analysis",
 		"PROJECTS_BADGE_FORK": "Collaboration",
-		"PROJECTS_COUNT_LABEL": "projects"
+		"PROJECTS_COUNT_LABEL": "projects",
+		"PROJECTS_EMPTY": "Projects for this category are coming soon."
 	},
 	"MANIFESTO": {
 		"LABEL": "What I do",
@@ -79,9 +80,10 @@
 		"404_IMG_ARIA_LABEL": "The requested route was not found"
 	},
 	"OPINIONS": {
-		"OPINIONS_SUBTITLE": "Be very patient with yourself and don't compare yourself too much with others.",
+		"OPINIONS_SUBTITLE": "Words from teammates, clients and colleagues I have built projects with.",
 		"OPINIONS_TITLE": "Opinions about my work",
-		"OPINIONS_SUB_SUBTILE": "Here are some comments!",
+		"OPINIONS_SUB_SUBTILE": "Did we work together? Tell me how it went.",
+		"OPINIONS_COUNT_LABEL": "opinions",
 
 		"OPINIONS_NOT_FOUND": "There are no testimonies yet.",
 		"OPINIONS_NOT_FOUND_DESCRIPTION": "Oops! Nothing here or there yet. You'll see something here soon.",

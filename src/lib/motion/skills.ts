@@ -53,15 +53,14 @@ export const skillFlights = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 					{ autoAlpha: 0, rotation: rand(-fly.tilt, fly.tilt), scale: 0.7 },
 					0,
 				);
-				tl.to(chip, { autoAlpha: 1, duration: 0.5, ease: "sine.out" }, at);
-				tl.to(
-					chip,
-					{ rotation: 0, scale: 1, duration: 1.6, ease: "sine.inOut" },
-					at,
-				);
+				// One tween per chip (path + fade + tilt + scale together): a
+				// cheaper timeline to scrub than four per chip.
 				tl.to(
 					chip,
 					{
+						autoAlpha: 1,
+						rotation: 0,
+						scale: 1,
 						duration: 1.6,
 						ease: "sine.inOut",
 						motionPath: {

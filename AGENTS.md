@@ -112,7 +112,8 @@ reglas que no se negocian:
    en componentes): el HTML solo lleva atributos de datos (`data-reveal`,
    `data-split`, `data-manifesto`, `data-parallax-img`, `data-marquee`,
    `data-mask`, `data-stagger`, `data-scrub-text`, `data-hscroll`,
-   `data-stack`, `data-fly-*`, `data-snake`, `data-detail-*`,
+   `data-stack`, `data-fly-*`, `data-snake`, `data-dialog-*`, `data-fab`,
+   `data-detail-*`,
    `data-hero-*`; ver 7.7 y 12.4 de `docs/UI_STANDARDS.md`). **Antes de
    animar algo nuevo lee `docs/GSAP.md`**: qué ofrece GSAP, qué plugins hay
    y cuál usar. El contenido debe quedar visible sin JS (GSAP pone el

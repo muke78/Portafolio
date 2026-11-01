@@ -8,6 +8,7 @@
  */
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
@@ -41,13 +42,16 @@ export const MOTION = {
 	},
 	// Groups of items entering one after another (stack icons, fields, links).
 	stagger: { duration: 0.8, distance: 20, each: 0.07, start: "top 85%" },
+	// Particle galaxy (galaxy.ts): scroll length of the collapse+blast and of
+	// the move to the corner, in viewport heights; scrub lag.
+	galaxy: { burstScreens: 1.2, settleScreens: 1.4, scrub: 1.2 },
 	// Skills adrift (skills.ts): seconds between chips inside the scrubbed
 	// timeline, the largest tilt (degrees) a chip starts with, how far (px) it
 	// drifts in from, and the scrub lag (higher = floatier).
 	fly: { stagger: 0.09, tilt: 14, near: 240, far: 460, scrub: 1.8 },
 	// Pinned sideways showcase and layered stack (layers.ts).
 	hscroll: { maxScreens: 2.5, smooth: 0.7 },
-	stack: { scale: 0.95 },
+	stack: { scale: 0.95, floor: 0.88 },
 	// Project detail page: intro timeline and scroll-linked depth.
 	detail: { total: 2, figureScale: 0.92, imgDrift: 7 },
 } as const;
@@ -73,7 +77,12 @@ export const isBrowser = () => typeof window !== "undefined";
 
 const register = () => {
 	if (registered) return;
-	gsap.registerPlugin(ScrollTrigger, SplitText, MotionPathPlugin);
+	gsap.registerPlugin(
+		ScrollTrigger,
+		SplitText,
+		MotionPathPlugin,
+		ScrollToPlugin,
+	);
 	registered = true;
 };
 
@@ -177,10 +186,12 @@ export const watch = (
 			const cleanup = handler(el as HTMLElement);
 			if (cleanup) cleanups.push(cleanup);
 		};
-		if (el.closest("astro-island")) {
+		if (isHydrating(el)) {
 			const t = window.setTimeout(run, HYDRATION_SETTLE_MS);
 			cleanups.push(() => window.clearTimeout(t));
 		} else {
+			// Static HTML, or an element React mounted after the island was
+			// already live (dialogs, fetched lists): safe to run right away.
 			run();
 		}
 	};

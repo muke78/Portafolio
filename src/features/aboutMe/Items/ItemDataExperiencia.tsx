@@ -5,15 +5,12 @@ import { getI18N } from "@/i18n";
 import type { Experiences, PropsLang } from "@/types/currentLang.interface";
 
 // Each stacked card sticks a little lower than the one before so the edges of
-// the stack stay visible (desktop only, see layers.ts). Static class names so
-// Tailwind sees them; inline custom properties would be wiped by the reveal.
-const STACK_TOP = [
-	"lg:top-28",
-	"lg:top-[7.875rem]",
-	"lg:top-[8.75rem]",
-	"lg:top-[9.625rem]",
-	"lg:top-[10.5rem]",
-];
+// the stack stay visible (desktop only, see layers.ts). The offset is capped:
+// with 30 jobs the last ones simply share the lowest step. Inline style is
+// safe here because stack cards do not use data-reveal (its settle() wipes
+// inline styles).
+const STACK_STEP_PX = 14;
+const STACK_MAX_STEPS = 8;
 
 const R2 = "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev";
 
@@ -72,9 +69,11 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 					return (
 						<article
 							key={experience_id}
-							data-reveal
 							data-stack-card
-							className={`flex flex-col rounded-2xl border border-border bg-card p-7 hover-lift lg:sticky ${STACK_TOP[Math.min(index, STACK_TOP.length - 1)]}`}
+							style={{
+								top: `calc(7rem + ${Math.min(index, STACK_MAX_STEPS) * STACK_STEP_PX}px)`,
+							}}
+							className="flex flex-col rounded-2xl border border-border bg-card p-7 hover-lift lg:sticky"
 						>
 							{/* 2 - company */}
 							<div className="flex items-center gap-3">

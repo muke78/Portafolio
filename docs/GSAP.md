@@ -32,6 +32,9 @@ atributos de datos y el motor los anima.
 | `text.ts` | `[data-scrub-text]`: palabras que se encienden con el scroll (sin fijar) |
 | `layers.ts` | `[data-hscroll]`: showcase horizontal fijado; `[data-stack]`: pila de cards `sticky` con profundidad |
 | `skills.ts` | Habilidades en vuelo (`MotionPathPlugin`): chips que entran por curvas en S, escrubadas, y una línea "serpiente" que se dibuja con un punto que la recorre |
+| `galaxy.ts` | La galaxia de partículas sigue el scroll: `galaxyState.burst` (polvo → colapso → explosión) y `settle` (a la esquina); el canvas (`components/three/ParticleGalaxy.tsx`) solo lee ese estado |
+| `anchors.ts` | Enlaces `#sección` con pins: `ScrollTrigger.refresh()` antes de medir, `ScrollToPlugin`, hasta 3 correcciones mientras la página crece |
+| `dialogs.ts` | Diálogo de comentarios (`[data-dialog]`, items en stagger; sin overlay a pantalla completa) y lanzador `[data-fab]` |
 | `detail.ts` | Ruta `/[lang]/project/[id]`: timeline de entrada + profundidad al hacer scroll |
 | `page.ts` | `[data-scroll-progress]`: barra de progreso de lectura |
 | `index.ts` | `initMotion()`: arranca todo una vez desde `Layout.astro` |
@@ -195,6 +198,19 @@ Registrar un plugin nuevo: importarlo en `src/lib/motion/core.ts` y añadirlo a
 - **Cuidado con `clearProps` sobre transformaciones compartidas**: limpiar
   `scale` borra todo el `transform` (también el parallax `yPercent`). En
   marcos con máscara solo se limpia `clipPath`.
+- **El hero y el CSS que oculta, otra vez**: no ocultes con `transform`
+  desde CSS (GSAP lee ese `translateY(115%)` como `y` en px y la entrada se
+  queda desplazada). Oculta con `opacity: 0` y deja que GSAP ponga el
+  movimiento (`yPercent`).
+- **Elementos montados por React después de hidratar** (diálogos, listas con
+  datos) se animan al instante; solo lo que está en una isla recién viva
+  espera `HYDRATION_SETTLE_MS` (`isHydrating()` en `core.ts`).
+- **Nada de `fetch` en el primer render**: las secciones de abajo piden sus
+  datos desde el navegador cuando su isla (`client:visible`, con
+  `rootMargin`) está cerca (`lib/projectsStore.ts` comparte la petición).
+- **Medidas del DOM, no constantes**: carril, pila, vuelo de habilidades y
+  anclas calculan distancias de los nodos reales (`scrollWidth`, rects); los
+  topes (2.5 pantallas) son los únicos números fijos.
 - **Después de cambiar la altura de la página** (islas, imágenes lazy,
   fuentes) el motor llama a `ScrollTrigger.refresh()`.
 - **React**: si una isla necesita GSAP propio, crear `gsap.context()` en un

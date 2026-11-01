@@ -39,6 +39,9 @@ describe("motion (SSR safety)", () => {
 		// Skills drift, they do not spin: small tilt, short distances.
 		expect(MOTION.fly.tilt).toBeLessThanOrEqual(20);
 		expect(MOTION.fly.far).toBeLessThanOrEqual(600);
+		// The galaxy forms inside the hero scroll, never behind a long pin.
+		expect(MOTION.galaxy.burstScreens).toBeLessThanOrEqual(2);
+		expect(MOTION.stack.floor).toBeGreaterThanOrEqual(0.8);
 		expect(MOTION.hscroll.smooth).toBeLessThanOrEqual(1);
 		expect(MOTION.stack.scale).toBeGreaterThanOrEqual(0.9);
 		expect(MOTION.detail.figureScale).toBeGreaterThanOrEqual(0.9);

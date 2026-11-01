@@ -15,7 +15,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
 	const handleImageLoad = useCallback((tech: string) => {
-		setLoadedImages((prev) => ({ ...prev, [tech]: true }));
+		setLoadedImages((prev) => (prev[tech] ? prev : { ...prev, [tech]: true }));
 	}, []);
 
 	useEffect(() => {
@@ -101,6 +101,10 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 												}`}
 												src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
 												alt=""
+												ref={(el) => {
+													if (el?.complete && el.naturalWidth > 0)
+														handleImageLoad(tech);
+												}}
 												onLoad={() => handleImageLoad(tech)}
 												loading="lazy"
 												decoding="async"

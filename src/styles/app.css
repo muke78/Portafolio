@@ -147,7 +147,7 @@
 	--night: oklch(14.5% 0.012 270);
 	--night-foreground: oklch(94% 0.004 270);
 
-	/* Galaxy 3D (read by GalaxyBackground.tsx). Light theme renders with
+	/* Galaxy 3D (read by ParticleGalaxy.tsx). Light theme renders with
 	   multiply blending, so these are deeper/saturated: a light colour
 	   would vanish against the pearl background. */
 	--galaxy-core: oklch(58% 0.2 330);
@@ -407,6 +407,8 @@
    ============================================================ */
 .motion-ok [data-reveal]:not([data-revealed]),
 .motion-ok [data-hero-label]:not([data-revealed]),
+.motion-ok [data-hero-line]:not([data-revealed]),
+.motion-ok [data-fab]:not([data-revealed]),
 .motion-ok [data-hero-lead]:not([data-revealed]),
 .motion-ok [data-hero-cta] > *:not([data-revealed]),
 .motion-ok [data-hero-bar]:not([data-revealed]),
@@ -416,9 +418,6 @@
 }
 .motion-ok [data-split]:not([data-revealed]) {
 	opacity: 0;
-}
-.motion-ok [data-hero-line]:not([data-revealed]) {
-	transform: translateY(115%);
 }
 .motion-ok [data-hero-portrait]:not([data-revealed]),
 .motion-ok [data-mask]:not([data-mask="left"]):not([data-revealed]),
@@ -548,10 +547,10 @@
 }
 
 /* ============================================================
-   GALAXY 3D — Three.js showpiece (hero → corner-shrink → footer sunset)
-   Sizing/masking only; entry+scroll transforms are driven from JS.
+   PARTICLE GALAXY - the canvas fills the viewport behind everything.
+   Positions and scale are computed in the shader / component from the scroll.
    ============================================================ */
-#galaxy-3d {
+[data-galaxy] {
 	position: fixed;
 	inset: 0;
 	width: 100vw;
@@ -560,32 +559,15 @@
 	   stars, so the headline always wins the contrast fight. */
 	z-index: -1;
 	pointer-events: none;
-	transform-origin: 50% 50%;
-	/* Feathered edges: the canvas dissolves into the page colour instead of
-	   reading as a pasted rectangle. The mask travels with the element
-	   (it is applied before the JS transform). */
-	-webkit-mask-image: radial-gradient(
-		ellipse 52% 50% at 50% 50%,
-		black 0%,
-		black 22%,
-		transparent 74%
-	);
-	mask-image: radial-gradient(
-		ellipse 52% 50% at 50% 50%,
-		black 0%,
-		black 22%,
-		transparent 74%
-	);
-	will-change: transform, opacity;
 }
-#galaxy-3d canvas {
+[data-galaxy] canvas {
 	/* biome-ignore lint/complexity/noImportantStyles: overrides the inline width/height Three.js sets on the canvas itself, a class can't win over inline styles otherwise */
 	width: 100% !important;
 	/* biome-ignore lint/complexity/noImportantStyles: same as width above */
 	height: 100% !important;
 	display: block;
 }
-:root:not(.dark) #galaxy-3d {
+:root:not(.dark) [data-galaxy] {
 	mix-blend-mode: multiply;
 }
 
@@ -664,4 +646,11 @@
 	pointer-events: none;
 	opacity: 0.5;
 	color: var(--primary);
+}
+
+/* Skills in flight: promote the moving pieces to their own layers only while
+   the engine runs (see skills.ts), so the scrub never repaints the page. */
+.motion-ok [data-fly-chip],
+.motion-ok [data-snake-dot] {
+	will-change: transform;
 }

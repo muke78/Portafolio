@@ -123,7 +123,7 @@ export const stackScenes = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 					card,
 					{ scale: 1 },
 					{
-						scale: MOTION.stack.scale - i * 0.01,
+						scale: Math.max(MOTION.stack.floor, MOTION.stack.scale - i * 0.01),
 						transformOrigin: "50% 0%",
 						ease: "none",
 						scrollTrigger: {

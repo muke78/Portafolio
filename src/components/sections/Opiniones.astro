@@ -1,23 +1,12 @@
 ---
-import { API_SECRET_TOKEN } from "astro:env/server";
 import { Opinions } from "@/features/opinions/Opinions";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
-import { api } from "@/lib/api";
-import type { Testimonial } from "@/types/currentLang.interface";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
-
-let initialData: Testimonial[] = [];
-try {
-	const { data } = await api.get("/comments", {
-		headers: { Authorization: `Bearer ${API_SECRET_TOKEN}` },
-	});
-	initialData = (data?.data ?? []) as Testimonial[];
-} catch (err) {
-	console.error("SSR opiniones fetch failed", err);
-}
 ---
 
+<!-- No server fetch: the island loads the comments from the browser when the
+     section is about to come into view, so the first render stays light. -->
 <div class="w-full py-24 md:py-32">
-	<Opinions client:visible currentLocale={currentLocale} initialData={initialData} />
+	<Opinions client:visible={{ rootMargin: "500px" }} currentLocale={currentLocale} />
 </div>

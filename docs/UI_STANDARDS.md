@@ -658,6 +658,9 @@ sitio usa las mismas piezas, cada una en su módulo:
 | **Showcase horizontal fijado** | `layers.ts` | En escritorio (≥ 1024×760) la sección de proyectos se **fija** y el scroll vertical desliza las cards en horizontal (máx. 2.5 pantallas); barra de progreso; se recalcula al cambiar de categoría. En móvil es una grilla | `[data-hscroll]` + `[data-hscroll-track]` / `-viewport` / `-progress` |
 | **Pila de cards** | `layers.ts` | Las cards de experiencia son `sticky` y se apilan (cada una un poco más abajo); la que queda debajo retrocede (`scale`) al llegar la siguiente | `[data-stack]` + `[data-stack-card]` |
 | **Habilidades en vuelo** | `skills.ts` | Cada chip entra desde fuera de pantalla siguiendo una curva en S (`MotionPathPlugin`, `type: "thru"`), girando, y se aplasta un poco al aterrizar; todo escrubado con el scroll. Detrás, una línea "serpiente" se dibuja y un punto la recorre (`align`). En móvil: fade-up escalonado | `[data-fly-group]` + `[data-fly-chip]`, `[data-snake]` + `-trace` / `-dot` |
+| **Galaxia de partículas** | `galaxy.ts` + `ParticleGalaxy.tsx` | Polvo estelar a la deriva al entrar; con el scroll se arremolina hacia el centro, colapsa y **estalla** en una galaxia espiral de 3 brazos (destello en el instante de la explosión); luego se desplaza a la esquina, más pequeña. Original: una sola llamada de dibujo, shaders propios, colores de los tokens `--galaxy-*`. Con `prefers-reduced-motion` se dibuja la galaxia final quieta | scroll (sin atributo) |
+| Anclas con pins | `anchors.ts` | Los enlaces `#…` se resuelven con GSAP tras recalcular los pins y se corrigen mientras la página crece | `a[href*="#"]` |
+| Diálogo de comentarios | `dialogs.ts` | Panel compacto que crece desde el lanzador (escala desde su esquina inferior derecha), campos en stagger; **no cubre ni oscurece la página**; el lanzador entra con un pop | `[data-dialog]`, `-item`, `[data-fab]` |
 | Marcos con máscara | `masks.ts` | Un marco se abre como cortina (`clip-path`) mientras la foto asienta desde un zoom; también hacia el lado (`data-mask="left"`) | `[data-mask]` |
 | Grupos con stagger | `masks.ts` | Los hijos entran uno a uno al aparecer el contenedor (iconos de stack, campos del formulario, enlaces); `data-stagger="pop"` además crece | `[data-stagger]` + `[data-stagger-item]` |
 | Texto con scrub | `text.ts` | Las palabras de un párrafo se encienden mientras cruza la pantalla | `[data-scrub-text]` |
@@ -761,7 +764,7 @@ Antes de abrir un PR que toque UI:
 | 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Parcial: el motor lo respeta (7.4) y el CSS hereda la guarda; falta un e2e con `reducedMotion: 'reduce'` (se deja para el final) |
 | 11 | Títulos de `aboutMe` eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`) |
 | 12 | Jerarquía de encabezados plana | `ItemDataExperiencia.tsx`, `ItemDataProjects.tsx` | ✅ Resuelto (`<h3>`) |
-| 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `GalaxyBackground.tsx`, `app.css` | ✅ Resuelto: capa de fondo (`z-index: -1`), máscara radial difuminada y reposicionada tras el retrato (12.2) |
+| 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `ParticleGalaxy.tsx`, `app.css` | ✅ Resuelto: capa de fondo (`z-index: -1`); la galaxia se forma con el scroll y reposa en la esquina (12.2) |
 | 14 | `text-wrap: balance` sin aplicar en titulares del Home | secciones | ✅ Resuelto en hero y Opiniones; el resto usa `text-title` sin balance a propósito (títulos cortos) |
 | 15 | Base teñida de berenjena y superficie `muted` casi negra | `app.css`, `Form.tsx` | ✅ Resuelto: base neutra onyx/silk, violeta solo en `--primary`; superficies escalonadas (2.3) |
 | 16 | Hovers básicos y hovers internos en cards | cards, botones, iconos | ✅ Resuelto: `hover-lift` / `hover-press` / `hover-nudge` (5.5) |
@@ -883,6 +886,8 @@ vive en `src/lib/motion/` (7.7).
 | `data-fly-group` + `data-fly-chip`, `data-snake` + `-trace` / `-dot` | Habilidades | Vuelo por curvas + serpiente |
 | `data-detail` + `-back` / `-meta` / `-title` / `-figure` / `-img` | Ruta de detalle | Entrada y profundidad |
 | `data-scroll-progress` | `Layout.astro` | Barra de progreso |
+| `data-galaxy` | `ParticleGalaxy.tsx` | Contenedor del canvas de la galaxia |
+| `data-dialog` + `-item`, `data-fab` | `CommentWidget`, `sendOpinions` | Diálogo de comentarios y su lanzador |
 | `data-revealed` | Lo pone el motor | "Ya terminó": el CSS deja de ocultarlo |
 
 El estado inicial oculto del CSS solo existe bajo `html.motion-ok` (7.4).

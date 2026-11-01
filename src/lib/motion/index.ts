@@ -19,6 +19,8 @@
  *   [data-snake] + trace/dot   snake line drawn with the scroll (skills.ts)
  *   [data-detail] + parts     project detail intro + depth (detail.ts)
  *   [data-scroll-progress]     reading progress hairline (page.ts)
+ *   [data-dialog] + overlay    comment dialog open + items stagger; [data-fab] launcher (dialogs.ts)
+ *   (no attribute)             particle galaxy driven by scroll (galaxy.ts)
  *
  * Accessibility: everything is registered under
  * "prefers-reduced-motion: no-preference" (withMotion). With "reduce"
@@ -28,6 +30,7 @@
  * the engine never starts, so content cannot get stuck invisible.
  */
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { anchorScroll } from "./anchors";
 import {
 	type Cleanup,
 	isBrowser,
@@ -37,6 +40,8 @@ import {
 	withMotion,
 } from "./core";
 import { projectDetail } from "./detail";
+import { dialogs } from "./dialogs";
+import { galaxyScene } from "./galaxy";
 import { playHero } from "./hero";
 import { horizontalScenes, stackScenes } from "./layers";
 import { maskReveals, staggerGroups } from "./masks";
@@ -92,13 +97,16 @@ export const initMotion = (): Cleanup => {
 			snakeLine(tools),
 			projectDetail(tools),
 			scrollProgress(tools),
+			galaxyScene(tools),
+			anchorScroll(tools),
+			dialogs(tools),
 		];
 
 		// Layout keeps moving after load (lazy images, islands, web fonts).
 		let timer: number | undefined;
 		const refresh = () => {
 			window.clearTimeout(timer);
-			timer = window.setTimeout(() => void refreshScrollTriggers(), 150);
+			timer = window.setTimeout(() => void refreshScrollTriggers(), 300);
 		};
 		const ro = new ResizeObserver(refresh);
 		ro.observe(document.body);

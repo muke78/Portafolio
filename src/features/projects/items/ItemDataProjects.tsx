@@ -30,8 +30,14 @@ export const ItemDataProjects = ({
 	};
 
 	const handleImageLoad = useCallback((key: string) => {
-		setLoadedImages((prev) => ({ ...prev, [key]: true }));
+		setLoadedImages((prev) => (prev[key] ? prev : { ...prev, [key]: true }));
 	}, []);
+
+	// The browser may finish a download before React attaches onLoad (images
+	// are eager here, inside a clipped rail): check the element when it mounts.
+	const markIfLoaded = (el: HTMLImageElement | null, key: string) => {
+		if (el?.complete && el.naturalWidth > 0) handleImageLoad(key);
+	};
 
 	return (
 		<div
@@ -72,8 +78,9 @@ export const ItemDataProjects = ({
 									className={`absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover transition-opacity duration-500 ${
 										loadedImages[card_image] ? "opacity-100" : "opacity-0"
 									}`}
+									ref={(el) => markIfLoaded(el, card_image)}
 									onLoad={() => handleImageLoad(card_image)}
-									loading="lazy"
+									loading="eager"
 									decoding="async"
 									draggable="false"
 								/>
@@ -127,8 +134,9 @@ export const ItemDataProjects = ({
 												}`}
 												src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
 												alt={topic}
+												ref={(el) => markIfLoaded(el, topic)}
 												onLoad={() => handleImageLoad(topic)}
-												loading="lazy"
+												loading="eager"
 												decoding="async"
 												draggable="false"
 											/>
