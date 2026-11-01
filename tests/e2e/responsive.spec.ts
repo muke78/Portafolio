@@ -29,11 +29,6 @@ test.describe("mobile viewport (375px)", () => {
 		expect(await hasFunctionalHorizontalOverflow(page)).toBe(false);
 	});
 
-	test("admin login has no horizontal overflow", async ({ page }) => {
-		await page.goto("/admin/login");
-		expect(await hasFunctionalHorizontalOverflow(page)).toBe(false);
-	});
-
 	test("mobile nav sheet opens", async ({ page }) => {
 		await page.goto("/es/home");
 		await waitForIsland(page, "Nav.tsx");

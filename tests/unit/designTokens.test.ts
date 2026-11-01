@@ -140,13 +140,12 @@ describe.each(["light", "dark"] as const)(
 );
 
 describe("no hardcoded pure black/white in the public UI", () => {
-	const ADMIN = /[/](admin|Admin)/;
 	const files: string[] = [];
 	const walk = (dir: string) => {
 		for (const entry of readdirSync(dir)) {
 			const path = join(dir, entry);
 			if (statSync(path).isDirectory()) walk(path);
-			else if (/\.(astro|tsx|ts)$/.test(entry) && !ADMIN.test(path)) {
+			else if (/\.(astro|tsx|ts)$/.test(entry)) {
 				files.push(path);
 			}
 		}
