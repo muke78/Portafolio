@@ -15,6 +15,7 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 - [⚙️ Requisitos Previos](#️-requisitos-previos)
 - [🔧 Instalación](#-instalación)
 - [💻 Desarrollo Local](#-desarrollo-local)
+- [🧪 Pruebas](#-pruebas)
 - [🌐 Internacionalización](#-internacionalización)
 - [🎨 Temas](#-temas)
 - [🧩 Frontend Architecture & Design System](#-frontend-architecture--design-system)
@@ -29,11 +30,11 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 - **UI**: [React](https://react.dev/) v18 (islas vía `@astrojs/react`)
 - **Estilos y componentes**: [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/)
 - **Iconos**: [Lucide](https://lucide.dev/) (`lucide-react`) — única librería de iconos
-- **Animación**: [GSAP](https://gsap.com/) + ScrollTrigger es el estándar para animación de scroll (centralizado en `src/lib/motion.ts`; ver [Frontend Architecture & Design System](#-frontend-architecture--design-system))
-- **3D**: [Three.js](https://threejs.org/) (fondo animado, montado como isla `client:idle`)
+- **Animación**: [GSAP](https://gsap.com/) con ScrollTrigger, SplitText, MotionPathPlugin y ScrollToPlugin es el estándar para animación de scroll (centralizado en `src/lib/motion/`; ver [Frontend Architecture & Design System](#-frontend-architecture--design-system))
+- **3D**: [Three.js](https://threejs.org/) (galaxia de partículas propia con un `ShaderMaterial` y una sola llamada de dibujo, montada como isla `client:idle`)
 - **Formularios**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 - **Otros**: [TypeScript](https://www.typescriptlang.org/), [react-country-flag](https://www.npmjs.com/package/react-country-flag)
-- **Calidad**: [Biome](https://biomejs.dev/) (lint/format) + [Husky](https://typicode.github.io/husky/) (git hooks) + [Vitest](https://vitest.dev/) y [Playwright](https://playwright.dev/) (tests)
+- **Calidad**: [Biome](https://biomejs.dev/) (lint/format) + [Husky](https://typicode.github.io/husky/) (git hooks) + [Vitest](https://vitest.dev/) y [Playwright](https://playwright.dev/) (tests), con [axe-core](https://github.com/dequelabs/axe-core) para la auditoría de accesibilidad
 
 ## 📁 Estructura del Proyecto
 
@@ -43,7 +44,7 @@ src/
 ├── features/             # Lógica por dominio (aboutMe, projects, opinions, contact, navbar, admin)
 ├── i18n/                 # Traducciones (locales/*.json) y locales.ts (fuente única de verdad de idiomas)
 ├── layouts/               # Layouts de Astro (Layout, AdminLayout, AdminLoginLayout)
-├── lib/                  # Utilidades server-side (sesión admin, rate limit, cliente del backend)
+├── lib/                  # Utilidades server-side (sesión admin, rate limit, cliente del backend) y motion/ (motor GSAP, solo cliente)
 ├── middleware.ts         # Validación de locale + guard del panel admin
 ├── pages/                # Rutas: /[lang]/home, /[lang]/project/[id], /admin/*, /api/*
 ├── schemas/               # Esquemas de validación Zod
@@ -88,6 +89,18 @@ src/
 
 - El sitio estará disponible en [http://localhost:4321](http://localhost:4321)
 
+## 🧪 Pruebas
+
+```bash
+    pnpm test:unit    # Vitest: tokens de diseño, contraste del texto atenuado, límites del motor de movimiento
+    pnpm test:e2e     # Playwright (necesita `pnpm dev` y el backend corriendo)
+```
+
+- **E2E**: navegación por scroll y anclas con las secciones fijadas, carga diferida de las islas, formularios, cambio de idioma, detalle de proyecto y panel admin. Un archivo dedicado verifica `prefers-reduced-motion: reduce` (sin escenas fijadas y con todo el contenido visible).
+- **Accesibilidad**: `tests/e2e/a11y.spec.ts` corre axe-core (WCAG 2.1 A/AA) sobre el Home en tema claro y oscuro, a 375 px y en escritorio, además del detalle de proyecto y el diálogo de opiniones. También comprueba un solo `<h1>`, encabezados sin saltos, el enlace para saltar al contenido, el foco visible, el reflujo a 200 % de zoom y el teclado dentro del carril de proyectos.
+- Las pruebas de Playwright usan 3 workers y desactivan WebGL (`--disable-3d-apis`) para no saturar el servidor de desarrollo. En local reintentan una vez.
+- El hook `pre-push` corre Biome, `astro check`, el build, Vitest y Playwright. Si Playwright no puede correr en tu entorno, `SKIP_E2E=1 git push`.
+
 ## 🌐 Internacionalización
 
 El proyecto soporta múltiples idiomas, definidos en `src/i18n/locales.ts` (única fuente de verdad, usada tanto por el enrutamiento de Astro como por el selector de idioma):
@@ -111,14 +124,14 @@ El sistema de diseño completo (paleta con contrastes medidos, tipografía, espa
 - **shadcn/ui** (estilo `base-nova`, sobre Base UI): los primitivos viven en `src/components/ui/` y se usan siempre en lugar de HTML estilizado a mano.
 - **Tailwind CSS v4**: los tokens de color, radio y fuente están en `src/styles/app.css` (OKLCH, tema claro/oscuro). No se usan colores fuera de esos tokens.
 - **Lucide**: única librería de iconos (excepción: logos de marca en `src/components/icons/BrandIcons.tsx`).
-- **GSAP + ScrollTrigger + SplitText**: estándar para animación de scroll (escenas fijadas, stagger, máscaras de texto, parallax; solo `transform`/`opacity`, con `prefers-reduced-motion` respetado). El motor vive en `src/lib/motion/` y se arranca una vez desde `Layout.astro`.
+- **GSAP + ScrollTrigger + SplitText**: estándar para animación de scroll (escenas fijadas, stagger, máscaras de texto, parallax, trayectorias con MotionPath; solo `transform`/`opacity`, con `prefers-reduced-motion` respetado). El motor vive en `src/lib/motion/` y se arranca una vez desde `Layout.astro`.
 - **Paleta**: "Onyx & Violet" — base neutra (oscuro onyx/charcoal, claro silk con texto carbón; nunca `#000`/`#fff`) y un único acento violeta en `--primary`. Los contrastes están medidos y protegidos por `tests/unit/designTokens.test.ts`.
 - **Tipografía**: Instrument Serif (titulares), Geist (texto), Geist Mono (etiquetas), autoalojadas con `@fontsource`; tamaños como tokens (`text-display`, `text-title`, `text-subtitle`, `text-heading`).
 - **Interacción**: hovers táctiles (`hover-lift`, `hover-press`, `hover-nudge`) y estados de carga con `<Skeleton />`, nunca spinners.
-- **Layout del Home**: hero tipográfico a escala de póster (nombre a hasta 200 px, retrato en arco con anillos de órbita, galaxia 3D como capa de fondo difuminada), secciones asimétricas 4/8 con mucho espacio negativo y Ley de Hick en habilidades. El movimiento lo gobierna un motor GSAP (`src/lib/motion/`) que se comunica con el HTML solo por atributos de datos: entrada orquestada del hero, una escena fijada y escrubada (el manifiesto), títulos con máscara, revelados por lotes, parallax y un marquee ligado a la velocidad del scroll; todo respeta `prefers-reduced-motion`. Detalle en las secciones 7.7 y 12 de `docs/UI_STANDARDS.md`.
+- **Layout del Home**: hero tipográfico a escala de póster (nombre a hasta 200 px, retrato en arco con anillos de órbita) sobre una galaxia de partículas propia que se contrae y estalla con el scroll, y secciones asimétricas 4/8 con mucho espacio negativo. No hay pestañas ni menús: Acerca de, Educación, Experiencia, Habilidades y Proyectos se cuentan en orden mientras se baja. Los proyectos van en carriles horizontales fijados por categoría, la experiencia en una pila de cards y las habilidades flotan por una trayectoria. El contenido de las secciones bajas se pide al cargar cuando se acercan al viewport. El movimiento lo gobierna un motor GSAP (`src/lib/motion/`) que se comunica con el HTML solo por atributos de datos; todo respeta `prefers-reduced-motion`. Detalle en las secciones 7.7 y 12 de `docs/UI_STANDARDS.md`.
 - **Detalle de proyecto**: cada card del Home abre `/[lang]/project/[slug]`, una vista propia y compartible (SSR, con su `<title>` y `og:image`).
 
-**Accesibilidad**: el objetivo es WCAG 2.1 AA, con el checklist y las deudas conocidas (por ejemplo, el contraste del borde de los campos) documentados en `docs/UI_STANDARDS.md`.
+**Accesibilidad**: el objetivo es WCAG 2.1 AA, auditado automáticamente con axe-core en ambos temas y en móvil y escritorio (ver [Pruebas](#-pruebas)). El texto que se enciende con el scroll nunca baja de un piso de contraste medido por tema. El checklist y las deudas conocidas (por ejemplo, el contraste del borde de los campos) están en `docs/UI_STANDARDS.md`.
 
 ## 🔐 Panel de administración
 
