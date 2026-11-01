@@ -33,6 +33,18 @@ describe("motion (SSR safety)", () => {
 			MOTION.manifesto.screens,
 		);
 		expect(MOTION.marquee.maxBoost).toBeLessThanOrEqual(5);
+		// A sideways showcase is a pinned scene too: same cap, and a gentle lean.
+		expect(MOTION.hscroll.maxScreens).toBeLessThanOrEqual(2.5);
+		expect(MOTION.marquee.maxSkew).toBeLessThanOrEqual(4);
+		// Skills drift, they do not spin: small tilt, short distances.
+		expect(MOTION.fly.tilt).toBeLessThanOrEqual(20);
+		expect(MOTION.fly.far).toBeLessThanOrEqual(600);
+		// The galaxy forms inside the hero scroll, never behind a long pin.
+		expect(MOTION.galaxy.burstScreens).toBeLessThanOrEqual(2);
+		expect(MOTION.stack.floor).toBeGreaterThanOrEqual(0.8);
+		expect(MOTION.hscroll.smooth).toBeLessThanOrEqual(1);
+		expect(MOTION.stack.scale).toBeGreaterThanOrEqual(0.9);
+		expect(MOTION.detail.figureScale).toBeGreaterThanOrEqual(0.9);
 	});
 
 	it("withMotion never runs setup without a window and returns a callable cleanup", () => {

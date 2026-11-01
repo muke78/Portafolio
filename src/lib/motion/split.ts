@@ -1,4 +1,10 @@
-import { type Cleanup, type MotionTools, REVEALED, watch } from "./core";
+import {
+	type Cleanup,
+	type MotionTools,
+	REVEALED,
+	watch,
+	whenSeen,
+} from "./core";
 
 /**
  * Section titles: [data-split] headings are split into lines, each line
@@ -11,21 +17,30 @@ import { type Cleanup, type MotionTools, REVEALED, watch } from "./core";
  */
 export const splitTitles = ({ gsap, SplitText }: MotionTools): Cleanup =>
 	watch("[data-split]", (el) => {
+		let stopSeen: Cleanup | undefined;
 		const split = SplitText.create(el, {
 			type: "lines",
 			mask: "lines",
 			autoSplit: true,
-			onSplit: (self) =>
-				gsap.from(self.lines, {
+			onSplit: (self) => {
+				const tween = gsap.from(self.lines, {
 					yPercent: 110,
 					duration: 1,
 					ease: "power4.out",
 					stagger: 0.1,
-					scrollTrigger: { trigger: el, start: "top 88%", once: true },
-				}),
+					paused: true,
+				});
+				// Play when the title is seen (see whenSeen), not on a scroll mark.
+				stopSeen?.();
+				stopSeen = whenSeen(el, () => tween.play(), "0px 0px -10% 0px");
+				return tween;
+			},
 		});
 		// Lines are already masked (gsap.from renders its first frame now):
 		// the heading itself can stop being hidden.
 		el.setAttribute(REVEALED, "");
-		return () => split.revert();
+		return () => {
+			stopSeen?.();
+			split.revert();
+		};
 	});

@@ -56,29 +56,40 @@ export const Opinions = ({
 
 	return (
 		<div className="relative w-full overflow-hidden">
-			<div
-				className="mx-auto mb-16 grid max-w-[1240px] grid-cols-1 items-end gap-8 px-6 lg:grid-cols-12 lg:gap-16"
-				data-reveal-group
-			>
-				<div className="lg:col-span-8">
+			<div className="mx-auto mb-16 grid max-w-[1240px] grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:items-end lg:gap-16">
+				<div className="lg:col-span-7">
 					<h2 className="font-serif-display text-title text-balance" data-split>
 						{i18n.OPINIONS.OPINIONS_TITLE}
 					</h2>
-					<p className="khelde-lead mt-6 text-muted-foreground">
+					<p
+						className="khelde-lead mt-6 max-w-xl text-muted-foreground"
+						data-reveal
+					>
 						{i18n.OPINIONS.OPINIONS_SUBTITLE}
 					</p>
 				</div>
 
+				{/* One quiet column: how many people wrote, one line, one action. */}
 				<div
-					className="flex flex-col gap-5 lg:col-span-4 lg:items-end"
+					className="flex flex-col gap-6 border-t border-border pt-8 lg:col-span-5 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0"
 					data-reveal
 				>
-					<p className="text-muted-foreground lg:text-right">
+					{data.length > 0 && (
+						<p className="flex items-baseline gap-3">
+							<span className="font-serif-display text-display leading-none">
+								{data.length}
+							</span>
+							<span className="text-lg text-muted-foreground">
+								{i18n.OPINIONS.OPINIONS_COUNT_LABEL}
+							</span>
+						</p>
+					)}
+					<p className="max-w-sm text-muted-foreground">
 						{i18n.OPINIONS.OPINIONS_SUB_SUBTILE}
 					</p>
 					<button
 						type="button"
-						className="inline-flex items-center justify-center h-11 px-5 rounded-full gap-2 bg-primary text-primary-foreground text-sm font-medium hover-press focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						className="inline-flex h-12 w-fit items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-medium text-primary-foreground hover-press focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 						onClick={() =>
 							window.dispatchEvent(
 								new CustomEvent("khelde:open-comment-widget"),
@@ -86,7 +97,7 @@ export const Opinions = ({
 						}
 						aria-label={i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 					>
-						<MessageSquare className="w-4 h-4" />
+						<MessageSquare className="h-4 w-4" />
 						{i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
 					</button>
 				</div>
@@ -126,13 +137,24 @@ export const Opinions = ({
 				) : (
 					<div
 						data-marquee
-						className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+						data-mask="left"
+						className="relative w-full overflow-hidden"
 						style={
 							{
 								"--marquee-duration": `${Math.max(50, data.length * 14)}s`,
 							} as CSSProperties
 						}
 					>
+						{/* Edge fade as two static overlays: a mask over moving content
+						    would be recomposited every frame. */}
+						<div
+							aria-hidden="true"
+							className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[6%] bg-gradient-to-r from-background to-transparent"
+						/>
+						<div
+							aria-hidden="true"
+							className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[6%] bg-gradient-to-l from-background to-transparent"
+						/>
 						<div
 							data-marquee-track
 							className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]"
@@ -145,7 +167,7 @@ export const Opinions = ({
 									// biome-ignore lint/a11y/noNoninteractiveTabindex: intentional - focusing a card is what pauses the auto-scrolling marquee (see focus-within: below), not a click target
 									tabIndex={0}
 									aria-label={`${testimonial.name}: ${testimonial.description}`}
-									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden hover-lift focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden hover-lift [contain:layout_paint] focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
 								>
 									<div className="flex flex-col p-6">
 										<div className="flex items-start justify-between mb-4">

@@ -345,7 +345,7 @@ Depende de la sección 1: no tiene sentido gatear pushes con `vitest`/
       - **`catch` sin usar real** en `tlgrm.ts` — variable `error` nunca
         leída, cambiado a `catch` sin binding.
       - **`noArrayIndexKey`/`useUniqueElementIds` en fondos decorativos**
-        (`Cosmos.tsx`, `GalaxyBackground.tsx`, skeletons) — todos
+        (`Cosmos.tsx`, `ParticleGalaxy.tsx`, skeletons) — todos
         singletons reales (se renderizan una sola vez globalmente) o
         listas de placeholder de longitud fija — `biome-ignore` con
         motivo, no refactor forzado.

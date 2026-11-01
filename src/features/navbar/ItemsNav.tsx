@@ -21,29 +21,42 @@ export const ItemsNav = ({ currentLocale, onItemClick }: ItemsNavProps) => {
 	);
 
 	useEffect(() => {
-		const handleScroll = () => {
+		// The active link is the last section whose top has reached the upper
+		// part of the screen. Positions come from getBoundingClientRect (never
+		// offsetTop: pinned sections live inside pin-spacers, so offsets are not
+		// document positions) and are read at most once per frame.
+		let frame = 0;
+		const compute = () => {
+			frame = 0;
 			let currentId = "";
-
-			memorization.forEach((item) => {
-				const section = document.querySelector(item.to) as HTMLElement;
-				if (section) {
-					const sectionTop = section.offsetTop - NAV_HEIGHT; // compensar navbar
-					const sectionHeight = section.offsetHeight;
-					if (
-						window.scrollY >= sectionTop &&
-						window.scrollY < sectionTop + sectionHeight
-					) {
-						currentId = item.to;
-					}
+			const line = NAV_HEIGHT + window.innerHeight * 0.35;
+			for (const item of memorization) {
+				const section = document.querySelector(item.to);
+				if (section && section.getBoundingClientRect().top <= line) {
+					currentId = item.to;
 				}
-			});
-
-			setActiveSection(currentId);
+			}
+			// At the very end the last section may be too short to reach the line.
+			const atBottom =
+				window.innerHeight + window.scrollY >=
+				document.documentElement.scrollHeight - 4;
+			if (atBottom && memorization.length) {
+				currentId = memorization[memorization.length - 1].to;
+			}
+			setActiveSection((prev) => (prev === currentId ? prev : currentId));
+		};
+		const schedule = () => {
+			if (!frame) frame = requestAnimationFrame(compute);
 		};
 
-		window.addEventListener("scroll", handleScroll);
-		handleScroll(); // ejecuta en el montaje
-		return () => window.removeEventListener("scroll", handleScroll);
+		window.addEventListener("scroll", schedule, { passive: true });
+		window.addEventListener("resize", schedule);
+		compute(); // on mount
+		return () => {
+			window.removeEventListener("scroll", schedule);
+			window.removeEventListener("resize", schedule);
+			cancelAnimationFrame(frame);
+		};
 	}, [memorization]);
 
 	const handleClick = () => {

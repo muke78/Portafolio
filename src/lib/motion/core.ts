@@ -7,6 +7,8 @@
  * the module graph is SSR-safe.
  */
 import gsap from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
@@ -30,7 +32,28 @@ export const MOTION = {
 	hero: { total: 1.7 },
 	// Pinned manifesto: how many viewport heights of scroll it lasts.
 	manifesto: { screens: 2, screensMobile: 1.4 },
-	marquee: { maxBoost: 4 },
+	marquee: { maxBoost: 4, maxSkew: 3 },
+	// Image masks: a frame opens (clip-path) while its picture settles (scale).
+	mask: {
+		duration: 1.1,
+		ease: "power4.inOut",
+		scaleFrom: 1.25,
+		start: "top 88%",
+	},
+	// Groups of items entering one after another (stack icons, fields, links).
+	stagger: { duration: 0.8, distance: 20, each: 0.07, start: "top 85%" },
+	// Particle galaxy (galaxy.ts): scroll length of the collapse+blast and of
+	// the move to the corner, in viewport heights; scrub lag.
+	galaxy: { burstScreens: 1.2, settleScreens: 1.4, scrub: 1.2 },
+	// Skills adrift (skills.ts): seconds between chips inside the scrubbed
+	// timeline, the largest tilt (degrees) a chip starts with, how far (px) it
+	// drifts in from, and the scrub lag (higher = floatier).
+	fly: { stagger: 0.09, tilt: 14, near: 240, far: 460, scrub: 1.8 },
+	// Pinned sideways showcase and layered stack (layers.ts).
+	hscroll: { maxScreens: 2.5, smooth: 0.7 },
+	stack: { scale: 0.95, floor: 0.88 },
+	// Project detail page: intro timeline and scroll-linked depth.
+	detail: { total: 2, figureScale: 0.92, imgDrift: 7 },
 } as const;
 
 export interface MotionTools {
@@ -54,7 +77,12 @@ export const isBrowser = () => typeof window !== "undefined";
 
 const register = () => {
 	if (registered) return;
-	gsap.registerPlugin(ScrollTrigger, SplitText);
+	gsap.registerPlugin(
+		ScrollTrigger,
+		SplitText,
+		MotionPathPlugin,
+		ScrollToPlugin,
+	);
 	registered = true;
 };
 
@@ -99,6 +127,92 @@ export const settle = (el: Element) => {
 export const UNHYDRATED = "astro-island[ssr]";
 
 /**
+ * Astro drops `ssr` as soon as it *starts* hydrating; React finishes a few
+ * frames later. Touching the DOM in between is still a hydration mismatch, so
+ * anything inside an island waits this long after the island went live.
+ */
+export const HYDRATION_SETTLE_MS = 160;
+
+/**
+ * Runs `run` once, the first time `el` is on screen - or already above it
+ * (the reader jumped past). Unlike a ScrollTrigger `once`, it reads the live
+ * geometry, so fast jumps (anchor links, the scrollbar), pins and late layout
+ * shifts cannot leave an entrance stuck in its hidden state.
+ */
+export const whenSeen = (
+	el: Element,
+	run: () => void,
+	rootMargin = "0px 0px -12% 0px",
+): Cleanup => {
+	let done = false;
+	const io = new IntersectionObserver(
+		(entries) => {
+			if (done) return;
+			const seen = entries.some(
+				(e) => e.isIntersecting || e.boundingClientRect.bottom < 0,
+			);
+			if (!seen) return;
+			done = true;
+			io.disconnect();
+			run();
+		},
+		{ rootMargin },
+	);
+	io.observe(el);
+	return () => {
+		done = true;
+		io.disconnect();
+	};
+};
+
+/**
+ * ScrollTrigger throws on a refresh if one of its triggers lost its element
+ * (React replaced the node). Drop those first, and never let a refresh error
+ * escape: a broken refresh leaves pins half-applied.
+ */
+export const safeRefresh = (st: typeof ScrollTrigger) => {
+	for (const t of st.getAll()) {
+		const el = t.trigger;
+		if (el instanceof Element && !el.isConnected) t.kill();
+	}
+	try {
+		st.refresh();
+	} catch (err) {
+		console.warn("ScrollTrigger refresh failed:", err);
+	}
+};
+
+const liveAt = new WeakMap<Element, number>();
+
+/** Starts noting when each island goes live (call once, from the client). */
+export const trackIslands = (): Cleanup => {
+	const mo = new MutationObserver((mutations) => {
+		for (const m of mutations) {
+			if (m.target instanceof Element) liveAt.set(m.target, performance.now());
+		}
+	});
+	mo.observe(document.body, {
+		subtree: true,
+		attributes: true,
+		attributeFilter: ["ssr"],
+	});
+	return () => mo.disconnect();
+};
+
+/**
+ * True while an element sits in an island that has not hydrated, or went
+ * live moments ago and may still be hydrating: do not touch its DOM or its
+ * inline styles yet.
+ */
+export const isHydrating = (el: Element): boolean => {
+	const island = el.closest("astro-island");
+	if (!island) return false;
+	if (island.hasAttribute("ssr")) return true;
+	const at = liveAt.get(island);
+	return at !== undefined && performance.now() - at < HYDRATION_SETTLE_MS;
+};
+
+/**
  * Runs `handler` for every element matching `selector`, now and whenever
  * one appears later (islands hydrating, tab switches, data arriving). The
  * handler runs once per element, only after its island has hydrated, and
@@ -116,8 +230,24 @@ export const watch = (
 	const tryRun = (el: Element) => {
 		if (done.has(el) || el.closest(UNHYDRATED)) return;
 		done.add(el);
-		const cleanup = handler(el as HTMLElement);
-		if (cleanup) cleanups.push(cleanup);
+		const run = () => {
+			if (!el.isConnected) return;
+			try {
+				const cleanup = handler(el as HTMLElement);
+				if (cleanup) cleanups.push(cleanup);
+			} catch (err) {
+				// One element's scene failing must not stop the rest of the page.
+				console.warn(`Motion scene failed for ${selector}:`, err);
+			}
+		};
+		if (isHydrating(el)) {
+			const t = window.setTimeout(run, HYDRATION_SETTLE_MS);
+			cleanups.push(() => window.clearTimeout(t));
+		} else {
+			// Static HTML, or an element React mounted after the island was
+			// already live (dialogs, fetched lists): safe to run right away.
+			run();
+		}
 	};
 	const scan = (root: ParentNode) => {
 		if (root instanceof Element && root.matches(selector)) tryRun(root);

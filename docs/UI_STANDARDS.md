@@ -115,7 +115,8 @@ caer en el minimalismo seco ni en el "diseño generado por IA".
 | `--input` | Borde de campos | `oklch(24% 0.008 270 / 50%)` | `oklch(92% 0.01 270 / 40%)` |
 | `--ring` | Anillo de foco | = `--primary` | = `--primary` |
 | `--night` / `--night-foreground` | Superficie siempre oscura (wordmark del footer) | `oklch(14.5% 0.012 270)` / `oklch(94% 0.004 270)` | igual |
-| `--glow` | Sombra de hover (halo violeta + sombra neutra, ver 5.5) | compuesta | compuesta |
+| `--glow` | Sombra de hover de **botones y chips** (halo violeta + sombra neutra, ver 5.5) | compuesta | compuesta |
+| `--glow-soft` | Sombra de hover de **cards**: solo una sombra neutra suave, sin halo violeta (ver 5.5) | compuesta | compuesta |
 
 Regla de superficies en oscuro: **fondo 16 % < card 20.5 % < muted 23.5 %**.
 Nunca una superficie más oscura que el fondo (se lee como un hueco negro):
@@ -408,8 +409,9 @@ Formularios:
     filtra o se muestra "Ver todos".
   - Se destaca lo clave con jerarquía (tamaño del título, un `Badge`,
     el acento `--primary` en un solo elemento), no con más color.
-- Hover: `hover-lift` en la card entera (ver 5.5). Las partes internas
-  (imagen, iconos) no reaccionan por separado. Nada de escalados ni rebotes.
+- Hover: `hover-lift` en la card entera (ver 5.5), siempre discreto (2 px y
+  sombra neutra). Las partes internas (imagen, iconos) no reaccionan por
+  separado. Nada de escalados, rebotes ni halos de color en cards.
 - Imágenes: `width`/`height` explícitos (evita CLS), `loading="lazy"`
   salvo la de LCP, `alt` descriptivo (o `alt=""` si es decorativa).
 
@@ -430,7 +432,7 @@ siempre las mismas, definidas como utilidades en `app.css`:
 
 | Utilidad | Para | Qué hace |
 |---|---|---|
-| `hover-lift` | Cards y superficies clicables | Sube 4 px (`translateY(-0.25rem)`), sombra `--glow` (halo violeta difuminado + sombra neutra suave) y tinte violeta en el borde. 380 ms, `cubic-bezier(0.22, 1, 0.36, 1)` |
+| `hover-lift` | Cards y superficies clicables | **Discreto**: sube 2 px (`translateY(-0.125rem)`), sombra neutra suave `--glow-soft` (sin halo violeta) y un tinte leve del borde (28 %). 260 ms, `cubic-bezier(0.22, 1, 0.36, 1)`. Una grilla de cards no debe "brillar" ni saltar: el hover confirma, no decora |
 | `hover-press` | Botones, chips, iconos sociales | Sube 2 px y añade `--glow`. 260 ms. Se aplica a las variantes `default`, `secondary` y `outline` de `Button` |
 | `hover-nudge` | Iconos de dirección (flechas) | Desplaza el icono 4 px en el sentido de la acción cuando su padre (enlace/botón) recibe hover o foco |
 
@@ -447,6 +449,10 @@ Reglas:
   siempre, no aparece al pasar el cursor.
 - Solo `transform`, `opacity`, `box-shadow` y `border-color`; nada de
   animar tamaño ni márgenes. Sin escalados > 1.03, sin rebotes.
+- **Menos es más con las cards.** En grillas y carriles (proyectos,
+  experiencia, opiniones) el hover es el mínimo que se percibe: 2 px,
+  sombra neutra, borde apenas tintado. El glow violeta queda para botones y
+  chips (`hover-press`), que son los que piden la acción.
 - Elementos que no son clicables no tienen hover.
 - Textos y enlaces simples: cambio de color a `--primary` es suficiente.
 - Una card clicable usa **un solo enlace** que se extiende sobre toda la
@@ -653,11 +659,28 @@ sitio usa las mismas piezas, cada una en su módulo:
 | Títulos | `split.ts` | Cada título se parte en líneas con máscara y sube al entrar (una vez) | `[data-split]` |
 | Revelados | `reveals.ts` | Fade-up con *stagger* por lotes (las cards que entran juntas se encadenan en orden de lectura) | `[data-reveal]` |
 | Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla | `[data-parallax-img]` |
-| Marquee de opiniones | `media.ts` | La cinta corre con `gsap`; **su velocidad y dirección siguen la del scroll** y vuelve a la calma; se pausa con hover o foco | `[data-marquee]` + `[data-marquee-track]` |
+| Marquee de opiniones | `media.ts` | Un solo tween `xPercent` en bucle; **su velocidad y dirección siguen la del scroll** (un único callback del ticker suaviza `timeScale`) y vuelve a la calma; se detiene fuera de pantalla y con hover o foco; la pista es su propia capa (`will-change`) y el desvanecido de bordes son overlays estáticos, no una máscara | `[data-marquee]` + `[data-marquee-track]` |
 | Parallax decorativo | `media.ts` | Anillos de órbita, ±6 % | `[data-parallax="N"]` |
+| **Showcase horizontal fijado** | `layers.ts` | En escritorio (≥ 1024×760) la sección de proyectos se **fija** y el scroll vertical desliza las cards en horizontal (máx. 2.5 pantallas); barra de progreso; se recalcula al cambiar de categoría. En móvil es una grilla | `[data-hscroll]` + `[data-hscroll-track]` / `-viewport` / `-progress` |
+| **Pila de cards** | `layers.ts` | Las cards de experiencia son `sticky` y se apilan (cada una un poco más abajo); la que queda debajo retrocede (`scale`) al llegar la siguiente | `[data-stack]` + `[data-stack-card]` |
+| **Habilidades en vuelo** | `skills.ts` | Cada chip entra desde fuera de pantalla siguiendo una curva en S (`MotionPathPlugin`, `type: "thru"`), girando, y se aplasta un poco al aterrizar; todo escrubado con el scroll. Detrás, una línea "serpiente" se dibuja y un punto la recorre (`align`). En móvil: fade-up escalonado | `[data-fly-group]` + `[data-fly-chip]`, `[data-snake]` + `-trace` / `-dot` |
+| **Galaxia de partículas** | `galaxy.ts` + `ParticleGalaxy.tsx` | Polvo estelar a la deriva al entrar; con el scroll se arremolina hacia el centro, colapsa y **estalla** en una galaxia espiral de 3 brazos (destello en el instante de la explosión); el epicentro está en el **espacio libre a la derecha** del texto "Qué hago" (más pequeña, para que los brazos no lleguen a las palabras) y el texto lleva detrás un velo suave del color de fondo; luego se desplaza a la esquina, más pequeña. Original: una sola llamada de dibujo, shaders propios, colores de los tokens `--galaxy-*`. Con `prefers-reduced-motion` se dibuja la galaxia final quieta | scroll (sin atributo) |
+| Anclas con pins | `anchors.ts` | Los enlaces `#…` se resuelven con GSAP tras recalcular los pins y se corrigen mientras la página crece | `a[href*="#"]` |
+| Diálogo de comentarios | `dialogs.ts` | Panel compacto que crece desde el lanzador (escala desde su esquina inferior derecha), campos en stagger; **no cubre ni oscurece la página**; el lanzador entra con un pop | `[data-dialog]`, `-item`, `[data-fab]` |
+| Marcos con máscara | `masks.ts` | Un marco se abre como cortina (`clip-path`) mientras la foto asienta desde un zoom; también hacia el lado (`data-mask="left"`) | `[data-mask]` |
+| Grupos con stagger | `masks.ts` | Los hijos entran uno a uno al aparecer el contenedor (iconos de stack, campos del formulario, enlaces); `data-stagger="pop"` además crece | `[data-stagger]` + `[data-stagger-item]` |
+| Texto con scrub | `text.ts` | Las palabras de un párrafo se encienden mientras cruza la pantalla | `[data-scrub-text]` |
+| Detalle de proyecto | `detail.ts` | Botón de retorno, etiqueta y título (letra a letra con máscara), foto que se abre desde abajo; al bajar, la foto retrocede y deriva dentro de su marco | `[data-detail]` + `data-detail-*` |
+| Progreso de lectura | `page.ts` | Línea fina arriba que se llena con el scroll | `[data-scroll-progress]` |
 
 Reglas de las escenas:
 
+- **El Home no esconde contenido detrás de clics.** Nada de pestañas,
+  acordeones ni paneles ocultos para las secciones narrativas: Acerca de mí,
+  Educación, Experiencia, Habilidades y cada categoría de proyectos son
+  secciones/escenas que se recorren con el scroll (`StoryBlock`,
+  `ProjectRail`). En móvil se simplifican (filas con swipe, fade-up), pero el
+  contenido sigue ahí.
 - **El lector nunca queda atrapado**: una escena fijada dura como máximo
   **2.5 pantallas** (lo verifica un test) y siempre tiene contenido que
   cambia mientras dura (si no cambia nada, no se fija).
@@ -747,7 +770,7 @@ Antes de abrir un PR que toque UI:
 | 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Parcial: el motor lo respeta (7.4) y el CSS hereda la guarda; falta un e2e con `reducedMotion: 'reduce'` (se deja para el final) |
 | 11 | Títulos de `aboutMe` eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`) |
 | 12 | Jerarquía de encabezados plana | `ItemDataExperiencia.tsx`, `ItemDataProjects.tsx` | ✅ Resuelto (`<h3>`) |
-| 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `GalaxyBackground.tsx`, `app.css` | ✅ Resuelto: capa de fondo (`z-index: -1`), máscara radial difuminada y reposicionada tras el retrato (12.2) |
+| 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `ParticleGalaxy.tsx`, `app.css` | ✅ Resuelto: capa de fondo (`z-index: -1`); la galaxia se forma con el scroll y reposa en la esquina (12.2) |
 | 14 | `text-wrap: balance` sin aplicar en titulares del Home | secciones | ✅ Resuelto en hero y Opiniones; el resto usa `text-title` sin balance a propósito (títulos cortos) |
 | 15 | Base teñida de berenjena y superficie `muted` casi negra | `app.css`, `Form.tsx` | ✅ Resuelto: base neutra onyx/silk, violeta solo en `--primary`; superficies escalonadas (2.3) |
 | 16 | Hovers básicos y hovers internos en cards | cards, botones, iconos | ✅ Resuelto: `hover-lift` / `hover-press` / `hover-nudge` (5.5) |
@@ -860,7 +883,17 @@ vive en `src/lib/motion/` (7.7).
 | `data-reveal` | Cada bloque o card que debe entrar | Fade-up con stagger por lotes |
 | `data-parallax="N"` | Elemento decorativo (anillos) | Parallax de ±N % |
 | `data-parallax-img` | Imagen de una card (marco `overflow-hidden`) | Deriva ±6 % |
-| `data-marquee` / `data-marquee-track` | Cinta de opiniones | Velocidad ligada al scroll |
+| `data-marquee` / `data-marquee-track` | Cinta de opiniones | Velocidad ligada al scroll y leve inclinación |
+| `data-mask` (`="left"`, `data-mask-delay`) | Marco de foto, formulario, cinta | Se abre como cortina al entrar |
+| `data-stagger` (`="pop"`, `data-stagger-delay`) + `data-stagger-item` | Contenedor y sus hijos | Entrada uno a uno |
+| `data-scrub-text` | Párrafo de lectura | Palabras que se encienden con el scroll |
+| `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `TabsProyectos` | Showcase horizontal fijado |
+| `data-stack` + `data-stack-card` | Lista de experiencia | Pila sticky con profundidad |
+| `data-fly-group` + `data-fly-chip`, `data-snake` + `-trace` / `-dot` | Habilidades | Vuelo por curvas + serpiente |
+| `data-detail` + `-back` / `-meta` / `-title` / `-figure` / `-img` | Ruta de detalle | Entrada y profundidad |
+| `data-scroll-progress` | `Layout.astro` | Barra de progreso |
+| `data-galaxy` | `ParticleGalaxy.tsx` | Contenedor del canvas de la galaxia |
+| `data-dialog` + `-item`, `data-fab` | `CommentWidget`, `sendOpinions` | Diálogo de comentarios y su lanzador |
 | `data-revealed` | Lo pone el motor | "Ya terminó": el CSS deja de ocultarlo |
 
 El estado inicial oculto del CSS solo existe bajo `html.motion-ok` (7.4).

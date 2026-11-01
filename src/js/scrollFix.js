@@ -24,7 +24,14 @@
 (() => {
 	const SETTLE_WINDOW_MS = 4000;
 
+	// With the motion engine running (html.motion-ok) anchors are handled by
+	// src/lib/motion/anchors.ts, which knows about pinned sections. This
+	// fallback only serves visitors without the engine (reduced motion).
+	const engineOwnsAnchors = () =>
+		document.documentElement.classList.contains("motion-ok");
+
 	function stabilizeScrollTo(hash) {
+		if (engineOwnsAnchors()) return;
 		let target;
 		try {
 			target = document.querySelector(hash);
@@ -64,6 +71,7 @@
 	}
 
 	function onNavClick(e) {
+		if (engineOwnsAnchors()) return;
 		const link = e.target.closest?.("a[href*='#']");
 		if (!link) return;
 

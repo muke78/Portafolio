@@ -64,10 +64,16 @@ export const cardImageParallax = ({ gsap }: MotionTools): Cleanup =>
 
 /**
  * Testimonials marquee: [data-marquee] contains one [data-marquee-track]
- * made of two identical halves. The CSS animation is replaced by a GSAP
- * tween whose speed follows the scroll velocity (and direction): scroll
- * fast and the wall of opinions rushes with you, then eases back to calm.
- * Hover or keyboard focus pauses it.
+ * made of two identical halves. The loop is ONE gsap tween on xPercent
+ * (-50 -> 0 and around, no per-frame DOM reads) whose speed follows the
+ * scroll: a single ticker callback eases `timeScale` toward the target the
+ * scroll velocity sets, so a burst of scroll events never creates tweens.
+ * Cheap on purpose:
+ *   - the track is its own compositor layer (will-change in app.css) and the
+ *     edge fade is static overlays, not a mask over moving content;
+ *   - everything stops while the strip is off screen or the tab is hidden;
+ *   - hover or keyboard focus pauses it.
+ * The pill leans a few degrees with the speed (skewX through a quickSetter).
  */
 export const marquees = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 	watch("[data-marquee]", (root) => {
@@ -85,40 +91,66 @@ export const marquees = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 			duration: seconds,
 			ease: "none",
 			repeat: -1,
+			paused: true,
 		});
+		const setSkew = gsap.quickSetter(track, "skewX", "deg");
+
+		// Speed state, eased every frame by one ticker callback.
+		let target = 1;
+		let current = 1;
+		let hovering = false;
+		const tick = () => {
+			target += (1 - target) * 0.035; // settle back to a calm forward drift
+			current += (target - current) * 0.1;
+			tween.timeScale(hovering ? 0 : current);
+			setSkew(
+				gsap.utils.clamp(
+					-MOTION.marquee.maxSkew,
+					MOTION.marquee.maxSkew,
+					-(current - 1) * 0.9,
+				),
+			);
+		};
 
 		const trigger = ScrollTrigger.create({
 			trigger: root,
 			start: "top bottom",
 			end: "bottom top",
+			onToggle: (self) => {
+				if (self.isActive) {
+					tween.play();
+					gsap.ticker.add(tick);
+				} else {
+					tween.pause();
+					gsap.ticker.remove(tick);
+				}
+			},
 			onUpdate: (self) => {
 				const boost = Math.min(
 					MOTION.marquee.maxBoost,
 					1 + Math.abs(self.getVelocity()) / 450,
 				);
-				gsap.to(tween, {
-					timeScale: self.direction * boost,
-					duration: 0.25,
-					overwrite: true,
-					onComplete: () => {
-						gsap.to(tween, { timeScale: 1, duration: 1.4, ease: "power2.out" });
-					},
-				});
+				target = self.direction * boost;
 			},
 		});
 
-		const pause = () => tween.pause();
-		const play = () => tween.play();
-		root.addEventListener("pointerenter", pause);
-		root.addEventListener("pointerleave", play);
-		root.addEventListener("focusin", pause);
-		root.addEventListener("focusout", play);
+		const hold = () => {
+			hovering = true;
+		};
+		const release = () => {
+			hovering = false;
+		};
+		root.addEventListener("pointerenter", hold);
+		root.addEventListener("pointerleave", release);
+		root.addEventListener("focusin", hold);
+		root.addEventListener("focusout", release);
 
 		return () => {
-			root.removeEventListener("pointerenter", pause);
-			root.removeEventListener("pointerleave", play);
-			root.removeEventListener("focusin", pause);
-			root.removeEventListener("focusout", play);
+			root.removeEventListener("pointerenter", hold);
+			root.removeEventListener("pointerleave", release);
+			root.removeEventListener("focusin", hold);
+			root.removeEventListener("focusout", release);
+			gsap.ticker.remove(tick);
 			trigger.kill();
 			tween.kill();
 			gsap.set(track, { clearProps: "transform" });

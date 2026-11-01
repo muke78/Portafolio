@@ -9,7 +9,18 @@
  *   [data-split]               titles rising line by line out of a mask (split.ts)
  *   [data-parallax=N]          decorative parallax (media.ts)
  *   [data-parallax-img]        image drift inside a card frame (media.ts)
- *   [data-marquee] + track     velocity-driven marquee (media.ts)
+ *   [data-marquee] + track     velocity-driven marquee + lean (media.ts)
+ *   [data-mask]                frame that opens like a curtain (masks.ts)
+ *   [data-stagger] + items     children entering one by one (masks.ts)
+ *   [data-scrub-text]          words lighting up with the scroll (text.ts)
+ *   [data-hscroll] + track     pinned sideways showcase (layers.ts)
+ *   [data-stack] + cards       layered sticky stack with depth (layers.ts)
+ *   [data-fly-group] + chips   skills flying along curves, MotionPath (skills.ts)
+ *   [data-snake] + trace/dot   snake line drawn with the scroll (skills.ts)
+ *   [data-detail] + parts     project detail intro + depth (detail.ts)
+ *   [data-scroll-progress]     reading progress hairline (page.ts)
+ *   [data-dialog] + overlay    comment dialog open + items stagger; [data-fab] launcher (dialogs.ts)
+ *   (no attribute)             particle galaxy driven by scroll (galaxy.ts)
  *
  * Accessibility: everything is registered under
  * "prefers-reduced-motion: no-preference" (withMotion). With "reduce"
@@ -19,18 +30,29 @@
  * the engine never starts, so content cannot get stuck invisible.
  */
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { anchorScroll } from "./anchors";
 import {
 	type Cleanup,
 	isBrowser,
 	isRegistered,
 	MOTION_CLASS,
+	safeRefresh,
+	trackIslands,
 	withMotion,
 } from "./core";
+import { projectDetail } from "./detail";
+import { dialogs } from "./dialogs";
+import { galaxyScene } from "./galaxy";
 import { playHero } from "./hero";
+import { horizontalScenes, stackScenes } from "./layers";
+import { maskReveals, staggerGroups } from "./masks";
 import { cardImageParallax, marquees, setupParallax } from "./media";
+import { scrollProgress } from "./page";
 import { observeReveals } from "./reveals";
 import { manifestoScene } from "./scenes";
+import { skillFlights, snakeLine } from "./skills";
 import { splitTitles } from "./split";
+import { scrubText } from "./text";
 
 export {
 	byVisualOrder,
@@ -45,7 +67,7 @@ export {
 export const refreshScrollTriggers = async (): Promise<void> => {
 	if (!isBrowser() || !isRegistered()) return;
 	await document.fonts?.ready;
-	ScrollTrigger.refresh();
+	safeRefresh(ScrollTrigger);
 };
 
 /**
@@ -59,6 +81,7 @@ export const initMotion = (): Cleanup => {
 		document.documentElement.classList.add(MOTION_CLASS);
 
 		const stops: (Cleanup | undefined)[] = [
+			trackIslands(),
 			playHero(tools),
 			observeReveals(tools),
 			manifestoScene(tools),
@@ -66,13 +89,25 @@ export const initMotion = (): Cleanup => {
 			setupParallax(tools),
 			cardImageParallax(tools),
 			marquees(tools),
+			maskReveals(tools),
+			staggerGroups(tools),
+			scrubText(tools),
+			horizontalScenes(tools),
+			stackScenes(tools),
+			skillFlights(tools),
+			snakeLine(tools),
+			projectDetail(tools),
+			scrollProgress(tools),
+			galaxyScene(tools),
+			anchorScroll(tools),
+			dialogs(tools),
 		];
 
 		// Layout keeps moving after load (lazy images, islands, web fonts).
 		let timer: number | undefined;
 		const refresh = () => {
 			window.clearTimeout(timer);
-			timer = window.setTimeout(() => void refreshScrollTriggers(), 150);
+			timer = window.setTimeout(() => void refreshScrollTriggers(), 300);
 		};
 		const ro = new ResizeObserver(refresh);
 		ro.observe(document.body);

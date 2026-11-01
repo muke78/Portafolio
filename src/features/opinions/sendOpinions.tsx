@@ -103,7 +103,10 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 
 	return (
 		<div className="bg-card rounded-xl overflow-hidden">
-			<div className="bg-primary px-5 py-4 flex items-center gap-3">
+			<div
+				className="bg-primary px-5 py-4 flex items-center gap-3"
+				data-dialog-item
+			>
 				<MessageSquare className="w-6 h-6 text-primary-foreground shrink-0" />
 				<div>
 					<h2 className="text-base font-semibold text-primary-foreground leading-tight">
@@ -117,7 +120,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 
 			<div className="p-5">
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-					<div className="space-y-1.5">
+					<div className="space-y-1.5" data-dialog-item>
 						<label
 							className="flex items-center text-xs font-medium"
 							htmlFor={nameId}
@@ -140,7 +143,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 						)}
 					</div>
 
-					<div className="space-y-1.5">
+					<div className="space-y-1.5" data-dialog-item>
 						<label
 							className="flex items-center text-xs font-medium"
 							htmlFor={jobId}
@@ -165,7 +168,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 						)}
 					</div>
 
-					<div className="space-y-1.5">
+					<div className="space-y-1.5" data-dialog-item>
 						<label
 							className="flex items-center text-xs font-medium"
 							htmlFor={countryId}
@@ -225,7 +228,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 						</div>
 					</div>
 
-					<div className="space-y-1.5">
+					<div className="space-y-1.5" data-dialog-item>
 						<label
 							className="flex items-center text-xs font-medium"
 							htmlFor={descriptionId}
@@ -258,6 +261,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 
 					<button
 						type="submit"
+						data-dialog-item
 						disabled={isLoading}
 						className="inline-flex items-center justify-center gap-2 rounded-lg h-10 w-full bg-primary text-primary-foreground font-medium text-sm hover-press active:translate-y-px disabled:opacity-50 disabled:pointer-events-none"
 					>

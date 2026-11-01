@@ -44,7 +44,7 @@ export const SkeletonEducation = ({ label }: SkeletonProps) => (
 );
 
 export const SkeletonExperience = ({ label }: SkeletonProps) => (
-	<Status label={label} className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+	<Status label={label} className="grid grid-cols-1 gap-5">
 		{[0, 1, 2, 3].map((i) => (
 			<div
 				key={i}
@@ -83,21 +83,4 @@ export const SkeletonAboutMe = ({ label }: SkeletonProps) => (
 			<Skeleton className="h-4 w-4/5" />
 		</div>
 	</Status>
-);
-
-/** Pill row shown while a tabbed section waits for client hydration. */
-export const SkeletonTabsRow = ({
-	count,
-	label,
-}: SkeletonProps & { count: number }) => (
-	<output aria-busy="true" className="flex flex-wrap gap-4">
-		<span className="sr-only">{label}</span>
-		{Array.from({ length: count }, (_, i) => (
-			<Skeleton
-				// biome-ignore lint/suspicious/noArrayIndexKey: static placeholder list
-				key={i}
-				className="h-11 w-28 rounded-full lg:w-36"
-			/>
-		))}
-	</output>
 );

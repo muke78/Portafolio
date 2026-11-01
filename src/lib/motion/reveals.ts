@@ -1,6 +1,8 @@
 import {
 	byVisualOrder,
 	type Cleanup,
+	HYDRATION_SETTLE_MS,
+	isHydrating,
 	MOTION,
 	type MotionTools,
 	REVEALED,
@@ -65,15 +67,18 @@ export const observeReveals = ({ gsap }: MotionTools): Cleanup => {
 				io.unobserve(el);
 				pending.delete(el);
 			}
-			const ready = hits.filter((el) => !el.closest(UNHYDRATED));
+			const ready = hits.filter((el) => !isHydrating(el));
 			if (ready.length) run(ready);
 			for (const el of hits) {
 				if (ready.includes(el)) continue;
 				waiting.add(el);
-				const t = window.setTimeout(() => {
-					timers.delete(t);
-					if (waiting.delete(el)) run([el]);
-				}, HYDRATION_GRACE_MS);
+				const t = window.setTimeout(
+					() => {
+						timers.delete(t);
+						if (waiting.delete(el)) run([el]);
+					},
+					el.closest(UNHYDRATED) ? HYDRATION_GRACE_MS : HYDRATION_SETTLE_MS,
+				);
 				timers.add(t);
 			}
 		},
@@ -109,7 +114,14 @@ export const observeReveals = ({ gsap }: MotionTools): Cleanup => {
 				if (node.nodeType === Node.ELEMENT_NODE) scan(node as Element);
 			}
 		}
-		if (hydrated) flush();
+		if (hydrated) {
+			// React is still finishing its hydration: wait before touching the DOM.
+			const t = window.setTimeout(() => {
+				timers.delete(t);
+				flush();
+			}, HYDRATION_SETTLE_MS);
+			timers.add(t);
+		}
 	});
 	mo.observe(document.body, {
 		childList: true,

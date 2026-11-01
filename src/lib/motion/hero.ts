@@ -55,8 +55,16 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 	)
 		.fromTo(
 			lines,
-			{ yPercent: 115 },
-			{ yPercent: 0, duration: 1.1, ease: "power4.out", stagger: 0.12 },
+			// autoAlpha: CSS keeps the line at opacity 0 until the engine runs;
+			// the mask (overflow-hidden parent) hides it while it is at 115 %.
+			{ yPercent: 115, autoAlpha: 1 },
+			{
+				yPercent: 0,
+				autoAlpha: 1,
+				duration: 1.1,
+				ease: "power4.out",
+				stagger: 0.12,
+			},
 			0.15,
 		)
 		.fromTo(

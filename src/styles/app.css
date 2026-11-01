@@ -142,12 +142,15 @@
 	--glow-drop: 0 3px 10px -4px
 		color-mix(in oklch, var(--foreground) 14%, transparent);
 	--glow: var(--glow-halo), var(--glow-drop);
+	/* Cards: a quiet neutral shadow, no violet halo (hover-lift). */
+	--glow-soft: 0 10px 22px -14px
+		color-mix(in oklch, var(--foreground) 24%, transparent);
 
 	/* Always-dark "night" surface (footer wordmark), same in both themes. */
 	--night: oklch(14.5% 0.012 270);
 	--night-foreground: oklch(94% 0.004 270);
 
-	/* Galaxy 3D (read by GalaxyBackground.tsx). Light theme renders with
+	/* Galaxy 3D (read by ParticleGalaxy.tsx). Light theme renders with
 	   multiply blending, so these are deeper/saturated: a light colour
 	   would vanish against the pearl background. */
 	--galaxy-core: oklch(58% 0.2 330);
@@ -199,6 +202,8 @@
 		color-mix(in oklch, var(--primary) 55%, transparent);
 	--glow-drop: 0 4px 14px -6px
 		color-mix(in oklch, var(--night) 80%, transparent);
+	--glow-soft: 0 12px 24px -14px
+		color-mix(in oklch, var(--night) 90%, transparent);
 
 	/* Dark theme: additive blending, so bright and luminous. */
 	--galaxy-core: oklch(86% 0.1 320);
@@ -300,29 +305,31 @@
 
 /* ============================================================
    HOVER STANDARD (UI_STANDARDS 5.5)
-   Tactile, not just a colour swap: a light lift, a soft violet glow and a
-   border tint. Hover effects only on real hover devices; the lift only
-   without reduced-motion; keyboard focus gets the same glow.
+   Tactile, not just a colour swap. Cards (hover-lift) are quiet: a 2 px lift,
+   a soft neutral shadow and a faint border tint. Buttons and chips
+   (hover-press) get the violet glow. Hover effects only on real hover
+   devices; the lift only without reduced-motion; keyboard focus gets the
+   same shadow.
    ============================================================ */
 @utility hover-lift {
 	transition:
-		transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-		box-shadow 380ms cubic-bezier(0.22, 1, 0.36, 1),
-		border-color 260ms ease,
-		background-color 260ms ease;
+		transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+		box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+		border-color 200ms ease,
+		background-color 200ms ease;
 	@media (hover: hover) {
 		&:hover {
-			box-shadow: var(--glow);
-			border-color: color-mix(in oklch, var(--primary) 42%, var(--border));
+			box-shadow: var(--glow-soft);
+			border-color: color-mix(in oklch, var(--primary) 28%, var(--border));
 		}
 	}
 	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
 		&:hover {
-			transform: translateY(-0.25rem);
+			transform: translateY(-0.125rem);
 		}
 	}
 	&:focus-visible {
-		box-shadow: var(--glow);
+		box-shadow: var(--glow-soft);
 	}
 }
 
@@ -407,6 +414,8 @@
    ============================================================ */
 .motion-ok [data-reveal]:not([data-revealed]),
 .motion-ok [data-hero-label]:not([data-revealed]),
+.motion-ok [data-hero-line]:not([data-revealed]),
+.motion-ok [data-fab]:not([data-revealed]),
 .motion-ok [data-hero-lead]:not([data-revealed]),
 .motion-ok [data-hero-cta] > *:not([data-revealed]),
 .motion-ok [data-hero-bar]:not([data-revealed]),
@@ -417,11 +426,41 @@
 .motion-ok [data-split]:not([data-revealed]) {
 	opacity: 0;
 }
-.motion-ok [data-hero-line]:not([data-revealed]) {
-	transform: translateY(115%);
-}
-.motion-ok [data-hero-portrait]:not([data-revealed]) {
+.motion-ok [data-hero-portrait]:not([data-revealed]),
+.motion-ok [data-mask]:not([data-mask="left"]):not([data-revealed]),
+.motion-ok [data-detail-figure]:not([data-revealed]) {
 	clip-path: inset(100% 0 0 0);
+}
+.motion-ok [data-mask="left"]:not([data-revealed]) {
+	clip-path: inset(0 100% 0 0);
+}
+.motion-ok [data-stagger-item]:not([data-revealed]),
+.motion-ok [data-fly-chip]:not([data-revealed]),
+.motion-ok [data-detail-back]:not([data-revealed]),
+.motion-ok [data-detail-meta]:not([data-revealed]) {
+	opacity: 0;
+}
+/* Pinned sideways showcase: the track is clipped (and moved by GSAP) only when
+   the engine will pin it; otherwise it stays a hand-scrollable row. Keep the
+   query equal to the one in src/lib/motion/layers.ts. */
+@media (min-width: 1024px) and (min-height: 760px) {
+	.motion-ok [data-hscroll-viewport] {
+		overflow: hidden;
+	}
+}
+/* Smooth native anchor scrolling only where the motion engine does not own
+   it: with .motion-ok, anchors.ts scrolls with GSAP. (ScrollTrigger rewrites
+   html's inline scroll-behavior on every refresh, so a native smooth scroll
+   under a running tween stacks animations and overshoots.) */
+@media (prefers-reduced-motion: no-preference) {
+	html:not(.motion-ok) {
+		scroll-behavior: smooth;
+	}
+}
+/* Reading progress hairline: starts empty, GSAP scales it with the scroll. */
+[data-scroll-progress] {
+	transform: scaleX(0);
+	transform-origin: 0 50%;
 }
 
 /* ============================================================
@@ -524,10 +563,10 @@
 }
 
 /* ============================================================
-   GALAXY 3D — Three.js showpiece (hero → corner-shrink → footer sunset)
-   Sizing/masking only; entry+scroll transforms are driven from JS.
+   PARTICLE GALAXY - the canvas fills the viewport behind everything.
+   Positions and scale are computed in the shader / component from the scroll.
    ============================================================ */
-#galaxy-3d {
+[data-galaxy] {
 	position: fixed;
 	inset: 0;
 	width: 100vw;
@@ -536,32 +575,15 @@
 	   stars, so the headline always wins the contrast fight. */
 	z-index: -1;
 	pointer-events: none;
-	transform-origin: 50% 50%;
-	/* Feathered edges: the canvas dissolves into the page colour instead of
-	   reading as a pasted rectangle. The mask travels with the element
-	   (it is applied before the JS transform). */
-	-webkit-mask-image: radial-gradient(
-		ellipse 52% 50% at 50% 50%,
-		black 0%,
-		black 22%,
-		transparent 74%
-	);
-	mask-image: radial-gradient(
-		ellipse 52% 50% at 50% 50%,
-		black 0%,
-		black 22%,
-		transparent 74%
-	);
-	will-change: transform, opacity;
 }
-#galaxy-3d canvas {
+[data-galaxy] canvas {
 	/* biome-ignore lint/complexity/noImportantStyles: overrides the inline width/height Three.js sets on the canvas itself, a class can't win over inline styles otherwise */
 	width: 100% !important;
 	/* biome-ignore lint/complexity/noImportantStyles: same as width above */
 	height: 100% !important;
 	display: block;
 }
-:root:not(.dark) #galaxy-3d {
+:root:not(.dark) [data-galaxy] {
 	mix-blend-mode: multiply;
 }
 
@@ -640,4 +662,31 @@
 	pointer-events: none;
 	opacity: 0.5;
 	color: var(--primary);
+}
+
+/* Opinions marquee: the moving track is its own compositor layer. */
+.motion-ok [data-marquee-track] {
+	will-change: transform;
+}
+
+/* Manifesto: a soft veil of the page colour behind the statement, so the
+   particle galaxy (a bright, additive glow) can never wash out the words. */
+[data-manifesto]::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: radial-gradient(
+		ellipse 62% 58% at 34% 50%,
+		color-mix(in oklch, var(--background) 86%, transparent),
+		transparent 78%
+	);
+}
+
+/* Skills in flight: promote the moving pieces to their own layers only while
+   the engine runs (see skills.ts), so the scrub never repaints the page. */
+.motion-ok [data-fly-chip],
+.motion-ok [data-snake-dot] {
+	will-change: transform;
 }

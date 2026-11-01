@@ -83,12 +83,15 @@ export const Form = ({ currentLocale }: PropsLang) => {
 					</span>
 				</h2>
 
-				<p className="text-base leading-relaxed text-muted-foreground my-8">
+				<p
+					className="text-base leading-relaxed text-muted-foreground my-8"
+					data-scrub-text
+				>
 					{i18n.FORM.FORM_SUBTITLE_SUBHEAD}
 				</p>
 
-				<ul className="space-y-2">
-					<li className="flex items-center gap-4">
+				<ul className="space-y-2" data-stagger data-stagger-delay="0.2">
+					<li className="flex items-center gap-4" data-stagger-item>
 						<span className="text-3xl text-secondary">
 							<GithubIcon size={36} aria-hidden="true" />
 						</span>
@@ -109,7 +112,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 						</span>
 					</li>
 
-					<li className="flex items-center gap-4">
+					<li className="flex items-center gap-4" data-stagger-item>
 						<span className="text-3xl text-secondary">
 							<LinkedinIcon size={36} aria-hidden="true" />
 						</span>
@@ -130,7 +133,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 						</span>
 					</li>
 
-					<li className="flex items-center gap-4">
+					<li className="flex items-center gap-4" data-stagger-item>
 						<span className="text-3xl text-secondary">
 							{<MessageCircle size={36} />}
 						</span>
@@ -150,7 +153,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 						</span>
 					</li>
 
-					<li className="flex items-center gap-4">
+					<li className="flex items-center gap-4" data-stagger-item>
 						<span className="text-3xl text-secondary ">
 							{<Mail size={36} />}
 						</span>
@@ -174,11 +177,15 @@ export const Form = ({ currentLocale }: PropsLang) => {
 
 			<div
 				className="rounded-xl border border-border bg-card p-5 sm:p-8 lg:col-span-7 lg:p-10"
-				data-reveal
+				data-mask
 			>
 				<form onSubmit={handleSubmit(onSubmit)} method="POST">
-					<div className="grid grid-cols-1 gap-4">
-						<div className="space-y-2">
+					<div
+						className="grid grid-cols-1 gap-4"
+						data-stagger
+						data-stagger-delay="0.45"
+					>
+						<div className="space-y-2" data-stagger-item>
 							<label className="text-sm font-medium" htmlFor={nameId}>
 								{i18n.FORM.INPUT_NAME}{" "}
 								<span className="text-base font-bold text-destructive">*</span>
@@ -196,7 +203,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								</div>
 							)}
 						</div>
-						<div className="space-y-2">
+						<div className="space-y-2" data-stagger-item>
 							<label className="text-sm font-medium" htmlFor={emailId}>
 								{i18n.FORM.INPUT_EMAIL}{" "}
 								<span className="text-base font-bold text-destructive">*</span>
@@ -214,7 +221,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								</div>
 							)}
 						</div>
-						<div className="space-y-2">
+						<div className="space-y-2" data-stagger-item>
 							<label className="text-sm font-medium" htmlFor={phoneId}>
 								{i18n.FORM.INPUT_PHONE}{" "}
 								<span className="text-base font-bold text-destructive">*</span>
@@ -232,7 +239,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								</div>
 							)}
 						</div>
-						<div className="space-y-2">
+						<div className="space-y-2" data-stagger-item>
 							<label
 								className="text-sm font-medium"
 								htmlFor={moreInformationId}
@@ -256,6 +263,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 						</div>
 						<button
 							type="submit"
+							data-stagger-item
 							className="inline-flex items-center justify-center gap-2 rounded-full h-11 w-full max-w-full mt-2 bg-primary text-primary-foreground font-medium hover-press active:translate-y-px"
 						>
 							<Send className="w-5 h-5" />

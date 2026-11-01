@@ -30,11 +30,20 @@ export const ItemDataProjects = ({
 	};
 
 	const handleImageLoad = useCallback((key: string) => {
-		setLoadedImages((prev) => ({ ...prev, [key]: true }));
+		setLoadedImages((prev) => (prev[key] ? prev : { ...prev, [key]: true }));
 	}, []);
 
+	// The browser may finish a download before React attaches onLoad (images
+	// are eager here, inside a clipped rail): check the element when it mounts.
+	const markIfLoaded = (el: HTMLImageElement | null, key: string) => {
+		if (el?.complete && el.naturalWidth > 0) handleImageLoad(key);
+	};
+
 	return (
-		<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+		<div
+			data-hscroll-track
+			className="flex w-max items-stretch gap-4 pr-6 lg:gap-5"
+		>
 			{data?.map(
 				({
 					project_id,
@@ -50,9 +59,13 @@ export const ItemDataProjects = ({
 						<article
 							key={project_id}
 							data-reveal
-							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift"
+							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift w-[82vw] max-w-[400px] shrink-0 snap-start lg:w-[400px]"
 						>
-							<figure className="relative h-[200px] overflow-hidden bg-muted">
+							<figure
+								data-mask
+								data-mask-delay="0.1"
+								className="relative h-[200px] overflow-hidden bg-muted"
+							>
 								{!loadedImages[card_image] && (
 									<Skeleton className="absolute inset-0 rounded-none" />
 								)}
@@ -65,8 +78,9 @@ export const ItemDataProjects = ({
 									className={`absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover transition-opacity duration-500 ${
 										loadedImages[card_image] ? "opacity-100" : "opacity-0"
 									}`}
+									ref={(el) => markIfLoaded(el, card_image)}
 									onLoad={() => handleImageLoad(card_image)}
-									loading="lazy"
+									loading="eager"
 									decoding="async"
 									draggable="false"
 								/>
@@ -120,8 +134,9 @@ export const ItemDataProjects = ({
 												}`}
 												src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
 												alt={topic}
+												ref={(el) => markIfLoaded(el, topic)}
 												onLoad={() => handleImageLoad(topic)}
-												loading="lazy"
+												loading="eager"
 												decoding="async"
 												draggable="false"
 											/>
