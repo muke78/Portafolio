@@ -50,37 +50,70 @@ const cards = [
 		label: "Opiniones pendientes",
 		value: pendingComments,
 		hint: `${comments.length} en total`,
+		flag: pendingComments > 0,
 	},
 	{
 		href: "/admin/messages",
 		label: "Mensajes sin leer",
 		value: unreadMessages,
 		hint: `${messages.length} en total`,
+		flag: unreadMessages > 0,
 	},
 ];
+
+const today = new Date().toLocaleDateString("es-MX", {
+	weekday: "long",
+	day: "numeric",
+	month: "long",
+});
 ---
 
 <AdminLayout title="Panel">
-  <div class="flex flex-col gap-6">
-    <div class="flex items-center justify-between gap-4">
-      <h1 class="text-xl font-semibold">Panel</h1>
-      <a
-        href="/admin/about"
-        class="text-sm font-medium text-primary hover:underline"
-      >
-        Editar Acerca de mí →
-      </a>
+  <div class="flex flex-col gap-10">
+    <div class="flex items-end justify-between gap-4 flex-wrap border-b border-border pb-6">
+      <div>
+        <p class="eyebrow mb-3">— Panel</p>
+        <h1 class="font-serif-display text-4xl lg:text-5xl">Resumen.</h1>
+      </div>
+      <div class="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+          <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary"></span>
+        </span>
+        {today} · SSR, 0kb JS
+      </div>
     </div>
+
+    <a
+      href="/admin/about"
+      class="group flex items-center justify-between gap-4 rounded-xl border border-border bg-card px-6 py-5 hover:border-primary/50 transition-colors"
+    >
+      <div>
+        <p class="eyebrow mb-1">Perfil</p>
+        <p class="font-serif-display text-2xl">Acerca de mí</p>
+      </div>
+      <span class="font-mono text-sm text-muted-foreground group-hover:text-primary transition-colors">
+        Editar →
+      </span>
+    </a>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {cards.map((card) => (
         <a
           href={card.href}
-          class="rounded-xl border border-border bg-card p-5 flex flex-col gap-1 hover:border-primary/50 transition-colors"
+          class:list={[
+            "relative rounded-xl border bg-card p-6 flex flex-col gap-2 transition-colors hover:border-primary/50",
+            card.flag ? "border-primary/40" : "border-border",
+          ]}
         >
-          <p class="text-sm text-muted-foreground">{card.label}</p>
-          <p class="text-3xl font-semibold">{card.value}</p>
-          {card.hint && <p class="text-xs text-muted-foreground">{card.hint}</p>}
+          {card.flag && (
+            <span class="absolute top-4 right-4 h-1.5 w-1.5 rounded-full bg-primary"></span>
+          )}
+          <p class="eyebrow">{card.label}</p>
+          <p class="font-serif-display text-5xl">{card.value}</p>
+          {card.hint && (
+            <p class="text-xs text-muted-foreground">{card.hint}</p>
+          )}
         </a>
       ))}
     </div>
