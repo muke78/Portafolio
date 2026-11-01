@@ -1,5 +1,6 @@
-import { Building, Clock, Loader2, MapPin } from "lucide-react";
+import { Building, Clock, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
+import { SkeletonExperience } from "@/features/aboutMe/Items/SkeletonAbout";
 import { getI18N } from "@/i18n";
 import type { Experiences, PropsLang } from "@/types/currentLang.interface";
 
@@ -26,14 +27,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 		fetchData();
 	}, [currentLocale]);
 
-	if (loading)
-		return (
-			<Loader2
-				className="animate-spin text-primary"
-				size={40}
-				aria-label={i18n.COMMON.LOADING}
-			/>
-		);
+	if (loading) return <SkeletonExperience label={i18n.COMMON.LOADING} />;
 
 	return (
 		<div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
@@ -50,7 +44,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 				}) => (
 					<div
 						key={experience_id}
-						className="rounded-2xl border border-border bg-card shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out p-8"
+						className="rounded-2xl border border-border bg-card hover-lift p-8"
 					>
 						<div className="flex items-center gap-4 mb-4">
 							<img

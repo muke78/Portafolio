@@ -49,6 +49,18 @@
 		"PROJECTS_TITLE_BUTTON_D": "Análisis de datos",
 		"PROJECTS_BADGE_FORK": "Colaboración"
 	},
+	"PROJECT_DETAIL": {
+		"BACK": "Volver al inicio",
+		"ABOUT": "Sobre el proyecto",
+		"STACK": "Stack tecnológico",
+		"LINKS": "Enlaces",
+		"VIEW_CODE": "Ver código",
+		"VIEW_LIVE": "Ver proyecto en vivo",
+		"NOT_AVAILABLE": "No disponible",
+		"NEXT": "Siguiente proyecto",
+		"ERROR_TITLE": "No pudimos cargar el proyecto",
+		"ERROR_BODY": "Vuelve al inicio e inténtalo de nuevo en unos minutos."
+	},
 	"404": {
 		"404_BODY": "¡Ups! La página que estás buscando aún no está en órbita, regresa después",
 		"404_IMG_ALT": "No se encontró la página",

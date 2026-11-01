@@ -49,6 +49,18 @@
 		"PROJECTS_TITLE_BUTTON_D": "Data analysis",
 		"PROJECTS_BADGE_FORK": "Collaboration"
 	},
+	"PROJECT_DETAIL": {
+		"BACK": "Back to home",
+		"ABOUT": "About the project",
+		"STACK": "Tech stack",
+		"LINKS": "Links",
+		"VIEW_CODE": "View code",
+		"VIEW_LIVE": "View live project",
+		"NOT_AVAILABLE": "Not available",
+		"NEXT": "Next project",
+		"ERROR_TITLE": "We couldn't load the project",
+		"ERROR_BODY": "Go back home and try again in a few minutes."
+	},
 	"404": {
 		"404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later.",
 		"404_IMG_ALT": "Page not found",

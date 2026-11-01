@@ -71,7 +71,7 @@ export const Opinions = ({
 
 				<button
 					type="button"
-					className="inline-flex items-center justify-center h-11 px-5 rounded-full gap-2 bg-primary text-primary-foreground text-sm font-medium transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					className="inline-flex items-center justify-center h-11 px-5 rounded-full gap-2 bg-primary text-primary-foreground text-sm font-medium hover-press focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 					onClick={() =>
 						window.dispatchEvent(new CustomEvent("khelde:open-comment-widget"))
 					}
@@ -131,7 +131,7 @@ export const Opinions = ({
 									// biome-ignore lint/a11y/noNoninteractiveTabindex: intentional - focusing a card is what pauses the auto-scrolling marquee (see focus-within: below), not a click target
 									tabIndex={0}
 									aria-label={`${testimonial.name}: ${testimonial.description}`}
-									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden transition-colors hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden hover-lift focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
 								>
 									<div className="flex flex-col p-6">
 										<div className="flex items-start justify-between mb-4">

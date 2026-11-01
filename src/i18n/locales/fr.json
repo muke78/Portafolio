@@ -49,6 +49,18 @@
 		"PROJECTS_TITLE_BUTTON_D": "Analyse des données",
 		"PROJECTS_BADGE_FORK": "Collaboration"
 	},
+	"PROJECT_DETAIL": {
+		"BACK": "Retour à l'accueil",
+		"ABOUT": "À propos du projet",
+		"STACK": "Stack technique",
+		"LINKS": "Liens",
+		"VIEW_CODE": "Voir le code",
+		"VIEW_LIVE": "Voir le projet en ligne",
+		"NOT_AVAILABLE": "Indisponible",
+		"NEXT": "Projet suivant",
+		"ERROR_TITLE": "Impossible de charger le projet",
+		"ERROR_BODY": "Retournez à l'accueil et réessayez dans quelques minutes."
+	},
 	"404": {
 		"404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard.",
 		"404_IMG_ALT": "Page introuvable",

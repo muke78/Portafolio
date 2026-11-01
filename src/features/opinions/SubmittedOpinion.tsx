@@ -48,14 +48,14 @@ export const SubmittedOpinion = ({
 				<button
 					type="button"
 					onClick={onClose}
-					className="bg-primary hover:opacity-85 text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium transition-opacity"
+					className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-medium hover-press"
 				>
 					Cerrar
 				</button>
 			) : (
 				<a
 					href="home#opinions"
-					className="bg-primary hover:bg-primary/80 text-primary-foreground px-6 py-3 rounded-full font-medium transition-colors duration-200 inline-block hover:scale-105 active:scale-95"
+					className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium inline-block hover-press active:translate-y-px"
 				>
 					{i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS}
 				</a>

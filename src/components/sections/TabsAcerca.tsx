@@ -1,15 +1,13 @@
-﻿import {
-	Briefcase,
-	GraduationCap,
-	Loader2,
-	PencilRuler,
-	UserRound,
-} from "lucide-react";
+﻿import { Briefcase, GraduationCap, PencilRuler, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Educacion } from "@/features/aboutMe/Educacion";
 import { Experiencia } from "@/features/aboutMe/Experiencia";
 import { Habilidades } from "@/features/aboutMe/Habilidades";
+import {
+	SkeletonAboutMe,
+	SkeletonTabsRow,
+} from "@/features/aboutMe/Items/SkeletonAbout";
 import { SobreMi } from "@/features/aboutMe/SobreMi";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/types/currentLang.interface";
@@ -36,11 +34,10 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 
 	if (!mounted) {
 		return (
-			<Loader2
-				className="animate-spin text-primary"
-				size={40}
-				aria-label={i18n.COMMON.LOADING}
-			/>
+			<div className="flex flex-col gap-6">
+				<SkeletonTabsRow count={4} label={i18n.COMMON.LOADING} />
+				<SkeletonAboutMe label={i18n.COMMON.LOADING} />
+			</div>
 		);
 	}
 

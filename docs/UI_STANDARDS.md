@@ -31,6 +31,7 @@ mínimo obligatorio (AAA donde no cueste identidad), más las guías de
 8. [Accesibilidad: checklist transversal](#8-accesibilidad-checklist-transversal)
 9. [Checklist de PR de UI](#9-checklist-de-pr-de-ui)
 10. [Deuda conocida y decisiones pendientes](#10-deuda-conocida-y-decisiones-pendientes)
+11. [Vista de detalle de proyecto](#11-vista-de-detalle-de-proyecto)
 
 ---
 
@@ -57,64 +58,73 @@ mínimo obligatorio (AAA donde no cueste identidad), más las guías de
 
 ## 2. Color y temas
 
-### 2.1 Dirección visual: "Violet Nocturne"
+### 2.1 Dirección visual: "Onyx & Violet"
 
 Objetivo: una interfaz **simple pero sofisticada, premium y memorable**, al
 nivel de los sitios destacados en Awwwards / CSS Design Awards / FWA, sin
 caer en el minimalismo seco ni en el "diseño generado por IA".
 
-- **Un violeta vibrante** como único color de marca. Nada de multicolor.
-- **Prohibido el blanco y el negro puros** (`#000`, `#fff`, `text-white`,
-  `bg-black`). Tema oscuro: un morado berenjena casi negro, rico y con
-  matiz. Tema claro: perla/alabastro cálido, con tinta berenjena en lugar
-  de negro. Lo verifica `tests/unit/designTokens.test.ts`.
+- **Base neutra, acento único.** Todo el sistema es neutro (negro/gris
+  azulado en oscuro, blanco roto en claro) y el **violeta vive solo en
+  `--primary`** (y sus alias `--ring`, `--chart-1`, `--sidebar-primary`, más
+  los tokens `--galaxy-*`). Así el acento realmente resalta. **Prohibido
+  teñir fondos o textos de morado/berenjena.**
+- **Tema oscuro:** onyx / charcoal azulado casi negro (matiz 270, croma
+  ~0.012). Nunca `#000`. Las superficies suben en escalones (fondo → card →
+  muted) para que ninguna se lea como un "negro pesado".
+- **Tema claro:** blanco roto tipo *silk / alabaster* (matiz 95, croma
+  0.005). El texto es **carbón** (`oklch(24% 0.008 270)`), no negro puro ni
+  berenjena. Nunca `#fff`.
 - **El aire es un elemento de diseño.** Un solo punto focal por sección,
-  mucho espacio negativo, tipografía grande (sección 3). Si una pantalla se
-  ve "llena de datos", se quita contenido, no se baja el tamaño.
-- **La galaxia 3D es parte de la paleta**, no un fondo pegado: lee sus
-  colores de los tokens `--galaxy-*` y se recolorea al cambiar de tema.
-- **Movimiento sobrio** que guía el ojo (sección 7); nada rebota.
-- Leyes de UX aplicadas: **Hick** (pocas opciones, un CTA primario por
-  bloque), **proximidad** (el espacio dentro de un grupo es la mitad o menos
-  del espacio entre grupos) y **foco único** (cada sección dirige la mirada
-  a un solo elemento).
+  mucho espacio negativo, tipografía grande (sección 3).
+- **La galaxia 3D es parte de la paleta**: lee sus colores de `--galaxy-*`
+  y se recolorea al cambiar de tema.
+- **Movimiento y hovers sobrios** (secciones 5.5 y 7): guían el ojo, nada
+  rebota.
+- Leyes de UX: **Hick** (pocas opciones, un CTA primario por bloque),
+  **proximidad** (el espacio dentro de un grupo es la mitad o menos del
+  espacio entre grupos) y **foco único**.
 
 ### 2.2 Mecánica
 
-- Formato: **OKLCH** (perceptualmente uniforme; los pares claro/oscuro se
-  ajustan por luminosidad `L` sin tocar tono ni croma). Todos los valores
-  opacos están **dentro del gamut sRGB** (así se ven igual en cualquier
-  pantalla); lo comprueba el test.
+- Formato: **OKLCH**. Todos los valores opacos están **dentro del gamut
+  sRGB**; lo comprueba el test.
 - Tokens en `:root` (claro) y `.dark` (oscuro) de `src/styles/app.css`,
   expuestos a Tailwind v4 con `@theme inline` (`bg-background`,
   `text-muted-foreground`, `border-border`, `bg-night`…).
 - Tema: clase `.dark` en `<html>`; persistido en `localStorage`, con
   `prefers-color-scheme` como valor inicial.
-- `--accent` es un neutro suave a propósito (hover genérico de shadcn): el
-  violeta se aplica de forma deliberada (enlaces, estado activo, CTA).
+- `--accent` es un neutro suave (hover genérico de shadcn): el violeta se
+  aplica de forma deliberada (enlaces, estado activo, CTA).
 
 ### 2.3 Paleta principal
 
-| Token | Rol | Claro (perla) | Oscuro (berenjena) |
+| Token | Rol | Claro (silk) | Oscuro (onyx) |
 |---|---|---|---|
-| `--background` | Fondo de página | `oklch(96.8% 0.01 90)` ≈ `#f7f4ed` | `oklch(16.5% 0.03 292)` ≈ `#0f0c1a` |
-| `--foreground` | Texto principal (tinta, no negro) | `oklch(21% 0.045 292)` ≈ `#19142b` | `oklch(94.5% 0.014 300)` ≈ `#eeebf5` |
-| `--card` | Superficie elevada | `oklch(98.6% 0.007 90)` ≈ `#fcfaf5` | `oklch(21% 0.036 291)` ≈ `#181528` |
-| `--primary` | **Violeta de marca** | `oklch(50% 0.21 292)` ≈ `#6c3ccd` | `oklch(67% 0.185 292)` ≈ `#9a7afb` |
+| `--background` | Fondo de página | `oklch(97.6% 0.005 95)` ≈ `#f8f7f3` | `oklch(16% 0.012 270)` ≈ `#0b0d13` |
+| `--foreground` | Texto principal (carbón) | `oklch(24% 0.008 270)` ≈ `#1e1f23` | `oklch(94% 0.004 270)` ≈ `#eaebee` |
+| `--card` | Superficie elevada | `oklch(99% 0.005 95)` ≈ `#fdfcf8` | `oklch(20.5% 0.012 270)` ≈ `#15171d` |
+| `--muted` | Relleno atenuado (skeletons, chips, hover) | `oklch(94.5% 0.005 95)` | `oklch(23.5% 0.012 270)` |
+| `--muted-foreground` | Texto secundario | `oklch(46% 0.012 270)` | `oklch(70% 0.012 270)` |
+| `--accent` | Hover neutro | `oklch(94.5% 0.005 95)` | `oklch(25% 0.012 270)` |
+| `--primary` | **Violeta de marca (único acento)** | `oklch(50% 0.21 292)` ≈ `#6c3ccd` | `oklch(67% 0.185 292)` ≈ `#9a7afb` |
 | `--primary-foreground` | Texto sobre `--primary` | `oklch(97% 0.015 295)` | `oklch(15% 0.05 290)` |
-| `--secondary` | Botón sólido neutro | `oklch(21% 0.045 292)` | `oklch(94.5% 0.014 300)` |
-| `--muted` | Fondo hundido | `oklch(93.4% 0.013 90)` | `oklch(14.5% 0.03 292)` |
-| `--muted-foreground` | Texto secundario | `oklch(43% 0.03 292)` | `oklch(72% 0.03 293)` |
-| `--accent` | Hover neutro | `oklch(93.4% 0.013 90)` | `oklch(25% 0.04 291)` |
-| `--border` | Divisores decorativos | `oklch(21% 0.045 292 / 9%)` | `oklch(85% 0.04 295 / 12%)` |
-| `--input` | Borde de campos | `oklch(21% 0.045 292 / 50%)` | `oklch(85% 0.04 295 / 46%)` |
+| `--secondary` | Botón sólido neutro | = `--foreground` | = `--foreground` |
+| `--border` | Divisores decorativos | `oklch(24% 0.008 270 / 10%)` | `oklch(92% 0.01 270 / 11%)` |
+| `--input` | Borde de campos | `oklch(24% 0.008 270 / 50%)` | `oklch(92% 0.01 270 / 40%)` |
 | `--ring` | Anillo de foco | = `--primary` | = `--primary` |
-| `--night` / `--night-foreground` | Superficie siempre oscura (wordmark del footer) | `oklch(14.5% 0.03 292)` / `oklch(94.5% 0.014 300)` | igual |
+| `--night` / `--night-foreground` | Superficie siempre oscura (wordmark del footer) | `oklch(14.5% 0.012 270)` / `oklch(94% 0.004 270)` | igual |
+| `--glow` | Sombra de hover (halo violeta + sombra neutra, ver 5.5) | compuesta | compuesta |
+
+Regla de superficies en oscuro: **fondo 16 % < card 20.5 % < muted 23.5 %**.
+Nunca una superficie más oscura que el fondo (se lee como un hueco negro):
+los bloques grandes (p. ej. el formulario de contacto) usan `bg-card`, no
+`bg-muted`.
 
 Los tokens del 3D (`--galaxy-core`, `--galaxy-arm`, `--galaxy-hot`,
-`--galaxy-star`) son distintos por tema porque el render difiere: en oscuro
-la galaxia se mezcla de forma aditiva (colores luminosos); en claro se
-mezcla con `multiply` sobre la perla (colores más profundos y saturados, o
+`--galaxy-star`) cambian por tema porque el render difiere: en oscuro la
+galaxia se mezcla de forma aditiva (colores luminosos); en claro, con
+`multiply` sobre el blanco roto (colores más profundos y saturados, o
 desaparecerían).
 
 Radio base `--radius: 0.375rem`; escala en 4.3.
@@ -128,50 +138,50 @@ Radio base `--radius: 0.375rem`; escala en 4.3.
 | `--warning` / `-foreground` | Advertencia, acción con riesgo | `oklch(52% 0.11 70)` | `oklch(80% 0.15 80)` |
 | `--info` / `-foreground` | Aviso neutro, ayuda | `oklch(50% 0.125 245)` | `oklch(72% 0.13 245)` |
 
-Reglas: el color **nunca** es el único portador del significado (WCAG
-1.4.1): todo estado lleva icono Lucide y/o texto. Errores de formulario:
-`text-destructive` + icono + texto descriptivo (5.2). `--warning` todavía
-no tiene usos.
+El color **nunca** es el único portador del significado (WCAG 1.4.1): todo
+estado lleva icono Lucide y/o texto. Errores de formulario:
+`text-destructive` + icono + texto descriptivo (5.2). `--warning` aún no
+tiene usos.
 
 ### 2.5 Contrastes medidos
 
 Calculados con la luminancia relativa de WCAG 2.1 a partir de los tokens
-(alfa mezclado en sRGB codificado, como hace el navegador) y protegidos por
-`tests/unit/designTokens.test.ts`. Umbrales: texto ≥ 4.5:1 (AA) / 7:1 (AAA);
-componentes de UI y foco ≥ 3:1 (1.4.11).
+(alfa mezclado en sRGB codificado) y protegidos por
+`tests/unit/designTokens.test.ts`. Umbrales: texto ≥ 4.5:1 (AA) / 7:1
+(AAA); componentes de UI y foco ≥ 3:1 (1.4.11).
 
 | Par | Claro | Oscuro | Veredicto |
 |---|---|---|---|
-| `foreground` / `background` | 16.3 | 16.4 | AAA |
-| `foreground` / `card` | 17.2 | 15.1 | AAA |
-| `muted-foreground` / `background` | 7.5 | 7.7 | AAA |
-| `muted-foreground` / `card` | 7.9 | 7.1 | AAA |
-| `muted-foreground` / `muted` | 6.7 | 7.9 | AA (claro) · AAA (oscuro) |
-| `primary` / `background` (texto/enlace) | 6.1 | 6.1 | AA |
+| `foreground` / `background` | 15.4 | 16.3 | AAA |
+| `foreground` / `card` | 16.0 | 15.0 | AAA |
+| `muted-foreground` / `background` | 6.7 | 7.3 | AA claro · AAA oscuro |
+| `muted-foreground` / `card` | 6.9 | 6.7 | AA |
+| `muted-foreground` / `muted` | 6.1 | 6.2 | AA |
+| `primary` / `background` (texto/enlace) | 6.2 | 6.1 | AA |
 | `primary-foreground` / `primary` (botón) | 6.1 | 6.2 | AA |
-| `destructive` / `background` | 5.1 | 6.6 | AA |
-| `success` / `background` | 5.2 | 8.3 | AA / AAA |
-| `info` / `background` | 5.4 | 7.9 | AA / AAA |
-| `warning` / `background` | 5.2 | 10.2 | AA / AAA |
-| `warning-foreground` / `warning` | 5.2 | 10.4 | AA / AAA |
-| `night-foreground` / `night` | 16.9 | 16.9 | AAA |
-| `input` (borde de campo) / `background` | 3.3 | 3.3 | Cumple 1.4.11 |
-| `ring` / `background` | 6.1 | 6.1 | Cumple 1.4.11 |
-| `border` / `background` | 1.2 | 1.3 | Solo decorativo (no define el límite de un control) |
+| `destructive` / `background` | 5.2 | 6.7 | AA |
+| `success` / `background` | 5.3 | 8.4 | AA / AAA |
+| `info` / `background` | 5.6 | 7.9 | AA / AAA |
+| `warning` / `background` | 5.3 | 10.2 | AA / AAA |
+| `night-foreground` / `night` | 16.6 | 16.6 | AAA |
+| `input` (borde de campo) / `background` | 3.2 | 3.2 | Cumple 1.4.11 |
+| `ring` / `background` | 6.2 | 6.1 | Cumple 1.4.11 |
+| `border` / `background` | 1.2 | 1.3 | Solo decorativo |
 
 El foco combina borde `--ring` lleno y halo `ring-3 ring-ring/50`: el halo
-solo (≈ 2:1) no basta, el borde lleno sí; no quitar ninguno de los dos.
+solo (≈ 2:1) no basta; no quitar ninguno de los dos.
 
 ### 2.6 Reglas de uso
 
 - **No salir de la paleta.** Un color nuevo = un token nuevo (claro y
   oscuro), dentro del gamut sRGB y con su contraste medido aquí.
 - Prohibido `#000`/`#fff`, `text-white`, `bg-black` y similares (usa
-  `text-primary-foreground`, `bg-night/40`, etc.). El test lo hace cumplir.
+  `text-primary-foreground`, `bg-night/40`…). El test lo hace cumplir, y
+  también que fondos y textos se mantengan neutros (croma ≤ 0.02).
 - `text-primary` solo para enlaces, estado activo y énfasis puntual.
 - Texto secundario = `text-muted-foreground`; no bajar la opacidad del
   texto para "atenuar".
-- Superficies: `background` → `card` (elevada) → `muted` (hundida); máximo
+- Superficies: `background` → `card` (elevada) → `muted` (relleno); máximo
   dos niveles visibles a la vez.
 - Los dos temas se diseñan y se prueban siempre.
 
@@ -396,8 +406,8 @@ Formularios:
     filtra o se muestra "Ver todos".
   - Se destaca lo clave con jerarquía (tamaño del título, un `Badge`,
     el acento `--primary` en un solo elemento), no con más color.
-- Hover: elevación mínima (`.lift-card`, `translateY(-2px)`) y/o borde
-  `--primary` al 50 %. Nada de escalados ni rebotes.
+- Hover: `hover-lift` en la card entera (ver 5.5). Las partes internas
+  (imagen, iconos) no reaccionan por separado. Nada de escalados ni rebotes.
 - Imágenes: `width`/`height` explícitos (evita CLS), `loading="lazy"`
   salvo la de LCP, `alt` descriptivo (o `alt=""` si es decorativa).
 
@@ -409,6 +419,55 @@ Formularios:
 - `Sheet` / `DropdownMenu`: paneles y menús; el foco queda atrapado y
   vuelve al disparador al cerrar (lo da Base UI — no reimplementar).
 - `Skeleton`: estado de carga con la forma final del contenido (evita CLS).
+
+
+### 5.5 Hovers y microinteracciones (estándar)
+
+Un hover no es un cambio de color: es una respuesta táctil. Tres piezas,
+siempre las mismas, definidas como utilidades en `app.css`:
+
+| Utilidad | Para | Qué hace |
+|---|---|---|
+| `hover-lift` | Cards y superficies clicables | Sube 4 px (`translateY(-0.25rem)`), sombra `--glow` (halo violeta difuminado + sombra neutra suave) y tinte violeta en el borde. 380 ms, `cubic-bezier(0.22, 1, 0.36, 1)` |
+| `hover-press` | Botones, chips, iconos sociales | Sube 2 px y añade `--glow`. 260 ms. Se aplica a las variantes `default`, `secondary` y `outline` de `Button` |
+| `hover-nudge` | Iconos de dirección (flechas) | Desplaza el icono 4 px en el sentido de la acción cuando su padre (enlace/botón) recibe hover o foco |
+
+Reglas:
+
+- **Solo en dispositivos con hover** (`@media (hover: hover)`) y el
+  **desplazamiento solo si no hay `prefers-reduced-motion`**. Con reduced
+  motion queda el cambio de sombra y borde, sin movimiento.
+- El **foco con teclado** recibe el mismo glow (`:focus-visible`) además de
+  su anillo; nada se revela solo con el ratón.
+- **Un hover por elemento.** La card entera reacciona; **no se animan sus
+  partes internas** (nada de zoom de imagen, iconos que aparecen o se
+  elevan dentro de la card). Lo accionable dentro de una card es visible
+  siempre, no aparece al pasar el cursor.
+- Solo `transform`, `opacity`, `box-shadow` y `border-color`; nada de
+  animar tamaño ni márgenes. Sin escalados > 1.03, sin rebotes.
+- Elementos que no son clicables no tienen hover.
+- Textos y enlaces simples: cambio de color a `--primary` es suficiente.
+- Una card clicable usa **un solo enlace** que se extiende sobre toda la
+  card (`after:absolute after:inset-0`), no varios enlaces anidados.
+
+### 5.6 Estados de carga: skeletons, nunca spinners
+
+Los spinners rompen la inmersión y mueven el layout. Todo estado de carga
+usa **`<Skeleton />`** (shadcn) con la **forma del contenido final**:
+mismo borde, radio, padding y alto de imagen, para que nada salte cuando
+llegan los datos.
+
+- Listas/tabs: skeletons de las cards reales (`SkeletonProjectsCard`,
+  `SkeletonTestimonialCard`, `SkeletonEducation`, `SkeletonExperience`,
+  `SkeletonAboutMe`, `SkeletonTabsRow`).
+- Imágenes: `Skeleton` absoluto detrás de la imagen, que entra con
+  `opacity` al cargar; el contenedor tiene alto fijo.
+- Botón enviando: la etiqueta se sustituye por un `Skeleton` (barra) y el
+  texto real queda en un `<output class="sr-only">`.
+- Accesibilidad: el contenedor es un `<output aria-busy="true">` con el
+  texto de carga en `sr-only` (`COMMON.LOADING`), así se anuncia sin ruido
+  visual.
+- Prohibido `animate-spin`, `Loader2`/`LoaderCircle` y spinners CSS.
 
 ---
 
@@ -636,14 +695,54 @@ Antes de abrir un PR que toque UI:
 | 1 | Borde de campos `--input` bajo 3:1 (WCAG 1.4.11) | `app.css` | ✅ Resuelto (2.5) |
 | 2 | No existía token `--warning` | `app.css` | ✅ Resuelto (2.4) |
 | 3 | GSAP/ScrollTrigger sin instalar | `package.json`, `src/lib/motion.ts` | ✅ Instalado y arquitectura lista (7); falta migrar/crear animaciones |
-| 4 | Colores fuera de tokens: galaxia 3D, wordmark del footer, `theme-color`, `text-white`/`bg-black` | `GalaxyBackground.tsx`, `app.css`, `Layout.astro`, `sendOpinions.tsx`, `sheet.tsx` | ✅ Resuelto: tokens `--galaxy-*`, `--night`, metas por esquema de color y utilidades de token; test que lo hace cumplir |
-| 5 | Etiquetas a 11 px y en mayúsculas | `app.css`, footer, formulario, Panel admin | ✅ Resuelto: `.eyebrow` 13 px en frase normal (el Panel admin conserva `text-xs uppercase`) |
-| 6 | CTAs del hero eran `<a>` hechos a mano | `Header.astro` | ✅ Resuelto: `buttonVariants` sobre `<a>`, pill + `min-h-11` |
-| 7 | Tamaños arbitrarios `text-[Npx]` / `text-[clamp(...)]` | secciones del home | ✅ Resuelto: tokens `text-display/title/subtitle/heading` (3.2). Quedan `text-[22px]` (logo del Nav) y `text-[0.8rem]` (shadcn `button` sm) |
-| 8 | Objetivos táctiles < 44 px | sitio público | ✅ Resuelto en nav, tabs, tema, idioma, formulario y hero. Admin conserva 32 px a propósito |
+| 4 | Colores fuera de tokens (galaxia 3D, wordmark, `theme-color`, `text-white`/`bg-black`) | varios | ✅ Resuelto: tokens `--galaxy-*`, `--night`, metas por esquema de color; test que lo hace cumplir |
+| 5 | Etiquetas a 11 px y en mayúsculas | `app.css`, footer, formulario | ✅ Resuelto: `.eyebrow` 13 px en frase normal |
+| 6 | CTAs del hero hechos a mano | `Header.astro` | ✅ Resuelto: `buttonVariants` sobre `<a>` |
+| 7 | Tamaños arbitrarios `text-[Npx]` / `text-[clamp(...)]` | secciones del home | ✅ Resuelto: tokens `text-display/title/subtitle/heading` |
+| 8 | Objetivos táctiles < 44 px | sitio público | ✅ Resuelto (nav, tabs, tema, idioma, formulario, hero, iconos sociales) |
 | 9 | Animaciones existentes mezcladas: CSS, JS manual (`Cosmos.tsx`, Footer) y 3D | varios | ⏳ Pendiente: migrar entradas/parallax a GSAP (7.1) en `feat/home-motion` |
-| 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Pendiente: test e2e emulando `reducedMotion: reduce` |
+| 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Pendiente: test e2e con `reducedMotion: 'reduce'` |
 | 11 | Títulos de `aboutMe` eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`) |
-| 12 | Jerarquía de encabezados plana (puestos y cards de proyectos como `<h2>`) | `ItemDataExperiencia.tsx`, `ItemDataProjects.tsx` | ✅ Resuelto (`<h3>`) |
-| 13 | Composición de la galaxia 3D (posición, escala, brazos) y solapamiento con el texto del hero | `GalaxyBackground.tsx` | ⏳ Pendiente: `feat/home-layout`. Ya recolorea por tema desde tokens |
-| 14 | `text-wrap: balance` sin aplicar en titulares | secciones | ⏳ Pendiente (`feat/home-layout`) |
+| 12 | Jerarquía de encabezados plana | `ItemDataExperiencia.tsx`, `ItemDataProjects.tsx` | ✅ Resuelto (`<h3>`) |
+| 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `GalaxyBackground.tsx` | ⏳ Pendiente. Ya recolorea por tema desde tokens |
+| 14 | `text-wrap: balance` sin aplicar en titulares del Home | secciones | ⏳ Pendiente (solo el detalle de proyecto lo usa) |
+| 15 | Base teñida de berenjena y superficie `muted` casi negra | `app.css`, `Form.tsx` | ✅ Resuelto: base neutra onyx/silk, violeta solo en `--primary`; superficies escalonadas (2.3) |
+| 16 | Hovers básicos y hovers internos en cards | cards, botones, iconos | ✅ Resuelto: `hover-lift` / `hover-press` / `hover-nudge` (5.5) |
+| 17 | Spinners `Loader2` / `animate-spin` | tabs, items de Acerca, formulario de opiniones | ✅ Resuelto: skeletons con la forma final (5.6) |
+| 18 | Proyectos sin vista de detalle ni URL propia | `pages/[lang]/project/[id].astro` | ✅ Resuelto (11). Falta video/galería: el backend no los expone |
+| 19 | e2e de Playwright no se pueden ejecutar sin navegador instalado | entorno local | ⏳ Pendiente: `pnpm exec playwright install` |
+
+## 11. Vista de detalle de proyecto
+
+Ruta: **`/[lang]/project/[id]`** (`src/pages/[lang]/project/[id].astro`),
+renderizada en el servidor.
+
+- `id` es el **slug** del proyecto (canónico y compartible, p. ej.
+  `/es/project/backend-hono`) o su `project_id` numérico. Los datos salen
+  de `GET /projects?currentLocale=…` (el mismo origen que el Home).
+- Cada card del Home enlaza a su detalle (enlace extendido sobre la card,
+  ver 5.5); la URL cambia y se puede compartir.
+- **SEO**: cada proyecto tiene su propio `<title>` (`Proyecto — Erick
+  González`), `description` y `og:image` (la imagen del proyecto);
+  `Layout.astro` acepta las props `title`, `description` e `image`.
+- **Estados**: proyecto inexistente o idioma inválido → **404 real**;
+  fallo del backend → **503** con mensaje y botón de volver.
+
+Composición (un solo punto focal: la imagen):
+
+1. Barra superior fija con **"Volver al inicio"** a la izquierda (vuelve a
+   `/[lang]/home#projects`; la flecha se desplaza hacia atrás en hover) y,
+   a la derecha, selector de idioma y tema.
+2. Categoría (+ insignia de colaboración) y **título en serif grande**
+   (`text-display`, o `text-title` si el nombre pasa de 18 caracteres).
+3. **Imagen del proyecto** a todo el ancho (2:1), con glow violeta suave.
+4. Dos columnas en escritorio, una en móvil: descripción (lead) y, en una
+   card lateral fija, **stack tecnológico** (iconos con nombre) y
+   **enlaces** (ver proyecto en vivo, ver código). Un enlace ausente se
+   muestra como "No disponible" (`aria-disabled`), nunca desaparece.
+5. **Siguiente proyecto** de la misma categoría: una sola acción de
+   salida (Ley de Hick).
+
+Limitaciones actuales: el modelo de datos de Hono solo trae una imagen por
+proyecto (`card_image`); no hay video, galería ni descripción larga. El
+bloque de media está listo para admitirlos cuando el backend los exponga.

@@ -1,8 +1,10 @@
-import { Globe } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useCallback, useState } from "react";
-import { GithubIcon } from "@/components/icons/BrandIcons";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getI18N } from "@/i18n";
 import type { PropsLangWithData } from "@/types/currentLang.interface";
+
+const R2 = "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev";
 
 export const ItemDataProjects = ({
 	currentLocale,
@@ -11,8 +13,8 @@ export const ItemDataProjects = ({
 	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 	const i18n = getI18N({ currentLocale });
 
-	const handleImageLoad = useCallback((tech: string) => {
-		setLoadedImages((prev) => ({ ...prev, [tech]: true }));
+	const handleImageLoad = useCallback((key: string) => {
+		setLoadedImages((prev) => ({ ...prev, [key]: true }));
 	}, []);
 
 	return (
@@ -23,73 +25,46 @@ export const ItemDataProjects = ({
 					slug,
 					card_image,
 					images_topics,
-					link_repo,
-					link_web,
 					title,
 					description,
 					fork,
 				}) => (
-					<div
+					<article
 						key={project_id}
-						className="flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-2xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out"
+						className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift"
 					>
-						<figure className="relative overflow-hidden group cursor-pointer">
+						<figure className="relative h-[200px] overflow-hidden bg-muted">
+							{!loadedImages[card_image] && (
+								<Skeleton className="absolute inset-0 rounded-none" />
+							)}
 							<img
-								src={`https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev/${card_image}`}
-								alt={slug}
+								src={`${R2}/${card_image}`}
+								alt=""
 								width={400}
 								height={200}
-								className={`transition-transform duration-300 ease-in-out group-hover:scale-[1.03] ${
-									loadedImages[card_image]
-										? "opacity-100"
-										: "opacity-0 absolute"
+								className={`h-full w-full object-cover transition-opacity duration-500 ${
+									loadedImages[card_image] ? "opacity-100" : "opacity-0"
 								}`}
-								style={{
-									width: "100%",
-									height: "200px",
-									objectFit: "cover",
-								}}
 								onLoad={() => handleImageLoad(card_image)}
 								loading="lazy"
 								decoding="async"
 								draggable="false"
 							/>
-
-							<div className="absolute right-12 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-								<a
-									href={link_repo}
-									target="_blank"
-									rel="noopener noreferrer"
-									className={`inline-flex items-center justify-center rounded-lg bg-background/80 backdrop-blur px-2 py-1.5 transition-colors ${
-										!link_repo
-											? "pointer-events-none opacity-40"
-											: "hover:bg-secondary hover:text-secondary-foreground"
-									}`}
-									aria-label={slug}
-								>
-									<GithubIcon size={18} aria-hidden="true" />
-								</a>
-							</div>
-
-							<div className="absolute right-0 top-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-								<a
-									href={link_web}
-									target="_blank"
-									rel="noopener noreferrer"
-									className={`inline-flex items-center justify-center rounded-lg bg-background/80 backdrop-blur px-2 py-1.5 transition-colors ${
-										!link_web
-											? "pointer-events-none opacity-40"
-											: "hover:bg-secondary hover:text-secondary-foreground"
-									}`}
-									aria-label={slug}
-								>
-									<Globe size={18} />
-								</a>
-							</div>
 						</figure>
-						<div className="flex flex-col gap-2 p-4">
-							<h3 className="flex items-center gap-2 text-2xl font-semibold">
-								{title}
+						<div className="flex flex-1 flex-col gap-2 p-4">
+							<h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-2xl font-semibold">
+								{/* The whole card is the click target: this link stretches over it. */}
+								<a
+									href={`/${currentLocale}/project/${slug}`}
+									className="inline-flex items-center gap-1 rounded-sm after:absolute after:inset-0 after:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+								>
+									{title}
+									<ArrowUpRight
+										size={20}
+										aria-hidden="true"
+										className="text-muted-foreground"
+									/>
+								</a>
 								{fork && (
 									<span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
 										{i18n.PROJECTS.PROJECTS_BADGE_FORK}
@@ -98,34 +73,28 @@ export const ItemDataProjects = ({
 							</h3>
 							<p>{description}</p>
 
-							<div className="flex flex-wrap items-center justify-start">
-								<div className="flex -space-x-2 py-3">
-									{images_topics.map((topic) => (
-										<div
-											className="rounded-full border-2 border-card overflow-hidden hover:-translate-y-3 transition-transform duration-500 ease-in-out"
-											key={topic}
-										>
-											<div className="w-9 h-9 rounded-full overflow-hidden">
-												<img
-													className={`leading-6 transition-opacity duration-500 ease-in-out ${
-														loadedImages[topic]
-															? "opacity-100"
-															: "opacity-0 absolute"
-													}`}
-													src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
-													alt={topic}
-													onLoad={() => handleImageLoad(topic)}
-													loading="lazy"
-													decoding="async"
-													draggable="false"
-												/>
-											</div>
-										</div>
-									))}
-								</div>
+							<div className="mt-auto flex -space-x-2 pt-3">
+								{images_topics.map((topic) => (
+									<div
+										className="h-9 w-9 overflow-hidden rounded-full border-2 border-card"
+										key={topic}
+									>
+										<img
+											className={`h-full w-full transition-opacity duration-500 ${
+												loadedImages[topic] ? "opacity-100" : "opacity-0"
+											}`}
+											src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
+											alt={topic}
+											onLoad={() => handleImageLoad(topic)}
+											loading="lazy"
+											decoding="async"
+											draggable="false"
+										/>
+									</div>
+								))}
 							</div>
 						</div>
-					</div>
+					</article>
 				),
 			)}
 		</div>

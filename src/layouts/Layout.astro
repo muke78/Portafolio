@@ -4,13 +4,25 @@ import "@/styles/app.css";
 import { BackgroundEffects } from "@/components/three/BackgroundEffects";
 import { getI18N } from "@/i18n";
 
+interface Props {
+	/** Page <title> / og:title. Defaults to the site title. */
+	title?: string;
+	/** Meta description. Defaults to the site description. */
+	description?: string;
+	/** Absolute URL of the social preview image. Defaults to /kdl.webp. */
+	image?: string;
+}
+
 const { currentLocale, url, site } = Astro;
+const { title, description, image } = Astro.props;
 const i18n = getI18N({ currentLocale });
 
 const currentYear = new Date().getFullYear();
 const siteOrigin = site ?? new URL("https://khelde.vercel.app");
 const canonicalUrl = new URL(url.pathname, siteOrigin).toString();
-const ogImageUrl = new URL("/kdl.webp", siteOrigin).toString();
+const ogImageUrl = image ?? new URL("/kdl.webp", siteOrigin).toString();
+const pageTitle = title ?? i18n.META.META_TITLE;
+const pageDescription = description ?? i18n.META.META_DESCRIPTION;
 
 const personSchema = {
 	"@context": "https://schema.org",
@@ -32,13 +44,13 @@ const personSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{i18n.META.META_TITLE}</title>
-    <meta name="description" content={i18n.META.META_DESCRIPTION} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
     <!-- Open Graph Meta Tags (para Facebook, LinkedIn, y otras redes) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:title" content={i18n.META.META_TITLE} />
-    <meta property="og:description" content={i18n.META.META_DESCRIPTION} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:alt" content={i18n.META.META_IMAGE_ALT} />
     <meta property="og:site_name" content={i18n.META.META_TITLE} />
@@ -47,13 +59,13 @@ const personSchema = {
     <meta property="twitter:card" content="summary_large_image">
      <meta property="twitter:image" content={ogImageUrl} />
     <meta property="twitter:url" content={canonicalUrl} />
-    <meta property="twitter:title" content={i18n.META.META_TITLE} />
-    <meta property="twitter:description" content={i18n.META.META_DESCRIPTION} />
+    <meta property="twitter:title" content={pageTitle} />
+    <meta property="twitter:description" content={pageDescription} />
     <meta property="twitter:image:alt" content={i18n.META.META_IMAGE_ALT} />
 
     <!-- Metadatos adicionales -->
-    <meta name="theme-color" content="#f7f4ed" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f0c1a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8f7f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0d13" media="(prefers-color-scheme: dark)" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="muke78" />
     <meta name="copyright" content={`Copyright © ${currentYear}`} />

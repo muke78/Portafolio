@@ -1,6 +1,7 @@
-﻿import { Building, ChartArea, HardDrive, Layout, Loader2 } from "lucide-react";
+﻿import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { SkeletonTabsRow } from "@/features/aboutMe/Items/SkeletonAbout";
 import {
 	Backend,
 	Companies,
@@ -105,11 +106,14 @@ export const TabsProyectos = ({
 
 	if (!mounted) {
 		return (
-			<Loader2
-				className="animate-spin text-primary"
-				size={40}
-				aria-label={i18n.COMMON.LOADING}
-			/>
+			<div className="flex flex-col gap-6">
+				<SkeletonTabsRow count={4} label={i18n.COMMON.LOADING} />
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+					{[0, 1, 2].map((i) => (
+						<SkeletonProjectsCard key={i} />
+					))}
+				</div>
+			</div>
 		);
 	}
 

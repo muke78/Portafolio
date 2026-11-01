@@ -1,5 +1,5 @@
-import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { SkeletonEducation } from "@/features/aboutMe/Items/SkeletonAbout";
 import { getI18N } from "@/i18n";
 import type { Education, PropsLang } from "@/types/currentLang.interface";
 
@@ -30,14 +30,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 		fetchData();
 	}, [currentLocale]);
 
-	if (loading)
-		return (
-			<Loader2
-				className="animate-spin text-primary"
-				size={40}
-				aria-label={i18n.COMMON.LOADING}
-			/>
-		);
+	if (loading) return <SkeletonEducation label={i18n.COMMON.LOADING} />;
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -52,7 +45,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 				}) => (
 					<div
 						key={education_id}
-						className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden shadow-md hover:bg-gradient-to-tr from-secondary/30 via-secondary/5 to-transparent hover:shadow-xl hover:brightness-105 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500 ease-in-out anim-zoom-in"
+						className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift anim-zoom-in"
 					>
 						<img
 							className="rounded-t-lg w-full h-auto"

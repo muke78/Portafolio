@@ -169,7 +169,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 				</ul>
 			</div>
 
-			<div className="rounded-xl bg-muted p-5 lg:p-10 md:p-9 sm:p-8">
+			<div className="rounded-xl border border-border bg-card p-5 lg:p-10 md:p-9 sm:p-8">
 				<form onSubmit={handleSubmit(onSubmit)} method="POST">
 					<div className="grid grid-cols-1 gap-4">
 						<div className="space-y-2">
@@ -250,7 +250,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 						</div>
 						<button
 							type="submit"
-							className="inline-flex items-center justify-center gap-2 rounded-full h-11 w-full max-w-full mt-2 bg-primary text-primary-foreground font-medium hover:opacity-85 active:scale-[0.98] transition-all duration-200"
+							className="inline-flex items-center justify-center gap-2 rounded-full h-11 w-full max-w-full mt-2 bg-primary text-primary-foreground font-medium hover-press active:translate-y-px"
 						>
 							<Send className="w-5 h-5" />
 							{i18n.FORM.BUTTON_LABEL}
