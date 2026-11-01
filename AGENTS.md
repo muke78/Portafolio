@@ -101,8 +101,8 @@ reglas que no se negocian:
 5. **Tipografía del sistema.** Instrument Serif para titulares
    (`font-serif-display`), Geist para texto, Geist Mono para etiquetas
    (`eyebrow`, 13 px en frase normal, sin mayúsculas diminutas). Los
-   tamaños salen de los tokens `text-display`, `text-title`, `text-subtitle`
-   y `text-heading`; no uses `text-[clamp(...)]` ni `text-[Npx]`. Cuerpo
+   tamaños salen de los tokens `text-hero` (solo el nombre del hero),
+   `text-display`, `text-title`, `text-subtitle` y `text-heading`; no uses `text-[clamp(...)]` ni `text-[Npx]`. Cuerpo
    de 17 px, aire generoso, un solo punto focal por sección. No
    introduzcas otras fuentes ni `font-bold` en el serif.
 6. **Animación de scroll con GSAP + ScrollTrigger.** Fade-up, stagger y

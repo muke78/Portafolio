@@ -19,12 +19,11 @@ try {
 }
 ---
 
-<div class="mx-auto max-w-[1240px] px-6 w-full py-20 md:py-28">
-	<div class="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-8 md:gap-12 items-baseline pb-8 mb-12 border-b border-border">
-		<span class="font-mono text-xs text-muted-foreground tracking-wide">[ 05 ]</span>
-		<h2 class="font-serif-display text-title">
-			{i18n.PROJECTS.PROJECTS_TITLE}
-		</h2>
-	</div>
-	<TabsProyectos client:visible currentLocale={currentLocale} initialData={initialData} />
+<div class="mx-auto max-w-[1240px] px-6 w-full py-24 md:py-32">
+	<TabsProyectos
+		client:visible
+		currentLocale={currentLocale}
+		initialData={initialData}
+		title={i18n.PROJECTS.PROJECTS_TITLE}
+	/>
 </div>

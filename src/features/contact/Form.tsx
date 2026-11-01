@@ -64,8 +64,11 @@ export const Form = ({ currentLocale }: PropsLang) => {
 	};
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-			<div className="space-y-1 text-foreground">
+		<div
+			className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16"
+			data-reveal-group
+		>
+			<div className="space-y-1 text-foreground lg:col-span-5" data-reveal>
 				<small className="eyebrow">
 					{i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
 				</small>
@@ -169,7 +172,10 @@ export const Form = ({ currentLocale }: PropsLang) => {
 				</ul>
 			</div>
 
-			<div className="rounded-xl border border-border bg-card p-5 lg:p-10 md:p-9 sm:p-8">
+			<div
+				className="rounded-xl border border-border bg-card p-5 sm:p-8 lg:col-span-7 lg:p-10"
+				data-reveal
+			>
 				<form onSubmit={handleSubmit(onSubmit)} method="POST">
 					<div className="grid grid-cols-1 gap-4">
 						<div className="space-y-2">

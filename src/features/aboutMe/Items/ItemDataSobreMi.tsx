@@ -33,7 +33,10 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 	const { image, title_card, subtitle, description } = data;
 
 	return (
-		<div className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift anim-zoom-in">
+		<div
+			data-reveal
+			className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift anim-zoom-in"
+		>
 			<img
 				className="rounded-t-lg"
 				src={image}

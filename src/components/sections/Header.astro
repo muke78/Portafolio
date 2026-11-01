@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import {
+	ArrowDown,
 	Mail,
 	MessageCircle,
 	MoveRight,
@@ -15,78 +16,124 @@ import { cn } from "@/lib/utils";
 const { currentLocale } = Astro;
 const i18n = getI18N({ currentLocale });
 
-// "Erick González" -> italicize the last word (matches the source
-// design's name treatment) without hardcoding the split for every
-// locale — the name itself doesn't translate.
 // Hero CTAs reuse the shadcn Button styles (buttonVariants) on a real <a>:
 // .astro files can't pass the JSX element Base UI's `render` prop needs.
 // Pill radius is the hero's design; min-h-11 = 44px touch target (WCAG 2.5.5).
 const heroCta = "h-auto min-h-11 gap-2 rounded-full px-5 py-3";
 
+// "Erick González" -> two stacked lines; the surname is set in italic
+// violet and shifted right so the name reads as one staggered block.
 const nameParts = i18n.HEADER.HEADER_NAME.split(" ");
 const firstName = nameParts.slice(0, -1).join(" ") || nameParts[0];
 const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
+
+const social =
+	"inline-flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover-press hover:bg-primary/10 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 ---
 
-<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-10 lg:gap-12 items-start pt-8 pb-14">
-	<div class="relative">
-		<!--
-			Text-protection scrim: the galaxy/cosmos canvas sits fixed behind
-			the whole page, and its bright core can drift under this column.
-			This gradient (opaque background color fading to transparent)
-			guarantees the headline/description stay readable no matter where
-			the animation currently is, without hiding the visual outright.
-		-->
-		<div
-			aria-hidden="true"
-			class="pointer-events-none absolute -inset-x-16 -inset-y-20 -z-10 bg-[radial-gradient(ellipse_70%_65%_at_30%_50%,color-mix(in_oklch,var(--background),transparent_8%)_30%,color-mix(in_oklch,var(--background),transparent_55%)_58%,transparent_80%)]"
-		></div>
-		<div class="flex flex-wrap items-center gap-5 mb-6">
-			<span class="eyebrow">— {i18n.HEADER.HEADER_SUBTITLE}</span>
+<!--
+	HERO. One focal point: the name, set at poster scale. The portrait sits in
+	an arch inside two quiet orbit rings (a nod to the galaxy behind it), and
+	the galaxy canvas is a background layer pushed to the right/below it, so
+	nothing competes with the headline. GSAP hooks (data-reveal /
+	data-parallax) are in place for feat/home-motion; nothing is animated
+	with JS yet.
+-->
+<div
+	class="flex min-h-[calc(100svh-72px)] flex-col justify-between pb-8 pt-10 md:pt-14"
+	data-reveal-group
+>
+	<div class="grid flex-1 grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-8">
+		<div class="relative lg:col-span-7">
+			<!--
+				Text-protection scrim: a feathered radial of the page colour so the
+				name and lead stay readable wherever the galaxy drifts.
+			-->
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute -inset-x-16 -inset-y-24 -z-10 bg-[radial-gradient(ellipse_70%_65%_at_30%_50%,color-mix(in_oklch,var(--background),transparent_8%)_30%,color-mix(in_oklch,var(--background),transparent_55%)_58%,transparent_80%)]"
+			></div>
+
+			<p class="eyebrow mb-8" data-reveal>{i18n.HEADER.HEADER_SUBTITLE}</p>
+
+			<h1 class="font-serif-display text-hero anim-fade-in" data-reveal>
+				<span class="block">{firstName}</span>
+				{lastName && <span class="block italic text-primary lg:pl-[0.4em]">{lastName}</span>}
+			</h1>
+
+			<p class="khelde-lead mt-10 max-w-[46ch] text-muted-foreground" data-reveal>
+				{i18n.HEADER.HEADER_ABOUT}
+			</p>
+
+			<div class="mt-10 flex flex-wrap items-center gap-3" data-reveal>
+				<a
+					href={`/${currentLocale}/home#projects`}
+					class={cn(buttonVariants({ variant: "default" }), heroCta)}
+				>
+					{i18n.HEADER.HEADER_BUTTON}
+					<MoveRight
+						size={16}
+						className="transition-transform duration-300 motion-safe:group-hover/button:translate-x-1"
+					/>
+				</a>
+				<a
+					href={`/${currentLocale}/home#contact`}
+					class={cn(buttonVariants({ variant: "outline" }), heroCta)}
+				>
+					{i18n.HEADER.HEADER_TALK}
+				</a>
+				<a
+					href="https://q8mthsih9ooiwevt.public.blob.vercel-storage.com/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
+					target="_blank"
+					rel="noopener noreferrer"
+					class={cn(buttonVariants({ variant: "ghost" }), heroCta)}
+					aria-label={i18n.HEADER.HEADER_CV_ARIA_LABEL}
+				>
+					{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
+					<SquareArrowOutUpRight size={15} />
+				</a>
+			</div>
 		</div>
 
-		<h1 class="font-serif-display text-display anim-fade-in">
-			{firstName}
-			{lastName && <><br /><span class="italic text-primary">{lastName}</span></>}
-		</h1>
+		<div class="relative lg:col-span-5">
+			<div
+				class="relative mx-auto w-full max-w-[320px] anim-zoom-in sm:max-w-90 lg:ml-auto lg:mr-0 lg:max-w-100"
+				data-reveal
+			>
+				<!-- Orbit rings: decorative, quiet, tied to the galaxy behind. -->
+				<svg
+					aria-hidden="true"
+					viewBox="0 0 400 400"
+					fill="none"
+					class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[118%] w-[118%] -translate-x-1/2 -translate-y-1/2 text-primary/40 lg:h-[138%] lg:w-[138%]"
+					data-parallax="6"
+				>
+					<ellipse cx="200" cy="200" rx="190" ry="150" stroke="currentColor" stroke-width="1" transform="rotate(-18 200 200)" />
+					<ellipse cx="200" cy="200" rx="150" ry="112" stroke="currentColor" stroke-width="1" stroke-dasharray="2 7" transform="rotate(-18 200 200)" />
+					<circle cx="381" cy="141" r="5" class="fill-primary" />
+				</svg>
 
-		<p class="khelde-lead mt-6 text-muted-foreground">
-			{i18n.HEADER.HEADER_ABOUT}
-		</p>
-
-		<div class="flex flex-wrap items-center gap-3 mt-8">
-			<a
-				href={`/${currentLocale}/home#projects`}
-				class={cn(buttonVariants({ variant: "default" }), heroCta)}
-			>
-				{i18n.HEADER.HEADER_BUTTON}
-				<MoveRight size={16} />
-			</a>
-			<a
-				href={`/${currentLocale}/home#contact`}
-				class={cn(buttonVariants({ variant: "outline" }), heroCta)}
-			>
-				{i18n.HEADER.HEADER_TALK}
-			</a>
-			<a
-				href="https://q8mthsih9ooiwevt.public.blob.vercel-storage.com/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
-				target="_blank"
-				rel="noopener noreferrer"
-				class={cn(buttonVariants({ variant: "outline" }), heroCta)}
-				aria-label={i18n.HEADER.HEADER_CV_ARIA_LABEL}
-			>
-				{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
-				<SquareArrowOutUpRight size={15} />
-			</a>
+				<div class="aspect-3/4 overflow-hidden rounded-t-[999px] rounded-b-3xl border border-border bg-muted shadow-(--glow)">
+					<Image
+						src={heroPortrait}
+						alt="muke78"
+						draggable="false"
+						loading="eager"
+						class="h-full w-full object-cover"
+					/>
+				</div>
+			</div>
 		</div>
+	</div>
 
-		<div class="flex items-center gap-5 mt-9">
+	<div class="mt-14 flex items-center justify-between gap-6 border-t border-border pt-5" data-reveal>
+		<div class="flex items-center gap-1">
 			<a
 				href="https://github.com/muke78"
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_GITHUB_ARIA_LABEL}
-				class="inline-flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover-press hover:bg-primary/10 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+				class={social}
 			>
 				<GithubIcon size={22} aria-hidden="true" />
 			</a>
@@ -95,7 +142,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_LINKEDIN_ARIA_LABEL}
-				class="inline-flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover-press hover:bg-primary/10 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+				class={social}
 			>
 				<LinkedinIcon size={22} aria-hidden="true" />
 			</a>
@@ -104,7 +151,7 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_WHATSAPP_ARIA_LABEL}
-				class="inline-flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover-press hover:bg-primary/10 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+				class={social}
 			>
 				<MessageCircle size={22} />
 			</a>
@@ -113,21 +160,21 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_EMAIL_ARIA_LABEL}
-				class="inline-flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover-press hover:bg-primary/10 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+				class={social}
 			>
 				<Mail size={22} />
 			</a>
 		</div>
-	</div>
 
-	<div class="relative mx-auto w-full max-w-[320px] lg:max-w-none anim-zoom-in">
-		<div class="aspect-[4/5] overflow-hidden rounded-sm border border-border bg-muted">
-			<Image
-				src={heroPortrait}
-				alt="muke78"
-				draggable="false"
-				class="h-full w-full object-cover"
-			/>
-		</div>
+		<a
+			href="#about"
+			class="group/scroll hidden min-h-11 items-center gap-3 rounded-full px-2 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:inline-flex"
+		>
+			{i18n.HEADER.HEADER_SCROLL}
+			<span aria-hidden="true" class="relative block h-10 w-px overflow-hidden bg-border">
+				<span class="absolute inset-x-0 top-0 h-4 bg-primary motion-safe:animate-[scroll-cue_2.2s_ease-in-out_infinite]"></span>
+			</span>
+			<ArrowDown size={16} aria-hidden="true" />
+		</a>
 	</div>
 </div>

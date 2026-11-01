@@ -18,7 +18,7 @@ export const ItemDataProjects = ({
 	}, []);
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+		<div className="grid grid-cols-1 gap-4 md:grid-cols-2" data-reveal-group>
 			{data?.map(
 				({
 					project_id,
@@ -31,6 +31,7 @@ export const ItemDataProjects = ({
 				}) => (
 					<article
 						key={project_id}
+						data-reveal
 						className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift"
 					>
 						<figure className="relative h-[200px] overflow-hidden bg-muted">

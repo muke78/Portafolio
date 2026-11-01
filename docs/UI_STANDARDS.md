@@ -32,6 +32,7 @@ mínimo obligatorio (AAA donde no cueste identidad), más las guías de
 9. [Checklist de PR de UI](#9-checklist-de-pr-de-ui)
 10. [Deuda conocida y decisiones pendientes](#10-deuda-conocida-y-decisiones-pendientes)
 11. [Vista de detalle de proyecto](#11-vista-de-detalle-de-proyecto)
+12. [Layout del Home](#12-layout-del-home)
 
 ---
 
@@ -212,7 +213,8 @@ interlineado y tracking. No se usan `text-[clamp(...)]` ni `text-[Npx]`.
 
 | Nivel | Clase | Tamaño | Interlineado | Tracking | Familia |
 |---|---|---|---|---|---|
-| Display (hero) | `text-display` | `clamp(3.5rem, 9vw, 8rem)` (56–128 px) | 0.95 | −0.03em | Serif |
+| **Hero (nombre)** | `text-hero` | `clamp(4.25rem, 13.5vw, 12.5rem)` (68–200 px) | 0.86 | −0.04em | Serif |
+| Display (títulos de detalle) | `text-display` | `clamp(3.5rem, 9vw, 8rem)` (56–128 px) | 0.95 | −0.03em | Serif |
 | H2 sección | `text-title` | `clamp(2.25rem, 5vw, 4rem)` (36–64 px) | 1.02 | −0.025em | Serif |
 | H3 subsección | `text-subtitle` | `clamp(1.875rem, 3.6vw, 2.75rem)` (30–44 px) | 1.08 | −0.02em | Serif |
 | H4 destacado | `text-heading` | `clamp(1.375rem, 2.4vw, 1.875rem)` (22–30 px) | 1.15 | −0.01em | Serif |
@@ -704,8 +706,8 @@ Antes de abrir un PR que toque UI:
 | 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Pendiente: test e2e con `reducedMotion: 'reduce'` |
 | 11 | Títulos de `aboutMe` eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`) |
 | 12 | Jerarquía de encabezados plana | `ItemDataExperiencia.tsx`, `ItemDataProjects.tsx` | ✅ Resuelto (`<h3>`) |
-| 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `GalaxyBackground.tsx` | ⏳ Pendiente. Ya recolorea por tema desde tokens |
-| 14 | `text-wrap: balance` sin aplicar en titulares del Home | secciones | ⏳ Pendiente (solo el detalle de proyecto lo usa) |
+| 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `GalaxyBackground.tsx`, `app.css` | ✅ Resuelto: capa de fondo (`z-index: -1`), máscara radial difuminada y reposicionada tras el retrato (12.2) |
+| 14 | `text-wrap: balance` sin aplicar en titulares del Home | secciones | ✅ Resuelto en hero y Opiniones; el resto usa `text-title` sin balance a propósito (títulos cortos) |
 | 15 | Base teñida de berenjena y superficie `muted` casi negra | `app.css`, `Form.tsx` | ✅ Resuelto: base neutra onyx/silk, violeta solo en `--primary`; superficies escalonadas (2.3) |
 | 16 | Hovers básicos y hovers internos en cards | cards, botones, iconos | ✅ Resuelto: `hover-lift` / `hover-press` / `hover-nudge` (5.5) |
 | 17 | Spinners `Loader2` / `animate-spin` | tabs, items de Acerca, formulario de opiniones | ✅ Resuelto: skeletons con la forma final (5.6) |
@@ -746,3 +748,83 @@ Composición (un solo punto focal: la imagen):
 Limitaciones actuales: el modelo de datos de Hono solo trae una imagen por
 proyecto (`card_image`); no hay video, galería ni descripción larga. El
 bloque de media está listo para admitirlos cuando el backend los exponga.
+
+## 12. Layout del Home
+
+### 12.1 Ritmo y rejilla
+
+- **Espaciado vertical entre secciones: `py-24 md:py-32`** (96 / 128 px).
+  El hero ocupa **un viewport completo** (`min-h-[calc(100svh-72px)]`). El
+  aire entre secciones es deliberado: no se compensa con relleno.
+- Contenedor único `mx-auto max-w-[1240px] px-6`. Rejilla de **12
+  columnas** con `gap-16` en escritorio (`lg:`) y una columna en móvil.
+- **Asimétrica 4 / 8** en Acerca y Proyectos: a la izquierda (4 col) la
+  introducción y el selector; a la derecha (8 col) el contenido, que es
+  el punto focal. La columna izquierda es `sticky` (`lg:top-28`).
+- **5 / 7** en Contacto (texto y enlaces / formulario) y **8 / 4** en el
+  encabezado de Opiniones (título / llamada a la acción). Nada centrado
+  "por defecto".
+- Las cards de proyecto pasan a **2 columnas** dentro del área de 8 col; las
+  de experiencia a 2 columnas solo desde `xl:`.
+
+### 12.2 Hero y galaxia
+
+**Concepto: un póster tipográfico.** El nombre es el único punto focal de la
+página y se compone a escala de cartel; todo lo demás es silencio.
+
+- **Nombre** (`text-hero`, hasta 200 px, interlineado 0.86): "Erick" en
+  serif romana y "González" en cursiva violeta, **desplazado a la derecha**
+  (`lg:pl-[0.4em]`) para que las dos líneas formen un bloque escalonado, no
+  una pila centrada. Debajo, un lead de ≤ 46 caracteres por línea y **tres
+  acciones con jerarquía clara** (Hick): primaria (`default`), secundaria
+  (`outline`) y terciaria (`ghost`, "Ver CV").
+- **Retrato en arco** (`rounded-t-[999px]`, 3:4) con glow `--glow`,
+  dentro de **dos anillos de órbita** (SVG, trazo `--primary` al 40 %, uno
+  punteado y un punto-planeta) que lo conectan con la galaxia. Es la única
+  decoración y es silenciosa.
+- **Barra inferior**: redes a la izquierda (44 px) y una señal de
+  desplazamiento a la derecha (una línea con un segmento violeta que
+  baja; solo se anima sin `prefers-reduced-motion`).
+- **La galaxia es profundidad, no competencia.** Su canvas (`#galaxy-3d`)
+  es una **capa de fondo (`z-index: -1`)**, por debajo del contenido y del
+  cosmos. Emerge de la **esquina inferior derecha, detrás del retrato**
+  (reposo: desplazada `41vw / 20vh`, escala 1.25): se ve el núcleo y los
+  brazos asomando por el borde del arco, nunca bajo el texto.
+- **Fusión orgánica**: `mask-image` radial (opaco al centro, transparente
+  hacia el borde) disuelve el canvas en el color base; nunca se ve un
+  rectángulo. Bajo el texto hay además un degradado radial del color de
+  fondo (scrim) que garantiza el contraste.
+- En móvil la galaxia es más pequeña (0.72), más abajo y atenuada al 55 %;
+  el retrato queda debajo del texto. Al hacer scroll la galaxia viaja a la
+  esquina, y al llegar al wordmark del footer sube como un atardecer.
+- Colores de la galaxia: tokens `--galaxy-*` (2.3); se recolorea al cambiar
+  de tema.
+
+### 12.3 Ley de Hick en Habilidades
+
+Cada categoría muestra solo sus **8 primeras tecnologías**; el resto se
+revela con un botón limpio ("Ver todas (+3)" / "Ver menos",
+`aria-expanded`). El número total de la categoría sigue visible.
+
+### 12.4 Contrato de movimiento (preparado para GSAP, aún inactivo)
+
+El HTML ya lleva los ganchos que `src/lib/motion.ts` usará en
+`feat/home-motion`. **Ningún efecto complejo está activo todavía** (solo las
+animaciones CSS heredadas `anim-*`).
+
+| Atributo | Dónde | Significado |
+|---|---|---|
+| `data-reveal-group` | Contenedor de una sección o lista (hero, Acerca, Proyectos, Opiniones, Contacto, listas de cards) | Disparador de `ScrollTrigger`; sus hijos `data-reveal` entran en cascada (`revealOnScroll("[data-reveal-group]")`) |
+| `data-reveal` | Cada bloque o card que debe entrar | Elemento animado (fade-up + stagger, solo `transform`/`opacity`) |
+| `data-parallax="N"` | Elemento decorativo (anillos de órbita del hero) | Parallax sutil de ±N % (`parallaxOnScroll`); nunca texto |
+
+Reglas: el contenido es visible sin JS (GSAP pone el estado inicial); no se
+anima el contenido de los tabs al cambiar de pestaña salvo con una
+transición de respuesta a la acción; `prefers-reduced-motion` lo gestiona
+`withMotion()`.
+
+**Secuencia de entrada del hero (para `feat/home-motion`)**, una sola
+coreografía de ≤ 1.2 s: etiqueta → nombre línea a línea (máscara que sube) →
+lead → botones → retrato en arco (revela de abajo arriba) → anillos de
+órbita (dibujados con `stroke-dashoffset`) → barra inferior. Sustituye a las
+animaciones CSS heredadas `anim-fade-in` / `anim-zoom-in` del hero.

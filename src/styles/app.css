@@ -67,6 +67,10 @@
  * Sizes are fluid (rem + vw) so they scale with browser zoom (WCAG 1.4.4).
  */
 @theme {
+	/* Hero name: poster scale. The one place the page shouts. */
+	--text-hero: clamp(4.25rem, 13.5vw, 12.5rem);
+	--text-hero--line-height: 0.86;
+	--text-hero--letter-spacing: -0.04em;
 	--text-display: clamp(3.5rem, 9vw, 8rem);
 	--text-display--line-height: 0.95;
 	--text-display--letter-spacing: -0.03em;
@@ -494,15 +498,26 @@
 	inset: 0;
 	width: 100vw;
 	height: 100vh;
-	z-index: 1;
+	/* Absolute background layer: below the page content AND the cosmos
+	   stars, so the headline always wins the contrast fight. */
+	z-index: -1;
 	pointer-events: none;
 	transform-origin: 50% 50%;
+	/* Feathered edges: the canvas dissolves into the page colour instead of
+	   reading as a pasted rectangle. The mask travels with the element
+	   (it is applied before the JS transform). */
 	-webkit-mask-image: radial-gradient(
-		ellipse at center,
-		#000 32%,
-		transparent 78%
+		ellipse 52% 50% at 50% 50%,
+		black 0%,
+		black 22%,
+		transparent 74%
 	);
-	mask-image: radial-gradient(ellipse at center, #000 32%, transparent 78%);
+	mask-image: radial-gradient(
+		ellipse 52% 50% at 50% 50%,
+		black 0%,
+		black 22%,
+		transparent 74%
+	);
 	will-change: transform, opacity;
 }
 #galaxy-3d canvas {

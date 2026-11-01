@@ -30,7 +30,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 	if (loading) return <SkeletonExperience label={i18n.COMMON.LOADING} />;
 
 	return (
-		<div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
+		<div className="grid grid-cols-1 gap-4 xl:grid-cols-2" data-reveal-group>
 			{data.map(
 				({
 					experience_id,
@@ -44,6 +44,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 				}) => (
 					<div
 						key={experience_id}
+						data-reveal
 						className="rounded-2xl border border-border bg-card hover-lift p-8"
 					>
 						<div className="flex items-center gap-4 mb-4">

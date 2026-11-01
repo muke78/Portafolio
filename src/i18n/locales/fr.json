@@ -27,6 +27,7 @@
 		"HEADER_GITHUB_ARIA_LABEL": "En savoir plus sur mes dépôts et ce que j'ai créé",
 		"HEADER_LINKEDIN_ARIA_LABEL": "En savoir plus sur mon expérience",
 		"HEADER_WHATSAPP_ARIA_LABEL": "Numéro de téléphone",
+		"HEADER_SCROLL": "Défiler",
 		"HEADER_EMAIL_ARIA_LABEL": "Adresse e-mail"
 	},
 	"ABOUTME": {
@@ -36,6 +37,8 @@
 		"EXPERIENCE": "Expérience"
 	},
 	"SKILLS": {
+		"SKILLS_MORE": "Tout voir",
+		"SKILLS_LESS": "Voir moins",
 		"SKILLS_TITLE": "Compétences"
 	},
 	"EDUCATION": {

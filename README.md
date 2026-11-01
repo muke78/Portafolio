@@ -115,6 +115,7 @@ El sistema de diseño completo (paleta con contrastes medidos, tipografía, espa
 - **Paleta**: "Onyx & Violet" — base neutra (oscuro onyx/charcoal, claro silk con texto carbón; nunca `#000`/`#fff`) y un único acento violeta en `--primary`. Los contrastes están medidos y protegidos por `tests/unit/designTokens.test.ts`.
 - **Tipografía**: Instrument Serif (titulares), Geist (texto), Geist Mono (etiquetas), autoalojadas con `@fontsource`; tamaños como tokens (`text-display`, `text-title`, `text-subtitle`, `text-heading`).
 - **Interacción**: hovers táctiles (`hover-lift`, `hover-press`, `hover-nudge`) y estados de carga con `<Skeleton />`, nunca spinners.
+- **Layout del Home**: hero tipográfico a escala de póster (nombre a hasta 200 px, retrato en arco con anillos de órbita, galaxia 3D como capa de fondo difuminada), secciones asimétricas 4/8 con mucho espacio negativo y Ley de Hick en habilidades. Los ganchos `data-reveal` / `data-reveal-group` / `data-parallax` dejan el HTML listo para las animaciones GSAP (`src/lib/motion.ts`); detalle en la sección 12 de `docs/UI_STANDARDS.md`.
 - **Detalle de proyecto**: cada card del Home abre `/[lang]/project/[slug]`, una vista propia y compartible (SSR, con su `<title>` y `og:image`).
 
 **Accesibilidad**: el objetivo es WCAG 2.1 AA, con el checklist y las deudas conocidas (por ejemplo, el contraste del borde de los campos) documentados en `docs/UI_STANDARDS.md`.

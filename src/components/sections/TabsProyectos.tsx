@@ -1,6 +1,6 @@
 ﻿import { Building, ChartArea, HardDrive, Layout } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { SectionTabs } from "@/components/sections/SectionTabs";
 import { SkeletonTabsRow } from "@/features/aboutMe/Items/SkeletonAbout";
 import {
 	Backend,
@@ -18,7 +18,8 @@ import type {
 export const TabsProyectos = ({
 	currentLocale,
 	initialData = [],
-}: PropsLangWithProjects) => {
+	title,
+}: PropsLangWithProjects & { title: string }) => {
 	const [activeTab, setActiveTab] = useState<string>("frontend");
 	const [mounted, setMounted] = useState<boolean>(false);
 	const [data, setData] = useState<Projects[]>(initialData);
@@ -28,10 +29,6 @@ export const TabsProyectos = ({
 	);
 
 	const i18n = getI18N({ currentLocale });
-
-	const getShortText = (text: string, length: number) => {
-		return text.slice(0, length);
-	};
 
 	// Determinamos cuántos skeletons mostrar basado en la data
 	const getSkeletonCount = () => {
@@ -108,8 +105,8 @@ export const TabsProyectos = ({
 		return (
 			<div className="flex flex-col gap-6">
 				<SkeletonTabsRow count={4} label={i18n.COMMON.LOADING} />
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-					{[0, 1, 2].map((i) => (
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+					{[0, 1, 2, 3].map((i) => (
 						<SkeletonProjectsCard key={i} />
 					))}
 				</div>
@@ -117,90 +114,53 @@ export const TabsProyectos = ({
 		);
 	}
 
+	const tabs = [
+		{
+			id: "frontend",
+			label: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F,
+			icon: <Layout size={18} />,
+		},
+		{
+			id: "backend",
+			label: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B,
+			icon: <HardDrive size={18} />,
+		},
+		{
+			id: "companies",
+			label: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C,
+			icon: <Building size={18} />,
+		},
+		{
+			id: "dataAnalyst",
+			label: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D,
+			icon: <ChartArea size={18} />,
+		},
+	];
+
 	return (
-		<div className="flex flex-col lg:flex-col lg:w-full">
-			{/* Contenedor de los botones con un ancho fijo */}
-			<div className="flex justify-center items-center lg:justify-start lg:items-start md:justify-start md:items-start gap-4">
-				<Button
-					type="button"
-					variant={activeTab === "frontend" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("frontend")}
-				>
-					<span className="sm:inline md:inline lg:inline">
-						<Layout />
-					</span>
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F, 5)}
-					</span>
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F}
-					</span>
-				</Button>
-
-				<Button
-					type="button"
-					variant={activeTab === "backend" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("backend")}
-				>
-					<span className="sm:inline md:inline lg:inline">
-						<HardDrive />
-					</span>
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B, 5)}
-					</span>
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B}
-					</span>
-				</Button>
-
-				<Button
-					type="button"
-					variant={activeTab === "companies" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("companies")}
-				>
-					<span className="sm:inline md:inline lg:inline">
-						<Building />
-					</span>
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C, 5)}
-					</span>
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C}
-					</span>
-				</Button>
-
-				<Button
-					type="button"
-					variant={activeTab === "dataAnalyst" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("dataAnalyst")}
-				>
-					<span className="sm:inline md:inline lg:inline">
-						<ChartArea />
-					</span>
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D, 5)}
-					</span>
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D}
-					</span>
-				</Button>
+		<div
+			className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16"
+			data-reveal-group
+		>
+			{/* Left (4 cols): title + category list. Sticky on desktop. */}
+			<div className="lg:col-span-4">
+				<div className="flex flex-col gap-8 lg:sticky lg:top-28">
+					<h2 className="font-serif-display text-title" data-reveal>
+						{title}
+					</h2>
+					<SectionTabs
+						items={tabs}
+						active={activeTab}
+						onChange={setActiveTab}
+						label={title}
+					/>
+				</div>
 			</div>
-			{/* Contenedor del contenido del tab con un ancho flexible */}
-			<div className="flex-1 w-full mt-10">
+
+			{/* Right (8 cols): the cards. */}
+			<div className="min-w-0 lg:col-span-8">
 				{loading ? (
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 lg:gap-6 p-2 xs:p-4 sm:p-6">
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						{skeletonItems.map((_, i) => (
 							// biome-ignore lint/suspicious/noArrayIndexKey: placeholder-only list, fixed length, never reordered
 							<SkeletonProjectsCard key={i} />

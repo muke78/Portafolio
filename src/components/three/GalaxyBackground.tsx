@@ -472,12 +472,16 @@ function mountGalaxy(wrap: HTMLDivElement) {
 	findWordmark();
 	const findTimer = wordmark ? null : window.setTimeout(findWordmark, 800);
 
-	// Rest position is nudged right/down from dead-center so the bright
-	// core sits nearer the portrait column (desktop) instead of square
-	// behind the headline/description - the text scrim in Header.astro
-	// covers the rest. Scroll still carries it on to the corner as before.
-	const restTxVw = 16;
-	const restTyVh = 3;
+	// Composition: the headline is the king of the hero, so the galaxy rests
+	// BEHIND the portrait column (right) and smaller, as depth - not as a
+	// competitor to the text. On phones the portrait sits below the text, so
+	// the galaxy drops lower and is dimmed. The canvas feathers out through
+	// the radial mask in app.css (#galaxy-3d), and the text scrim in
+	// Header.astro does the rest. Scroll still carries it on to the corner.
+	const restTxVw = isMobile ? 14 : 41;
+	const restTyVh = isMobile ? 30 : 20;
+	const restScale = isMobile ? 0.72 : 1.25;
+	const maxOpacity = isMobile ? 0.55 : 1;
 	const cornerTxVw = 36;
 	const cornerTyVh = 38;
 	const cornerScale = 0.22;
@@ -496,7 +500,7 @@ function mountGalaxy(wrap: HTMLDivElement) {
 		const phaseA = clamp(scrollY / (vh * 0.9), 0, 1);
 		const aTxVw = lerp(restTxVw, cornerTxVw, phaseA);
 		const aTyVh = lerp(restTyVh, cornerTyVh, phaseA);
-		const aScale = 1 - phaseA * (1 - cornerScale);
+		const aScale = lerp(restScale, cornerScale, phaseA);
 
 		let phaseB = 0;
 		let sunsetTyVh = 0;
@@ -514,7 +518,7 @@ function mountGalaxy(wrap: HTMLDivElement) {
 		const totalScale = finalScale * entryScale;
 
 		wrap.style.transform = `translate(${finalTxVw}vw, ${finalTyVh}vh) scale(${totalScale})`;
-		wrap.style.opacity = e.toFixed(3);
+		wrap.style.opacity = (e * maxOpacity).toFixed(3);
 
 		const tSec = elapsed / 1000;
 		const entrySpin = (1 - e) * 1.6;

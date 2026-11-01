@@ -33,7 +33,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 	if (loading) return <SkeletonEducation label={i18n.COMMON.LOADING} />;
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4" data-reveal-group>
 			{data.map(
 				({
 					education_id,
@@ -45,6 +45,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 				}) => (
 					<div
 						key={education_id}
+						data-reveal
 						className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift anim-zoom-in"
 					>
 						<img
