@@ -167,6 +167,8 @@ uniform float uBurst;
 uniform float uPixel;
 uniform vec3 uOrigin;
 uniform float uInvScale;
+uniform vec3 uPointer;
+uniform float uPull;
 varying float vMix;
 varying float vFlash;
 varying float vAlpha;
@@ -188,6 +190,13 @@ void main() {
 		cos(uTime * 0.09 + aRand.x * 31.0),
 		sin(uTime * 0.07 + aRand.x * 17.0)
 	) * 0.22 * (1.0 - gather);
+
+	// 1b. the stardust leans toward the pointer: not onto it, just a loose
+	// cloud that gathers around it (strongest for the nearest grains, fading
+	// out as the dust collapses into the galaxy).
+	vec3 toP = uPointer - d;
+	float near = 1.0 - smoothstep(0.0, 3.2, length(toP));
+	d += toP * near * near * 0.5 * uPull * (1.0 - gather);
 
 	// 2. pulled inward along a swirl until it is almost a point
 	float pull = pow(gather, 1.6);
@@ -263,6 +272,8 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 			uPixel: { value: renderer.getPixelRatio() * 2.4 },
 			uOrigin: { value: new Vector3() },
 			uInvScale: { value: 1 },
+			uPointer: { value: new Vector3() },
+			uPull: { value: 0 },
 			uOpacity: { value: 0 },
 			uCore: { value: new Color() },
 			uArm: { value: new Color() },
@@ -295,7 +306,11 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 
 	// Pointer lean (smoothed).
 	const pointer = { x: 0, y: 0, sx: 0, sy: 0 };
+	let hasPointer = false;
 	const onPointer = (e: PointerEvent) => {
+		// Touch has no hover: only mouse and pen attract the dust.
+		if (e.pointerType === "touch") return;
+		hasPointer = true;
 		pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
 		pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
 	};
@@ -346,8 +361,10 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		const base = blast.s + (rest.s - blast.s) * e;
 		group.scale.setScalar(base);
 
-		pointer.sx += (pointer.x - pointer.sx) * 0.04;
-		pointer.sy += (pointer.y - pointer.sy) * 0.04;
+		// Slow easing: the dust trails the pointer instead of snapping to it.
+		pointer.sx += (pointer.x - pointer.sx) * 0.05;
+		pointer.sy += (pointer.y - pointer.sy) * 0.05;
+		u.uPull.value += ((hasPointer ? 1 : 0) - u.uPull.value) * 0.03;
 		group.rotation.x = 0.95 + pointer.sy * 0.12;
 		group.rotation.z = pointer.sx * 0.1;
 
@@ -355,6 +372,15 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		group.updateMatrixWorld(true);
 		group.worldToLocal(u.uOrigin.value.set(0, 0, 0));
 		u.uInvScale.value = 1 / base;
+		// The (smoothed) pointer on the plane through the screen centre, in the
+		// galaxy's own space.
+		group.worldToLocal(
+			u.uPointer.value.set(
+				(pointer.sx * visW) / 2,
+				(-pointer.sy * visH) / 2,
+				0,
+			),
+		);
 
 		renderer.render(scene, camera);
 	};
