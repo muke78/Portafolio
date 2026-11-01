@@ -73,7 +73,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 					{i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
 				</small>
 
-				<h2 className="font-serif-display text-title">
+				<h2 className="font-serif-display text-title" data-split>
 					{i18n.FORM.FORM_TITLE_HEAD_STRONG}{" "}
 					<span className="italic text-muted-foreground">
 						{i18n.FORM.FORM_TITLE_HEAD_STRONG_SECOND}

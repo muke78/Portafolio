@@ -60,8 +60,8 @@ export const Opinions = ({
 				className="mx-auto mb-16 grid max-w-[1240px] grid-cols-1 items-end gap-8 px-6 lg:grid-cols-12 lg:gap-16"
 				data-reveal-group
 			>
-				<div className="lg:col-span-8" data-reveal>
-					<h2 className="font-serif-display text-title text-balance">
+				<div className="lg:col-span-8">
+					<h2 className="font-serif-display text-title text-balance" data-split>
 						{i18n.OPINIONS.OPINIONS_TITLE}
 					</h2>
 					<p className="khelde-lead mt-6 text-muted-foreground">
@@ -95,7 +95,7 @@ export const Opinions = ({
 			<div>
 				{data.length === 0 ? (
 					<div
-						className="flex flex-col items-center justify-center min-h-[400px] px-8 py-12 anim-fade-in"
+						className="flex flex-col items-center justify-center min-h-[400px] px-8 py-12"
 						aria-live="polite"
 					>
 						<div className="relative mb-8">
@@ -125,6 +125,7 @@ export const Opinions = ({
 					</div>
 				) : (
 					<div
+						data-marquee
 						className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
 						style={
 							{
@@ -132,7 +133,10 @@ export const Opinions = ({
 							} as CSSProperties
 						}
 					>
-						<div className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]">
+						<div
+							data-marquee-track
+							className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]"
+						>
 							{[...data, ...data].map((testimonial, i) => (
 								// biome-ignore lint/a11y/useSemanticElements: <fieldset> brings its own default border/padding UA styling that would fight this card's design - role=group keeps the semantics without it
 								<div

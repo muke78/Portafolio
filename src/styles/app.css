@@ -390,6 +390,40 @@
 	background: color-mix(in oklch, var(--primary), transparent 88%);
 }
 
+/* Outline lettering (manifesto tracks): hollow letters, token colour. */
+.text-outline {
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke: 1px
+		color-mix(in oklch, var(--foreground), transparent 60%);
+}
+
+/* ============================================================
+   MOTION ENGINE - INITIAL STATE (src/lib/motion.ts)
+   Hidden ONLY while <html> has .motion-ok: an inline script in <head> adds it
+   when JS runs AND prefers-reduced-motion allows motion, and a 4 s watchdog
+   removes it if the engine never starts. With no JS or reduced motion the
+   class never exists, so the content is simply visible. The engine adds
+   [data-revealed] when an element is done.
+   ============================================================ */
+.motion-ok [data-reveal]:not([data-revealed]),
+.motion-ok [data-hero-label]:not([data-revealed]),
+.motion-ok [data-hero-lead]:not([data-revealed]),
+.motion-ok [data-hero-cta] > *:not([data-revealed]),
+.motion-ok [data-hero-bar]:not([data-revealed]),
+.motion-ok [data-hero-rings]:not([data-revealed]),
+.motion-ok [data-hero-ring-accent]:not([data-revealed]) {
+	opacity: 0;
+}
+.motion-ok [data-split]:not([data-revealed]) {
+	opacity: 0;
+}
+.motion-ok [data-hero-line]:not([data-revealed]) {
+	transform: translateY(115%);
+}
+.motion-ok [data-hero-portrait]:not([data-revealed]) {
+	clip-path: inset(100% 0 0 0);
+}
+
 /* ============================================================
    COSMOS — generative space background (SVG, lightweight, parallax)
    ============================================================ */

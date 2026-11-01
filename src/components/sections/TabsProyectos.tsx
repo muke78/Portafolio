@@ -145,7 +145,7 @@ export const TabsProyectos = ({
 			{/* Left (4 cols): title + category list. Sticky on desktop. */}
 			<div className="lg:col-span-4">
 				<div className="flex flex-col gap-8 lg:sticky lg:top-28">
-					<h2 className="font-serif-display text-title" data-reveal>
+					<h2 className="font-serif-display text-title" data-split>
 						{title}
 					</h2>
 					<SectionTabs

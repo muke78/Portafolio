@@ -11,9 +11,10 @@ import heroPortrait from "@/assets/img/hero-portrait.webp";
 import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
 import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import { cn } from "@/lib/utils";
 
-const { currentLocale } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
 
 // Hero CTAs reuse the shadcn Button styles (buttonVariants) on a real <a>:
@@ -35,13 +36,15 @@ const social =
 	HERO. One focal point: the name, set at poster scale. The portrait sits in
 	an arch inside two quiet orbit rings (a nod to the galaxy behind it), and
 	the galaxy canvas is a background layer pushed to the right/below it, so
-	nothing competes with the headline. GSAP hooks (data-reveal /
-	data-parallax) are in place for feat/home-motion; nothing is animated
-	with JS yet.
+	nothing competes with the headline.
+
+	Motion contract (src/lib/motion.ts -> playHero): [data-hero] is the root;
+	the data-hero-* parts below are animated in one sequence. CSS only hides
+	them while <html> has .motion-ok (JS running AND motion allowed).
 -->
 <div
-	class="flex min-h-[calc(100svh-72px)] flex-col justify-between pb-8 pt-10 md:pt-14"
-	data-reveal-group
+	class="flex min-h-[calc(100svh-72px)] flex-col justify-between pb-8 pt-8 md:pt-10"
+	data-hero
 >
 	<div class="grid flex-1 grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-8">
 		<div class="relative lg:col-span-7">
@@ -52,20 +55,39 @@ const social =
 			<div
 				aria-hidden="true"
 				class="pointer-events-none absolute -inset-x-16 -inset-y-24 -z-10 bg-[radial-gradient(ellipse_70%_65%_at_30%_50%,color-mix(in_oklch,var(--background),transparent_8%)_30%,color-mix(in_oklch,var(--background),transparent_55%)_58%,transparent_80%)]"
-			></div>
+			>
+			</div>
 
-			<p class="eyebrow mb-8" data-reveal>{i18n.HEADER.HEADER_SUBTITLE}</p>
+			<p class="eyebrow mb-6" data-hero-label>{i18n.HEADER.HEADER_SUBTITLE}</p>
 
-			<h1 class="font-serif-display text-hero anim-fade-in" data-reveal>
-				<span class="block">{firstName}</span>
-				{lastName && <span class="block italic text-primary lg:pl-[0.4em]">{lastName}</span>}
+			<h1 class="font-serif-display text-hero">
+				<!--
+					Each line sits in a mask; GSAP lifts the inner span out of it. The
+					padding and negative margin leave room for accents and ascenders
+					without moving the layout.
+				-->
+				<span class="block -mt-[0.16em] overflow-hidden pt-[0.16em] pb-[0.04em]">
+					<span class="block" data-hero-line>{firstName}</span>
+				</span>
+				{
+					lastName && (
+						<span class="block overflow-hidden pb-[0.06em]">
+							<span class="block italic text-primary lg:pl-[0.4em]" data-hero-line>
+								{lastName}
+							</span>
+						</span>
+					)
+				}
 			</h1>
 
-			<p class="khelde-lead mt-10 max-w-[46ch] text-muted-foreground" data-reveal>
+			<p
+				class="khelde-lead mt-8 max-w-[46ch] text-muted-foreground"
+				data-hero-lead
+			>
 				{i18n.HEADER.HEADER_ABOUT}
 			</p>
 
-			<div class="mt-10 flex flex-wrap items-center gap-3" data-reveal>
+			<div class="mt-8 flex flex-wrap items-center gap-3" data-hero-cta>
 				<a
 					href={`/${currentLocale}/home#projects`}
 					class={cn(buttonVariants({ variant: "default" }), heroCta)}
@@ -97,23 +119,53 @@ const social =
 
 		<div class="relative lg:col-span-5">
 			<div
-				class="relative mx-auto w-full max-w-[320px] anim-zoom-in sm:max-w-90 lg:ml-auto lg:mr-0 lg:max-w-100"
-				data-reveal
+				class="relative mx-auto w-full max-w-[320px] sm:max-w-[360px] lg:ml-auto lg:mr-0 lg:max-w-[400px]"
 			>
-				<!-- Orbit rings: decorative, quiet, tied to the galaxy behind. -->
-				<svg
+				<!--
+					Orbit rings: decorative, quiet, tied to the galaxy behind. The
+					wrapper carries the (very subtle) scroll parallax; the svg carries
+					the entrance (the solid ring is drawn on, pathLength=1).
+				-->
+				<div
 					aria-hidden="true"
-					viewBox="0 0 400 400"
-					fill="none"
-					class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[118%] w-[118%] -translate-x-1/2 -translate-y-1/2 text-primary/40 lg:h-[138%] lg:w-[138%]"
+					class="pointer-events-none absolute inset-0 -z-10"
 					data-parallax="6"
 				>
-					<ellipse cx="200" cy="200" rx="190" ry="150" stroke="currentColor" stroke-width="1" transform="rotate(-18 200 200)" />
-					<ellipse cx="200" cy="200" rx="150" ry="112" stroke="currentColor" stroke-width="1" stroke-dasharray="2 7" transform="rotate(-18 200 200)" />
-					<circle cx="381" cy="141" r="5" class="fill-primary" />
-				</svg>
+					<svg
+						viewBox="0 0 400 400"
+						fill="none"
+						class="absolute left-1/2 top-1/2 h-[118%] w-[118%] -translate-x-1/2 -translate-y-1/2 text-primary/40 lg:h-[138%] lg:w-[138%]"
+						data-hero-rings
+					>
+						<ellipse
+							cx="200"
+							cy="200"
+							rx="190"
+							ry="150"
+							stroke="currentColor"
+							stroke-width="1"
+							transform="rotate(-18 200 200)"
+							pathLength="1"
+							data-hero-ring-solid></ellipse>
+						<ellipse
+							cx="200"
+							cy="200"
+							rx="150"
+							ry="112"
+							stroke="currentColor"
+							stroke-width="1"
+							stroke-dasharray="2 7"
+							transform="rotate(-18 200 200)"
+							data-hero-ring-accent></ellipse>
+						<circle cx="381" cy="141" r="5" class="fill-primary" data-hero-ring-accent
+						></circle>
+					</svg>
+				</div>
 
-				<div class="aspect-3/4 overflow-hidden rounded-t-[999px] rounded-b-3xl border border-border bg-muted shadow-(--glow)">
+				<div
+					class="aspect-[3/4] overflow-hidden rounded-t-[999px] rounded-b-3xl border border-border bg-muted shadow-[var(--glow)]"
+					data-hero-portrait
+				>
 					<Image
 						src={heroPortrait}
 						alt="muke78"
@@ -126,7 +178,10 @@ const social =
 		</div>
 	</div>
 
-	<div class="mt-14 flex items-center justify-between gap-6 border-t border-border pt-5" data-reveal>
+	<div
+		class="mt-10 flex items-center justify-between gap-6 border-t border-border pt-5"
+		data-hero-bar
+	>
 		<div class="flex items-center gap-1">
 			<a
 				href="https://github.com/muke78"

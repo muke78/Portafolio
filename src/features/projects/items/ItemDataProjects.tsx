@@ -6,6 +6,15 @@ import type { PropsLangWithData } from "@/types/currentLang.interface";
 
 const R2 = "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev";
 
+/**
+ * Project card - reading hierarchy (UI_STANDARDS 5.3):
+ *   1. Title ........ serif, the dominant element (text-heading)
+ *   2. Category ..... small label above it (eyebrow) + collaboration badge
+ *   3. Description .. muted body, 3 lines max
+ *   4. Stack ........ round icons, overlapped, after a hairline
+ * Space inside a group (title/category, title/description) is always smaller
+ * than the space between groups (description/stack): proximity.
+ */
 export const ItemDataProjects = ({
 	currentLocale,
 	data,
@@ -13,90 +22,116 @@ export const ItemDataProjects = ({
 	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 	const i18n = getI18N({ currentLocale });
 
+	const categoryLabels: Record<string, string> = {
+		frontend: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F,
+		backend: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B,
+		companies: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C,
+		dataAnalyst: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D,
+	};
+
 	const handleImageLoad = useCallback((key: string) => {
 		setLoadedImages((prev) => ({ ...prev, [key]: true }));
 	}, []);
 
 	return (
-		<div className="grid grid-cols-1 gap-4 md:grid-cols-2" data-reveal-group>
+		<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 			{data?.map(
 				({
 					project_id,
 					slug,
+					category,
 					card_image,
 					images_topics,
 					title,
 					description,
 					fork,
-				}) => (
-					<article
-						key={project_id}
-						data-reveal
-						className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift"
-					>
-						<figure className="relative h-[200px] overflow-hidden bg-muted">
-							{!loadedImages[card_image] && (
-								<Skeleton className="absolute inset-0 rounded-none" />
-							)}
-							<img
-								src={`${R2}/${card_image}`}
-								alt=""
-								width={400}
-								height={200}
-								className={`h-full w-full object-cover transition-opacity duration-500 ${
-									loadedImages[card_image] ? "opacity-100" : "opacity-0"
-								}`}
-								onLoad={() => handleImageLoad(card_image)}
-								loading="lazy"
-								decoding="async"
-								draggable="false"
-							/>
-						</figure>
-						<div className="flex flex-1 flex-col gap-2 p-4">
-							<h3 className="flex flex-wrap items-center gap-x-2 gap-y-1 text-2xl font-semibold">
-								{/* The whole card is the click target: this link stretches over it. */}
-								<a
-									href={`/${currentLocale}/project/${slug}`}
-									className="inline-flex items-center gap-1 rounded-sm after:absolute after:inset-0 after:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-								>
-									{title}
-									<ArrowUpRight
-										size={20}
-										aria-hidden="true"
-										className="text-muted-foreground"
-									/>
-								</a>
-								{fork && (
-									<span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-										{i18n.PROJECTS.PROJECTS_BADGE_FORK}
-									</span>
+				}) => {
+					return (
+						<article
+							key={project_id}
+							data-reveal
+							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift"
+						>
+							<figure className="relative h-[200px] overflow-hidden bg-muted">
+								{!loadedImages[card_image] && (
+									<Skeleton className="absolute inset-0 rounded-none" />
 								)}
-							</h3>
-							<p>{description}</p>
+								<img
+									src={`${R2}/${card_image}`}
+									alt=""
+									width={400}
+									height={200}
+									data-parallax-img
+									className={`absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover transition-opacity duration-500 ${
+										loadedImages[card_image] ? "opacity-100" : "opacity-0"
+									}`}
+									onLoad={() => handleImageLoad(card_image)}
+									loading="lazy"
+									decoding="async"
+									draggable="false"
+								/>
+							</figure>
 
-							<div className="mt-auto flex -space-x-2 pt-3">
-								{images_topics.map((topic) => (
-									<div
-										className="h-9 w-9 overflow-hidden rounded-full border-2 border-card"
-										key={topic}
+							<div className="flex flex-1 flex-col p-6">
+								{/* 2 - category (+ collaboration) */}
+								<p className="eyebrow flex flex-wrap items-center gap-x-3 gap-y-1">
+									{categoryLabels[category]}
+									{fork && (
+										<span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 text-xs font-medium text-foreground">
+											{i18n.PROJECTS.PROJECTS_BADGE_FORK}
+										</span>
+									)}
+								</p>
+
+								{/* 1 - title: the whole card is the click target */}
+								<h3 className="font-serif-display text-heading mt-2">
+									<a
+										href={`/${currentLocale}/project/${slug}`}
+										className="inline-flex items-start gap-1.5 rounded-sm after:absolute after:inset-0 after:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 									>
-										<img
-											className={`h-full w-full transition-opacity duration-500 ${
-												loadedImages[topic] ? "opacity-100" : "opacity-0"
-											}`}
-											src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
-											alt={topic}
-											onLoad={() => handleImageLoad(topic)}
-											loading="lazy"
-											decoding="async"
-											draggable="false"
+										{title}
+										<ArrowUpRight
+											size={20}
+											aria-hidden="true"
+											className="mt-1 shrink-0 text-muted-foreground"
 										/>
-									</div>
-								))}
+									</a>
+								</h3>
+
+								{/* 3 - description */}
+								<p className="mt-3 line-clamp-3 text-base leading-relaxed text-muted-foreground">
+									{description}
+								</p>
+
+								{/* 4 - stack: round icons, overlapped */}
+								<ul
+									className="mt-auto flex -space-x-2 border-t border-border pt-5"
+									aria-label={i18n.PROJECT_DETAIL.STACK}
+								>
+									{images_topics.map((topic) => (
+										<li
+											key={topic}
+											title={topic}
+											className="h-9 w-9 overflow-hidden rounded-full border-2 border-card bg-muted"
+										>
+											<img
+												className={`h-full w-full transition-opacity duration-500 ${
+													loadedImages[topic] ? "opacity-100" : "opacity-0"
+												}`}
+												src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
+												alt={topic}
+												onLoad={() => handleImageLoad(topic)}
+												loading="lazy"
+												decoding="async"
+												draggable="false"
+											/>
+										</li>
+									))}
+								</ul>
 							</div>
-						</div>
-					</article>
-				),
+						</article>
+					);
+				},
 			)}
 		</div>
 	);

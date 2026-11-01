@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { LangDrop } from "@/features/navbar/LangDrop";
 import { ThemeDrop } from "@/features/navbar/ThemeSwitch";
 import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import Layout from "@/layouts/Layout.astro";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -17,7 +18,8 @@ import type { Projects } from "@/types/currentLang.interface";
  * project_id. Rendered on the server, so the URL is crawlable and the
  * page has its own title, description and social preview.
  */
-const { currentLocale, params } = Astro;
+const { params } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
 const t = i18n.PROJECT_DETAIL;
 

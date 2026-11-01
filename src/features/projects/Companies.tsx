@@ -3,7 +3,7 @@ import type { PropsLangWithData } from "@/types/currentLang.interface";
 
 export const Companies = ({ currentLocale, data }: PropsLangWithData) => {
 	return (
-		<div className="w-full flex flex-col anim-zoom-in">
+		<div className="w-full flex flex-col">
 			<ItemDataProjects currentLocale={currentLocale} data={data} />
 		</div>
 	);

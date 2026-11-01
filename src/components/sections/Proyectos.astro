@@ -2,10 +2,11 @@
 import { API_SECRET_TOKEN } from "astro:env/server";
 import { TabsProyectos } from "@/components/sections/TabsProyectos";
 import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import { api } from "@/lib/api";
 import type { Projects } from "@/types/currentLang.interface";
 
-const { currentLocale } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
 
 let initialData: Projects[] = [];

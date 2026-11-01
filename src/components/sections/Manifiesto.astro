@@ -1,0 +1,87 @@
+---
+import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
+
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+const t = getI18N({ currentLocale }).MANIFESTO;
+
+// Technology names are not translated. Two lines of the same words in a
+// different order so the two tracks never line up.
+const trackA = [
+	"React",
+	"Astro",
+	"TypeScript",
+	"Node.js",
+	"Hono",
+	"Turso",
+	"Three.js",
+	"Tailwind",
+];
+const trackB = [
+	"Hono",
+	"Tailwind",
+	"Astro",
+	"Turso",
+	"React",
+	"Three.js",
+	"TypeScript",
+	"Node.js",
+];
+const chips = ["React", "Astro", "Hono"];
+---
+
+<!--
+	MANIFESTO. A pinned reading scene (src/lib/motion/scenes.ts): while you
+	scroll, the statement lights up word by word, two huge technology tracks
+	slide in opposite directions and a hairline fills. Without JS or with
+	reduced motion it is just a statement and two static lines of words.
+-->
+<section
+	data-manifesto
+	aria-labelledby="manifesto-label"
+	class="relative flex min-h-[calc(100svh-72px)] flex-col justify-center overflow-hidden py-24"
+>
+	<div class="mx-auto w-full max-w-310 px-6">
+		<h2 id="manifesto-label" class="eyebrow mb-8">{t.LABEL}</h2>
+
+		<p data-manifesto-text class="font-serif-display text-subtitle max-w-4xl text-balance">
+			{t.TEXT}
+		</p>
+
+		<ul class="mt-10 flex flex-wrap gap-3" aria-hidden="true">
+			{
+				chips.map((chip, i) => (
+					<li
+						data-manifesto-chip
+						class={
+							i === 0
+								? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+								: "rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground"
+						}
+					>
+						{chip}
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="mt-12 h-px w-full bg-border" aria-hidden="true">
+			<div data-manifesto-progress class="h-full origin-left bg-primary"></div>
+		</div>
+	</div>
+
+	<div aria-hidden="true" class="mt-16 flex select-none flex-col gap-2 overflow-hidden">
+		<div
+			data-manifesto-track
+			class="flex w-max gap-10 whitespace-nowrap font-serif-display text-display text-outline"
+		>
+			{[0, 1].map(() => trackA.map((w) => <span>{w}</span>))}
+		</div>
+		<div
+			data-manifesto-track
+			class="flex w-max gap-10 whitespace-nowrap font-serif-display text-display italic text-muted-foreground/25"
+		>
+			{[0, 1].map(() => trackB.map((w) => <span>{w}</span>))}
+		</div>
+	</div>
+</section>

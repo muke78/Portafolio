@@ -1,10 +1,11 @@
 ---
 import { API_SECRET_TOKEN } from "astro:env/server";
 import { Opinions } from "@/features/opinions/Opinions";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import { api } from "@/lib/api";
 import type { Testimonial } from "@/types/currentLang.interface";
 
-const { currentLocale } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 
 let initialData: Testimonial[] = [];
 try {

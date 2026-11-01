@@ -454,8 +454,8 @@ function mountGalaxy(wrap: HTMLDivElement) {
 	resize();
 	window.addEventListener("resize", resize);
 
-	const ENTRY_DELAY = 200;
-	const ENTRY_DURATION = 2400;
+	const ENTRY_DELAY = 700;
+	const ENTRY_DURATION = 2800;
 	const startTs = performance.now();
 
 	const easeOut = (t: number) => 1 - (1 - t) ** 3;

@@ -1,35 +1,45 @@
 import { expect, test } from "@playwright/test";
 
+/**
+ * Tab selectors of the Home (src/components/sections/SectionTabs.tsx):
+ * a <nav> landmark named after its section whose items are <button>s with
+ * aria-pressed. The active panel's title is a real <h2>.
+ */
 test.describe("Acerca de mí tabs", () => {
 	test("switches between tabs and persists the choice across reload", async ({
 		page,
 	}) => {
 		await page.goto("/es/home#about");
 
-		// Section headings are plain <span>s (no heading role), and the same
-		// exact string also appears in the tab bar's own button (its
-		// md:inline/lg:inline label span) - two matches for the same text.
-		// TabsAcerca.tsx always renders the button bar before the content
-		// div in the JSX, so index 1 is reliably the content heading, not
-		// the button.
-		const heading = (text: string) => page.getByText(text, { exact: true }).nth(1);
+		const tabs = page.getByRole("navigation", {
+			name: "Acerca de mí",
+			exact: true,
+		});
+		const tab = (name: string) =>
+			tabs.getByRole("button", { name, exact: true });
+		const heading = (name: string) =>
+			page.getByRole("heading", { name, level: 2, exact: true });
 
 		// Defaults to "experiencia" (TabsAcerca.tsx's initial state).
 		await expect(heading("Experiencia")).toBeVisible();
+		await expect(tab("Experiencia")).toHaveAttribute("aria-pressed", "true");
 
-		await page.getByRole("button", { name: "Educación" }).click();
+		await tab("Educación").click();
 		await expect(heading("Educación")).toBeVisible();
+		await expect(tab("Educación")).toHaveAttribute("aria-pressed", "true");
+		await expect(tab("Experiencia")).toHaveAttribute("aria-pressed", "false");
 
-		await page.getByRole("button", { name: "Habilidades" }).click();
+		await tab("Habilidades").click();
 		await expect(heading("Habilidades")).toBeVisible();
 
-		await page.getByRole("button", { name: "Acerca de mí" }).click();
+		await tab("Acerca de mí").click();
 		await expect(heading("Acerca de mí")).toBeVisible();
 
 		// activeTab is persisted to localStorage - a reload should land back
 		// on "sobreMi", not reset to the "experiencia" default.
 		await page.reload();
 		await expect(heading("Acerca de mí")).toBeVisible();
+		await expect(tab("Acerca de mí")).toHaveAttribute("aria-pressed", "true");
 	});
 });
 
@@ -39,20 +49,25 @@ test.describe("Proyectos tabs", () => {
 	}) => {
 		await page.goto("/es/home#projects");
 
-		await page.getByRole("button", { name: "Backend" }).click();
-		await expect
-			.poll(async () => page.evaluate(() => localStorage.getItem("activeProjectTab")))
-			.toBe("backend");
+		const tabs = page.getByRole("navigation", {
+			name: "Proyectos",
+			exact: true,
+		});
+		const tab = (name: string) =>
+			tabs.getByRole("button", { name, exact: true });
+		const stored = () =>
+			page.evaluate(() => localStorage.getItem("activeProjectTab"));
 
-		await page.getByRole("button", { name: "Empresas" }).click();
-		await expect
-			.poll(async () => page.evaluate(() => localStorage.getItem("activeProjectTab")))
-			.toBe("companies");
+		await tab("Backend").click();
+		await expect.poll(stored).toBe("backend");
+		await expect(tab("Backend")).toHaveAttribute("aria-pressed", "true");
+
+		await tab("Empresas").click();
+		await expect.poll(stored).toBe("companies");
 
 		await page.reload();
 		// Still on "companies" after reload, not reset to the "frontend" default.
-		await expect
-			.poll(async () => page.evaluate(() => localStorage.getItem("activeProjectTab")))
-			.toBe("companies");
+		await expect.poll(stored).toBe("companies");
+		await expect(tab("Empresas")).toHaveAttribute("aria-pressed", "true");
 	});
 });

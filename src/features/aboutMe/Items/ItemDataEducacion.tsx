@@ -46,7 +46,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 					<div
 						key={education_id}
 						data-reveal
-						className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift anim-zoom-in"
+						className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift"
 					>
 						<img
 							className="rounded-t-lg w-full h-auto"
