@@ -109,9 +109,7 @@ describe("Manifiesto", () => {
 
 	it("keeps the sentence readable in the HTML without JavaScript", async () => {
 		const html = await render(Manifiesto);
-		expect(html).toContain(
-			es.MANIFESTO.MANIFESTO_TEXT ?? Object.values(es.MANIFESTO)[0],
-		);
+		expect(html).toContain(es.MANIFESTO.TEXT);
 	});
 
 	it("repeats the technology names in two different orders", async () => {
