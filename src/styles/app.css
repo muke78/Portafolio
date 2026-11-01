@@ -31,6 +31,8 @@
 	--color-destructive: var(--destructive);
 	--color-success: var(--success);
 	--color-success-foreground: var(--success-foreground);
+	--color-warning: var(--warning);
+	--color-warning-foreground: var(--warning-foreground);
 	--color-info: var(--info);
 	--color-info-foreground: var(--info-foreground);
 	--color-accent-foreground: var(--accent-foreground);
@@ -84,10 +86,12 @@
 	--destructive: oklch(55% 0.19 25);
 	--success: oklch(52% 0.13 155);
 	--success-foreground: oklch(97% 0.01 155);
+	--warning: oklch(52% 0.12 70);
+	--warning-foreground: oklch(97% 0.02 80);
 	--info: oklch(52% 0.14 240);
 	--info-foreground: oklch(97% 0.01 240);
 	--border: oklch(15.9% 0.011 292 / 7%);
-	--input: oklch(15.9% 0.011 292 / 14%);
+	--input: oklch(15.9% 0.011 292 / 45%);
 	--ring: oklch(50% 0.15 290);
 	--chart-1: oklch(50% 0.15 290);
 	--chart-2: oklch(58% 0.12 250);
@@ -123,10 +127,12 @@
 	--destructive: oklch(70% 0.18 25);
 	--success: oklch(70% 0.14 155);
 	--success-foreground: oklch(15% 0.03 155);
+	--warning: oklch(78% 0.14 75);
+	--warning-foreground: oklch(15% 0.03 75);
 	--info: oklch(70% 0.13 240);
 	--info-foreground: oklch(15% 0.03 240);
 	--border: oklch(100% 0 0 / 10%);
-	--input: oklch(100% 0 0 / 15%);
+	--input: oklch(100% 0 0 / 35%);
 	--ring: oklch(72% 0.14 290);
 	--chart-1: oklch(72% 0.14 290);
 	--chart-2: oklch(72% 0.11 250);
@@ -166,7 +172,7 @@
 }
 .eyebrow {
 	font-family: var(--font-mono);
-	font-size: 11px;
+	font-size: 0.75rem;
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
 	color: var(--muted-foreground);

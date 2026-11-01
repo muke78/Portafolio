@@ -29,7 +29,7 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 - **UI**: [React](https://react.dev/) v18 (islas vía `@astrojs/react`)
 - **Estilos y componentes**: [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/)
 - **Iconos**: [Lucide](https://lucide.dev/) (`lucide-react`) — única librería de iconos
-- **Animación**: [GSAP](https://gsap.com/) + ScrollTrigger es el estándar para animación de scroll (pendiente de instalar; ver [Frontend Architecture & Design System](#-frontend-architecture--design-system))
+- **Animación**: [GSAP](https://gsap.com/) + ScrollTrigger es el estándar para animación de scroll (centralizado en `src/lib/motion.ts`; ver [Frontend Architecture & Design System](#-frontend-architecture--design-system))
 - **3D**: [Three.js](https://threejs.org/) (fondo animado, montado como isla `client:idle`)
 - **Formularios**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 - **Otros**: [TypeScript](https://www.typescriptlang.org/), [react-country-flag](https://www.npmjs.com/package/react-country-flag)
@@ -111,7 +111,7 @@ El sistema de diseño completo (paleta con contrastes medidos, tipografía, espa
 - **shadcn/ui** (estilo `base-nova`, sobre Base UI): los primitivos viven en `src/components/ui/` y se usan siempre en lugar de HTML estilizado a mano.
 - **Tailwind CSS v4**: los tokens de color, radio y fuente están en `src/styles/app.css` (OKLCH, tema claro/oscuro). No se usan colores fuera de esos tokens.
 - **Lucide**: única librería de iconos (excepción: logos de marca en `src/components/icons/BrandIcons.tsx`).
-- **GSAP + ScrollTrigger**: estándar para animación de scroll (fade-up, stagger, parallax sutil, solo `transform`/`opacity`, con `prefers-reduced-motion` respetado). **Aún no está instalado**; hoy las animaciones son CSS y JS puntual.
+- **GSAP + ScrollTrigger**: estándar para animación de scroll (fade-up, stagger, parallax sutil, solo `transform`/`opacity`, con `prefers-reduced-motion` respetado). Ya está instalado y la lógica vive en `src/lib/motion.ts`; las animaciones existentes (CSS y JS puntual) se migran en una fase posterior.
 - **Tipografía**: Instrument Serif (titulares), Geist (texto), Geist Mono (etiquetas), autoalojadas con `@fontsource`.
 
 **Accesibilidad**: el objetivo es WCAG 2.1 AA, con el checklist y las deudas conocidas (por ejemplo, el contraste del borde de los campos) documentados en `docs/UI_STANDARDS.md`.

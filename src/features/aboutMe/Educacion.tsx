@@ -6,9 +6,9 @@ export const Educacion = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });
 	return (
 		<div className="flex flex-col p-4">
-			<span className="font-serif-display text-[clamp(28px,4vw,48px)] font-normal mb-4">
+			<h2 className="font-serif-display text-[clamp(28px,4vw,48px)] font-normal mb-4">
 				{i18n.EDUCATION.EDUCATION_TITLE}
-			</span>
+			</h2>
 			<ItemDataEducacion currentLocale={currentLocale} />
 		</div>
 	);

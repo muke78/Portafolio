@@ -66,7 +66,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
 			<div className="space-y-1 text-foreground">
-				<small className="font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+				<small className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
 					{i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
 				</small>
 

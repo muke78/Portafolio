@@ -39,6 +39,10 @@ Gestor de paquetes: **pnpm**. No uses npm ni yarn.
   a `dev`. El agente **abre** el PR; **no lo mergea** salvo orden
   explícita del usuario.
 - **`main` no se toca** salvo petición explícita del usuario.
+- **Tamaño de commit.** Commits grandes y temáticos, no atómicos: cada
+  commit agrupa **25–35 archivos** modificados. Si el cambio completo toca
+  menos de 25, va en **un solo commit**; nunca se rellena con archivos
+  ajenos para llegar al mínimo.
 - **Commits** en formato Conventional Commits (`feat:`, `fix:`, `docs:`,
   `chore:`, `refactor:`, `perf:`, `test:`, `style:`, `ci:`, `build:`,
   `revert:`). El hook `commit-msg` lo valida. Ver `docs/DocsCommiter.md`.
@@ -92,8 +96,10 @@ reglas que no se negocian:
    (`eyebrow`). No introduzcas otras fuentes ni `font-bold` en el serif.
 6. **Animación de scroll con GSAP + ScrollTrigger.** Fade-up, stagger y
    parallax sutil, solo con `transform` y `opacity`, dentro de
-   `gsap.matchMedia()` y respetando `prefers-reduced-motion`. El contenido
-   debe quedar visible sin JS (GSAP pone el estado inicial, no el CSS).
+   `gsap.matchMedia()` y respetando `prefers-reduced-motion`. Toda la
+   lógica pasa por `src/lib/motion.ts` (no uses `gsap.*` suelto en
+   componentes). El contenido debe quedar visible sin JS (GSAP pone el
+   estado inicial, no el CSS).
    Hover y foco se resuelven con CSS. Detalle y parámetros en la sección 7
    de `docs/UI_STANDARDS.md`.
 7. **Ley de Hick.** Un CTA primario por bloque; pocas opciones visibles;
@@ -101,11 +107,12 @@ reglas que no se negocian:
 8. **Textos por i18n.** Todo texto visible sale de `src/i18n/locales/`
    (es, en, fr). Cero cadenas fijas en componentes.
 
-> **Estado actual (importante):** GSAP aún **no está instalado** y hay
-> deuda de diseño conocida (borde de inputs por debajo de 3:1, token
-> `--warning` ausente, etc.). Está listada en la sección 10 de
-> `docs/UI_STANDARDS.md`. No la "arregles de paso" dentro de un cambio
-> ajeno: va en su propia rama.
+> **Estado actual (importante):** GSAP está instalado y centralizado en
+> `src/lib/motion.ts`, pero **ninguna animación existente se ha migrado**
+> todavía. Queda deuda de diseño conocida (colores hardcodeados del 3D,
+> jerarquía de encabezados h2→h3, tamaños táctiles fuera del hero, etc.),
+> listada en la sección 10 de `docs/UI_STANDARDS.md`. No la "arregles de
+> paso" dentro de un cambio ajeno: va en su propia rama.
 
 ## Estructura
 
@@ -115,7 +122,7 @@ src/
 ├── features/      # por dominio (aboutMe, projects, opinions, contact, navbar, admin)
 ├── i18n/          # traducciones + locales.ts (única fuente de idiomas)
 ├── layouts/       # Layout, AdminLayout, AdminLoginLayout
-├── lib/           # utilidades de servidor (sesión admin, rate limit, cliente API)
+├── lib/           # sesión admin, rate limit, cliente API (servidor); motion.ts (GSAP, solo cliente)
 ├── middleware.ts  # validación de locale + guard del admin
 ├── pages/         # /[lang]/home, /admin/*, /api/*
 ├── schemas/       # esquemas Zod
