@@ -448,6 +448,15 @@
 		overflow: hidden;
 	}
 }
+/* Smooth native anchor scrolling only where the motion engine does not own
+   it: with .motion-ok, anchors.ts scrolls with GSAP. (ScrollTrigger rewrites
+   html's inline scroll-behavior on every refresh, so a native smooth scroll
+   under a running tween stacks animations and overshoots.) */
+@media (prefers-reduced-motion: no-preference) {
+	html:not(.motion-ok) {
+		scroll-behavior: smooth;
+	}
+}
 /* Reading progress hairline: starts empty, GSAP scales it with the scroll. */
 [data-scroll-progress] {
 	transform: scaleX(0);

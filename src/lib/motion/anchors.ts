@@ -17,7 +17,6 @@ import type { Cleanup, MotionTools } from "./core";
 const MAX_FIXES = 3;
 
 export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
-	const html = document.documentElement;
 	let current: gsap.core.Tween | undefined;
 
 	const offsetOf = (el: Element) =>
@@ -28,7 +27,6 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	const stop = () => {
 		current?.kill();
 		current = undefined;
-		html.style.scrollBehavior = "";
 	};
 
 	const goTo = (hash: string, fixes = 0, instant = false) => {
@@ -43,22 +41,19 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		if (fixes === 0) ScrollTrigger.refresh();
 		const y = yOf(target);
 		stop();
-		// The page's CSS smooth scrolling would fight the tween frame by frame.
-		html.style.scrollBehavior = "auto";
 		const distance = Math.abs(y - window.scrollY);
 		current = gsap.to(window, {
-			scrollTo: { y, autoKill: true },
+			// No autoKill: a deliberate wheel/touch/key already cancels (see below);
+			// the plugin's own check mistakes layout-driven scroll for a user scroll.
+			// (html has no CSS smooth scrolling while the engine runs: app.css.)
+			scrollTo: { y, autoKill: false },
 			duration: instant ? 0 : Math.min(1.8, 0.5 + distance / 4500),
 			ease: "power3.inOut",
 			onComplete: () => {
-				html.style.scrollBehavior = "";
 				const t = document.querySelector(hash);
 				if (t && fixes < MAX_FIXES && Math.abs(yOf(t) - window.scrollY) > 6) {
 					window.setTimeout(() => goTo(hash, fixes + 1, true), 350);
 				}
-			},
-			onInterrupt: () => {
-				html.style.scrollBehavior = "";
 			},
 		});
 	};
