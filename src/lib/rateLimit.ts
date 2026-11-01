@@ -1,8 +1,7 @@
 /**
- * Minimal in-memory sliding-window rate limiter. Same caveat as the
- * session revocation list in adminSession.ts: doesn't survive a cold
- * start on serverless, but raises the bar against naive brute-forcing
- * of the admin login within a warm instance, with zero extra infra.
+ * Minimal in-memory sliding-window rate limiter. Doesn't survive a cold
+ * start of the runtime, but raises the bar against naive flooding of the
+ * public write endpoints within a warm instance, with zero extra infra.
  */
 const buckets = new Map<string, { count: number; windowStart: number }>();
 

@@ -8,13 +8,37 @@ solo lo importa. Las reglas de aquí son **obligatorias**, no sugerencias.
 
 Portafolio personal de Erick González (`muke78/Portafolio`).
 
-- Astro 7 en modo SSR (`output: "server"`, adaptador de Vercel) con islas
-  de React 18.
+- Astro 7 en modo SSR (`output: "server"`) con islas de React 18,
+  desplegado en Cloudflare Pages (ver Infraestructura).
 - Tailwind CSS v4 (CSS-first) + shadcn/ui sobre Base UI.
-- Contenido servido por un backend propio (`Backend_Portafolio`: Hono +
-  Drizzle + Turso), consumido a través del proxy `/api/*` de este repo.
+- Contenido servido por un backend propio (`Backend_Portafolio`: Worker de
+  Hono + Cloudflare D1 + R2), consumido a través del proxy `/api/*` de este
+  repo.
 - Idiomas: `es` (por defecto), `en`, `fr` — `src/i18n/locales/*.json`.
-- Panel admin en `/admin/*` (sesión firmada + JWT de Hono).
+
+## Infraestructura
+
+Todo el stack vive en **Cloudflare** (V8 isolates, sin contenedores):
+
+| Pieza | Servicio |
+|---|---|
+| Frontend (este repo, Astro SSR) | **Cloudflare Pages** |
+| API de contenido (`Backend_Portafolio`) | **Worker de Hono** |
+| Base de datos | **Cloudflare D1** |
+| Imágenes y archivos | **Cloudflare R2** |
+
+- El **panel de administración (CMS) ya no vive en este repo**: es un
+  sistema *headless* independiente que escribe en la misma API. Aquí no
+  hay rutas `/admin/*`, ni sesión de admin, ni layouts de admin; no los
+  recrees.
+- Este sitio solo lee y escribe contenido público a través del proxy
+  `/api/*` (que agrega el token server-side).
+- El adaptador de Astro para Cloudflare se configura en su propia rama.
+- **CI/CD en GitHub Actions** (`.github/workflows/`): `ci-dev.yml` valida
+  los PRs a `dev` (Biome, `astro check`, Vitest, build) y `ci-main.yml`
+  los PRs a `main` (lo mismo + Playwright). El deploy a Pages
+  (`wrangler pages deploy`) está preparado y comentado en `ci-main.yml`
+  hasta cargar los tokens de Cloudflare en GitHub.
 
 ## Comandos
 
@@ -46,10 +70,12 @@ Gestor de paquetes: **pnpm**. No uses npm ni yarn.
 - **Commits** en formato Conventional Commits (`feat:`, `fix:`, `docs:`,
   `chore:`, `refactor:`, `perf:`, `test:`, `style:`, `ci:`, `build:`,
   `revert:`). El hook `commit-msg` lo valida. Ver `docs/DocsCommiter.md`.
-- **Hooks de Husky.** `pre-commit` formatea con Biome; `pre-push` corre
-  Biome, `astro check`, build, Vitest y Playwright. No uses `--no-verify`.
-  Si Playwright no puede correr en tu entorno, el hook admite
-  `SKIP_E2E=1 git push` — y hay que decirlo en el PR.
+- **Hooks de Husky (solo lo rápido).** `commit-msg` valida el formato y
+  `pre-commit` pasa Biome sobre los archivos en staging. No uses
+  `--no-verify`. Lint, tipos, tests y build los corre GitHub Actions en
+  cada PR (`ci-dev.yml` hacia `dev`, `ci-main.yml` hacia `main`); un push
+  ya no los ejecuta localmente: corre `pnpm check`, `pnpm test:unit` y
+  `pnpm build` antes de abrir el PR.
 - **Versiones.** Cada ronda mergeada se cierra con tag `vX.Y.Z`, GitHub
   Release y bump de `package.json`, en un PR aparte (`chore/release-vX.Y.Z`).
 - **Verificación.** Un cambio de UI no está terminado hasta verlo
@@ -58,13 +84,12 @@ Gestor de paquetes: **pnpm**. No uses npm ni yarn.
 
 ## Seguridad
 
-- **Nunca** pidas, escribas, leas ni imprimas la contraseña real del
-  admin ni valores de `.env`. El único script que toca la contraseña es
-  `seed:admin` de `Backend_Portafolio`, y lo ejecuta el usuario en su
-  terminal.
-- No inventes sesiones, cookies ni tokens para "probar" páginas admin.
-  Para verificar sin credenciales reales, usa HTML estático o pruebas a
-  nivel de código y deja dicho que no se verificó autenticado.
+- **Nunca** pidas, escribas, leas ni imprimas contraseñas, tokens ni
+  valores de `.env` (incluidos los secretos de Cloudflare y de GitHub
+  Actions).
+- No inventes sesiones, cookies ni tokens para "probar" nada. Para
+  verificar sin credenciales reales, usa HTML estático o pruebas a nivel
+  de código y deja dicho qué no se verificó.
 - Toda entrada del usuario se valida con Zod en cliente **y** servidor
   (esquemas compartidos en `src/schemas/`).
 
@@ -146,12 +171,12 @@ reglas que no se negocian:
 ```
 src/
 ├── components/    # compartidos; ui/ = primitivos shadcn, icons/, three/, cosmos/
-├── features/      # por dominio (aboutMe, projects, opinions, contact, navbar, admin)
+├── features/      # por dominio (aboutMe, projects, opinions, contact, navbar)
 ├── i18n/          # traducciones + locales.ts (única fuente de idiomas)
-├── layouts/       # Layout, AdminLayout, AdminLoginLayout
-├── lib/           # sesión admin, rate limit, cliente API (servidor); motion/ (motor GSAP, solo cliente)
-├── middleware.ts  # validación de locale + guard del admin
-├── pages/         # /[lang]/home, /admin/*, /api/*
+├── layouts/       # Layout
+├── lib/           # rate limit, cliente API (servidor); motion/ (motor GSAP, solo cliente)
+├── middleware.ts  # validación de locale
+├── pages/         # /[lang]/home, /[lang]/project/[id], /api/*
 ├── schemas/       # esquemas Zod
 └── styles/        # app.css (tokens + Tailwind v4), styles.css
 docs/              # arquitectura, plan (TODO.md), UI_STANDARDS.md
