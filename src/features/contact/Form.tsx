@@ -66,11 +66,11 @@ export const Form = ({ currentLocale }: PropsLang) => {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
 			<div className="space-y-1 text-foreground">
-				<small className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+				<small className="eyebrow">
 					{i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
 				</small>
 
-				<h2 className="font-serif-display text-4xl lg:text-6xl leading-[0.98]">
+				<h2 className="font-serif-display text-title">
 					{i18n.FORM.FORM_TITLE_HEAD_STRONG}{" "}
 					<span className="italic text-muted-foreground">
 						{i18n.FORM.FORM_TITLE_HEAD_STRONG_SECOND}
@@ -180,7 +180,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<Input
 								id={nameId}
 								type="text"
-								className="bg-background"
+								className="h-11 bg-background text-base"
 								placeholder={i18n.FORM.INPUT_NAME}
 								{...register("name")}
 							/>
@@ -198,7 +198,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<Input
 								id={emailId}
 								type="email"
-								className="bg-background"
+								className="h-11 bg-background text-base"
 								placeholder={i18n.FORM.INPUT_EMAIL}
 								{...register("email")}
 							/>
@@ -216,7 +216,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<Input
 								id={phoneId}
 								type="number"
-								className="bg-background"
+								className="h-11 bg-background text-base"
 								placeholder={i18n.FORM.INPUT_PHONE}
 								{...register("phone")}
 							/>
@@ -238,7 +238,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							</label>
 							<Textarea
 								id={moreInformationId}
-								className="bg-background"
+								className="h-11 bg-background text-base"
 								placeholder={i18n.FORM.INPUT_MORE_INFORMATION_TEXT}
 								{...register("moreInformation")}
 							/>

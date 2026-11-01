@@ -55,7 +55,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 				<Button
 					type="button"
 					variant={activeTab === "sobreMi" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("sobreMi")}
 				>
 					<span className=" sm:inline md:inline lg:inline">
@@ -74,7 +74,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 				<Button
 					type="button"
 					variant={activeTab === "educacion" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("educacion")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -93,7 +93,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 				<Button
 					type="button"
 					variant={activeTab === "experiencia" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("experiencia")}
 				>
 					<span className=" sm:inline md:inline lg:inline">
@@ -114,7 +114,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 				<Button
 					type="button"
 					variant={activeTab === "habilidades" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("habilidades")}
 				>
 					<span className=" sm:inline md:inline lg:inline">

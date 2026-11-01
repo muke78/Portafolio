@@ -62,7 +62,7 @@ export const ItemsNav = ({ currentLocale, onItemClick }: ItemsNavProps) => {
 							href={list.to}
 							aria-label={`Ir a ${list.label}`}
 							onClick={handleClick}
-							className={`relative inline-block rounded-full px-3 py-2 text-[15px] transition-colors ${
+							className={`relative inline-flex min-h-11 items-center rounded-full px-3 text-base transition-colors ${
 								isActive
 									? "text-foreground"
 									: "text-muted-foreground hover:text-foreground"
@@ -70,7 +70,7 @@ export const ItemsNav = ({ currentLocale, onItemClick }: ItemsNavProps) => {
 						>
 							{list.label}
 							{isActive && (
-								<span className="absolute inset-x-3 -bottom-0.5 h-px bg-primary" />
+								<span className="absolute inset-x-3 bottom-2 h-px bg-primary" />
 							)}
 						</a>
 					</li>

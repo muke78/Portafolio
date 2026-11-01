@@ -120,7 +120,7 @@ export const TabsProyectos = ({
 				<Button
 					type="button"
 					variant={activeTab === "frontend" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("frontend")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -139,7 +139,7 @@ export const TabsProyectos = ({
 				<Button
 					type="button"
 					variant={activeTab === "backend" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("backend")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -158,7 +158,7 @@ export const TabsProyectos = ({
 				<Button
 					type="button"
 					variant={activeTab === "companies" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("companies")}
 				>
 					<span className="sm:inline md:inline lg:inline">
@@ -177,7 +177,7 @@ export const TabsProyectos = ({
 				<Button
 					type="button"
 					variant={activeTab === "dataAnalyst" ? "default" : "outline"}
-					className="rounded-full lg:h-9 md:h-8 h-7 lg:text-lg md:text-base text-sm px-3"
+					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
 					onClick={() => setActiveTab("dataAnalyst")}
 				>
 					<span className="sm:inline md:inline lg:inline">

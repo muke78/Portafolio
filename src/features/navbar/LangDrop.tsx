@@ -46,7 +46,7 @@ export const LangDrop = ({ currentLocale }: PropsLang) => {
 					<Button
 						type="button"
 						variant="outline"
-						className="gap-2 rounded-xl px-3"
+						className="min-h-11 gap-2 rounded-xl px-3"
 					>
 						<ReactCountryFlag
 							countryCode={activeMeta.countryCode}

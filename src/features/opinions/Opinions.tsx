@@ -61,7 +61,7 @@ export const Opinions = ({
 					— {i18n.OPINIONS.OPINIONS_SUBTITLE}
 				</span>
 
-				<h2 className="font-serif-display text-[clamp(32px,4.5vw,56px)] mb-4">
+				<h2 className="font-serif-display text-title mb-4">
 					{i18n.OPINIONS.OPINIONS_TITLE}
 				</h2>
 

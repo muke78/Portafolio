@@ -31,6 +31,8 @@
 	--color-destructive: var(--destructive);
 	--color-success: var(--success);
 	--color-success-foreground: var(--success-foreground);
+	--color-night: var(--night);
+	--color-night-foreground: var(--night-foreground);
 	--color-warning: var(--warning);
 	--color-warning-foreground: var(--warning-foreground);
 	--color-info: var(--info);
@@ -59,94 +61,134 @@
 }
 
 /*
- * Khelde brand palette v2 — "Editorial Minimal".
- * Warm cream/near-black editorial tones with a single refined violet
- * accent, replacing the v1 navy/celeste daisyUI carry-over. Full
- * redesign per user direction (fresh flow, not an incremental tweak).
- * --accent stays a soft NEUTRAL tint (shadcn's hover/interactive
- * convention) so generic hovers don't flash the brand violet - the
- * violet itself lives in --primary and is applied deliberately
- * (links, active nav state, CTAs), matching the source design.
+ * Type scale (editorial, anti-"dense UI"). Each token defines size,
+ * line-height and tracking, so `text-display`, `text-title`, `text-subtitle`
+ * and `text-heading` replace every arbitrary text-[clamp(...)] value.
+ * Sizes are fluid (rem + vw) so they scale with browser zoom (WCAG 1.4.4).
+ */
+@theme {
+	--text-display: clamp(3.5rem, 9vw, 8rem);
+	--text-display--line-height: 0.95;
+	--text-display--letter-spacing: -0.03em;
+	--text-title: clamp(2.25rem, 5vw, 4rem);
+	--text-title--line-height: 1.02;
+	--text-title--letter-spacing: -0.025em;
+	--text-subtitle: clamp(1.875rem, 3.6vw, 2.75rem);
+	--text-subtitle--line-height: 1.08;
+	--text-subtitle--letter-spacing: -0.02em;
+	--text-heading: clamp(1.375rem, 2.4vw, 1.875rem);
+	--text-heading--line-height: 1.15;
+	--text-heading--letter-spacing: -0.01em;
+}
+
+/*
+ * Khelde brand palette v3 — "Violet Nocturne".
+ * No pure black or white anywhere: the dark theme is a deep aubergine
+ * (hue 290, chroma ~0.03, almost black but never #000), the light theme
+ * is pearl/alabaster with aubergine ink instead of black text. One
+ * vibrant violet (--primary) carries the brand. --accent stays a soft
+ * NEUTRAL tint (shadcn's hover convention) so generic hovers don't flash
+ * the brand violet; the violet is applied deliberately (links, active
+ * state, CTAs). Every value is inside the sRGB gamut and its contrast is
+ * measured in docs/UI_STANDARDS.md (guarded by tests/unit/designTokens.test.ts).
  */
 :root {
-	--background: oklch(96.9% 0.007 85);
-	--foreground: oklch(15.9% 0.011 292);
-	--card: oklch(98.3% 0.004 85);
-	--card-foreground: oklch(15.9% 0.011 292);
-	--popover: oklch(98.3% 0.004 85);
-	--popover-foreground: oklch(15.9% 0.011 292);
-	--primary: oklch(50% 0.15 290);
-	--primary-foreground: oklch(95% 0.02 290);
-	--secondary: oklch(15.9% 0.011 292);
-	--secondary-foreground: oklch(96.9% 0.007 85);
-	--muted: oklch(92.4% 0.009 80);
-	--muted-foreground: oklch(40% 0.016 290);
-	--accent: oklch(92.4% 0.009 80);
-	--accent-foreground: oklch(15.9% 0.011 292);
-	--destructive: oklch(55% 0.19 25);
-	--success: oklch(52% 0.13 155);
+	--background: oklch(96.8% 0.01 90);
+	--foreground: oklch(21% 0.045 292);
+	--card: oklch(98.6% 0.007 90);
+	--card-foreground: oklch(21% 0.045 292);
+	--popover: oklch(98.6% 0.007 90);
+	--popover-foreground: oklch(21% 0.045 292);
+	--primary: oklch(50% 0.21 292);
+	--primary-foreground: oklch(97% 0.015 295);
+	--secondary: oklch(21% 0.045 292);
+	--secondary-foreground: oklch(96.8% 0.01 90);
+	--muted: oklch(93.4% 0.013 90);
+	--muted-foreground: oklch(43% 0.03 292);
+	--accent: oklch(93.4% 0.013 90);
+	--accent-foreground: oklch(21% 0.045 292);
+	--destructive: oklch(54% 0.2 25);
+	--success: oklch(50% 0.12 155);
 	--success-foreground: oklch(97% 0.01 155);
-	--warning: oklch(52% 0.12 70);
+	--warning: oklch(52% 0.11 70);
 	--warning-foreground: oklch(97% 0.02 80);
-	--info: oklch(52% 0.14 240);
+	--info: oklch(50% 0.125 245);
 	--info-foreground: oklch(97% 0.01 240);
-	--border: oklch(15.9% 0.011 292 / 7%);
-	--input: oklch(15.9% 0.011 292 / 45%);
-	--ring: oklch(50% 0.15 290);
-	--chart-1: oklch(50% 0.15 290);
-	--chart-2: oklch(58% 0.12 250);
-	--chart-3: oklch(55% 0.13 155);
-	--chart-4: oklch(62% 0.14 60);
-	--chart-5: oklch(58% 0.16 20);
+	--border: oklch(21% 0.045 292 / 9%);
+	--input: oklch(21% 0.045 292 / 50%);
+	--ring: oklch(50% 0.21 292);
+	--chart-1: oklch(50% 0.21 292);
+	--chart-2: oklch(56% 0.13 250);
+	--chart-3: oklch(54% 0.12 155);
+	--chart-4: oklch(62% 0.13 70);
+	--chart-5: oklch(56% 0.17 20);
 	--radius: 0.375rem;
-	--sidebar: oklch(98.3% 0.004 85);
-	--sidebar-foreground: oklch(15.9% 0.011 292);
-	--sidebar-primary: oklch(50% 0.15 290);
-	--sidebar-primary-foreground: oklch(95% 0.02 290);
-	--sidebar-accent: oklch(92.4% 0.009 80);
-	--sidebar-accent-foreground: oklch(15.9% 0.011 292);
-	--sidebar-border: oklch(15.9% 0.011 292 / 7%);
-	--sidebar-ring: oklch(50% 0.15 290);
+	--sidebar: oklch(98.6% 0.007 90);
+	--sidebar-foreground: oklch(21% 0.045 292);
+	--sidebar-primary: oklch(50% 0.21 292);
+	--sidebar-primary-foreground: oklch(97% 0.015 295);
+	--sidebar-accent: oklch(93.4% 0.013 90);
+	--sidebar-accent-foreground: oklch(21% 0.045 292);
+	--sidebar-border: oklch(21% 0.045 292 / 9%);
+	--sidebar-ring: oklch(50% 0.21 292);
+
+	/* Always-dark "night" surface (footer wordmark), same in both themes. */
+	--night: oklch(14.5% 0.03 292);
+	--night-foreground: oklch(94.5% 0.014 300);
+
+	/* Galaxy 3D (read by GalaxyBackground.tsx). Light theme renders with
+	   multiply blending, so these are deeper/saturated: a light colour
+	   would vanish against the pearl background. */
+	--galaxy-core: oklch(58% 0.2 330);
+	--galaxy-arm: oklch(48% 0.21 292);
+	--galaxy-hot: oklch(40% 0.18 300);
+	--galaxy-star: oklch(45% 0.12 292);
 }
 
 .dark {
-	--background: oklch(15.9% 0.011 292);
-	--foreground: oklch(95.9% 0.006 85);
-	--card: oklch(19.4% 0.013 292);
-	--card-foreground: oklch(95.9% 0.006 85);
-	--popover: oklch(19.4% 0.013 292);
-	--popover-foreground: oklch(95.9% 0.006 85);
-	--primary: oklch(72% 0.14 290);
-	--primary-foreground: oklch(15% 0.04 290);
-	--secondary: oklch(95.9% 0.006 85);
-	--secondary-foreground: oklch(15.9% 0.011 292);
-	--muted: oklch(11.8% 0.01 292);
-	--muted-foreground: oklch(70% 0.014 290);
-	--accent: oklch(23% 0.014 292);
-	--accent-foreground: oklch(95.9% 0.006 85);
-	--destructive: oklch(70% 0.18 25);
-	--success: oklch(70% 0.14 155);
+	--background: oklch(16.5% 0.03 292);
+	--foreground: oklch(94.5% 0.014 300);
+	--card: oklch(21% 0.036 291);
+	--card-foreground: oklch(94.5% 0.014 300);
+	--popover: oklch(21% 0.036 291);
+	--popover-foreground: oklch(94.5% 0.014 300);
+	--primary: oklch(67% 0.185 292);
+	--primary-foreground: oklch(15% 0.05 290);
+	--secondary: oklch(94.5% 0.014 300);
+	--secondary-foreground: oklch(16.5% 0.03 292);
+	--muted: oklch(14.5% 0.03 292);
+	--muted-foreground: oklch(72% 0.03 293);
+	--accent: oklch(25% 0.04 291);
+	--accent-foreground: oklch(94.5% 0.014 300);
+	--destructive: oklch(70% 0.19 22);
+	--success: oklch(72% 0.15 160);
 	--success-foreground: oklch(15% 0.03 155);
-	--warning: oklch(78% 0.14 75);
+	--warning: oklch(80% 0.15 80);
 	--warning-foreground: oklch(15% 0.03 75);
-	--info: oklch(70% 0.13 240);
+	--info: oklch(72% 0.13 245);
 	--info-foreground: oklch(15% 0.03 240);
-	--border: oklch(100% 0 0 / 10%);
-	--input: oklch(100% 0 0 / 35%);
-	--ring: oklch(72% 0.14 290);
-	--chart-1: oklch(72% 0.14 290);
-	--chart-2: oklch(72% 0.11 250);
-	--chart-3: oklch(70% 0.14 155);
-	--chart-4: oklch(75% 0.14 60);
-	--chart-5: oklch(72% 0.17 20);
-	--sidebar: oklch(19.4% 0.013 292);
-	--sidebar-foreground: oklch(95.9% 0.006 85);
-	--sidebar-primary: oklch(72% 0.14 290);
-	--sidebar-primary-foreground: oklch(15% 0.04 290);
-	--sidebar-accent: oklch(23% 0.014 292);
-	--sidebar-accent-foreground: oklch(95.9% 0.006 85);
-	--sidebar-border: oklch(100% 0 0 / 10%);
-	--sidebar-ring: oklch(72% 0.14 290);
+	--border: oklch(85% 0.04 295 / 12%);
+	--input: oklch(85% 0.04 295 / 46%);
+	--ring: oklch(67% 0.185 292);
+	--chart-1: oklch(67% 0.185 292);
+	--chart-2: oklch(72% 0.12 250);
+	--chart-3: oklch(72% 0.14 160);
+	--chart-4: oklch(78% 0.14 80);
+	--chart-5: oklch(72% 0.16 20);
+	--sidebar: oklch(21% 0.036 291);
+	--sidebar-foreground: oklch(94.5% 0.014 300);
+	--sidebar-primary: oklch(67% 0.185 292);
+	--sidebar-primary-foreground: oklch(15% 0.05 290);
+	--sidebar-accent: oklch(25% 0.04 291);
+	--sidebar-accent-foreground: oklch(94.5% 0.014 300);
+	--sidebar-border: oklch(85% 0.04 295 / 12%);
+	--sidebar-ring: oklch(67% 0.185 292);
+
+	/* Dark theme: additive blending, so bright and luminous. */
+	--galaxy-core: oklch(86% 0.1 320);
+	--galaxy-arm: oklch(62% 0.2 292);
+	--galaxy-hot: oklch(94.5% 0.03 300);
+	--galaxy-star: oklch(88% 0.05 295);
 }
 
 @layer base {
@@ -159,29 +201,37 @@
 	html {
 		@apply font-sans;
 	}
+	/* 17px body / 1.65: generous reading size, never tiny UI text. */
+	body {
+		font-size: 1.0625rem;
+		line-height: 1.65;
+	}
 }
 
 /* ============================================================
    EDITORIAL TYPE SYSTEM
    ============================================================ */
-.font-serif-display {
-	font-family: var(--font-serif);
-	font-weight: 400;
-	line-height: 0.98;
-	letter-spacing: -0.02em;
+/* Components layer so text-display/title/... utilities can override the
+   line-height and tracking below when a size token is applied. */
+@layer components {
+	.font-serif-display {
+		font-family: var(--font-serif);
+		font-weight: 400;
+		line-height: 0.98;
+		letter-spacing: -0.02em;
+	}
 }
 .eyebrow {
 	font-family: var(--font-mono);
-	font-size: 0.75rem;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
+	font-size: 0.8125rem;
+	letter-spacing: 0.06em;
 	color: var(--muted-foreground);
 	font-weight: 500;
 }
 .khelde-lead {
-	font-size: clamp(18px, 1.6vw, 22px);
-	line-height: 1.5;
-	max-width: 60ch;
+	font-size: clamp(1.125rem, 1.7vw, 1.375rem);
+	line-height: 1.6;
+	max-width: 58ch;
 }
 
 /* ============================================================
@@ -390,8 +440,8 @@
 .wordmark-reveal {
 	position: relative;
 	overflow: hidden;
-	background: oklch(11.8% 0.01 292);
-	color: oklch(95.9% 0.006 85);
+	background: var(--night);
+	color: var(--night-foreground);
 	isolation: isolate;
 }
 .wordmark-reveal::before {
@@ -420,7 +470,7 @@
 	font-size: clamp(120px, 24vw, 480px);
 	line-height: 0.78;
 	letter-spacing: -0.04em;
-	color: oklch(95.9% 0.006 85);
+	color: var(--night-foreground);
 	white-space: nowrap;
 	user-select: none;
 	display: inline-flex;
@@ -444,7 +494,8 @@
 	line-height: 0.78;
 	letter-spacing: -0.04em;
 	color: transparent;
-	-webkit-text-stroke: 1px rgba(245, 242, 236, 0.18);
+	-webkit-text-stroke: 1px
+		color-mix(in oklch, var(--night-foreground), transparent 82%);
 	white-space: nowrap;
 	pointer-events: none;
 	transform: translate(-3%, 8%);

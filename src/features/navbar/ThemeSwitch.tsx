@@ -13,7 +13,7 @@ export const ThemeDrop = () => {
 				size="icon"
 				aria-hidden="true"
 				tabIndex={-1}
-				className="rounded-full"
+				className="size-11 rounded-full"
 			>
 				<span className="opacity-0">
 					<Sun size={20} />
@@ -30,7 +30,7 @@ export const ThemeDrop = () => {
 			variant="outline"
 			size="icon"
 			onClick={toggleTheme}
-			className="rounded-full"
+			className="size-11 rounded-full"
 			aria-label={`Cambiar a tema ${isDark ? "claro" : "oscuro"}`}
 		>
 			{isDark ? <MoonStar size={20} /> : <Sun size={20} />}

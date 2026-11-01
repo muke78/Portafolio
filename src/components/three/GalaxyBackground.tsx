@@ -12,6 +12,7 @@ import {
 	ShaderMaterial,
 	Sprite,
 	SpriteMaterial,
+	SRGBColorSpace,
 	WebGLRenderer,
 } from "three";
 
@@ -36,6 +37,10 @@ import {
  *  · On scroll → shrinks toward the lower-right corner.
  *  · Approaching the footer's big "Khelde" wordmark → rises back up,
  *    centered, like a sunset behind the word.
+ *
+ * Colours are NOT hardcoded: they are read from the --galaxy-* tokens in
+ * app.css (different for light/dark) and re-read when the theme class on
+ * <html> changes, so the galaxy always matches the page palette.
  *
  * Named imports (not `import * as THREE`/dynamic `import("three")`)
  * are deliberate: three ships as one ~700KB monolithic ESM file, and
@@ -145,22 +150,71 @@ const STAR_VERTEX_SHADER = /* glsl */ `
 const STAR_FRAGMENT_SHADER = /* glsl */ `
   varying float vAlpha;
   uniform float uOpacity;
+  uniform vec3 uColorStar;
   void main() {
     vec2 uv = gl_PointCoord - 0.5;
     float d = length(uv) * 2.0;
     float alpha = pow(clamp(1.0 - d, 0.0, 1.0), 2.2);
     if (alpha <= 0.003) discard;
-    gl_FragColor = vec4(0.86, 0.88, 0.99, alpha * uOpacity * vAlpha);
+    gl_FragColor = vec4(uColorStar, alpha * uOpacity * vAlpha);
   }
 `;
 
-function makeGlowTexture() {
-	const size = 128;
-	const canvas = document.createElement("canvas");
-	canvas.width = size;
-	canvas.height = size;
+type Rgb = [number, number, number];
+
+interface GalaxyPalette {
+	core: Rgb;
+	arm: Rgb;
+	hot: Rgb;
+	star: Rgb;
+}
+
+// Resolves a CSS custom property (any CSS colour syntax, incl. oklch())
+// to sRGB 0-255 by letting the browser paint it onto a 1x1 canvas.
+// Created lazily: this module is also evaluated during SSR, where
+// `document` does not exist.
+let probe: CanvasRenderingContext2D | null | undefined;
+const getProbe = () => {
+	if (probe === undefined) {
+		const c = document.createElement("canvas");
+		c.width = 1;
+		c.height = 1;
+		probe = c.getContext("2d", { willReadFrequently: true });
+	}
+	return probe;
+};
+
+function readToken(name: string, fallback: Rgb): Rgb {
+	const probeCtx = getProbe();
+	const raw = getComputedStyle(document.documentElement)
+		.getPropertyValue(name)
+		.trim();
+	if (!probeCtx || !raw) return fallback;
+	probeCtx.clearRect(0, 0, 1, 1);
+	probeCtx.fillStyle = raw;
+	probeCtx.fillRect(0, 0, 1, 1);
+	const [r, g, b] = probeCtx.getImageData(0, 0, 1, 1).data;
+	return [r, g, b];
+}
+
+function readPalette(): GalaxyPalette {
+	return {
+		core: readToken("--galaxy-core", [214, 170, 240]),
+		arm: readToken("--galaxy-arm", [140, 92, 255]),
+		hot: readToken("--galaxy-hot", [240, 236, 250]),
+		star: readToken("--galaxy-star", [214, 218, 250]),
+	};
+}
+
+const toColor = ([r, g, b]: Rgb) =>
+	new Color().setRGB(r / 255, g / 255, b / 255, SRGBColorSpace);
+const rgba = ([r, g, b]: Rgb, a: number) => `rgba(${r},${g},${b},${a})`;
+
+function paintGlow(canvas: HTMLCanvasElement, pal: GalaxyPalette) {
+	const size = canvas.width;
 	const ctx = canvas.getContext("2d");
-	if (!ctx) return null;
+	if (!ctx) return;
+	ctx.clearRect(0, 0, size, size);
 	const gradient = ctx.createRadialGradient(
 		size / 2,
 		size / 2,
@@ -169,12 +223,19 @@ function makeGlowTexture() {
 		size / 2,
 		size / 2,
 	);
-	gradient.addColorStop(0, "rgba(255,255,255,1)");
-	gradient.addColorStop(0.22, "rgba(255,222,192,0.65)");
-	gradient.addColorStop(0.55, "rgba(140,92,255,0.22)");
-	gradient.addColorStop(1, "rgba(140,92,255,0)");
+	gradient.addColorStop(0, rgba(pal.hot, 1));
+	gradient.addColorStop(0.22, rgba(pal.core, 0.65));
+	gradient.addColorStop(0.55, rgba(pal.arm, 0.22));
+	gradient.addColorStop(1, rgba(pal.arm, 0));
 	ctx.fillStyle = gradient;
 	ctx.fillRect(0, 0, size, size);
+}
+
+function makeGlowTexture(pal: GalaxyPalette) {
+	const canvas = document.createElement("canvas");
+	canvas.width = 128;
+	canvas.height = 128;
+	paintGlow(canvas, pal);
 	const tex = new CanvasTexture(canvas);
 	tex.needsUpdate = true;
 	return tex;
@@ -258,10 +319,11 @@ function mountGalaxy(wrap: HTMLDivElement) {
 	geo.setAttribute("aSize", new BufferAttribute(aSize, 1));
 	geo.setAttribute("aTwinkle", new BufferAttribute(aTwinkle, 1));
 
+	const palette = readPalette();
 	const colors = {
-		uColorInside: { value: new Color("#FFC896") },
-		uColorOutside: { value: new Color("#8C5CFF") },
-		uColorHot: { value: new Color("#FFFFFF") },
+		uColorInside: { value: toColor(palette.core) },
+		uColorOutside: { value: toColor(palette.arm) },
+		uColorHot: { value: toColor(palette.hot) },
 	};
 
 	// Crisp core layer - small, sharp, bright.
@@ -327,6 +389,7 @@ function mountGalaxy(wrap: HTMLDivElement) {
 			uTime: { value: 0 },
 			uSize: { value: 14.0 },
 			uOpacity: { value: 0.55 },
+			uColorStar: { value: toColor(palette.star) },
 		},
 		vertexShader: STAR_VERTEX_SHADER,
 		fragmentShader: STAR_FRAGMENT_SHADER,
@@ -336,7 +399,7 @@ function mountGalaxy(wrap: HTMLDivElement) {
 	// Soft nucleus glow - a camera-facing sprite with a radial-gradient
 	// canvas texture, sitting right at the core for an actual bright
 	// "galactic bulge" glow instead of just dense points.
-	const glowTexture = makeGlowTexture();
+	const glowTexture = makeGlowTexture(palette);
 	const coreGlow = glowTexture
 		? new Sprite(
 				new SpriteMaterial({
@@ -360,6 +423,25 @@ function mountGalaxy(wrap: HTMLDivElement) {
 	scene.add(galaxyGroup);
 	scene.add(pointsStars);
 	if (coreGlow) scene.add(coreGlow);
+
+	// The theme toggle flips the `dark` class on <html>: re-read the tokens
+	// so the galaxy follows the palette instead of keeping the old colours.
+	const applyPalette = () => {
+		const next = readPalette();
+		colors.uColorInside.value.copy(toColor(next.core));
+		colors.uColorOutside.value.copy(toColor(next.arm));
+		colors.uColorHot.value.copy(toColor(next.hot));
+		matStars.uniforms.uColorStar.value.copy(toColor(next.star));
+		if (glowTexture?.image instanceof HTMLCanvasElement) {
+			paintGlow(glowTexture.image, next);
+			glowTexture.needsUpdate = true;
+		}
+	};
+	const themeObserver = new MutationObserver(applyPalette);
+	themeObserver.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ["class"],
+	});
 
 	function resize() {
 		const w = wrap.clientWidth;
@@ -448,6 +530,7 @@ function mountGalaxy(wrap: HTMLDivElement) {
 
 	return () => {
 		cancelAnimationFrame(rafId);
+		themeObserver.disconnect();
 		if (findTimer) window.clearTimeout(findTimer);
 		window.removeEventListener("resize", resize);
 		geo.dispose();
