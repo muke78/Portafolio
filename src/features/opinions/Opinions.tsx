@@ -126,6 +126,7 @@ export const Opinions = ({
 				) : (
 					<div
 						data-marquee
+						data-mask="left"
 						className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
 						style={
 							{

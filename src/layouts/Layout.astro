@@ -108,6 +108,12 @@ const personSchema = {
     >
       {i18n.COMMON.SKIP_TO_CONTENT}
     </a>
+    <div
+      data-scroll-progress
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-x-0 top-0 z-100 h-0.5 bg-primary"
+    >
+    </div>
     <BackgroundEffects client:idle />
     <div class="relative z-2">
       <slot />

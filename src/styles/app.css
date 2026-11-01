@@ -420,8 +420,31 @@
 .motion-ok [data-hero-line]:not([data-revealed]) {
 	transform: translateY(115%);
 }
-.motion-ok [data-hero-portrait]:not([data-revealed]) {
+.motion-ok [data-hero-portrait]:not([data-revealed]),
+.motion-ok [data-mask]:not([data-mask="left"]):not([data-revealed]),
+.motion-ok [data-detail-figure]:not([data-revealed]) {
 	clip-path: inset(100% 0 0 0);
+}
+.motion-ok [data-mask="left"]:not([data-revealed]) {
+	clip-path: inset(0 100% 0 0);
+}
+.motion-ok [data-stagger-item]:not([data-revealed]),
+.motion-ok [data-detail-back]:not([data-revealed]),
+.motion-ok [data-detail-meta]:not([data-revealed]) {
+	opacity: 0;
+}
+/* Pinned sideways showcase: the track is clipped (and moved by GSAP) only when
+   the engine will pin it; otherwise it stays a hand-scrollable row. Keep the
+   query equal to the one in src/lib/motion/layers.ts. */
+@media (min-width: 1024px) and (min-height: 760px) {
+	.motion-ok [data-hscroll-viewport] {
+		overflow: hidden;
+	}
+}
+/* Reading progress hairline: starts empty, GSAP scales it with the scroll. */
+[data-scroll-progress] {
+	transform: scaleX(0);
+	transform-origin: 0 50%;
 }
 
 /* ============================================================

@@ -655,6 +655,13 @@ sitio usa las mismas piezas, cada una en su módulo:
 | Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla | `[data-parallax-img]` |
 | Marquee de opiniones | `media.ts` | La cinta corre con `gsap`; **su velocidad y dirección siguen la del scroll** y vuelve a la calma; se pausa con hover o foco | `[data-marquee]` + `[data-marquee-track]` |
 | Parallax decorativo | `media.ts` | Anillos de órbita, ±6 % | `[data-parallax="N"]` |
+| **Showcase horizontal fijado** | `layers.ts` | En escritorio (≥ 1024×760) la sección de proyectos se **fija** y el scroll vertical desliza las cards en horizontal (máx. 2.5 pantallas); barra de progreso; se recalcula al cambiar de categoría. En móvil es una grilla | `[data-hscroll]` + `[data-hscroll-track]` / `-viewport` / `-progress` |
+| **Pila de cards** | `layers.ts` | Las cards de experiencia son `sticky` y se apilan (cada una un poco más abajo); la que queda debajo retrocede (`scale`) al llegar la siguiente | `[data-stack]` + `[data-stack-card]` |
+| Marcos con máscara | `masks.ts` | Un marco se abre como cortina (`clip-path`) mientras la foto asienta desde un zoom; también hacia el lado (`data-mask="left"`) | `[data-mask]` |
+| Grupos con stagger | `masks.ts` | Los hijos entran uno a uno al aparecer el contenedor (iconos de stack, campos del formulario, enlaces); `data-stagger="pop"` además crece | `[data-stagger]` + `[data-stagger-item]` |
+| Texto con scrub | `text.ts` | Las palabras de un párrafo se encienden mientras cruza la pantalla | `[data-scrub-text]` |
+| Detalle de proyecto | `detail.ts` | Botón de retorno, etiqueta y título (letra a letra con máscara), foto que se abre desde abajo; al bajar, la foto retrocede y deriva dentro de su marco | `[data-detail]` + `data-detail-*` |
+| Progreso de lectura | `page.ts` | Línea fina arriba que se llena con el scroll | `[data-scroll-progress]` |
 
 Reglas de las escenas:
 
@@ -860,7 +867,14 @@ vive en `src/lib/motion/` (7.7).
 | `data-reveal` | Cada bloque o card que debe entrar | Fade-up con stagger por lotes |
 | `data-parallax="N"` | Elemento decorativo (anillos) | Parallax de ±N % |
 | `data-parallax-img` | Imagen de una card (marco `overflow-hidden`) | Deriva ±6 % |
-| `data-marquee` / `data-marquee-track` | Cinta de opiniones | Velocidad ligada al scroll |
+| `data-marquee` / `data-marquee-track` | Cinta de opiniones | Velocidad ligada al scroll y leve inclinación |
+| `data-mask` (`="left"`, `data-mask-delay`) | Marco de foto, formulario, cinta | Se abre como cortina al entrar |
+| `data-stagger` (`="pop"`, `data-stagger-delay`) + `data-stagger-item` | Contenedor y sus hijos | Entrada uno a uno |
+| `data-scrub-text` | Párrafo de lectura | Palabras que se encienden con el scroll |
+| `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `TabsProyectos` | Showcase horizontal fijado |
+| `data-stack` + `data-stack-card` | Lista de experiencia | Pila sticky con profundidad |
+| `data-detail` + `-back` / `-meta` / `-title` / `-figure` / `-img` | Ruta de detalle | Entrada y profundidad |
+| `data-scroll-progress` | `Layout.astro` | Barra de progreso |
 | `data-revealed` | Lo pone el motor | "Ya terminó": el CSS deja de ocultarlo |
 
 El estado inicial oculto del CSS solo existe bajo `html.motion-ok` (7.4).

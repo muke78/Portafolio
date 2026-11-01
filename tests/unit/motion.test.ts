@@ -33,6 +33,11 @@ describe("motion (SSR safety)", () => {
 			MOTION.manifesto.screens,
 		);
 		expect(MOTION.marquee.maxBoost).toBeLessThanOrEqual(5);
+		// A sideways showcase is a pinned scene too: same cap, and a gentle lean.
+		expect(MOTION.hscroll.maxScreens).toBeLessThanOrEqual(2.5);
+		expect(MOTION.marquee.maxSkew).toBeLessThanOrEqual(4);
+		expect(MOTION.stack.scale).toBeGreaterThanOrEqual(0.9);
+		expect(MOTION.detail.figureScale).toBeGreaterThanOrEqual(0.9);
 	});
 
 	it("withMotion never runs setup without a window and returns a callable cleanup", () => {

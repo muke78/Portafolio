@@ -73,11 +73,20 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 								{images_topics.length}
 							</span>
 						</div>
-						<div className="flex flex-wrap gap-3">
-							{visible.map((tech) => (
+						<div
+							className="flex flex-wrap gap-3"
+							data-stagger
+							data-stagger-delay="0.15"
+						>
+							{visible.map((tech, i) => (
 								<div
 									key={tech}
 									title={tech}
+									// Only the chips present at first render stagger in; the ones
+									// added by "see all" mount later and must stay visible.
+									{...(i < TOP_SKILLS && !isOpen
+										? { "data-stagger-item": "" }
+										: {})}
 									className="flex items-center gap-2 rounded-full border border-border bg-muted/50 pl-2 pr-4 py-2"
 								>
 									<span className="relative flex h-7 w-7 shrink-0 items-center justify-center">

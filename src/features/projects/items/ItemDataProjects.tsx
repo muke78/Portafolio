@@ -34,7 +34,10 @@ export const ItemDataProjects = ({
 	}, []);
 
 	return (
-		<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+		<div
+			data-hscroll-track
+			className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:flex lg:w-max lg:items-stretch lg:pr-6"
+		>
 			{data?.map(
 				({
 					project_id,
@@ -50,9 +53,13 @@ export const ItemDataProjects = ({
 						<article
 							key={project_id}
 							data-reveal
-							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift"
+							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift lg:w-[400px] lg:shrink-0"
 						>
-							<figure className="relative h-[200px] overflow-hidden bg-muted">
+							<figure
+								data-mask
+								data-mask-delay="0.1"
+								className="relative h-[200px] overflow-hidden bg-muted"
+							>
 								{!loadedImages[card_image] && (
 									<Skeleton className="absolute inset-0 rounded-none" />
 								)}

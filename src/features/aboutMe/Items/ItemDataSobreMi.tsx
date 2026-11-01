@@ -37,21 +37,19 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 			data-reveal
 			className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift"
 		>
-			<img
-				className="rounded-t-lg"
-				src={image}
-				alt={i18n.ABOUTME.ABOUT_TITLE}
-				width={1600}
-				height={400}
-				style={{
-					width: "100%",
-					height: "400px",
-					objectFit: "cover",
-				}}
-				loading="lazy"
-				decoding="async"
-				draggable="false"
-			/>
+			<figure data-mask className="relative h-[400px] overflow-hidden bg-muted">
+				<img
+					data-parallax-img
+					className="absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover"
+					src={image}
+					alt={i18n.ABOUTME.ABOUT_TITLE}
+					width={1600}
+					height={400}
+					loading="lazy"
+					decoding="async"
+					draggable="false"
+				/>
+			</figure>
 			<div className="p-5">
 				<div className="flex justify-between">
 					<span className="text-2xl">{title_card}</span>
@@ -60,7 +58,9 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 					{subtitle}
 				</p>
 				<div>
-					<p className="font-normal text-base/8">{description}</p>
+					<p className="font-normal text-base/8" data-scrub-text>
+						{description}
+					</p>
 				</div>
 			</div>
 		</div>

@@ -87,6 +87,14 @@ export const marquees = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 			repeat: -1,
 		});
 
+		// The ribbon leans into the scroll (a few degrees at most) and settles
+		// back when scrolling stops.
+		const skewTo = gsap.quickTo(track, "skewX", {
+			duration: 0.6,
+			ease: "power3.out",
+		});
+		const settleSkew = gsap.delayedCall(0.15, () => skewTo(0)).pause();
+
 		const trigger = ScrollTrigger.create({
 			trigger: root,
 			start: "top bottom",
@@ -96,6 +104,14 @@ export const marquees = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 					MOTION.marquee.maxBoost,
 					1 + Math.abs(self.getVelocity()) / 450,
 				);
+				skewTo(
+					gsap.utils.clamp(
+						-MOTION.marquee.maxSkew,
+						MOTION.marquee.maxSkew,
+						self.getVelocity() / -400,
+					),
+				);
+				settleSkew.restart(true);
 				gsap.to(tween, {
 					timeScale: self.direction * boost,
 					duration: 0.25,
@@ -120,6 +136,7 @@ export const marquees = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 			root.removeEventListener("focusin", pause);
 			root.removeEventListener("focusout", play);
 			trigger.kill();
+			settleSkew.kill();
 			tween.kill();
 			gsap.set(track, { clearProps: "transform" });
 			track.style.animation = "";

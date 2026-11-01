@@ -9,7 +9,14 @@
  *   [data-split]               titles rising line by line out of a mask (split.ts)
  *   [data-parallax=N]          decorative parallax (media.ts)
  *   [data-parallax-img]        image drift inside a card frame (media.ts)
- *   [data-marquee] + track     velocity-driven marquee (media.ts)
+ *   [data-marquee] + track     velocity-driven marquee + lean (media.ts)
+ *   [data-mask]                frame that opens like a curtain (masks.ts)
+ *   [data-stagger] + items     children entering one by one (masks.ts)
+ *   [data-scrub-text]          words lighting up with the scroll (text.ts)
+ *   [data-hscroll] + track     pinned sideways showcase (layers.ts)
+ *   [data-stack] + cards       layered sticky stack with depth (layers.ts)
+ *   [data-detail] + parts     project detail intro + depth (detail.ts)
+ *   [data-scroll-progress]     reading progress hairline (page.ts)
  *
  * Accessibility: everything is registered under
  * "prefers-reduced-motion: no-preference" (withMotion). With "reduce"
@@ -26,11 +33,16 @@ import {
 	MOTION_CLASS,
 	withMotion,
 } from "./core";
+import { projectDetail } from "./detail";
 import { playHero } from "./hero";
+import { horizontalScenes, stackScenes } from "./layers";
+import { maskReveals, staggerGroups } from "./masks";
 import { cardImageParallax, marquees, setupParallax } from "./media";
+import { scrollProgress } from "./page";
 import { observeReveals } from "./reveals";
 import { manifestoScene } from "./scenes";
 import { splitTitles } from "./split";
+import { scrubText } from "./text";
 
 export {
 	byVisualOrder,
@@ -66,6 +78,13 @@ export const initMotion = (): Cleanup => {
 			setupParallax(tools),
 			cardImageParallax(tools),
 			marquees(tools),
+			maskReveals(tools),
+			staggerGroups(tools),
+			scrubText(tools),
+			horizontalScenes(tools),
+			stackScenes(tools),
+			projectDetail(tools),
+			scrollProgress(tools),
 		];
 
 		// Layout keeps moving after load (lazy images, islands, web fonts).

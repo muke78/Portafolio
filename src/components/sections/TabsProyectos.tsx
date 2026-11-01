@@ -138,27 +138,24 @@ export const TabsProyectos = ({
 	];
 
 	return (
-		<div
-			className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16"
-			data-reveal-group
-		>
-			{/* Left (4 cols): title + category list. Sticky on desktop. */}
-			<div className="lg:col-span-4">
-				<div className="flex flex-col gap-8 lg:sticky lg:top-28">
-					<h2 className="font-serif-display text-title" data-split>
-						{title}
-					</h2>
-					<SectionTabs
-						items={tabs}
-						active={activeTab}
-						onChange={setActiveTab}
-						label={title}
-					/>
-				</div>
+		<div className="flex flex-col gap-10 lg:gap-12">
+			{/* Header: the title and the category pills share one row. */}
+			<div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+				<h2 className="font-serif-display text-title" data-split>
+					{title}
+				</h2>
+				<SectionTabs
+					items={tabs}
+					active={activeTab}
+					onChange={setActiveTab}
+					label={title}
+					orientation="horizontal"
+				/>
 			</div>
 
-			{/* Right (8 cols): the cards. */}
-			<div className="min-w-0 lg:col-span-8">
+			{/* The cards: a grid on small screens, a pinned sideways showcase on
+			    desktop (the engine slides [data-hscroll-track]; see layers.ts). */}
+			<div data-hscroll-viewport className="min-w-0 lg:overflow-x-auto">
 				{loading ? (
 					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 						{skeletonItems.map((_, i) => (
@@ -194,6 +191,13 @@ export const TabsProyectos = ({
 						)}
 					</>
 				)}
+			</div>
+			<div aria-hidden="true" className="hidden h-px w-full bg-border lg:block">
+				<div
+					data-hscroll-progress
+					className="h-px origin-left bg-primary"
+					style={{ transform: "scaleX(0)" }}
+				/>
 			</div>
 		</div>
 	);

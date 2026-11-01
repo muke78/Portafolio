@@ -30,7 +30,21 @@ export const MOTION = {
 	hero: { total: 1.7 },
 	// Pinned manifesto: how many viewport heights of scroll it lasts.
 	manifesto: { screens: 2, screensMobile: 1.4 },
-	marquee: { maxBoost: 4 },
+	marquee: { maxBoost: 4, maxSkew: 3 },
+	// Image masks: a frame opens (clip-path) while its picture settles (scale).
+	mask: {
+		duration: 1.1,
+		ease: "power4.inOut",
+		scaleFrom: 1.25,
+		start: "top 88%",
+	},
+	// Groups of items entering one after another (stack icons, fields, links).
+	stagger: { duration: 0.8, distance: 20, each: 0.07, start: "top 85%" },
+	// Pinned sideways showcase and layered stack (layers.ts).
+	hscroll: { maxScreens: 2.5 },
+	stack: { scale: 0.95 },
+	// Project detail page: intro timeline and scroll-linked depth.
+	detail: { total: 2, figureScale: 0.92, imgDrift: 7 },
 } as const;
 
 export interface MotionTools {

@@ -27,7 +27,12 @@ atributos de datos y el motor los anima.
 | `reveals.ts` | `[data-reveal]`: fade-up con stagger por lotes |
 | `scenes.ts` | Escena fijada del manifiesto (`pin` + `scrub` + `SplitText`) |
 | `split.ts` | `[data-split]`: títulos con máscara de líneas |
-| `media.ts` | Parallax decorativo, deriva de imágenes, marquee ligado a la velocidad |
+| `media.ts` | Parallax decorativo, deriva de imágenes, marquee ligado a la velocidad (con inclinación `skewX`) |
+| `masks.ts` | `[data-mask]` (marcos que se abren con `clip-path`) y `[data-stagger]` (hijos que entran uno a uno) |
+| `text.ts` | `[data-scrub-text]`: palabras que se encienden con el scroll (sin fijar) |
+| `layers.ts` | `[data-hscroll]`: showcase horizontal fijado; `[data-stack]`: pila de cards `sticky` con profundidad |
+| `detail.ts` | Ruta `/[lang]/project/[id]`: timeline de entrada + profundidad al hacer scroll |
+| `page.ts` | `[data-scroll-progress]`: barra de progreso de lectura |
 | `index.ts` | `initMotion()`: arranca todo una vez desde `Layout.astro` |
 
 Para añadir un efecto: **atributo de datos nuevo → escena en
@@ -176,6 +181,19 @@ Registrar un plugin nuevo: importarlo en `src/lib/motion/core.ts` y añadirlo a
 - **`ScrollSmoother` descartado**: reescribe el contenedor de scroll, rompe el
   fondo 3D (`position: fixed`) y el ajuste de anclas (`src/js/scrollFix.js`),
   y no aporta a la lectura.
+- **`from()` y el CSS que oculta**: si el CSS deja un elemento en
+  `opacity: 0`, `gsap.from(el, {autoAlpha: 0})` lee ese 0 como valor final y
+  anima 0 → 0. Con estado inicial oculto por CSS usa siempre `fromTo()`.
+- **`settle()` borra TODO el `style` inline** (incluidas variables CSS
+  `--x`). No pongas valores de layout en `style={{...}}` de un elemento con
+  `data-reveal`; usa clases estáticas.
+- **No fijar nodos que React posee**: `pin` mete un `pin-spacer` alrededor y
+  React fallaría al quitar/insertar ese nodo. Se fija el contenedor Astro
+  (`[data-hscroll]`) y solo se traslada el interior (`x`). Si el contenido
+  cambia (tabs), el `MutationObserver` de `layers.ts` recalcula.
+- **Cuidado con `clearProps` sobre transformaciones compartidas**: limpiar
+  `scale` borra todo el `transform` (también el parallax `yPercent`). En
+  marcos con máscara solo se limpia `clipPath`.
 - **Después de cambiar la altura de la página** (islas, imágenes lazy,
   fuentes) el motor llama a `ScrollTrigger.refresh()`.
 - **React**: si una isla necesita GSAP propio, crear `gsap.context()` en un

@@ -21,10 +21,12 @@ try {
 ---
 
 <div class="mx-auto max-w-[1240px] px-6 w-full py-24 md:py-32">
-	<TabsProyectos
-		client:visible
-		currentLocale={currentLocale}
-		initialData={initialData}
-		title={i18n.PROJECTS.PROJECTS_TITLE}
-	/>
+	<div data-hscroll>
+		<TabsProyectos
+			client:visible
+			currentLocale={currentLocale}
+			initialData={initialData}
+			title={i18n.PROJECTS.PROJECTS_TITLE}
+		/>
+	</div>
 </div>
