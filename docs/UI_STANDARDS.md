@@ -465,9 +465,9 @@ usa **`<Skeleton />`** (shadcn) con la **forma del contenido final**:
 mismo borde, radio, padding y alto de imagen, para que nada salte cuando
 llegan los datos.
 
-- Listas/tabs: skeletons de las cards reales (`SkeletonProjectsCard`,
+- Listas y carriles: skeletons de las cards reales (`SkeletonProjectsCard`,
   `SkeletonTestimonialCard`, `SkeletonEducation`, `SkeletonExperience`,
-  `SkeletonAboutMe`, `SkeletonTabsRow`).
+  `SkeletonAboutMe`).
 - Imágenes: `Skeleton` absoluto detrás de la imagen, que entra con
   `opacity` al cargar; el contenedor tiene alto fijo.
 - Botón enviando: la etiqueta se sustituye por un `Skeleton` (barra) y el
@@ -582,7 +582,7 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
     duration: 0.7,
     ease: "power3.out",
     stagger: 0.1,
-    scrollTrigger: { trigger: "[data-reveal-group]", start: "top 85%", once: true },
+    scrollTrigger: { trigger: "[data-reveal]", start: "top 85%", once: true },
   });
   // matchMedia revierte las animaciones y triggers solo al cambiar la preferencia
 });
@@ -706,6 +706,11 @@ Reglas de las escenas:
 Aplica a todo cambio de UI (WCAG 2.1 AA, con referencias 2.2 donde se
 indica).
 
+- **Texto que se enciende con el scroll** (`data-scrub-text`, manifiesto): el
+  estado "aún sin leer" nunca baja del suelo de legibilidad `MOTION.dim`
+  (≥ 3:1 en texto grande, ≥ 4.5:1 en cuerpo, por tema; lo mide
+  `tests/unit/dimmedText.test.ts`). Una opacidad fija no sirve: en claro
+  necesita un suelo mucho más alto que en oscuro.
 - **Estructura:** un `<h1>`, niveles sin saltos, *landmarks* (`<header>`,
   `<nav>`, `<main>`, `<footer>`); enlace "saltar al contenido" (`#main-content`
   ya existe como destino).
@@ -724,6 +729,14 @@ indica).
 - **Objetivos táctiles:** ≥ 24 px (AA 2.2), 44 px como meta (sección 5.1).
 - **Sin dependencia sensorial:** nada se indica solo por color, forma o
   sonido.
+
+Verificación automática: `tests/e2e/a11y.spec.ts` corre axe-core (WCAG 2.1
+A/AA) sobre el Home en ambos temas y en 375 px / escritorio, el detalle de
+proyecto y el diálogo, y comprueba un solo `<h1>`, niveles sin saltos, el
+enlace "saltar al contenido", foco visible y reflow a 640 px. `reduced-motion.spec.ts`
+comprueba que sin movimiento todo el contenido queda visible. Axe cubre
+una parte de WCAG: el resto (orden de lectura, textos de lector de pantalla,
+zoom real) se revisa a mano.
 
 Herramientas de verificación: el reporte *Accessibility* de Lighthouse,
 la extensión axe DevTools, navegación solo con teclado (`Tab`/`Shift+Tab`),
@@ -822,14 +835,16 @@ bloque de media está listo para admitirlos cuando el backend los exponga.
   aire entre secciones es deliberado: no se compensa con relleno.
 - Contenedor único `mx-auto max-w-[1240px] px-6`. Rejilla de **12
   columnas** con `gap-16` en escritorio (`lg:`) y una columna en móvil.
-- **Asimétrica 4 / 8** en Acerca y Proyectos: a la izquierda (4 col) la
-  introducción y el selector; a la derecha (8 col) el contenido, que es
-  el punto focal. La columna izquierda es `sticky` (`lg:top-28`).
+- **Asimétrica 4 / 8** en cada escena de Acerca (`StoryBlock`): a la
+  izquierda (4 col) el título, `sticky` (`lg:top-28`); a la derecha (8 col)
+  el contenido, que es el punto focal. Habilidades usa el bloque apilado
+  (título arriba, contenido a todo el ancho) porque necesita escenario. Los
+  proyectos son carriles horizontales a todo el ancho, uno por categoría.
 - **5 / 7** en Contacto (texto y enlaces / formulario) y **8 / 4** en el
   encabezado de Opiniones (título / llamada a la acción). Nada centrado
   "por defecto".
-- Las cards de proyecto pasan a **2 columnas** dentro del área de 8 col; las
-  de experiencia a 2 columnas solo desde `xl:`.
+- Las cards de proyecto viven en un carril horizontal (400 px por card); las
+  de experiencia se apilan (`sticky`) en una sola columna.
 
 ### 12.2 Hero y galaxia
 
@@ -864,11 +879,12 @@ página y se compone a escala de cartel; todo lo demás es silencio.
 - Colores de la galaxia: tokens `--galaxy-*` (2.3); se recolorea al cambiar
   de tema.
 
-### 12.3 Ley de Hick en Habilidades
+### 12.3 Habilidades: todo a la vista, sin clics
 
-Cada categoría muestra solo sus **8 primeras tecnologías**; el resto se
-revela con un botón limpio ("Ver todas (+3)" / "Ver menos",
-`aria-expanded`). El número total de la categoría sigue visible.
+Las habilidades ya no se esconden tras un "Ver todas" (el Home no oculta
+contenido detrás de clics, ver 7.7). La Ley de Hick se respeta agrupando por
+categoría (título + cantidad) y dejando que el scroll las revele: los chips
+derivan hacia su lugar y luego flotan (`skills.ts`).
 
 ### 12.4 Contrato de movimiento (activo)
 
@@ -887,7 +903,7 @@ vive en `src/lib/motion/` (7.7).
 | `data-mask` (`="left"`, `data-mask-delay`) | Marco de foto, formulario, cinta | Se abre como cortina al entrar |
 | `data-stagger` (`="pop"`, `data-stagger-delay`) + `data-stagger-item` | Contenedor y sus hijos | Entrada uno a uno |
 | `data-scrub-text` | Párrafo de lectura | Palabras que se encienden con el scroll |
-| `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `TabsProyectos` | Showcase horizontal fijado |
+| `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `ProjectRail` | Showcase horizontal fijado (un carril por categoría) |
 | `data-stack` + `data-stack-card` | Lista de experiencia | Pila sticky con profundidad |
 | `data-fly-group` + `data-fly-chip`, `data-snake` + `-trace` / `-dot` | Habilidades | Vuelo por curvas + serpiente |
 | `data-detail` + `-back` / `-meta` / `-title` / `-figure` / `-img` | Ruta de detalle | Entrada y profundidad |
@@ -897,4 +913,3 @@ vive en `src/lib/motion/` (7.7).
 | `data-revealed` | Lo pone el motor | "Ya terminó": el CSS deja de ocultarlo |
 
 El estado inicial oculto del CSS solo existe bajo `html.motion-ok` (7.4).
-Los atributos `data-reveal-group` ya no se usan.

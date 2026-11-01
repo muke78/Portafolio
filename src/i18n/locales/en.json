@@ -37,8 +37,6 @@
 		"EXPERIENCE": "Experience"
 	},
 	"SKILLS": {
-		"SKILLS_MORE": "Show all",
-		"SKILLS_LESS": "Show less",
 		"SKILLS_TITLE": "Skills"
 	},
 	"EDUCATION": {
@@ -79,8 +77,13 @@
 		"404_IMG_ALT": "Page not found",
 		"404_IMG_ARIA_LABEL": "The requested route was not found"
 	},
+	"FOOTER": {
+		"SITE": "Site",
+		"ELSEWHERE": "Elsewhere",
+		"ADMIN": "Admin access"
+	},
 	"OPINIONS": {
-		"OPINIONS_SUBTITLE": "Words from teammates, clients and colleagues I have built projects with.",
+		"OPINIONS_SUBTITLE": "Be very patient with yourself and don't compare yourself too much with others.",
 		"OPINIONS_TITLE": "Opinions about my work",
 		"OPINIONS_SUB_SUBTILE": "Did we work together? Tell me how it went.",
 		"OPINIONS_COUNT_LABEL": "opinions",

@@ -17,9 +17,13 @@
  * Fix: after a jump (native or click-triggered), keep re-snapping to
  * the target via scrollIntoView() while the document's height is still
  * changing, for a bounded window - then stop. scrollIntoView() honors
- * both scroll-margin-top and the global `scroll-smooth` on <html>, so
- * corrections land in the same place a normal jump would and animate
- * the same way.
+ * scroll-margin-top, so corrections land where a normal jump would.
+ *
+ * Scope: with the motion engine running (html.motion-ok) this script does
+ * nothing - src/lib/motion/anchors.ts owns anchors there, because pinned
+ * sections change the page length. It remains the path for visitors with
+ * prefers-reduced-motion (no pins, no smooth scrolling) and for no-JS-engine
+ * fallbacks.
  */
 (() => {
 	const SETTLE_WINDOW_MS = 4000;

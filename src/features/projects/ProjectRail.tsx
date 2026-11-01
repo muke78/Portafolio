@@ -86,7 +86,7 @@ export const ProjectRail = ({ currentLocale, category }: ProjectRailProps) => {
 				)}
 			</div>
 
-			<div aria-hidden="true" className="hidden h-px w-full bg-border lg:block">
+			<div aria-hidden="true" className="h-px w-full bg-border">
 				<div
 					data-hscroll-progress
 					className="h-px origin-left bg-primary"

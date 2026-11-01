@@ -36,6 +36,15 @@ export const CommentWidget = ({ currentLocale }: PropsLang) => {
 			const target = e.target as Node;
 			if (panelRef.current?.contains(target)) return;
 			if (triggerRef.current?.contains(target)) return;
+			// The country list is a popup portaled outside the panel: picking an
+			// option is still "inside" the dialog.
+			if (
+				(target as Element).closest?.(
+					'[data-slot^="select-"], [role="listbox"]',
+				)
+			) {
+				return;
+			}
 			setOpen(false);
 		};
 		document.addEventListener("keydown", onKeyDown);

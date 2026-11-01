@@ -18,10 +18,11 @@ import {
  * - The track may appear, change size (tab switch) or be replaced after
  *   hydration: its width is read lazily on every refresh and the wrapper is
  *   watched, so the scroll distance follows the content.
- * - Desktop only (>= 1024 px wide and >= 760 px tall): below that the cards
- *   stay a plain grid. The CSS that hides the native scrollbar and clips the
- *   track lives under `.motion-ok` in app.css, so without the engine (or with
- *   reduced motion) the row simply scrolls sideways by hand.
+ * - Any width, as long as the screen is tall enough (>= 560 px): on a phone
+ *   the vertical swipe slides the cards too, instead of asking for a
+ *   sideways swipe inside a vertical page. The CSS that clips the track
+ *   lives under `.motion-ok` in app.css (keep the query equal), so without
+ *   the engine (or with reduced motion) the row simply swipes by hand.
  */
 export const horizontalScenes = ({
 	gsap,
@@ -30,7 +31,7 @@ export const horizontalScenes = ({
 	watch("[data-hscroll]", (root) => {
 		const mm = gsap.matchMedia();
 
-		mm.add("(min-width: 1024px) and (min-height: 760px)", () => {
+		mm.add("(min-height: 560px)", () => {
 			const track = () =>
 				root.querySelector<HTMLElement>("[data-hscroll-track]");
 			const viewport = () =>
@@ -81,6 +82,35 @@ export const horizontalScenes = ({
 				},
 			});
 
+			// Keyboard: tabbing to a card that is out of view must bring it in. The
+			// viewport is clipped, so the browser would scroll it sideways by itself
+			// and fight the GSAP offset; instead the page scroll that drives the
+			// rail is moved to the position where that card is on screen.
+			const onFocusIn = (e: FocusEvent) => {
+				const v = viewport();
+				const t = track();
+				const target = e.target as Element | null;
+				const card = target?.closest("article");
+				if (!v || !t || !card) return;
+				v.scrollLeft = 0;
+				// A mouse click also focuses the link: moving the page then would
+				// swallow the click. Only keyboard focus (:focus-visible) travels.
+				if (!target?.matches(":focus-visible")) return;
+				const max = distance();
+				if (max <= 0) return;
+				const box = card.getBoundingClientRect();
+				const view = v.getBoundingClientRect();
+				if (box.left >= view.left - 1 && box.right <= view.right + 1) return;
+				const offset =
+					card.getBoundingClientRect().left - t.getBoundingClientRect().left;
+				const progress = Math.min(1, Math.max(0, offset / max));
+				window.scrollTo({
+					top: trigger.start + progress * (trigger.end - trigger.start),
+					behavior: "auto",
+				});
+			};
+			root.addEventListener("focusin", onFocusIn);
+
 			// Content changed (tab switch, data arrived): measure again.
 			let timer: number | undefined;
 			const mo = new MutationObserver(() => {
@@ -94,6 +124,7 @@ export const horizontalScenes = ({
 			mo.observe(root, { childList: true, subtree: true });
 
 			return () => {
+				root.removeEventListener("focusin", onFocusIn);
 				mo.disconnect();
 				window.clearTimeout(timer);
 				trigger.kill();

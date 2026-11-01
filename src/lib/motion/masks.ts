@@ -103,7 +103,13 @@ export const staggerGroups = ({ gsap }: MotionTools): Cleanup =>
 				},
 			},
 		);
-		const stopSeen = whenSeen(group, () => tween.play(), "0px");
+		// A group inside a masked frame (the contact form) starts with the frame:
+		// observing the clipped group itself would wait on a hidden region.
+		const stopSeen = whenSeen(
+			group.closest("[data-mask]") ?? group,
+			() => tween.play(),
+			"0px",
+		);
 
 		return () => {
 			stopSeen();

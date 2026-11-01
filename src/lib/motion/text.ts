@@ -1,4 +1,4 @@
-import { type Cleanup, type MotionTools, watch } from "./core";
+import { type Cleanup, dimFloor, type MotionTools, watch } from "./core";
 
 /**
  * Reading scrub: the words of a [data-scrub-text] paragraph start dim and
@@ -15,7 +15,8 @@ export const scrubText = ({ gsap, SplitText }: MotionTools): Cleanup =>
 			onSplit: (self) =>
 				gsap.fromTo(
 					self.words,
-					{ opacity: 0.22 },
+					// Floor keeps the not-yet-read words legible in both themes.
+					{ opacity: () => dimFloor(el) },
 					{
 						opacity: 1,
 						ease: "none",
@@ -25,6 +26,7 @@ export const scrubText = ({ gsap, SplitText }: MotionTools): Cleanup =>
 							start: "top 85%",
 							end: "bottom 55%",
 							scrub: true,
+							invalidateOnRefresh: true,
 						},
 					},
 				),

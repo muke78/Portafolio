@@ -6,6 +6,9 @@ const baseURL = `http://localhost:${PORT}`;
 export default defineConfig({
 	testDir: "./tests/e2e",
 	fullyParallel: true,
+	// The dev server compiles lazily and the page runs WebGL + GSAP: more than a
+	// few parallel browsers starve it and make hydration-dependent tests flaky.
+	workers: process.env.CI ? 2 : 3,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
 	reporter: "html",
@@ -13,6 +16,10 @@ export default defineConfig({
 	use: {
 		baseURL,
 		trace: "on-first-retry",
+		// Headless Chromium renders WebGL in software: the particle galaxy would eat
+		// the CPU the page and the dev server need, and nothing here tests it
+		// (it fails soft: the SVG sky stays). Keep the suite deterministic.
+		launchOptions: { args: ["--disable-3d-apis"] },
 	},
 
 	projects: [

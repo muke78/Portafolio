@@ -443,7 +443,7 @@
 /* Pinned sideways showcase: the track is clipped (and moved by GSAP) only when
    the engine will pin it; otherwise it stays a hand-scrollable row. Keep the
    query equal to the one in src/lib/motion/layers.ts. */
-@media (min-width: 1024px) and (min-height: 760px) {
+@media (min-height: 560px) {
 	.motion-ok [data-hscroll-viewport] {
 		overflow: hidden;
 	}

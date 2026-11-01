@@ -33,7 +33,7 @@ atributos de datos y el motor los anima.
 | `layers.ts` | `[data-hscroll]`: showcase horizontal fijado; `[data-stack]`: pila de cards `sticky` con profundidad |
 | `skills.ts` | Habilidades en vuelo (`MotionPathPlugin`): chips que entran por curvas en S, escrubadas, y una línea "serpiente" que se dibuja con un punto que la recorre |
 | `galaxy.ts` | La galaxia de partículas sigue el scroll: `galaxyState.burst` (polvo → colapso → explosión) y `settle` (a la esquina); el canvas (`components/three/ParticleGalaxy.tsx`) solo lee ese estado |
-| `anchors.ts` | Enlaces `#sección` con pins: `ScrollTrigger.refresh()` antes de medir, `ScrollToPlugin`, hasta 3 correcciones mientras la página crece |
+| `anchors.ts` | Enlaces `#sección` con pins: `ScrollTrigger.refresh()` antes de medir, `ScrollToPlugin`, hasta 10 correcciones mientras la página crece |
 | `dialogs.ts` | Diálogo de comentarios (`[data-dialog]`, items en stagger; sin overlay a pantalla completa) y lanzador `[data-fab]` |
 | `detail.ts` | Ruta `/[lang]/project/[id]`: timeline de entrada + profundidad al hacer scroll |
 | `page.ts` | `[data-scroll-progress]`: barra de progreso de lectura |
@@ -147,7 +147,7 @@ pero sin registrar · ⛔ descartado a propósito.
 |---|---|---|---|
 | Scroll | **ScrollTrigger** | Dispara/escruba animaciones con el scroll; `pin`, `snap`, `batch`, `containerAnimation` | ✅ |
 | Scroll | **ScrollSmoother** | Scroll suavizado con *effects* (`data-speed`, `data-lag`) | ⛔ |
-| Scroll | **ScrollToPlugin** | Animar el scroll a una posición/elemento | 🟦 |
+| Scroll | **ScrollToPlugin** | Animar el scroll a una posición/elemento | ✅ `anchors.ts` |
 | SVG | **DrawSVG** | Dibuja/borra trazos (`drawSVG: "0% 100%"`) | 🟦 (el anillo del hero usa `strokeDashoffset` con `pathLength=1`) |
 | SVG | **MorphSVG** | Morfea una forma SVG en otra | 🟦 |
 | SVG | **MotionPath** / **MotionPathHelper** | Mueve elementos a lo largo de una ruta; el helper la edita visualmente | 🟦 |

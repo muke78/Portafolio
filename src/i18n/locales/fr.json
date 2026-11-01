@@ -37,8 +37,6 @@
 		"EXPERIENCE": "Expérience"
 	},
 	"SKILLS": {
-		"SKILLS_MORE": "Tout voir",
-		"SKILLS_LESS": "Voir moins",
 		"SKILLS_TITLE": "Compétences"
 	},
 	"EDUCATION": {
@@ -79,8 +77,13 @@
 		"404_IMG_ALT": "Page introuvable",
 		"404_IMG_ARIA_LABEL": "L'itinéraire demandé est introuvable"
 	},
+	"FOOTER": {
+		"SITE": "Site",
+		"ELSEWHERE": "Ailleurs",
+		"ADMIN": "Accès admin"
+	},
 	"OPINIONS": {
-		"OPINIONS_SUBTITLE": "Les mots de collègues, clients et partenaires avec qui j'ai construit des projets.",
+		"OPINIONS_SUBTITLE": "Soyez très patient avec vous-même et ne vous comparez pas trop aux autres.",
 		"OPINIONS_TITLE": "Avis sur mon travail",
 		"OPINIONS_SUB_SUBTILE": "On a travaillé ensemble ? Racontez-moi comment ça s'est passé.",
 		"OPINIONS_COUNT_LABEL": "avis",
