@@ -1,6 +1,0 @@
----
-import { DEFAULT_LOCALE } from "@/i18n/locales";
-
-const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
-return Astro.redirect(`/${currentLocale}/home`, 302);
----
