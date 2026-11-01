@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.11",
+    "@axe-core/playwright": "^4.14.0",
     "@biomejs/biome": "2.2.3",
     "@playwright/test": "^1.63.0",
     "@types/node": "^24.2.1",

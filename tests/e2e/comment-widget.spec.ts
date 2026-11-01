@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { openCommentDialog } from "./helpers";
 
 test.describe("comment widget", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("/es/home");
-		await page.evaluate(() => {
-			window.dispatchEvent(new CustomEvent("khelde:open-comment-widget"));
-		});
+		// client:idle island: the listener exists only once it is live.
+		await openCommentDialog(page);
 	});
 
 	test("opens with role=dialog", async ({ page }) => {

@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
 
+// The rate-limit test below trips a per-IP limiter; run this file in order.
+test.describe.configure({ mode: "serial" });
+
 test("/admin without a session redirects to /admin/login", async ({ page }) => {
 	await page.goto("/admin");
 	await expect(page).toHaveURL(/\/admin\/login/);
@@ -12,7 +15,12 @@ test("wrong password is rejected", async ({ page }) => {
 		.getByPlaceholder("••••••••")
 		.fill("definitely-not-the-real-password");
 	await page.getByRole("button", { name: "Entrar" }).click();
-	await expect(page.getByText(/inv[aá]lidas/i)).toBeVisible();
+	// Either rejection counts: wrong credentials, or the per-IP rate limit when
+	// an earlier run (the rate-limit test below) already tripped it. The call
+	// goes through to the real backend: allow for its latency.
+	await expect(
+		page.getByText(/inv[aá]lidas|demasiados intentos/i),
+	).toBeVisible({ timeout: 15_000 });
 });
 
 test("malformed email is rejected client-side, without a network round trip", async ({

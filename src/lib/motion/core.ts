@@ -38,10 +38,16 @@ export const MOTION = {
 		duration: 1.1,
 		ease: "power4.inOut",
 		scaleFrom: 1.25,
-		start: "top 88%",
 	},
 	// Groups of items entering one after another (stack icons, fields, links).
-	stagger: { duration: 0.8, distance: 20, each: 0.07, start: "top 85%" },
+	stagger: { duration: 0.8, distance: 20, each: 0.07 },
+	// Lowest opacity of a "not read yet" word (scrubbed text). Floors that keep
+	// the dimmed text legible in each theme: contrast >= 3:1 for large text and
+	// >= 4.5:1 for body text, measured by tests/unit/dimmedText.test.ts.
+	dim: {
+		large: { light: 0.5, dark: 0.4 },
+		body: { light: 0.65, dark: 0.52 },
+	},
 	// Particle galaxy (galaxy.ts): scroll length of the collapse+blast and of
 	// the move to the corner, in viewport heights; scrub lag.
 	galaxy: { burstScreens: 1.2, settleScreens: 1.4, scrub: 1.2 },
@@ -83,6 +89,9 @@ const register = () => {
 		MotionPathPlugin,
 		ScrollToPlugin,
 	);
+	// Phones: the URL bar showing/hiding resizes the window while scrolling;
+	// that must not recompute every pin.
+	ScrollTrigger.config({ ignoreMobileResize: true });
 	registered = true;
 };
 
@@ -103,6 +112,19 @@ export const withMotion = (
 	const mm = gsap.matchMedia();
 	mm.add(MOTION_OK, () => setup({ gsap, ScrollTrigger, SplitText }));
 	return () => mm.revert();
+};
+
+/**
+ * Opacity a word starts from in scrubbed text. Never lower than the floor
+ * that keeps it readable (WCAG 1.4.3) in the current theme; "large" is text
+ * of 24 px and up.
+ */
+export const dimFloor = (el: Element): number => {
+	const theme = document.documentElement.classList.contains("dark")
+		? "dark"
+		: "light";
+	const size = Number.parseFloat(getComputedStyle(el).fontSize);
+	return MOTION.dim[size >= 24 ? "large" : "body"][theme];
 };
 
 /** Visual reading order (top to bottom, then left to right). */

@@ -35,7 +35,7 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 	return (
 		<div
 			data-reveal
-			className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift"
+			className="grid w-full grid-cols-1 overflow-hidden rounded-xl border border-border bg-card hover-lift"
 		>
 			<figure data-mask className="relative h-[400px] overflow-hidden bg-muted">
 				<img
@@ -50,18 +50,18 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 					draggable="false"
 				/>
 			</figure>
-			<div className="p-5">
-				<div className="flex justify-between">
-					<span className="text-2xl">{title_card}</span>
-				</div>
-				<p className="inline-flex items-center rounded-full bg-secondary text-secondary-foreground text-base font-medium my-2 px-3 py-1 w-fit">
-					{subtitle}
+			{/* Reading order: 1 headline (serif), 2 label, 3 description. */}
+			<div className="flex flex-col p-6 md:p-8">
+				<p className="eyebrow">{subtitle}</p>
+				<h3 className="font-serif-display text-heading mt-3 text-balance">
+					{title_card}
+				</h3>
+				<p
+					className="mt-6 border-t border-border pt-6 text-base/8 text-foreground"
+					data-scrub-text
+				>
+					{description}
 				</p>
-				<div>
-					<p className="font-normal text-base/8" data-scrub-text>
-						{description}
-					</p>
-				</div>
 			</div>
 		</div>
 	);

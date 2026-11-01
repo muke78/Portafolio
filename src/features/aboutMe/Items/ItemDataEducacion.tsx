@@ -33,7 +33,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 	if (loading) return <SkeletonEducation label={i18n.COMMON.LOADING} />;
 
 	return (
-		<div className="flex flex-col gap-4" data-reveal-group>
+		<div className="flex flex-col gap-4">
 			{data.map(
 				({
 					education_id,
@@ -43,13 +43,15 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 					image,
 					period,
 				}) => (
-					<div
+					// Reading order (UI_STANDARDS 5.3): 1 institution (serif, dominant),
+					// 2 degree, 3 period (small label), 4 description after a hairline.
+					<article
 						key={education_id}
 						data-reveal
-						className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift"
+						className="grid w-full grid-cols-1 overflow-hidden rounded-xl border border-border bg-card hover-lift"
 					>
 						<img
-							className="rounded-t-lg w-full h-auto"
+							className="h-auto w-full"
 							src={image}
 							alt={institution}
 							width={940}
@@ -58,19 +60,22 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 							decoding="async"
 							draggable="false"
 						/>
-						<div className="p-5">
-							<div className="flex justify-between">
-								<span className="text-2xl">{institution}</span>
-								<p className="inline-flex place-items-center text-right text-secondary-foreground text-nowrap font-medium rounded-full bg-secondary px-3 py-1">
-									{period}
-								</p>
-							</div>
-							<p className="text-lg font-medium text-secondary">{subtitle}</p>
-							<div className="pt-4">
-								<p className="font-normal text-base/8">{description}</p>
-							</div>
+						<div className="flex flex-col p-6 md:p-8">
+							<p className="eyebrow">{period}</p>
+							<h3 className="font-serif-display text-heading mt-3 text-balance">
+								{institution}
+							</h3>
+							<p className="mt-2 text-lg font-medium text-foreground">
+								{subtitle}
+							</p>
+							<p
+								className="mt-6 border-t border-border pt-6 text-base/8 text-foreground"
+								data-scrub-text
+							>
+								{description}
+							</p>
 						</div>
-					</div>
+					</article>
 				),
 			)}
 		</div>

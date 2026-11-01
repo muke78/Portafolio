@@ -1,4 +1,4 @@
-import { type Cleanup, MOTION, type MotionTools } from "./core";
+import { type Cleanup, dimFloor, MOTION, type MotionTools } from "./core";
 
 /**
  * Pinned manifesto scene (src/components/sections/Manifiesto.astro).
@@ -53,7 +53,8 @@ export const manifestoScene = ({
 	// 1. Words light up in reading order.
 	tl.fromTo(
 		split.words,
-		{ opacity: 0.14 },
+		// Never fainter than the legible floor (see MOTION.dim).
+		{ opacity: () => dimFloor(text) },
 		{ opacity: 1, duration: 0.5, stagger: { each: 0.18 } },
 		0,
 	);

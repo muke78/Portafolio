@@ -114,11 +114,21 @@ export const initMotion = (): Cleanup => {
 		window.addEventListener("load", refresh);
 		void refreshScrollTriggers();
 
+		// A theme switch changes the legibility floor of dimmed text.
+		const themeObserver = new MutationObserver(() =>
+			safeRefresh(ScrollTrigger),
+		);
+		themeObserver.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["class"],
+		});
+
 		window.__motionReady = true;
 
 		return () => {
 			for (const stop of stops) stop?.();
 			ro.disconnect();
+			themeObserver.disconnect();
 			window.removeEventListener("load", refresh);
 			window.clearTimeout(timer);
 			// Reduced motion turned on mid-session: show everything.

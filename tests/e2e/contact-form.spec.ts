@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { waitForContactForm } from "./helpers";
 
 /**
  * Form.tsx POSTs to /api/contact-messages, which proxies to Hono's
@@ -12,6 +13,7 @@ import { expect, test } from "@playwright/test";
 test.describe("contact form", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("/es/home#contact");
+		await waitForContactForm(page);
 	});
 
 	test("client-side validation blocks an empty submit", async ({ page }) => {

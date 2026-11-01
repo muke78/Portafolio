@@ -37,8 +37,6 @@
 		"EXPERIENCE": "Experiencia"
 	},
 	"SKILLS": {
-		"SKILLS_MORE": "Ver todas",
-		"SKILLS_LESS": "Ver menos",
 		"SKILLS_TITLE": "Habilidades"
 	},
 	"EDUCATION": {
@@ -79,8 +77,13 @@
 		"404_IMG_ALT": "No se encontró la página",
 		"404_IMG_ARIA_LABEL": "No se encontró la ruta especificada"
 	},
+	"FOOTER": {
+		"SITE": "Sitio",
+		"ELSEWHERE": "En otros sitios",
+		"ADMIN": "Acceso admin"
+	},
 	"OPINIONS": {
-		"OPINIONS_SUBTITLE": "Palabras de compañeros, clientes y colegas con quienes he construido proyectos.",
+		"OPINIONS_SUBTITLE": "Ten mucha paciencia contigo mismo y no te compares demasiado con los demás.",
 		"OPINIONS_TITLE": "Opiniones sobre mi trabajo",
 		"OPINIONS_SUB_SUBTILE": "¿Trabajamos juntos? Cuéntame cómo fue.",
 		"OPINIONS_COUNT_LABEL": "opiniones",

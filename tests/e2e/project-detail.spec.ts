@@ -8,9 +8,11 @@ import { expect, test } from "@playwright/test";
 test("a project card opens its own shareable URL and the back button returns", async ({
 	page,
 }) => {
-	await page.goto("/es/home");
+	// The rails fetch their cards when they come near the viewport: open the
+	// page on the section and wait for the first card.
+	await page.goto("/es/home#projects");
 	const firstLink = page.locator("#projects article h3 a").first();
-	await firstLink.scrollIntoViewIfNeeded();
+	await expect(firstLink).toBeVisible({ timeout: 15_000 });
 	const href = await firstLink.getAttribute("href");
 	expect(href).toMatch(/^\/es\/project\/[\w-]+$/);
 

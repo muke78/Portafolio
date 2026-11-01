@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { waitForIsland } from "./helpers";
 
 /**
  * Checks for horizontal overflow the user can actually experience, not
@@ -35,6 +36,7 @@ test.describe("mobile viewport (375px)", () => {
 
 	test("mobile nav sheet opens", async ({ page }) => {
 		await page.goto("/es/home");
+		await waitForIsland(page, "Nav.tsx");
 		await page.getByRole("button", { name: /Abrir menú|Menú/ }).click();
 		await expect(page.getByRole("dialog")).toBeVisible();
 	});

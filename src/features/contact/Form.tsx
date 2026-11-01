@@ -64,10 +64,7 @@ export const Form = ({ currentLocale }: PropsLang) => {
 	};
 
 	return (
-		<div
-			className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16"
-			data-reveal-group
-		>
+		<div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
 			<div className="space-y-1 text-foreground lg:col-span-5" data-reveal>
 				<small className="eyebrow">
 					{i18n.FORM.FORM_TITLE_SMALL_SUBHEADER}
@@ -103,7 +100,6 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<a
 								href="https://github.com/muke78"
 								target="_blank"
-								aria-label={i18n.HEADER.HEADER_GITHUB_ARIA_LABEL}
 								className="flex"
 								rel="noopener noreferrer"
 							>
@@ -124,7 +120,6 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							<a
 								href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
 								target="_blank"
-								aria-label={i18n.HEADER.HEADER_LINKEDIN_ARIA_LABEL}
 								className="flex"
 								rel="noopener noreferrer"
 							>
@@ -228,7 +223,9 @@ export const Form = ({ currentLocale }: PropsLang) => {
 							</label>
 							<Input
 								id={phoneId}
-								type="number"
+								type="tel"
+								inputMode="tel"
+								autoComplete="tel"
 								className="h-11 bg-background text-base"
 								placeholder={i18n.FORM.INPUT_PHONE}
 								{...register("phone")}

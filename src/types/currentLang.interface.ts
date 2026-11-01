@@ -93,10 +93,6 @@ export interface Testimonial extends FormOpinions {
 	created_at: string;
 }
 
-export interface UseDataProjects extends PropsLang {
-	activeTab: string;
-}
-
 export interface PropsLangWithData extends PropsLang {
 	data: Projects[] | null;
 }

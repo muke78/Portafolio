@@ -8,16 +8,20 @@ import { type Cleanup, type MotionTools, safeRefresh } from "./core";
  * plain hash jump lands short. Here every jump:
  *   1. recomputes the pins (ScrollTrigger.refresh) before measuring,
  *   2. scrolls with GSAP (ScrollToPlugin), not the browser,
- *   3. re-measures when it arrives and corrects (up to ten times, 250 ms apart) while the
- *      page is still growing.
+ *   3. keeps re-measuring after it arrives (every 250 ms, up to 8 s) and
+ *      corrects while the page is still growing; it stops early once the
+ *      position held for 2 s with the page height unchanged.
  * A deliberate wheel/touch/key during the trip cancels it. The initial
  * location.hash (language switch, shared link) takes the same route once the
  * engine is up.
  */
-const MAX_FIXES = 10;
+const WATCH_MS = 8000;
+const CHECK_MS = 250;
+const HOLD_CHECKS = 8;
 
 export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	let current: gsap.core.Tween | undefined;
+	let watcher: number | undefined;
 
 	const offsetOf = (el: Element) =>
 		Number.parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
@@ -27,9 +31,34 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	const stop = () => {
 		current?.kill();
 		current = undefined;
+		window.clearTimeout(watcher);
 	};
 
-	const goTo = (hash: string, fixes = 0, instant = false) => {
+	const watchArrival = (hash: string, since: number) => {
+		let held = 0;
+		let height = document.documentElement.scrollHeight;
+		const check = () => {
+			const t = document.querySelector(hash);
+			if (!t || performance.now() - since > WATCH_MS) return;
+			const grew = document.documentElement.scrollHeight !== height;
+			height = document.documentElement.scrollHeight;
+			if (Math.abs(yOf(t) - window.scrollY) > 6) {
+				goTo(hash, since, true, true);
+				return;
+			}
+			held = grew ? 0 : held + 1;
+			if (held >= HOLD_CHECKS) return;
+			watcher = window.setTimeout(check, CHECK_MS);
+		};
+		watcher = window.setTimeout(check, CHECK_MS);
+	};
+
+	const goTo = (
+		hash: string,
+		since = performance.now(),
+		instant = false,
+		correction = false,
+	) => {
 		let target: Element | null = null;
 		try {
 			target = document.querySelector(hash);
@@ -38,7 +67,7 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		}
 		if (!target) return;
 
-		if (fixes === 0) safeRefresh(ScrollTrigger);
+		if (!correction) safeRefresh(ScrollTrigger);
 		const y = yOf(target);
 		stop();
 		const distance = Math.abs(y - window.scrollY);
@@ -49,12 +78,7 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			scrollTo: { y, autoKill: false },
 			duration: instant ? 0 : Math.min(1.8, 0.5 + distance / 4500),
 			ease: "power3.inOut",
-			onComplete: () => {
-				const t = document.querySelector(hash);
-				if (t && fixes < MAX_FIXES && Math.abs(yOf(t) - window.scrollY) > 6) {
-					window.setTimeout(() => goTo(hash, fixes + 1, true), 250);
-				}
-			},
+			onComplete: () => watchArrival(hash, since),
 		});
 	};
 
@@ -87,7 +111,9 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 
 	// Page opened (or language switched) with a hash: wait for fonts, then go.
 	if (location.hash) {
-		void document.fonts?.ready.then(() => goTo(location.hash, 0, true));
+		void document.fonts?.ready.then(() =>
+			goTo(location.hash, performance.now(), true),
+		);
 	}
 
 	return () => {
