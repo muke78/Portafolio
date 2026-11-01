@@ -3,16 +3,23 @@ import { getViteConfig } from "astro/config";
 
 export default getViteConfig({
 	test: {
-		include: ["tests/unit/**/*.test.ts"],
+		include: ["tests/unit/**/*.test.{ts,tsx}"],
+		// Pure logic runs in node; component tests opt into the DOM with a
+		// `// @vitest-environment jsdom` docblock.
 		environment: "node",
+		setupFiles: ["tests/unit/setup.ts"],
 		coverage: {
 			provider: "v8",
-			reporter: ["text", "html", "json"],
-			// Only the files unit tests can realistically exercise - React
-			// components and .astro pages are Playwright's job, not
-			// Vitest's. Including them here would just report a wall of
-			// 0% for code this test layer was never meant to cover.
-			include: ["src/lib/**", "src/schemas/**", "src/i18n/index.ts"],
+			reporter: ["text-summary", "html", "json", "json-summary"],
+			include: ["src/**/*.{ts,tsx,astro}"],
+			exclude: ["src/**/*.d.ts", "src/types/**"],
+			// Floors, not goals: a PR that drops coverage under them fails CI.
+			thresholds: {
+				lines: 90,
+				statements: 90,
+				functions: 88,
+				branches: 80,
+			},
 		},
 	},
 });

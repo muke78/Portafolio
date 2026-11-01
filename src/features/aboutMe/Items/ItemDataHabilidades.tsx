@@ -25,7 +25,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 					`/api/skills?currentLocale=${currentLocale}`,
 				);
 				const body = await result.json();
-				setSkills(body.data);
+				setSkills(body.data ?? []);
 			} catch (error) {
 				console.error("Error cargando habilidades:", error);
 			} finally {

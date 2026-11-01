@@ -19,7 +19,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 					`/api/education?currentLocale=${currentLocale}`,
 				);
 				const body = await result.json();
-				setData(body.data);
+				setData(body.data ?? []);
 			} catch (error) {
 				console.error("Error cargando educacion:", error);
 			} finally {

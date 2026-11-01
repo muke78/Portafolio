@@ -17,7 +17,7 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 			try {
 				const result = await fetch(`/api/about?currentLocale=${currentLocale}`);
 				const body = await result.json();
-				setData(body.data);
+				setData(body.data ?? null);
 			} catch (error) {
 				console.error("Error cargando informacion de acerca de mi:", error);
 			} finally {
