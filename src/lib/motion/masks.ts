@@ -5,6 +5,7 @@ import {
 	REVEALED,
 	settle,
 	watch,
+	whenSeen,
 } from "./core";
 
 const CLIP_FROM = {
@@ -30,7 +31,7 @@ export const maskReveals = ({ gsap }: MotionTools): Cleanup =>
 		);
 
 		const tl = gsap.timeline({
-			scrollTrigger: { trigger: frame, start: MOTION.mask.start, once: true },
+			paused: true,
 			onComplete: () => {
 				// Only the clip: a transform cleared here would cancel the parallax.
 				gsap.set(frame, { clearProps: "clipPath" });
@@ -56,9 +57,10 @@ export const maskReveals = ({ gsap }: MotionTools): Cleanup =>
 		}
 		// The first frame is already inline: CSS can stop hiding the frame.
 		frame.setAttribute(REVEALED, "");
+		const stopSeen = whenSeen(frame, () => tl.play());
 
 		return () => {
-			tl.scrollTrigger?.kill();
+			stopSeen();
 			tl.kill();
 			gsap.set(frame, { clearProps: "clipPath" });
 		};
@@ -95,19 +97,16 @@ export const staggerGroups = ({ gsap }: MotionTools): Cleanup =>
 				ease: MOTION.ease,
 				stagger: MOTION.stagger.each,
 				delay,
-				scrollTrigger: {
-					trigger: group,
-					start: MOTION.stagger.start,
-					once: true,
-				},
+				paused: true,
 				onComplete: () => {
 					for (const el of items) settle(el);
 				},
 			},
 		);
+		const stopSeen = whenSeen(group, () => tween.play(), "0px");
 
 		return () => {
-			tween.scrollTrigger?.kill();
+			stopSeen();
 			tween.kill();
 			for (const el of items) settle(el);
 		};

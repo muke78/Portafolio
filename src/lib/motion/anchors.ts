@@ -1,4 +1,4 @@
-import type { Cleanup, MotionTools } from "./core";
+import { type Cleanup, type MotionTools, safeRefresh } from "./core";
 
 /**
  * Anchor links (#about, #projects...) on a page with pinned sections.
@@ -8,13 +8,13 @@ import type { Cleanup, MotionTools } from "./core";
  * plain hash jump lands short. Here every jump:
  *   1. recomputes the pins (ScrollTrigger.refresh) before measuring,
  *   2. scrolls with GSAP (ScrollToPlugin), not the browser,
- *   3. re-measures when it arrives and corrects up to three times while the
+ *   3. re-measures when it arrives and corrects (up to ten times, 250 ms apart) while the
  *      page is still growing.
  * A deliberate wheel/touch/key during the trip cancels it. The initial
  * location.hash (language switch, shared link) takes the same route once the
  * engine is up.
  */
-const MAX_FIXES = 3;
+const MAX_FIXES = 10;
 
 export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	let current: gsap.core.Tween | undefined;
@@ -38,7 +38,7 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		}
 		if (!target) return;
 
-		if (fixes === 0) ScrollTrigger.refresh();
+		if (fixes === 0) safeRefresh(ScrollTrigger);
 		const y = yOf(target);
 		stop();
 		const distance = Math.abs(y - window.scrollY);
@@ -52,7 +52,7 @@ export const anchorScroll = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			onComplete: () => {
 				const t = document.querySelector(hash);
 				if (t && fixes < MAX_FIXES && Math.abs(yOf(t) - window.scrollY) > 6) {
-					window.setTimeout(() => goTo(hash, fixes + 1, true), 350);
+					window.setTimeout(() => goTo(hash, fixes + 1, true), 250);
 				}
 			},
 		});

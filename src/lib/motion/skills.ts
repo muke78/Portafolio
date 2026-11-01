@@ -5,6 +5,7 @@ import {
 	REVEALED,
 	settle,
 	watch,
+	whenSeen,
 } from "./core";
 
 const DESKTOP = "(min-width: 768px)";
@@ -133,15 +134,16 @@ export const skillFlights = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 					duration: 0.7,
 					ease: MOTION.ease,
 					stagger: 0.05,
-					scrollTrigger: { trigger: group, start: "top 90%", once: true },
+					paused: true,
 					onComplete: () => {
 						for (const chip of chips) settle(chip);
 					},
 				},
 			);
 			for (const chip of chips) chip.setAttribute(REVEALED, "");
+			const stopSeen = whenSeen(group, () => tween.play(), "0px");
 			return () => {
-				tween.scrollTrigger?.kill();
+				stopSeen();
 				tween.kill();
 				for (const chip of chips) settle(chip);
 			};

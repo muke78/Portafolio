@@ -3,6 +3,7 @@ import {
 	isHydrating,
 	MOTION,
 	type MotionTools,
+	safeRefresh,
 	watch,
 } from "./core";
 
@@ -87,7 +88,7 @@ export const horizontalScenes = ({
 				timer = window.setTimeout(() => {
 					const t = track();
 					if (t) gsap.set(t, { x: 0 });
-					ScrollTrigger.refresh();
+					safeRefresh(ScrollTrigger);
 				}, 120);
 			});
 			mo.observe(root, { childList: true, subtree: true });
@@ -145,7 +146,7 @@ export const stackScenes = ({ gsap, ScrollTrigger }: MotionTools): Cleanup =>
 					t.kill();
 				}
 				// Recompute so sticky offsets stay right after cleanup.
-				ScrollTrigger.refresh();
+				safeRefresh(ScrollTrigger);
 			};
 		});
 

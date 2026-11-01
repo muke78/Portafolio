@@ -36,6 +36,7 @@ import {
 	isBrowser,
 	isRegistered,
 	MOTION_CLASS,
+	safeRefresh,
 	trackIslands,
 	withMotion,
 } from "./core";
@@ -66,7 +67,7 @@ export {
 export const refreshScrollTriggers = async (): Promise<void> => {
 	if (!isBrowser() || !isRegistered()) return;
 	await document.fonts?.ready;
-	ScrollTrigger.refresh();
+	safeRefresh(ScrollTrigger);
 };
 
 /**

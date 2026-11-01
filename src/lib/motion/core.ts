@@ -133,6 +133,55 @@ export const UNHYDRATED = "astro-island[ssr]";
  */
 export const HYDRATION_SETTLE_MS = 160;
 
+/**
+ * Runs `run` once, the first time `el` is on screen - or already above it
+ * (the reader jumped past). Unlike a ScrollTrigger `once`, it reads the live
+ * geometry, so fast jumps (anchor links, the scrollbar), pins and late layout
+ * shifts cannot leave an entrance stuck in its hidden state.
+ */
+export const whenSeen = (
+	el: Element,
+	run: () => void,
+	rootMargin = "0px 0px -12% 0px",
+): Cleanup => {
+	let done = false;
+	const io = new IntersectionObserver(
+		(entries) => {
+			if (done) return;
+			const seen = entries.some(
+				(e) => e.isIntersecting || e.boundingClientRect.bottom < 0,
+			);
+			if (!seen) return;
+			done = true;
+			io.disconnect();
+			run();
+		},
+		{ rootMargin },
+	);
+	io.observe(el);
+	return () => {
+		done = true;
+		io.disconnect();
+	};
+};
+
+/**
+ * ScrollTrigger throws on a refresh if one of its triggers lost its element
+ * (React replaced the node). Drop those first, and never let a refresh error
+ * escape: a broken refresh leaves pins half-applied.
+ */
+export const safeRefresh = (st: typeof ScrollTrigger) => {
+	for (const t of st.getAll()) {
+		const el = t.trigger;
+		if (el instanceof Element && !el.isConnected) t.kill();
+	}
+	try {
+		st.refresh();
+	} catch (err) {
+		console.warn("ScrollTrigger refresh failed:", err);
+	}
+};
+
 const liveAt = new WeakMap<Element, number>();
 
 /** Starts noting when each island goes live (call once, from the client). */
@@ -183,8 +232,13 @@ export const watch = (
 		done.add(el);
 		const run = () => {
 			if (!el.isConnected) return;
-			const cleanup = handler(el as HTMLElement);
-			if (cleanup) cleanups.push(cleanup);
+			try {
+				const cleanup = handler(el as HTMLElement);
+				if (cleanup) cleanups.push(cleanup);
+			} catch (err) {
+				// One element's scene failing must not stop the rest of the page.
+				console.warn(`Motion scene failed for ${selector}:`, err);
+			}
 		};
 		if (isHydrating(el)) {
 			const t = window.setTimeout(run, HYDRATION_SETTLE_MS);
