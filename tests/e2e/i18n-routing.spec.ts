@@ -14,7 +14,7 @@ for (const [path, title] of LOCALE_TITLES) {
 }
 
 /**
- * i18n.routing is "manual" specifically so /admin and /api/* aren't
+ * i18n.routing is "manual" specifically so /api/* isn't
  * swallowed by Astro's automatic locale-prefix routing (see
  * astro.config.mjs) - middleware.ts validates /[lang]/* segments
  * itself instead. An unrecognized locale should get the real 404 page
@@ -26,7 +26,9 @@ test("unknown locale segment returns a real 404", async ({ page }) => {
 	await expect(page.getByText("404")).toBeVisible();
 });
 
-test("/admin/login is reachable (not swallowed by locale routing)", async ({ page }) => {
+test("/admin no longer exists here (the CMS is a separate headless project)", async ({
+	page,
+}) => {
 	const response = await page.goto("/admin/login");
-	expect(response?.status()).toBe(200);
+	expect(response?.status()).toBe(404);
 });

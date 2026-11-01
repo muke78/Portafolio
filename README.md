@@ -1,8 +1,8 @@
 # 🚀 Portafolio Personal
 
-Portafolio construido con [Astro](https://astro.build/) (SSR, `output: "server"`) e islas de [React](https://react.dev/) para las partes interactivas, con [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first, vía `@tailwindcss/vite`) y componentes [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/). Desplegado en [Vercel](https://vercel.com/).
+Portafolio construido con [Astro](https://astro.build/) (SSR, `output: "server"`) e islas de [React](https://react.dev/) para las partes interactivas, con [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first, vía `@tailwindcss/vite`) y componentes [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/). Desplegado en [Cloudflare Pages](https://pages.cloudflare.com/).
 
-Contenido (proyectos, experiencia, comentarios) servido desde un backend propio externo, consumido a través de un proxy interno en `/api/*` que agrega el token de autenticación server-side.
+Contenido (proyectos, experiencia, comentarios) servido desde un backend propio externo (Worker de Hono sobre Cloudflare D1 y R2), consumido a través de un proxy interno en `/api/*` que agrega el token de autenticación server-side.
 
 ## 🏯 Lighthouse y optimización de la página
 
@@ -16,17 +16,17 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 - [🔧 Instalación](#-instalación)
 - [💻 Desarrollo Local](#-desarrollo-local)
 - [🧪 Pruebas](#-pruebas)
+- [☁️ Infraestructura](#️-infraestructura)
 - [🌐 Internacionalización](#-internacionalización)
 - [🎨 Temas](#-temas)
 - [🧩 Frontend Architecture & Design System](#-frontend-architecture--design-system)
-- [🔐 Panel de administración](#-panel-de-administración)
 - [📄 Licencia](#-licencia)
 - [🤝 Contribuir](#-contribuir)
 - [📞 Contacto](#-contacto)
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **Framework**: [Astro](https://astro.build/) v7 (SSR, adaptador [`@astrojs/vercel`](https://docs.astro.build/en/guides/integrations-guide/vercel/))
+- **Framework**: [Astro](https://astro.build/) v7 (SSR, desplegado en [Cloudflare Pages](https://pages.cloudflare.com/))
 - **UI**: [React](https://react.dev/) v18 (islas vía `@astrojs/react`)
 - **Estilos y componentes**: [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/)
 - **Iconos**: [Lucide](https://lucide.dev/) (`lucide-react`) — única librería de iconos
@@ -34,19 +34,19 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 - **3D**: [Three.js](https://threejs.org/) (galaxia de partículas propia con un `ShaderMaterial` y una sola llamada de dibujo, montada como isla `client:idle`)
 - **Formularios**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 - **Otros**: [TypeScript](https://www.typescriptlang.org/), [react-country-flag](https://www.npmjs.com/package/react-country-flag)
-- **Calidad**: [Biome](https://biomejs.dev/) (lint/format) + [Husky](https://typicode.github.io/husky/) (git hooks) + [Vitest](https://vitest.dev/) y [Playwright](https://playwright.dev/) (tests), con [axe-core](https://github.com/dequelabs/axe-core) para la auditoría de accesibilidad
+- **Calidad**: [Biome](https://biomejs.dev/) (lint/format) + [Husky](https://typicode.github.io/husky/) (hooks rápidos) + [GitHub Actions](https://docs.github.com/actions) (CI) + [Vitest](https://vitest.dev/) y [Playwright](https://playwright.dev/) (tests), con [axe-core](https://github.com/dequelabs/axe-core) para la auditoría de accesibilidad
 
 ## 📁 Estructura del Proyecto
 
 ```bash
 src/
 ├── components/           # Componentes compartidos (sections/, ui/ = primitivos shadcn, icons/ = logos de marca, three/ y cosmos/ = fondos)
-├── features/             # Lógica por dominio (aboutMe, projects, opinions, contact, navbar, admin)
+├── features/             # Lógica por dominio (aboutMe, projects, opinions, contact, navbar)
 ├── i18n/                 # Traducciones (locales/*.json) y locales.ts (fuente única de verdad de idiomas)
-├── layouts/               # Layouts de Astro (Layout, AdminLayout, AdminLoginLayout)
-├── lib/                  # Utilidades server-side (sesión admin, rate limit, cliente del backend) y motion/ (motor GSAP, solo cliente)
-├── middleware.ts         # Validación de locale + guard del panel admin
-├── pages/                # Rutas: /[lang]/home, /[lang]/project/[id], /admin/*, /api/*
+├── layouts/               # Layouts de Astro (Layout)
+├── lib/                  # Utilidades server-side (rate limit, cliente del backend) y motion/ (motor GSAP, solo cliente)
+├── middleware.ts         # Validación de locale
+├── pages/                # Rutas: /[lang]/home, /[lang]/project/[id], /api/*
 ├── schemas/               # Esquemas de validación Zod
 ├── styles/               # Estilos globales (Tailwind v4 + tokens del tema)
 └── types/                # Tipos TypeScript compartidos
@@ -96,10 +96,30 @@ src/
     pnpm test:e2e     # Playwright (necesita `pnpm dev` y el backend corriendo)
 ```
 
-- **E2E**: navegación por scroll y anclas con las secciones fijadas, carga diferida de las islas, formularios, cambio de idioma, detalle de proyecto y panel admin. Un archivo dedicado verifica `prefers-reduced-motion: reduce` (sin escenas fijadas y con todo el contenido visible).
+- **E2E**: navegación por scroll y anclas con las secciones fijadas, carga diferida de las islas, formularios, cambio de idioma y detalle de proyecto. Un archivo dedicado verifica `prefers-reduced-motion: reduce` (sin escenas fijadas y con todo el contenido visible).
 - **Accesibilidad**: `tests/e2e/a11y.spec.ts` corre axe-core (WCAG 2.1 A/AA) sobre el Home en tema claro y oscuro, a 375 px y en escritorio, además del detalle de proyecto y el diálogo de opiniones. También comprueba un solo `<h1>`, encabezados sin saltos, el enlace para saltar al contenido, el foco visible, el reflujo a 200 % de zoom y el teclado dentro del carril de proyectos.
 - Las pruebas de Playwright usan 3 workers y desactivan WebGL (`--disable-3d-apis`) para no saturar el servidor de desarrollo. En local reintentan una vez.
-- El hook `pre-push` corre Biome, `astro check`, el build, Vitest y Playwright. Si Playwright no puede correr en tu entorno, `SKIP_E2E=1 git push`.
+- Biome, `astro check`, Vitest, el build y Playwright corren en GitHub Actions en cada Pull Request (ver [Infraestructura](#️-infraestructura)). En local ya no hay hook de `pre-push`: corre `pnpm check`, `pnpm test:unit` y `pnpm build` antes de abrir el PR.
+
+## ☁️ Infraestructura
+
+Todo el stack corre en **Cloudflare**, sin contenedores (V8 isolates):
+
+| Pieza | Servicio |
+|---|---|
+| Frontend (este repo, Astro SSR) | **Cloudflare Pages** |
+| API de contenido | **Worker de Hono** ([`Backend_Portafolio`](https://github.com/muke78/Backend_Portafolio)) |
+| Base de datos | **Cloudflare D1** |
+| Imágenes y archivos | **Cloudflare R2** |
+
+El **panel de administración (CMS) es un sistema *headless* independiente**: ya no vive en este repositorio, así que aquí no hay rutas `/admin/*` ni sesión de administrador. Este sitio consume la API a través del proxy interno `/api/*`, que agrega el token de autenticación del lado del servidor.
+
+**CI/CD** con GitHub Actions (`.github/workflows/`):
+
+- `ci-dev.yml`: cada Pull Request hacia `dev` corre Biome, `astro check`, Vitest y el build.
+- `ci-main.yml`: cada Pull Request hacia `main` corre lo mismo más Playwright. El deploy a Cloudflare Pages (`wrangler pages deploy`) está preparado y comentado hasta configurar `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID` en GitHub.
+- Playwright necesita un backend de pruebas: se activa con la variable `E2E_API_URL` y el secreto `E2E_API_SECRET_TOKEN` del repositorio.
+- Husky se limita a lo rápido: valida el mensaje del commit y pasa Biome sobre los archivos en staging.
 
 ## 🌐 Internacionalización
 
@@ -109,7 +129,7 @@ El proyecto soporta múltiples idiomas, definidos en `src/i18n/locales.ts` (úni
 - 🇺🇸 Inglés (en)
 - 🇫🇷 Francés (fr)
 
-Las traducciones viven en `src/i18n/locales/{es,en,fr}.json`. El enrutamiento de idioma es `manual` (no automático) — la validación de un segmento de idioma desconocido en `/[lang]/*` ocurre en `src/middleware.ts`, que también protege `/admin/*`.
+Las traducciones viven en `src/i18n/locales/{es,en,fr}.json`. El enrutamiento de idioma es `manual` (no automático) — la validación de un segmento de idioma desconocido en `/[lang]/*` ocurre en `src/middleware.ts`.
 
 ## 🎨 Temas
 
@@ -132,16 +152,6 @@ El sistema de diseño completo (paleta con contrastes medidos, tipografía, espa
 - **Detalle de proyecto**: cada card del Home abre `/[lang]/project/[slug]`, una vista propia y compartible (SSR, con su `<title>` y `og:image`).
 
 **Accesibilidad**: el objetivo es WCAG 2.1 AA, auditado automáticamente con axe-core en ambos temas y en móvil y escritorio (ver [Pruebas](#-pruebas)). El texto que se enciende con el scroll nunca baja de un piso de contraste medido por tema. El checklist y las deudas conocidas (por ejemplo, el contraste del borde de los campos) están en `docs/UI_STANDARDS.md`.
-
-## 🔐 Panel de administración
-
-`/admin/login` protege `/admin` y `/api/admin/*` con una cookie de sesión firmada (HMAC, `src/lib/adminSession.ts`):
-
-- El login valida correo y contraseña con Zod (cliente y servidor) y delega la verificación al backend de Hono; el JWT que devuelve viaja dentro de la cookie firmada.
-- Sesión de vida corta (2h) y una lista de revocación en memoria (logout invalida el token del lado del servidor, no solo borra la cookie).
-- Las rutas `/admin*` y `/api/admin*` responden con `Cache-Control: no-store`, para que el botón "atrás" no restaure páginas admin desde la caché del navegador.
-- Rate limiting en memoria sobre `/api/admin/login` (5 intentos / 5 min por IP).
-- Ambas listas en memoria no sobreviven un cold start en serverless — es una mitigación de mejor esfuerzo adecuada para un panel de un solo administrador, no una garantía dura.
 
 ## 📄 Licencia
 

@@ -1,0 +1,60 @@
+# Pipeline de main: Pull Requests hacia `main` (puerta de la release) y, ya
+# mergeado, el deploy. Mismos pasos que dev más Playwright.
+name: CI main
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-main-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+    with:
+      run-e2e: true
+
+  # ---------------------------------------------------------------------------
+  # Deploy a Cloudflare Pages. DESACTIVADO hasta configurar en GitHub:
+  #   - secreto  CLOUDFLARE_API_TOKEN   (permiso "Cloudflare Pages: Edit")
+  #   - secreto  CLOUDFLARE_ACCOUNT_ID
+  # y cambiar el nombre del proyecto. Para activarlo, descomenta el job.
+  #
+  # Wrangler sube la carpeta que genera el build; la salida de `pnpm build`
+  # depende del adaptador de Astro configurado (con el adaptador de Cloudflare
+  # es `dist/`). Ajusta la ruta de `wrangler pages deploy` si es otra.
+  # ---------------------------------------------------------------------------
+  # deploy:
+  #   name: Deploy a Cloudflare Pages
+  #   needs: checks
+  #   if: ${{ github.event_name == 'push' }}
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 15
+  #   permissions:
+  #     contents: read
+  #     deployments: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: pnpm/action-setup@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         cache: pnpm
+  #     - run: pnpm install --frozen-lockfile
+  #     - name: Build
+  #       run: pnpm build
+  #       env:
+  #         VITE_API_URL: ${{ vars.VITE_API_URL }}
+  #         API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
+  #     - name: Deploy
+  #       run: npx wrangler pages deploy dist/ --project-name="tu-proyecto"
+  #       env:
+  #         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  #         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

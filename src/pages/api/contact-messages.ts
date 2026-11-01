@@ -5,8 +5,8 @@ import { isRateLimited } from "@/lib/rateLimit";
 
 // Reemplaza a /api/tlgrm (Telegram eliminado por completo del lado del
 // backend - ver Backend_Portafolio, docs/02-comentarios-y-contacto.md).
-// El mensaje ahora queda en Turso (tabla contact_messages), visible desde
-// el admin/dashboard, no depende de un servicio externo para "existir".
+// El mensaje queda guardado en la tabla contact_messages de la base del
+// backend y se lee desde el CMS; no depende de un servicio externo.
 const RATE_LIMIT = { limit: 5, windowMs: 60 * 1000 };
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {

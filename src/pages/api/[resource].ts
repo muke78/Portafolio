@@ -15,8 +15,8 @@ const WRITABLE_PUBLIC = new Set(["comments"]);
 
 // Vector real del hackeo de 800 comentarios: este POST es publico, sin
 // auth de usuario (cualquier visitante puede dejar un comentario), y
-// hasta ahora no tenia techo de volumen aqui - src/lib/rateLimit.ts ya
-// protegia el login admin, nunca se conecto a este endpoint. Hono mismo
+// hasta ahora no tenia techo de volumen aqui - src/lib/rateLimit.ts es el
+// limitador en memoria que ya usa /api/contact-messages. Hono mismo
 // ya tiene su propio rate limit (ver Backend_Portafolio,
 // docs/00-auditoria.md hallazgo 1/6), pero esta es la puerta que el
 // publico real usa, hay que frenarlo aqui tambien.
