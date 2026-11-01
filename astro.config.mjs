@@ -68,6 +68,10 @@ export default defineConfig({
 		},
 		build: {
 			minify: "esbuild",
+			// The only chunk over 500 kB is Three.js (~520 kB) inside the
+			// BackgroundEffects island, which loads on `client:idle` and never blocks
+			// first paint. The limit sits just above it so a new heavy chunk still warns.
+			chunkSizeWarningLimit: 600,
 			sourcemap: process.env.NODE_ENV !== "production",
 			rollupOptions: {
 				output: {
