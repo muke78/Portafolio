@@ -104,5 +104,7 @@ export default defineConfig({
 		},
 	},
 	output: "server",
-	adapter: cloudflare(),
+	// Vitest loads this config through getViteConfig(); the adapter's Vite plugin
+	// would boot a workerd runtime for every test run, so tests run without it.
+	adapter: process.env.VITEST ? undefined : cloudflare(),
 });
