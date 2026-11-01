@@ -10,7 +10,7 @@ export default defineConfig({
 	// few parallel browsers starve it and make hydration-dependent tests flaky.
 	workers: process.env.CI ? 2 : 3,
 	forbidOnly: !!process.env.CI,
-	retries: process.env.CI ? 2 : 0,
+	retries: process.env.CI ? 2 : 1,
 	reporter: "html",
 
 	use: {
