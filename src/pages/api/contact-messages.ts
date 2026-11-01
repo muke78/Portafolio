@@ -9,10 +9,13 @@ import { isRateLimited } from "@/lib/rateLimit";
 // backend y se lee desde el CMS; no depende de un servicio externo.
 const RATE_LIMIT = { limit: 5, windowMs: 60 * 1000 };
 
-export const POST: APIRoute = async ({ request, clientAddress }) => {
+export const POST: APIRoute = async (ctx) => {
+	const { request } = ctx;
 	let ip = "unknown";
 	try {
-		ip = clientAddress;
+		// Read it inside the try: on some adapters the getter itself throws, and
+		// destructuring it in the signature would escape this fallback.
+		ip = ctx.clientAddress;
 	} catch {
 		// clientAddress throws en algunos adapters/entornos (ej. preview
 		// estatico) - cae a un bucket compartido en vez de fallar.

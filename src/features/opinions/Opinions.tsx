@@ -25,7 +25,7 @@ export const Opinions = ({
 			try {
 				const result = await fetch("/api/comments");
 				const comments = await result.json();
-				setData(comments.data as Testimonial[]);
+				setData((comments.data ?? []) as Testimonial[]);
 			} catch (error) {
 				console.error("Error al cargar comentarios:", error);
 			} finally {

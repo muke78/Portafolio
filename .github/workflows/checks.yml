@@ -42,8 +42,18 @@ jobs:
       - name: Tipos (astro check)
         run: pnpm check
 
-      - name: Tests unitarios (Vitest)
-        run: pnpm test:unit
+      # Con cobertura (v8): vitest.config.ts define los pisos mínimos y el job
+      # falla si un cambio los baja.
+      - name: Tests unitarios y cobertura (Vitest)
+        run: pnpm test:unit:coverage
+
+      - name: Subir el reporte de cobertura
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
 
       - name: Build de Astro
         run: pnpm build

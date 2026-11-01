@@ -44,7 +44,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 					`/api/experiences?currentLocale=${currentLocale}`,
 				);
 				const experiences = await result.json();
-				setData(experiences.data);
+				setData(experiences.data ?? []);
 			} catch (error) {
 				console.error("Error cargando experiencias:", error);
 			} finally {

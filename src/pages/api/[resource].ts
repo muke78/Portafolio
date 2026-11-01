@@ -49,7 +49,8 @@ export const GET: APIRoute = async ({ params, url }) => {
 	}
 };
 
-export const POST: APIRoute = async ({ params, request, clientAddress }) => {
+export const POST: APIRoute = async (ctx) => {
+	const { params, request } = ctx;
 	const resource = params.resource;
 	if (!resource || !WRITABLE_PUBLIC.has(resource)) {
 		return json({ message: "Method not allowed" }, 405);
@@ -57,7 +58,9 @@ export const POST: APIRoute = async ({ params, request, clientAddress }) => {
 
 	let ip = "unknown";
 	try {
-		ip = clientAddress;
+		// Read it inside the try: on some adapters the getter itself throws, and
+		// destructuring it in the signature would escape this fallback.
+		ip = ctx.clientAddress;
 	} catch {
 		// clientAddress throws en algunos adapters/entornos (ej. preview
 		// estatico) - cae a un bucket compartido en vez de fallar.
