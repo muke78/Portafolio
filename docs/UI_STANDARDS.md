@@ -27,7 +27,7 @@ mínimo obligatorio (AAA donde no cueste identidad), más las guías de
 4. [Espaciado y layout](#4-espaciado-y-layout)
 5. [Componentes base (shadcn estandarizado)](#5-componentes-base-shadcn-estandarizado)
 6. [Iconografía](#6-iconografía)
-7. [Animación y microinteracciones (GSAP)](#7-animación-y-microinteracciones-gsap)
+7. [Animación, escenas de scroll y microinteracciones (GSAP)](#7-animación-y-microinteracciones-gsap)
 8. [Accesibilidad: checklist transversal](#8-accesibilidad-checklist-transversal)
 9. [Checklist de PR de UI](#9-checklist-de-pr-de-ui)
 10. [Deuda conocida y decisiones pendientes](#10-deuda-conocida-y-decisiones-pendientes)
@@ -507,15 +507,12 @@ llegan los datos.
 
 ## 7. Animación y microinteracciones (GSAP)
 
-> **Estado:** GSAP 3.15 está instalado y toda la lógica de scroll se
-> centraliza en `src/lib/motion.ts` (`withMotion`, `revealOnScroll`,
-> `parallaxOnScroll`, `refreshScrollTriggers`). **Ninguna animación
-> existente se ha migrado todavía**: hoy siguen siendo CSS
-> (`.anim-fade-in`, `.lift-card`, `.skill-pill`, keyframes del cosmos) y
-> JS puntual (`Cosmos.tsx`, `GalaxyBackground.tsx`, el reveal del Footer).
-> Estas reglas rigen para lo que se construya a partir de ahora; la
-> migración de lo existente y las animaciones nuevas van en la fase
-> siguiente.
+> **Estado:** el motor de movimiento está **activo**. GSAP 3.15
+> (ScrollTrigger + SplitText) vive en `src/lib/motion/` (`core`, `hero`,
+> `reveals`, `scenes`, `split`, `media`, `index`; `src/lib/motion.ts` es el
+> barril) y se arranca una vez desde `Layout.astro`. Las clases CSS
+> heredadas `anim-fade-in` / `anim-zoom-in` se eliminaron. Las escenas
+> concretas están en 7.7 y el contrato de atributos en 12.4.
 
 ### 7.1 Reparto de responsabilidades
 
@@ -588,9 +585,14 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
 
 Reglas:
 
-- **El estado inicial oculto (`opacity: 0`) lo pone GSAP, nunca el CSS.**
-  Si el JS falla o `reduce` está activo, el contenido debe quedar visible.
-  Prohibido `opacity-0` estático en el HTML para "preparar" la animación.
+- **El estado inicial oculto solo existe mientras haya JS y se permita el
+  movimiento.** El CSS puede ocultar (`opacity: 0`) los elementos
+  `[data-reveal]`, `[data-split]` y las piezas del hero **únicamente bajo
+  `html.motion-ok`**: esa clase la pone un script inline en `<head>` solo
+  si `prefers-reduced-motion` no es `reduce`, y un temporizador de 4 s la
+  quita si el motor no llegó a arrancar (`window.__motionReady`). Sin JS o
+  con `reduce` la clase no existe y todo se ve. Prohibido `opacity-0`
+  estático en el HTML.
 - Con `reduce`: sin parallax, sin *stagger*, sin desplazamientos; como
   mucho un fade corto (≤ 150 ms) o nada.
 - Nada parpadea más de 3 veces por segundo (WCAG 2.3.1).
@@ -634,6 +636,45 @@ Reglas:
   comercial en 2025; verificar los términos vigentes en
   [gsap.com/standard-license](https://gsap.com/standard-license/) antes de
   instalarlo.
+
+
+### 7.7 Escenas de scroll (inspiradas en gsap.com)
+
+Referencia: el patrón de gsap.com es **una escena larga fijada
+(`pin`) y escrubada (`scrub`)** en la que el lector controla el ritmo, más
+revelados con máscara y movimiento ligado a la velocidad del scroll. El
+sitio usa las mismas piezas, cada una en su módulo:
+
+| Escena | Módulo | Qué hace | Se activa con |
+|---|---|---|---|
+| Entrada del hero | `hero.ts` | Etiqueta → nombre línea a línea saliendo de una máscara → lead → botones → el arco se abre de abajo arriba → el anillo se dibuja (`stroke-dashoffset`) | `[data-hero]` + `data-hero-*` |
+| Salida del hero | `hero.ts` | Mientras el primer pantallazo sube (`scrub`): las dos líneas del nombre se separan, el lead y los botones suben y se atenúan, el retrato retrocede y la órbita gira | automática tras la entrada |
+| **Manifiesto fijado** | `scenes.ts` | La sección se **fija 2 pantallas** (1.4 en móvil): las palabras de la frase se encienden una a una (`SplitText`, escrubado), dos pistas gigantes de tecnologías se deslizan en sentidos opuestos, una línea de progreso se llena y unas etiquetas aparecen con rebote | `[data-manifesto]` |
+| Títulos | `split.ts` | Cada título se parte en líneas con máscara y sube al entrar (una vez) | `[data-split]` |
+| Revelados | `reveals.ts` | Fade-up con *stagger* por lotes (las cards que entran juntas se encadenan en orden de lectura) | `[data-reveal]` |
+| Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla | `[data-parallax-img]` |
+| Marquee de opiniones | `media.ts` | La cinta corre con `gsap`; **su velocidad y dirección siguen la del scroll** y vuelve a la calma; se pausa con hover o foco | `[data-marquee]` + `[data-marquee-track]` |
+| Parallax decorativo | `media.ts` | Anillos de órbita, ±6 % | `[data-parallax="N"]` |
+
+Reglas de las escenas:
+
+- **El lector nunca queda atrapado**: una escena fijada dura como máximo
+  **2.5 pantallas** (lo verifica un test) y siempre tiene contenido que
+  cambia mientras dura (si no cambia nada, no se fija).
+- Todo el contenido de una escena existe como **texto real en el HTML**
+  (la frase del manifiesto es un `<p>`; `SplitText` conserva el
+  `aria-label`); las pistas decorativas son `aria-hidden`.
+- Con `prefers-reduced-motion: reduce` **ninguna escena se ejecuta**: no hay
+  pin, ni scrub, ni parallax; la frase se lee entera y las pistas quedan
+  estáticas.
+- Los elementos dentro de una isla de Astro **no se tocan hasta que la
+  isla se hidrata** (`watch()` en `core.ts`), para no provocar errores de
+  hidratación en React.
+- No se usa `ScrollSmoother` (scroll suavizado): reescribiría el
+  contenedor de scroll, rompería el `position: fixed` del fondo 3D y el
+  ajuste de anclas (`scrollFix.js`) sin aportar nada a la lectura.
+- Un efecto nuevo = un atributo de datos nuevo + su escena en `src/lib/motion/`
+  + su fila en esta tabla. Nada de `gsap.*` suelto en componentes.
 
 ---
 
@@ -702,8 +743,8 @@ Antes de abrir un PR que toque UI:
 | 6 | CTAs del hero hechos a mano | `Header.astro` | ✅ Resuelto: `buttonVariants` sobre `<a>` |
 | 7 | Tamaños arbitrarios `text-[Npx]` / `text-[clamp(...)]` | secciones del home | ✅ Resuelto: tokens `text-display/title/subtitle/heading` |
 | 8 | Objetivos táctiles < 44 px | sitio público | ✅ Resuelto (nav, tabs, tema, idioma, formulario, hero, iconos sociales) |
-| 9 | Animaciones existentes mezcladas: CSS, JS manual (`Cosmos.tsx`, Footer) y 3D | varios | ⏳ Pendiente: migrar entradas/parallax a GSAP (7.1) en `feat/home-motion` |
-| 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Pendiente: test e2e con `reducedMotion: 'reduce'` |
+| 9 | Animaciones mezcladas: CSS heredado, JS manual y 3D | varios | ✅ Resuelto en lo esencial: motor GSAP único (7.7) y clases `anim-*` eliminadas. Quedan como están el fondo 3D, el cosmos y el reveal del wordmark del footer (JS propio) |
+| 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Parcial: el motor lo respeta (7.4) y el CSS hereda la guarda; falta un e2e con `reducedMotion: 'reduce'` (se deja para el final) |
 | 11 | Títulos de `aboutMe` eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`) |
 | 12 | Jerarquía de encabezados plana | `ItemDataExperiencia.tsx`, `ItemDataProjects.tsx` | ✅ Resuelto (`<h3>`) |
 | 13 | Composición de la galaxia 3D y solapamiento con el texto del hero | `GalaxyBackground.tsx`, `app.css` | ✅ Resuelto: capa de fondo (`z-index: -1`), máscara radial difuminada y reposicionada tras el retrato (12.2) |
@@ -806,25 +847,21 @@ Cada categoría muestra solo sus **8 primeras tecnologías**; el resto se
 revela con un botón limpio ("Ver todas (+3)" / "Ver menos",
 `aria-expanded`). El número total de la categoría sigue visible.
 
-### 12.4 Contrato de movimiento (preparado para GSAP, aún inactivo)
+### 12.4 Contrato de movimiento (activo)
 
-El HTML ya lleva los ganchos que `src/lib/motion.ts` usará en
-`feat/home-motion`. **Ningún efecto complejo está activo todavía** (solo las
-animaciones CSS heredadas `anim-*`).
+El HTML se comunica con el motor **solo con atributos de datos**; la lógica
+vive en `src/lib/motion/` (7.7).
 
 | Atributo | Dónde | Significado |
 |---|---|---|
-| `data-reveal-group` | Contenedor de una sección o lista (hero, Acerca, Proyectos, Opiniones, Contacto, listas de cards) | Disparador de `ScrollTrigger`; sus hijos `data-reveal` entran en cascada (`revealOnScroll("[data-reveal-group]")`) |
-| `data-reveal` | Cada bloque o card que debe entrar | Elemento animado (fade-up + stagger, solo `transform`/`opacity`) |
-| `data-parallax="N"` | Elemento decorativo (anillos de órbita del hero) | Parallax sutil de ±N % (`parallaxOnScroll`); nunca texto |
+| `data-hero` + `data-hero-label` / `-line` / `-lead` / `-cta` / `-portrait` / `-rings` / `-ring-solid` / `-ring-accent` / `-bar` | Hero | Secuencia de entrada y salida escrubada |
+| `data-manifesto` + `-text` / `-track` / `-chip` / `-progress` | `Manifiesto.astro` | Escena fijada y escrubada |
+| `data-split` | Títulos de sección (en islas) | Líneas con máscara que suben |
+| `data-reveal` | Cada bloque o card que debe entrar | Fade-up con stagger por lotes |
+| `data-parallax="N"` | Elemento decorativo (anillos) | Parallax de ±N % |
+| `data-parallax-img` | Imagen de una card (marco `overflow-hidden`) | Deriva ±6 % |
+| `data-marquee` / `data-marquee-track` | Cinta de opiniones | Velocidad ligada al scroll |
+| `data-revealed` | Lo pone el motor | "Ya terminó": el CSS deja de ocultarlo |
 
-Reglas: el contenido es visible sin JS (GSAP pone el estado inicial); no se
-anima el contenido de los tabs al cambiar de pestaña salvo con una
-transición de respuesta a la acción; `prefers-reduced-motion` lo gestiona
-`withMotion()`.
-
-**Secuencia de entrada del hero (para `feat/home-motion`)**, una sola
-coreografía de ≤ 1.2 s: etiqueta → nombre línea a línea (máscara que sube) →
-lead → botones → retrato en arco (revela de abajo arriba) → anillos de
-órbita (dibujados con `stroke-dashoffset`) → barra inferior. Sustituye a las
-animaciones CSS heredadas `anim-fade-in` / `anim-zoom-in` del hero.
+El estado inicial oculto del CSS solo existe bajo `html.motion-ok` (7.4).
+Los atributos `data-reveal-group` ya no se usan.

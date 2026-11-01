@@ -108,8 +108,12 @@ reglas que no se negocian:
 6. **Animación de scroll con GSAP + ScrollTrigger.** Fade-up, stagger y
    parallax sutil, solo con `transform` y `opacity`, dentro de
    `gsap.matchMedia()` y respetando `prefers-reduced-motion`. Toda la
-   lógica pasa por `src/lib/motion.ts` (no uses `gsap.*` suelto en
-   componentes). El contenido debe quedar visible sin JS (GSAP pone el
+   lógica pasa por el motor de `src/lib/motion/` (no uses `gsap.*` suelto
+   en componentes): el HTML solo lleva atributos de datos (`data-reveal`,
+   `data-split`, `data-manifesto`, `data-parallax-img`, `data-marquee`,
+   `data-hero-*`; ver 7.7 y 12.4 de `docs/UI_STANDARDS.md`). **Antes de
+   animar algo nuevo lee `docs/GSAP.md`**: qué ofrece GSAP, qué plugins hay
+   y cuál usar. El contenido debe quedar visible sin JS (GSAP pone el
    estado inicial, no el CSS).
    Hover y foco se resuelven con CSS. Detalle y parámetros en la sección 7
    de `docs/UI_STANDARDS.md`.
@@ -126,12 +130,13 @@ reglas que no se negocian:
 10. **Textos por i18n.** Todo texto visible sale de `src/i18n/locales/`
    (es, en, fr). Cero cadenas fijas en componentes.
 
-> **Estado actual (importante):** GSAP está instalado y centralizado en
-> `src/lib/motion.ts`, pero **ninguna animación existente se ha migrado**
-> todavía. Queda deuda de diseño conocida (composición de la galaxia 3D,
-> `text-wrap: balance`, cobertura de reduced-motion, etc.),
-> listada en la sección 10 de `docs/UI_STANDARDS.md`. No la "arregles de
-> paso" dentro de un cambio ajeno: va en su propia rama.
+> **Estado actual (importante):** el motor GSAP está **activo** (hero
+> orquestado, escena fijada del manifiesto, títulos con máscara, revelados
+> por lotes, parallax y marquee ligado al scroll). Una escena fijada dura como
+> máximo 2.5 pantallas y nunca corre con `prefers-reduced-motion: reduce`.
+> Queda deuda conocida (cobertura e2e de reduced-motion, etc.) en la sección
+> 10 de `docs/UI_STANDARDS.md`. No la "arregles de paso" dentro de un cambio
+> ajeno: va en su propia rama.
 
 ## Estructura
 
@@ -141,7 +146,7 @@ src/
 ├── features/      # por dominio (aboutMe, projects, opinions, contact, navbar, admin)
 ├── i18n/          # traducciones + locales.ts (única fuente de idiomas)
 ├── layouts/       # Layout, AdminLayout, AdminLoginLayout
-├── lib/           # sesión admin, rate limit, cliente API (servidor); motion.ts (GSAP, solo cliente)
+├── lib/           # sesión admin, rate limit, cliente API (servidor); motion/ (motor GSAP, solo cliente)
 ├── middleware.ts  # validación de locale + guard del admin
 ├── pages/         # /[lang]/home, /admin/*, /api/*
 ├── schemas/       # esquemas Zod

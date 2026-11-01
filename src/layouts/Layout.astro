@@ -3,6 +3,7 @@ import "@/styles/styles.css";
 import "@/styles/app.css";
 import { BackgroundEffects } from "@/components/three/BackgroundEffects";
 import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 
 interface Props {
 	/** Page <title> / og:title. Defaults to the site title. */
@@ -13,7 +14,8 @@ interface Props {
 	image?: string;
 }
 
-const { currentLocale, url, site } = Astro;
+const { url, site } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const { title, description, image } = Astro.props;
 const i18n = getI18N({ currentLocale });
 
@@ -76,6 +78,20 @@ const personSchema = {
     <!-- Structured data (SEO) -->
     <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />
     <script is:inline>
+      // Motion gate: CSS may hide [data-reveal] only while this class exists
+      // (JS running AND motion allowed). The engine sets __motionReady; if it
+      // never does (error, blocked script) the watchdog reveals everything.
+      (function () {
+        var d = document.documentElement;
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          d.classList.add("motion-ok");
+          setTimeout(function () {
+            if (!window.__motionReady) d.classList.remove("motion-ok");
+          }, 4000);
+        }
+      })();
+    </script>
+    <script is:inline>
       (function () {
         var stored = localStorage.getItem("theme");
         var dark = stored
@@ -96,6 +112,11 @@ const personSchema = {
     <div class="relative z-2">
       <slot />
     </div>
+    <script>
+      import { initMotion } from "@/lib/motion";
+
+      initMotion();
+    </script>
     <script src="../js/ascii.js"></script>
     <script src="../js/scrollFix.js"></script>
   </body>

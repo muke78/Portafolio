@@ -3,31 +3,34 @@ import Acerca from "@/components/sections/Acerca.astro";
 import Contactos from "@/components/sections/Contacto.astro";
 import Footer from "@/components/sections/Footer.astro";
 import Header from "@/components/sections/Header.astro";
+import Manifiesto from "@/components/sections/Manifiesto.astro";
 import { Nav } from "@/components/sections/Nav";
 import Opiniones from "@/components/sections/Opiniones.astro";
 import Proyectos from "@/components/sections/Proyectos.astro";
 import { CommentWidget } from "@/features/opinions/CommentWidget";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import Layout from "@/layouts/Layout.astro";
 
-const { currentLocale } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 ---
 
 <Layout>
   <Nav client:idle currentLocale={currentLocale} />
-  <main id="main-content" role="main" class="pt-[72px]">
-    <div class="mx-auto max-w-[1240px] px-6 scroll-mt-[88px]" id="home">
+  <main id="main-content" role="main" class="pt-18">
+    <div class="mx-auto max-w-310 px-6 scroll-mt-22" id="home">
       <Header />
     </div>
-    <div id="about" class="scroll-mt-[88px]">
+    <Manifiesto />
+    <div id="about" class="scroll-mt-22">
       <Acerca />
     </div>
-    <div id="projects" class="scroll-mt-[88px]">
+    <div id="projects" class="scroll-mt-22">
       <Proyectos />
     </div>
-    <div id="opinions" class="scroll-mt-[88px]">
+    <div id="opinions" class="scroll-mt-22">
       <Opiniones />
     </div>
-    <div id="contact" class="scroll-mt-[88px]">
+    <div id="contact" class="scroll-mt-22">
       <Contactos />
     </div>
   </main>
