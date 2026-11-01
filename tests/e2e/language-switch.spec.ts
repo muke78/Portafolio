@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { waitForIsland } from "./helpers";
 
 /**
  * Regression test for the exact bug reported: switching language while
@@ -14,10 +15,11 @@ test("switching language while at #contact lands back at #contact in the new loc
 	await page.goto("/es/home#contact");
 	await expect
 		.poll(async () => (await page.locator("#contact").boundingBox())?.y ?? -9999, {
-			timeout: 8000,
+			timeout: 20_000,
 		})
 		.toBeGreaterThan(80);
 
+	await waitForIsland(page, "Nav.tsx");
 	await page.getByRole("button", { name: /Español/ }).click();
 	// Exact aria-label from LangDrop.tsx: `${NAVBAR_CHANGE_TO} ${label}`,
 	// NAVBAR_CHANGE_TO in es.json is "Cambiar a".

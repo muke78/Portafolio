@@ -3,10 +3,10 @@ import { expect, test } from "@playwright/test";
 /**
  * Regression test for the anchor-scroll race: loading a URL with a
  * #hash used to leave the viewport short of the target because
- * below-the-fold content (lazy images, client:visible islands, the
- * three.js canvas) was still loading and shifting the page height
- * after the initial jump. Fixed by src/js/scrollFix.js, which keeps
- * re-snapping to the target while the page is still resizing.
+ * below-the-fold content (lazy images, client:visible islands, pinned
+ * scenes) was still loading and shifting the page height after the
+ * initial jump. Fixed by src/lib/motion/anchors.ts, which keeps
+ * re-measuring and correcting while the page is still growing.
  */
 test("anchor to #contact settles at the nav offset even while the page is still loading", async ({
 	page,

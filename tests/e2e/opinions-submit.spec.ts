@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openCommentDialog } from "./helpers";
 
 /**
  * Extends comment-widget.spec.ts (open/close behaviour) with the actual
@@ -8,9 +9,7 @@ import { expect, test } from "@playwright/test";
 test.describe("opinions submit form", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("/es/home");
-		await page.evaluate(() => {
-			window.dispatchEvent(new CustomEvent("khelde:open-comment-widget"));
-		});
+		await openCommentDialog(page);
 	});
 
 	const fillValidForm = async (page: import("@playwright/test").Page) => {
