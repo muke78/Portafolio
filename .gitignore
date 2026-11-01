@@ -24,7 +24,9 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-.vercel
+# Cloudflare / Wrangler (local state and dev secrets)
+.wrangler
+.dev.vars
 
 # claude code local-only settings
 .claude/settings.local.json

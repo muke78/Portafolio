@@ -22,17 +22,16 @@ jobs:
       run-e2e: true
 
   # ---------------------------------------------------------------------------
-  # Deploy a Cloudflare Pages. DESACTIVADO hasta configurar en GitHub:
-  #   - secreto  CLOUDFLARE_API_TOKEN   (permiso "Cloudflare Pages: Edit")
+  # Deploy a Cloudflare Workers desde GitHub Actions. DESACTIVADO: hoy el
+  # deploy lo hace la integración Git de Cloudflare (Workers Builds) al hacer
+  # push a main. Este job solo sirve si prefieres desplegar desde aquí; en
+  # ese caso desconecta la integración Git y carga en GitHub:
+  #   - secreto  CLOUDFLARE_API_TOKEN   (plantilla "Edit Cloudflare Workers")
   #   - secreto  CLOUDFLARE_ACCOUNT_ID
-  # y cambiar el nombre del proyecto. Para activarlo, descomenta el job.
-  #
-  # Wrangler sube la carpeta que genera el build; la salida de `pnpm build`
-  # depende del adaptador de Astro configurado (con el adaptador de Cloudflare
-  # es `dist/`). Ajusta la ruta de `wrangler pages deploy` si es otra.
+  # `wrangler deploy` lee wrangler.jsonc y la config que genera el build.
   # ---------------------------------------------------------------------------
   # deploy:
-  #   name: Deploy a Cloudflare Pages
+  #   name: Deploy a Cloudflare Workers
   #   needs: checks
   #   if: ${{ github.event_name == 'push' }}
   #   runs-on: ubuntu-latest
@@ -54,7 +53,7 @@ jobs:
   #         VITE_API_URL: ${{ vars.VITE_API_URL }}
   #         API_SECRET_TOKEN: ${{ secrets.API_SECRET_TOKEN }}
   #     - name: Deploy
-  #       run: npx wrangler pages deploy dist/ --project-name="tu-proyecto"
+  #       run: npx wrangler deploy
   #       env:
   #         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   #         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

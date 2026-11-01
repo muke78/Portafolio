@@ -1,6 +1,6 @@
+import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 import compress from "astro-compress";
@@ -104,5 +104,7 @@ export default defineConfig({
 		},
 	},
 	output: "server",
-	adapter: vercel(),
+	// Vitest loads this config through getViteConfig(); the adapter's Vite plugin
+	// would boot a workerd runtime for every test run, so tests run without it.
+	adapter: process.env.VITEST ? undefined : cloudflare(),
 });

@@ -1,0 +1,14 @@
+{
+	// Cloudflare Workers config for the Astro SSR site (adapter @astrojs/cloudflare).
+	// Build: `npx astro build`   Deploy: `npx wrangler deploy`
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "portafolio",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"compatibility_date": "2026-10-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": "./dist"
+	},
+	"observability": { "enabled": true }
+}
