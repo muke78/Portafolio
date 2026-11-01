@@ -115,7 +115,8 @@ caer en el minimalismo seco ni en el "diseño generado por IA".
 | `--input` | Borde de campos | `oklch(24% 0.008 270 / 50%)` | `oklch(92% 0.01 270 / 40%)` |
 | `--ring` | Anillo de foco | = `--primary` | = `--primary` |
 | `--night` / `--night-foreground` | Superficie siempre oscura (wordmark del footer) | `oklch(14.5% 0.012 270)` / `oklch(94% 0.004 270)` | igual |
-| `--glow` | Sombra de hover (halo violeta + sombra neutra, ver 5.5) | compuesta | compuesta |
+| `--glow` | Sombra de hover de **botones y chips** (halo violeta + sombra neutra, ver 5.5) | compuesta | compuesta |
+| `--glow-soft` | Sombra de hover de **cards**: solo una sombra neutra suave, sin halo violeta (ver 5.5) | compuesta | compuesta |
 
 Regla de superficies en oscuro: **fondo 16 % < card 20.5 % < muted 23.5 %**.
 Nunca una superficie más oscura que el fondo (se lee como un hueco negro):
@@ -408,8 +409,9 @@ Formularios:
     filtra o se muestra "Ver todos".
   - Se destaca lo clave con jerarquía (tamaño del título, un `Badge`,
     el acento `--primary` en un solo elemento), no con más color.
-- Hover: `hover-lift` en la card entera (ver 5.5). Las partes internas
-  (imagen, iconos) no reaccionan por separado. Nada de escalados ni rebotes.
+- Hover: `hover-lift` en la card entera (ver 5.5), siempre discreto (2 px y
+  sombra neutra). Las partes internas (imagen, iconos) no reaccionan por
+  separado. Nada de escalados, rebotes ni halos de color en cards.
 - Imágenes: `width`/`height` explícitos (evita CLS), `loading="lazy"`
   salvo la de LCP, `alt` descriptivo (o `alt=""` si es decorativa).
 
@@ -430,7 +432,7 @@ siempre las mismas, definidas como utilidades en `app.css`:
 
 | Utilidad | Para | Qué hace |
 |---|---|---|
-| `hover-lift` | Cards y superficies clicables | Sube 4 px (`translateY(-0.25rem)`), sombra `--glow` (halo violeta difuminado + sombra neutra suave) y tinte violeta en el borde. 380 ms, `cubic-bezier(0.22, 1, 0.36, 1)` |
+| `hover-lift` | Cards y superficies clicables | **Discreto**: sube 2 px (`translateY(-0.125rem)`), sombra neutra suave `--glow-soft` (sin halo violeta) y un tinte leve del borde (28 %). 260 ms, `cubic-bezier(0.22, 1, 0.36, 1)`. Una grilla de cards no debe "brillar" ni saltar: el hover confirma, no decora |
 | `hover-press` | Botones, chips, iconos sociales | Sube 2 px y añade `--glow`. 260 ms. Se aplica a las variantes `default`, `secondary` y `outline` de `Button` |
 | `hover-nudge` | Iconos de dirección (flechas) | Desplaza el icono 4 px en el sentido de la acción cuando su padre (enlace/botón) recibe hover o foco |
 
@@ -447,6 +449,10 @@ Reglas:
   siempre, no aparece al pasar el cursor.
 - Solo `transform`, `opacity`, `box-shadow` y `border-color`; nada de
   animar tamaño ni márgenes. Sin escalados > 1.03, sin rebotes.
+- **Menos es más con las cards.** En grillas y carriles (proyectos,
+  experiencia, opiniones) el hover es el mínimo que se percibe: 2 px,
+  sombra neutra, borde apenas tintado. El glow violeta queda para botones y
+  chips (`hover-press`), que son los que piden la acción.
 - Elementos que no son clicables no tienen hover.
 - Textos y enlaces simples: cambio de color a `--primary` es suficiente.
 - Una card clicable usa **un solo enlace** que se extiende sobre toda la

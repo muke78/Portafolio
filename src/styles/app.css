@@ -142,6 +142,9 @@
 	--glow-drop: 0 3px 10px -4px
 		color-mix(in oklch, var(--foreground) 14%, transparent);
 	--glow: var(--glow-halo), var(--glow-drop);
+	/* Cards: a quiet neutral shadow, no violet halo (hover-lift). */
+	--glow-soft: 0 10px 22px -14px
+		color-mix(in oklch, var(--foreground) 24%, transparent);
 
 	/* Always-dark "night" surface (footer wordmark), same in both themes. */
 	--night: oklch(14.5% 0.012 270);
@@ -199,6 +202,8 @@
 		color-mix(in oklch, var(--primary) 55%, transparent);
 	--glow-drop: 0 4px 14px -6px
 		color-mix(in oklch, var(--night) 80%, transparent);
+	--glow-soft: 0 12px 24px -14px
+		color-mix(in oklch, var(--night) 90%, transparent);
 
 	/* Dark theme: additive blending, so bright and luminous. */
 	--galaxy-core: oklch(86% 0.1 320);
@@ -300,29 +305,31 @@
 
 /* ============================================================
    HOVER STANDARD (UI_STANDARDS 5.5)
-   Tactile, not just a colour swap: a light lift, a soft violet glow and a
-   border tint. Hover effects only on real hover devices; the lift only
-   without reduced-motion; keyboard focus gets the same glow.
+   Tactile, not just a colour swap. Cards (hover-lift) are quiet: a 2 px lift,
+   a soft neutral shadow and a faint border tint. Buttons and chips
+   (hover-press) get the violet glow. Hover effects only on real hover
+   devices; the lift only without reduced-motion; keyboard focus gets the
+   same shadow.
    ============================================================ */
 @utility hover-lift {
 	transition:
-		transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-		box-shadow 380ms cubic-bezier(0.22, 1, 0.36, 1),
-		border-color 260ms ease,
-		background-color 260ms ease;
+		transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+		box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+		border-color 200ms ease,
+		background-color 200ms ease;
 	@media (hover: hover) {
 		&:hover {
-			box-shadow: var(--glow);
-			border-color: color-mix(in oklch, var(--primary) 42%, var(--border));
+			box-shadow: var(--glow-soft);
+			border-color: color-mix(in oklch, var(--primary) 28%, var(--border));
 		}
 	}
 	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
 		&:hover {
-			transform: translateY(-0.25rem);
+			transform: translateY(-0.125rem);
 		}
 	}
 	&:focus-visible {
-		box-shadow: var(--glow);
+		box-shadow: var(--glow-soft);
 	}
 }
 
