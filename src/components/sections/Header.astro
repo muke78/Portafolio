@@ -39,13 +39,13 @@ const lastName = nameParts.length > 1 ? nameParts.at(-1) : "";
 		-->
 		<div
 			aria-hidden="true"
-			class="pointer-events-none absolute -inset-x-8 -inset-y-10 -z-10 bg-[linear-gradient(115deg,var(--background)_38%,color-mix(in_oklch,var(--background),transparent_45%)_62%,transparent_85%)]"
+			class="pointer-events-none absolute -inset-x-16 -inset-y-20 -z-10 bg-[radial-gradient(ellipse_70%_65%_at_30%_50%,color-mix(in_oklch,var(--background),transparent_8%)_30%,color-mix(in_oklch,var(--background),transparent_55%)_58%,transparent_80%)]"
 		></div>
 		<div class="flex flex-wrap items-center gap-5 mb-6">
 			<span class="eyebrow">— {i18n.HEADER.HEADER_SUBTITLE}</span>
 		</div>
 
-		<h1 class="font-serif-display text-[clamp(56px,8.4vw,120px)] anim-fade-in">
+		<h1 class="font-serif-display text-display anim-fade-in">
 			{firstName}
 			{lastName && <><br /><span class="italic text-primary">{lastName}</span></>}
 		</h1>

@@ -57,123 +57,123 @@ mínimo obligatorio (AAA donde no cueste identidad), más las guías de
 
 ## 2. Color y temas
 
-### 2.1 Mecánica
+### 2.1 Dirección visual: "Violet Nocturne"
+
+Objetivo: una interfaz **simple pero sofisticada, premium y memorable**, al
+nivel de los sitios destacados en Awwwards / CSS Design Awards / FWA, sin
+caer en el minimalismo seco ni en el "diseño generado por IA".
+
+- **Un violeta vibrante** como único color de marca. Nada de multicolor.
+- **Prohibido el blanco y el negro puros** (`#000`, `#fff`, `text-white`,
+  `bg-black`). Tema oscuro: un morado berenjena casi negro, rico y con
+  matiz. Tema claro: perla/alabastro cálido, con tinta berenjena en lugar
+  de negro. Lo verifica `tests/unit/designTokens.test.ts`.
+- **El aire es un elemento de diseño.** Un solo punto focal por sección,
+  mucho espacio negativo, tipografía grande (sección 3). Si una pantalla se
+  ve "llena de datos", se quita contenido, no se baja el tamaño.
+- **La galaxia 3D es parte de la paleta**, no un fondo pegado: lee sus
+  colores de los tokens `--galaxy-*` y se recolorea al cambiar de tema.
+- **Movimiento sobrio** que guía el ojo (sección 7); nada rebota.
+- Leyes de UX aplicadas: **Hick** (pocas opciones, un CTA primario por
+  bloque), **proximidad** (el espacio dentro de un grupo es la mitad o menos
+  del espacio entre grupos) y **foco único** (cada sección dirige la mirada
+  a un solo elemento).
+
+### 2.2 Mecánica
 
 - Formato: **OKLCH** (perceptualmente uniforme; los pares claro/oscuro se
-  ajustan por luminosidad `L` sin tocar tono ni croma).
-- Tokens definidos en `:root` (claro) y `.dark` (oscuro) de
-  `src/styles/app.css`, expuestos a Tailwind v4 con `@theme inline`
-  (`bg-background`, `text-muted-foreground`, `border-border`, etc.).
-- Tema: clase `.dark` en `<html>`; se persiste en `localStorage` y el valor
-  inicial sigue `prefers-color-scheme`.
-- Concepto: **"Editorial Minimal"** — crema cálido / casi negro violáceo,
-  con **un solo acento violeta** (`--primary`). `--accent` es un gris
-  neutro a propósito (hover genérico de shadcn) para que el violeta no
-  parpadee en cualquier hover; el violeta se aplica de forma deliberada
-  (enlaces, estado activo, CTA).
+  ajustan por luminosidad `L` sin tocar tono ni croma). Todos los valores
+  opacos están **dentro del gamut sRGB** (así se ven igual en cualquier
+  pantalla); lo comprueba el test.
+- Tokens en `:root` (claro) y `.dark` (oscuro) de `src/styles/app.css`,
+  expuestos a Tailwind v4 con `@theme inline` (`bg-background`,
+  `text-muted-foreground`, `border-border`, `bg-night`…).
+- Tema: clase `.dark` en `<html>`; persistido en `localStorage`, con
+  `prefers-color-scheme` como valor inicial.
+- `--accent` es un neutro suave a propósito (hover genérico de shadcn): el
+  violeta se aplica de forma deliberada (enlaces, estado activo, CTA).
 
-### 2.2 Paleta principal
+### 2.3 Paleta principal
 
-| Token | Rol | Claro | Oscuro |
+| Token | Rol | Claro (perla) | Oscuro (berenjena) |
 |---|---|---|---|
-| `--background` | Fondo de página | `oklch(96.9% 0.007 85)` | `oklch(15.9% 0.011 292)` |
-| `--foreground` | Texto principal | `oklch(15.9% 0.011 292)` | `oklch(95.9% 0.006 85)` |
-| `--card` | Superficie elevada | `oklch(98.3% 0.004 85)` | `oklch(19.4% 0.013 292)` |
-| `--primary` | **Acento de marca (violeta)** | `oklch(50% 0.15 290)` | `oklch(72% 0.14 290)` |
-| `--primary-foreground` | Texto sobre `--primary` | `oklch(95% 0.02 290)` | `oklch(15% 0.04 290)` |
-| `--secondary` | Superficie de contraste (botón sólido neutro) | `oklch(15.9% 0.011 292)` | `oklch(95.9% 0.006 85)` |
-| `--muted` | Fondo atenuado | `oklch(92.4% 0.009 80)` | `oklch(11.8% 0.01 292)` |
-| `--muted-foreground` | Texto secundario | `oklch(40% 0.016 290)` | `oklch(70% 0.014 290)` |
-| `--accent` | Hover neutro | `oklch(92.4% 0.009 80)` | `oklch(23% 0.014 292)` |
-| `--border` | Divisores decorativos | `oklch(15.9% 0.011 292 / 7%)` | `oklch(100% 0 0 / 10%)` |
-| `--input` | Borde de campos | `oklch(15.9% 0.011 292 / 14%)` | `oklch(100% 0 0 / 15%)` |
-| `--ring` | Anillo de foco | `oklch(50% 0.15 290)` | `oklch(72% 0.14 290)` |
+| `--background` | Fondo de página | `oklch(96.8% 0.01 90)` ≈ `#f7f4ed` | `oklch(16.5% 0.03 292)` ≈ `#0f0c1a` |
+| `--foreground` | Texto principal (tinta, no negro) | `oklch(21% 0.045 292)` ≈ `#19142b` | `oklch(94.5% 0.014 300)` ≈ `#eeebf5` |
+| `--card` | Superficie elevada | `oklch(98.6% 0.007 90)` ≈ `#fcfaf5` | `oklch(21% 0.036 291)` ≈ `#181528` |
+| `--primary` | **Violeta de marca** | `oklch(50% 0.21 292)` ≈ `#6c3ccd` | `oklch(67% 0.185 292)` ≈ `#9a7afb` |
+| `--primary-foreground` | Texto sobre `--primary` | `oklch(97% 0.015 295)` | `oklch(15% 0.05 290)` |
+| `--secondary` | Botón sólido neutro | `oklch(21% 0.045 292)` | `oklch(94.5% 0.014 300)` |
+| `--muted` | Fondo hundido | `oklch(93.4% 0.013 90)` | `oklch(14.5% 0.03 292)` |
+| `--muted-foreground` | Texto secundario | `oklch(43% 0.03 292)` | `oklch(72% 0.03 293)` |
+| `--accent` | Hover neutro | `oklch(93.4% 0.013 90)` | `oklch(25% 0.04 291)` |
+| `--border` | Divisores decorativos | `oklch(21% 0.045 292 / 9%)` | `oklch(85% 0.04 295 / 12%)` |
+| `--input` | Borde de campos | `oklch(21% 0.045 292 / 50%)` | `oklch(85% 0.04 295 / 46%)` |
+| `--ring` | Anillo de foco | = `--primary` | = `--primary` |
+| `--night` / `--night-foreground` | Superficie siempre oscura (wordmark del footer) | `oklch(14.5% 0.03 292)` / `oklch(94.5% 0.014 300)` | igual |
 
-Radio base `--radius: 0.375rem`; la escala (`sm`…`4xl`) se deriva de él
-(ver 5.4).
+Los tokens del 3D (`--galaxy-core`, `--galaxy-arm`, `--galaxy-hot`,
+`--galaxy-star`) son distintos por tema porque el render difiere: en oscuro
+la galaxia se mezcla de forma aditiva (colores luminosos); en claro se
+mezcla con `multiply` sobre la perla (colores más profundos y saturados, o
+desaparecerían).
 
-### 2.3 Estados semánticos
+Radio base `--radius: 0.375rem`; escala en 4.3.
+
+### 2.4 Estados semánticos
 
 | Token | Uso | Claro | Oscuro |
 |---|---|---|---|
-| `--success` / `--success-foreground` | Confirmación, "publicado" | `oklch(52% 0.13 155)` | `oklch(70% 0.14 155)` |
-| `--destructive` | Error, borrar, validación fallida | `oklch(55% 0.19 25)` | `oklch(70% 0.18 25)` |
-| `--info` / `--info-foreground` | Aviso neutro, ayuda | `oklch(52% 0.14 240)` | `oklch(70% 0.13 240)` |
-| `--warning` / `--warning-foreground` | Advertencia, acción reversible con riesgo | `oklch(52% 0.12 70)` / `oklch(97% 0.02 80)` | `oklch(78% 0.14 75)` / `oklch(15% 0.03 75)` |
+| `--success` / `-foreground` | Confirmación, "publicado" | `oklch(50% 0.12 155)` | `oklch(72% 0.15 160)` |
+| `--destructive` | Error, borrar, validación fallida | `oklch(54% 0.2 25)` | `oklch(70% 0.19 22)` |
+| `--warning` / `-foreground` | Advertencia, acción con riesgo | `oklch(52% 0.11 70)` | `oklch(80% 0.15 80)` |
+| `--info` / `-foreground` | Aviso neutro, ayuda | `oklch(50% 0.125 245)` | `oklch(72% 0.13 245)` |
 
-Reglas:
+Reglas: el color **nunca** es el único portador del significado (WCAG
+1.4.1): todo estado lleva icono Lucide y/o texto. Errores de formulario:
+`text-destructive` + icono + texto descriptivo (5.2). `--warning` todavía
+no tiene usos.
 
-- El color **nunca** es el único portador del significado (WCAG 1.4.1):
-  todo estado lleva además icono Lucide y/o texto ("Error: …").
-- Mensajes de error de formulario: `text-destructive` + icono + texto
-  descriptivo (ver 5.2).
+### 2.5 Contrastes medidos
 
-### 2.4 Contrastes medidos
-
-Calculados con la fórmula de luminancia relativa de WCAG 2.1 a partir de
-los tokens de arriba (mezcla alfa en sRGB codificado, como hace el
-navegador). Umbrales: texto normal ≥ 4.5:1 (AA), ≥ 7:1 (AAA); texto grande
-(≥ 24 px, o ≥ 18.66 px en negrita) ≥ 3:1; componentes de UI y
-anillos de foco ≥ 3:1 (WCAG 1.4.11).
+Calculados con la luminancia relativa de WCAG 2.1 a partir de los tokens
+(alfa mezclado en sRGB codificado, como hace el navegador) y protegidos por
+`tests/unit/designTokens.test.ts`. Umbrales: texto ≥ 4.5:1 (AA) / 7:1 (AAA);
+componentes de UI y foco ≥ 3:1 (1.4.11).
 
 | Par | Claro | Oscuro | Veredicto |
 |---|---|---|---|
-| `foreground` / `background` | 17.8 | 17.3 | AAA |
-| `foreground` / `card` | 18.5 | 16.3 | AAA |
-| `muted-foreground` / `background` | 8.5 | 7.3 | AAA |
-| `muted-foreground` / `card` | 8.8 | 6.9 | AAA claro · AA oscuro |
-| `muted-foreground` / `muted` | 7.4 | 7.6 | AAA |
-| `primary` / `background` (texto/enlace) | 5.8 | 7.5 | AA claro · AAA oscuro |
-| `primary-foreground` / `primary` (botón) | 5.5 | 7.7 | AA claro · AAA oscuro |
-| `secondary-foreground` / `secondary` | 17.8 | 17.3 | AAA |
-| `destructive` / `background` | 4.9 | 6.7 | AA |
-| `success` / `background` | 4.7 | 7.7 | AA |
-| `info` / `background` | 4.9 | 7.4 | AA |
-| `ring` (borde de foco) / `background` | 5.8 | 7.5 | Cumple 1.4.11 |
-| `input` (borde de campo) / `background` | 3.06 | 3.17 | Cumple 1.4.11 (corregido, ver 2.7) |
+| `foreground` / `background` | 16.3 | 16.4 | AAA |
+| `foreground` / `card` | 17.2 | 15.1 | AAA |
+| `muted-foreground` / `background` | 7.5 | 7.7 | AAA |
+| `muted-foreground` / `card` | 7.9 | 7.1 | AAA |
+| `muted-foreground` / `muted` | 6.7 | 7.9 | AA (claro) · AAA (oscuro) |
+| `primary` / `background` (texto/enlace) | 6.1 | 6.1 | AA |
+| `primary-foreground` / `primary` (botón) | 6.1 | 6.2 | AA |
+| `destructive` / `background` | 5.1 | 6.6 | AA |
+| `success` / `background` | 5.2 | 8.3 | AA / AAA |
+| `info` / `background` | 5.4 | 7.9 | AA / AAA |
+| `warning` / `background` | 5.2 | 10.2 | AA / AAA |
+| `warning-foreground` / `warning` | 5.2 | 10.4 | AA / AAA |
+| `night-foreground` / `night` | 16.9 | 16.9 | AAA |
+| `input` (borde de campo) / `background` | 3.3 | 3.3 | Cumple 1.4.11 |
+| `ring` / `background` | 6.1 | 6.1 | Cumple 1.4.11 |
+| `border` / `background` | 1.2 | 1.3 | Solo decorativo (no define el límite de un control) |
 
-Los pares de texto sobre `--success`, `--destructive` e `--info` como
-**fondo** no están medidos: hoy esos tokens se usan como color de texto o
-con opacidad baja (`bg-destructive/10`), no como relleno sólido. Si se
-usan como relleno sólido, hay que medir el par antes de mergear.
+El foco combina borde `--ring` lleno y halo `ring-3 ring-ring/50`: el halo
+solo (≈ 2:1) no basta, el borde lleno sí; no quitar ninguno de los dos.
 
-### 2.5 Reglas de uso
+### 2.6 Reglas de uso
 
-- **No salir de la paleta.** Un color nuevo = un token nuevo en `app.css`
-  (claro y oscuro), con su contraste medido en este documento.
-- `text-primary` solo para enlaces, estado activo y énfasis puntual. No
-  para párrafos.
-- Texto secundario = `text-muted-foreground`. No bajar la opacidad del
-  texto (`text-foreground/50`) para "atenuar": rompe el contraste medido.
-- Superficies: `background` → `card` (elevada) → `muted` (hundida).
-  Máximo dos niveles visibles a la vez.
-- Los dos temas se diseñan y se prueban siempre; un PR de UI que solo se
-  vio en uno no está terminado.
-
-### 2.6 Token `--warning`
-
-Implementado en `app.css` (`:root`, `.dark` y `@theme inline` →
-`bg-warning`, `text-warning`, `text-warning-foreground`). Ámbar con el
-contraste medido contra el fondo del tema:
-
-| Token | Claro | Oscuro | Contraste vs `background` |
-|---|---|---|---|
-| `--warning` | `oklch(52% 0.12 70)` | `oklch(78% 0.14 75)` | 5.2 / 9.5 (AA / AAA) |
-| `--warning-foreground` | `oklch(97% 0.02 80)` | `oklch(15% 0.03 75)` | sobre `--warning`: 5.2 / 9.7 |
-
-Todavía sin usos: es el primer estado de advertencia que se construya el
-que lo estrene.
-
-### 2.7 Borde de campos (corregido)
-
-`--input` (borde de `Input`, `Textarea`, `Select`) medía **1.35:1** en
-claro y **1.50:1** en oscuro, bajo el 3:1 que exige WCAG 1.4.11. Ahora es
-`oklch(15.9% 0.011 292 / 45%)` en claro (3.06:1) y `oklch(100% 0 0 / 35%)`
-en oscuro (3.17:1).
-
-Efecto a tener en cuenta: `Input`/`Textarea` usan `dark:bg-input/30` como
-relleno, así que en oscuro el relleno también se aclara (de ~4.5 % a
-~10.5 % de blanco). Revisado en el formulario de contacto en ambos temas.
+- **No salir de la paleta.** Un color nuevo = un token nuevo (claro y
+  oscuro), dentro del gamut sRGB y con su contraste medido aquí.
+- Prohibido `#000`/`#fff`, `text-white`, `bg-black` y similares (usa
+  `text-primary-foreground`, `bg-night/40`, etc.). El test lo hace cumplir.
+- `text-primary` solo para enlaces, estado activo y énfasis puntual.
+- Texto secundario = `text-muted-foreground`; no bajar la opacidad del
+  texto para "atenuar".
+- Superficies: `background` → `card` (elevada) → `muted` (hundida); máximo
+  dos niveles visibles a la vez.
+- Los dos temas se diseñan y se prueban siempre.
 
 ---
 
@@ -181,61 +181,55 @@ relleno, así que en oscuro el relleno también se aclara (de ~4.5 % a
 
 ### 3.1 Familias
 
-Todas autoalojadas con `@fontsource` (sin petición a Google Fonts, sin
-FOUT por CDN externo).
+Autoalojadas con `@fontsource` (sin CDN externo).
 
-| Rol | Familia | Variable CSS / clase | Uso |
+| Rol | Familia | Variable / clase | Uso |
 |---|---|---|---|
-| Display | **Instrument Serif** (400, con itálica) | `--font-serif` · `.font-serif-display` | Titulares H1–H3, nombre, números destacados |
-| Texto | **Geist Variable** | `--font-sans` (por defecto en `<html>`) | Párrafos, UI, botones, formularios |
-| Etiquetas / datos | **Geist Mono Variable** | `--font-mono` · `.eyebrow` | Etiquetas pequeñas, metadatos, fechas, código |
+| Display | **Instrument Serif** (400, con itálica) | `--font-serif` · `.font-serif-display` | Titulares, nombre, cifras destacadas |
+| Texto | **Geist Variable** | `--font-sans` | Párrafos, UI, botones, formularios |
+| Etiquetas | **Geist Mono Variable** | `--font-mono` · `.eyebrow` | Metadatos, fechas, etiquetas, código |
 
-Contraste tipográfico: serif de display fino y alto contraste frente a una
-sans geométrica neutra. Son dos voces claramente distintas; no se agrega
-una tercera.
+Instrument Serif es condensada y de alto contraste: es la voz de marca. Va
+**siempre grande** (nunca por debajo de ~22 px) y solo en peso 400 (no tiene
+negrita real: jerarquía por tamaño y espacio, jamás `font-bold`, que
+generaría negrita sintética). El itálico se reserva para un énfasis puntual.
 
-### 3.2 Jerarquía
+### 3.2 Escala y jerarquía
 
-Instrument Serif solo existe en peso 400 (no hay negrita real): la
-jerarquía de los titulares se construye con **tamaño y espacio**, nunca con
-`font-bold` (generaría negrita sintética). El itálico sí existe y se usa
-para énfasis ("*González*").
+Los tamaños son **tokens de Tailwind** (`@theme` en `app.css`): cada uno
+fija tamaño fluido (rem + vw, escala con el zoom del navegador),
+interlineado y tracking. No se usan `text-[clamp(...)]` ni `text-[Npx]`.
 
-| Nivel | Familia · peso | Tamaño | Interlineado | Tracking | Estado |
+| Nivel | Clase | Tamaño | Interlineado | Tracking | Familia |
 |---|---|---|---|---|---|
-| H1 (hero) | Serif · 400 | `clamp(56px, 8.4vw, 120px)` | 0.98 | −0.02em | En código |
-| H2 (sección) | Serif · 400 | `clamp(32px, 4.5vw, 56px)` | 0.98 | −0.02em | En código |
-| H3 (subsección) | Serif · 400 | `clamp(28px, 4vw, 48px)` | 0.98 | −0.02em | Tamaño en código (hoy los títulos de `aboutMe` usan este tamaño con `<h2>`, ver 10) |
-| H4 | Serif · 400 | `clamp(20px, 2.2vw, 28px)` | 1.1 | −0.01em | Definido aquí (el tamaño existe en el eslogan del footer, que es un `<p>`) |
-| H5 | Sans · 600 | 18 px (`text-lg`) | 1.4 | 0 | Definido aquí |
-| H6 | Sans · 600 | 16 px (`text-base`) | 1.4 | 0 | Definido aquí |
-| Lead | Sans · 400 | `clamp(18px, 1.6vw, 22px)` (`.khelde-lead`) | 1.5 | 0 | En código |
-| Body | Sans · 400 | 16 px (`text-base`) | 1.6 | 0 | Definido aquí |
-| Body pequeño | Sans · 400 | 14 px (`text-sm`) | 1.5 | 0 | En código |
-| Caption | Sans · 400 | 12 px (`text-xs`) | 1.4 | 0 | Definido aquí |
-| Eyebrow | Mono · 500, mayúsculas | 12 px / `0.75rem` (`.eyebrow`) | — | +0.16em | En código |
+| Display (hero) | `text-display` | `clamp(3.5rem, 9vw, 8rem)` (56–128 px) | 0.95 | −0.03em | Serif |
+| H2 sección | `text-title` | `clamp(2.25rem, 5vw, 4rem)` (36–64 px) | 1.02 | −0.025em | Serif |
+| H3 subsección | `text-subtitle` | `clamp(1.875rem, 3.6vw, 2.75rem)` (30–44 px) | 1.08 | −0.02em | Serif |
+| H4 destacado | `text-heading` | `clamp(1.375rem, 2.4vw, 1.875rem)` (22–30 px) | 1.15 | −0.01em | Serif |
+| H5 / H6 | `text-lg` / `text-base` + `font-semibold` | 18 / 16 px | 1.4 | 0 | Sans |
+| Lead | `.khelde-lead` | `clamp(1.125rem, 1.7vw, 1.375rem)` (18–22 px) | 1.6 | 0 | Sans |
+| **Cuerpo** | (por defecto en `body`) | **17 px** (1.0625rem) | **1.65** | 0 | Sans |
+| Cuerpo pequeño | `text-sm` | 14 px | 1.5 | 0 | Sans |
+| Etiqueta | `.eyebrow` | 13 px (0.8125rem), peso 500 | 1.5 | +0.06em | Mono |
+| Caption | `text-xs` | 12 px | 1.4 | 0 | Sans |
 
 Reglas:
 
-- **Un solo `<h1>` por página.** Los niveles no se saltan (H2 → H4 no).
-  El nivel visual se elige con clases; el nivel semántico con la etiqueta.
-- Largo de línea: **≤ 65–75 caracteres** (`max-width: 60ch` en
-  `.khelde-lead`; `max-w-prose` en párrafos largos). Las líneas de
-  serif aguantan un poco más; las de sans, no.
-- Interlineado del cuerpo ≥ **1.5** (WCAG 1.4.12 exige que el texto
-  soporte 1.5 sin perder contenido).
-- **Kerning/tracking:** el serif de display se aprieta (−0.02em) porque
-  a tamaños grandes el espaciado por defecto se ve flojo; los titulares
-  grandes deben llevar `text-wrap: balance` (_Pendiente_: hoy ningún
-  titular lo usa). Las etiquetas en mayúsculas llevan
-  tracking **positivo** (+0.16em) para legibilidad. El cuerpo no se toca.
-- Tamaño mínimo de texto que comunica información: **12 px**. Ningún texto
-  funcional por debajo (el eyebrow y las etiquetas del footer ya están
-  en 12 px).
-- El texto debe poder ampliarse al 200 % sin pérdida (WCAG 1.4.4): tamaños
-  en `rem`/`clamp`, no `px` fijos en contenedores de altura fija.
-- No usar `text-[Npx]` arbitrarios nuevos: si falta un nivel, se agrega a
-  esta tabla y a `app.css`.
+- **Un solo `<h1>`**; los niveles no se saltan. El nivel visual se elige
+  con la clase; el semántico con la etiqueta.
+- **Tamaño mínimo funcional: 12 px.** La etiqueta (`.eyebrow`) es de 13 px y
+  **en minúsculas/frase normal**: no se usan etiquetas diminutas en
+  MAYÚSCULAS (es una de las marcas típicas de interfaz generada por IA).
+- Largo de línea ≤ 65–75 caracteres (`max-width: 58ch` en el lead,
+  `max-w-prose` en párrafos largos).
+- Interlineado del cuerpo ≥ 1.5 (WCAG 1.4.12).
+- Los titulares grandes deben llevar `text-wrap: balance` (_Pendiente_: aún
+  ningún titular lo usa).
+- Kerning/tracking: el serif de display se aprieta cuanto más grande es
+  (−0.01em a −0.03em); las etiquetas llevan tracking positivo leve; el
+  cuerpo no se toca.
+- Ampliable al 200 % sin pérdida (1.4.4): tamaños en `rem`/`clamp`.
+- Si falta un nivel, se agrega **aquí y en `app.css`**, no inline.
 
 ---
 
@@ -358,9 +352,9 @@ sitio de uso o espacio vacío alrededor ≥ 8 px entre objetivos.
 
 | Aspecto | Estándar |
 |---|---|
-| Alto | `Input`/`Select` 32 px (`h-8`) en admin; **≥ 40 px** (`h-10`) en formularios públicos |
+| Alto | `Input`/`Select` 32 px (`h-8`) en admin; **44 px** (`h-11`, `text-base`) en formularios públicos |
 | Texto | 16 px en móvil (`text-base`, evita el zoom automático de iOS), 14 px desde `md` |
-| Borde | `border-input`, radio `rounded-lg`, fondo transparente (`dark:bg-input/30`) — contraste del borde en 2.7 |
+| Borde | `border-input`, radio `rounded-lg`, fondo transparente (`dark:bg-input/30`) — contraste del borde en 2.5 |
 | Foco | `focus-visible:border-ring` + `ring-3 ring-ring/50`. **No quitar `outline`/ring sin sustituto** (WCAG 2.4.7). Mantener el `border-ring` junto al halo: el halo solo mide 2.2–2.7:1, el borde lleno 5.8–7.5:1 |
 | Disabled | `opacity-50` + `cursor-not-allowed` |
 | Error | `aria-invalid="true"` (pinta borde y anillo `--destructive`) |
@@ -639,15 +633,17 @@ Antes de abrir un PR que toque UI:
 
 | # | Hallazgo | Dónde | Estado |
 |---|---|---|---|
-| 1 | Borde de campos `--input` bajo 3:1 (WCAG 1.4.11) | `app.css` | ✅ Resuelto (2.7) |
-| 2 | No existía token `--warning` | `app.css` | ✅ Resuelto (2.6) |
+| 1 | Borde de campos `--input` bajo 3:1 (WCAG 1.4.11) | `app.css` | ✅ Resuelto (2.5) |
+| 2 | No existía token `--warning` | `app.css` | ✅ Resuelto (2.4) |
 | 3 | GSAP/ScrollTrigger sin instalar | `package.json`, `src/lib/motion.ts` | ✅ Instalado y arquitectura lista (7); falta migrar/crear animaciones |
-| 4 | Colores hardcodeados fuera de tokens: galaxia 3D (`#FFC896`, `#8C5CFF`, `#FFFFFF`, `rgba(...)`), `wordmark-reveal` (`oklch(11.8% …)`, `rgba(245,242,236,.18)`), `<meta name="theme-color" content="#6f37cf">` | `GalaxyBackground.tsx`, `app.css`, `Layout.astro` | ⏳ Pendiente. Leer `--primary` desde CSS para el 3D; alinear `theme-color`. El 3D es una escena de color propio: decidir si se acepta como excepción |
-| 5 | Etiquetas a 11 px | `app.css`, footer, formulario de contacto, Panel admin | ✅ Resuelto (12 px) |
-| 6 | CTAs del hero eran `<a>` hechos a mano | `Header.astro` | ✅ Resuelto: `buttonVariants` sobre `<a>` (los `.astro` no pueden pasar `render={<a />}`), pill + `min-h-11` |
-| 7 | Tamaños arbitrarios `text-[Npx]` / `text-[clamp(...)]` repetidos | secciones del home | ⏳ Pendiente: convertir en utilidades/tokens de tipografía (3.2) |
-| 8 | `Button` `default`/`lg` miden 32/36 px (< 44 px táctil) | `button.tsx` | ⏳ Parcial: el hero ya usa `min-h-11`; falta el resto del sitio público (`min-h-11` o variante `touch`) |
-| 9 | Animaciones existentes mezcladas: CSS, JS manual (`Cosmos.tsx`, Footer) y 3D | varios | ⏳ Pendiente: migrar entradas/parallax a GSAP (7.1); dejar Three/cosmos como están |
-| 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Pendiente: test e2e emulando `reducedMotion: 'reduce'` |
-| 11 | Títulos de Educación, Experiencia, Habilidades y Sobre mí eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`, mismas clases) |
-| 12 | Jerarquía de encabezados plana: los puestos (`ItemDataExperiencia`) y las cards de proyectos son `<h2>` al mismo nivel que el título de su sección; deberían ser `<h3>` | `ItemDataExperiencia.tsx`, `Proyectos.astro` | ⏳ Pendiente (WCAG 1.3.1) |
+| 4 | Colores fuera de tokens: galaxia 3D, wordmark del footer, `theme-color`, `text-white`/`bg-black` | `GalaxyBackground.tsx`, `app.css`, `Layout.astro`, `sendOpinions.tsx`, `sheet.tsx` | ✅ Resuelto: tokens `--galaxy-*`, `--night`, metas por esquema de color y utilidades de token; test que lo hace cumplir |
+| 5 | Etiquetas a 11 px y en mayúsculas | `app.css`, footer, formulario, Panel admin | ✅ Resuelto: `.eyebrow` 13 px en frase normal (el Panel admin conserva `text-xs uppercase`) |
+| 6 | CTAs del hero eran `<a>` hechos a mano | `Header.astro` | ✅ Resuelto: `buttonVariants` sobre `<a>`, pill + `min-h-11` |
+| 7 | Tamaños arbitrarios `text-[Npx]` / `text-[clamp(...)]` | secciones del home | ✅ Resuelto: tokens `text-display/title/subtitle/heading` (3.2). Quedan `text-[22px]` (logo del Nav) y `text-[0.8rem]` (shadcn `button` sm) |
+| 8 | Objetivos táctiles < 44 px | sitio público | ✅ Resuelto en nav, tabs, tema, idioma, formulario y hero. Admin conserva 32 px a propósito |
+| 9 | Animaciones existentes mezcladas: CSS, JS manual (`Cosmos.tsx`, Footer) y 3D | varios | ⏳ Pendiente: migrar entradas/parallax a GSAP (7.1) en `feat/home-motion` |
+| 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Pendiente: test e2e emulando `reducedMotion: reduce` |
+| 11 | Títulos de `aboutMe` eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`) |
+| 12 | Jerarquía de encabezados plana (puestos y cards de proyectos como `<h2>`) | `ItemDataExperiencia.tsx`, `ItemDataProjects.tsx` | ✅ Resuelto (`<h3>`) |
+| 13 | Composición de la galaxia 3D (posición, escala, brazos) y solapamiento con el texto del hero | `GalaxyBackground.tsx` | ⏳ Pendiente: `feat/home-layout`. Ya recolorea por tema desde tokens |
+| 14 | `text-wrap: balance` sin aplicar en titulares | secciones | ⏳ Pendiente (`feat/home-layout`) |

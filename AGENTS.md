@@ -77,7 +77,10 @@ reglas que no se negocian:
 1. **Solo la paleta del proyecto.** Los colores salen de los tokens de
    `src/styles/app.css` (`bg-background`, `text-foreground`,
    `text-primary`, `border-border`, …). Prohibido hex, `rgb()` u `oklch()`
-   sueltos en componentes. ¿Hace falta un color nuevo? Se agrega como
+   sueltos en componentes, y **prohibido el blanco y el negro puros**
+   (`#fff`, `#000`, `text-white`, `bg-black`): usa `text-primary-foreground`,
+   `bg-night/40`, etc. El oscuro es berenjena, el claro es perla; el test
+   `tests/unit/designTokens.test.ts` lo hace cumplir. ¿Hace falta un color nuevo? Se agrega como
    token (claro y oscuro) con su contraste medido, no inline.
 2. **Accesibilidad (WCAG 2.1 AA) por encima de la estética.** Contraste
    de texto ≥ 4.5:1 y de componentes/foco ≥ 3:1 en **ambos temas**; foco
@@ -93,7 +96,11 @@ reglas que no se negocian:
    otra librería de iconos.
 5. **Tipografía del sistema.** Instrument Serif para titulares
    (`font-serif-display`), Geist para texto, Geist Mono para etiquetas
-   (`eyebrow`). No introduzcas otras fuentes ni `font-bold` en el serif.
+   (`eyebrow`, 13 px en frase normal, sin mayúsculas diminutas). Los
+   tamaños salen de los tokens `text-display`, `text-title`, `text-subtitle`
+   y `text-heading`; no uses `text-[clamp(...)]` ni `text-[Npx]`. Cuerpo
+   de 17 px, aire generoso, un solo punto focal por sección. No
+   introduzcas otras fuentes ni `font-bold` en el serif.
 6. **Animación de scroll con GSAP + ScrollTrigger.** Fade-up, stagger y
    parallax sutil, solo con `transform` y `opacity`, dentro de
    `gsap.matchMedia()` y respetando `prefers-reduced-motion`. Toda la
@@ -109,8 +116,8 @@ reglas que no se negocian:
 
 > **Estado actual (importante):** GSAP está instalado y centralizado en
 > `src/lib/motion.ts`, pero **ninguna animación existente se ha migrado**
-> todavía. Queda deuda de diseño conocida (colores hardcodeados del 3D,
-> jerarquía de encabezados h2→h3, tamaños táctiles fuera del hero, etc.),
+> todavía. Queda deuda de diseño conocida (composición de la galaxia 3D,
+> `text-wrap: balance`, cobertura de reduced-motion, etc.),
 > listada en la sección 10 de `docs/UI_STANDARDS.md`. No la "arregles de
 > paso" dentro de un cambio ajeno: va en su propia rama.
 

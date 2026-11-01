@@ -64,9 +64,9 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 								draggable="false"
 							/>
 							<div className="flex flex-col">
-								<h2 className="text-lg font-semibold text-foreground">
+								<h3 className="text-lg font-semibold text-foreground">
 									{title}
-								</h2>
+								</h3>
 								{work && (
 									<span className="inline-flex w-fit items-center rounded-full bg-primary text-primary-foreground font-medium px-3 py-1 my-2">
 										{work}

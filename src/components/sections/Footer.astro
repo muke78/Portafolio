@@ -39,11 +39,11 @@ const year = new Date().getFullYear();
 <footer class="border-t border-border py-14 bg-background">
 	<div class="mx-auto max-w-[1240px] px-6">
 		<div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr] gap-10 mb-14">
-			<p class="font-serif-display text-[clamp(20px,2.2vw,28px)] max-w-[32ch]">
+			<p class="font-serif-display text-heading max-w-[32ch]">
 				«{i18n.OPINIONS.OPINIONS_SUBTITLE}»
 			</p>
 			<div>
-				<h5 class="font-mono text-xs uppercase tracking-wide text-muted-foreground mb-4">Sitio</h5>
+				<h5 class="eyebrow mb-4">Sitio</h5>
 				<ul class="flex flex-col gap-2">
 					{navItems.map((item) => (
 						<li>
@@ -55,7 +55,7 @@ const year = new Date().getFullYear();
 				</ul>
 			</div>
 			<div>
-				<h5 class="font-mono text-xs uppercase tracking-wide text-muted-foreground mb-4">Elsewhere</h5>
+				<h5 class="eyebrow mb-4">Elsewhere</h5>
 				<ul class="flex flex-col gap-2">
 					<li><a href="https://github.com/muke78" target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">GitHub</a></li>
 					<li><a href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/" target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">LinkedIn</a></li>

@@ -103,12 +103,12 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 	return (
 		<div className="bg-card rounded-xl overflow-hidden">
 			<div className="bg-primary px-5 py-4 flex items-center gap-3">
-				<MessageSquare className="w-6 h-6 text-white shrink-0" />
+				<MessageSquare className="w-6 h-6 text-primary-foreground shrink-0" />
 				<div>
-					<h2 className="text-base font-semibold text-white leading-tight">
+					<h2 className="text-base font-semibold text-primary-foreground leading-tight">
 						{i18n.OPINIONS.OPINIONS_FORM_TITLE}
 					</h2>
-					<p className="text-xs text-white/80 leading-snug">
+					<p className="text-xs text-primary-foreground/80 leading-snug">
 						{i18n.OPINIONS.OPINIONS_FORM_SUBTITLE}
 					</p>
 				</div>
@@ -262,7 +262,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 					>
 						{isLoading ? (
 							<>
-								<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+								<div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
 								<span>{i18n.OPINIONS.OPINIONS_LOAD_SEND_INFORMATION}</span>
 							</>
 						) : (

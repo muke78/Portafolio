@@ -7,7 +7,7 @@ export const SobreMi = ({ currentLocale }: PropsLang) => {
 
 	return (
 		<div className="w-full flex flex-col p-4">
-			<h2 className="font-serif-display text-[clamp(28px,4vw,48px)] font-normal mb-4">
+			<h2 className="font-serif-display text-subtitle font-normal mb-4">
 				{i18n.ABOUTME.ABOUT_TITLE}
 			</h2>
 			<ItemDataSobreMi currentLocale={currentLocale} />

@@ -88,14 +88,14 @@ export const ItemDataProjects = ({
 							</div>
 						</figure>
 						<div className="flex flex-col gap-2 p-4">
-							<h2 className="flex items-center gap-2 text-2xl font-semibold">
+							<h3 className="flex items-center gap-2 text-2xl font-semibold">
 								{title}
 								{fork && (
 									<span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
 										{i18n.PROJECTS.PROJECTS_BADGE_FORK}
 									</span>
 								)}
-							</h2>
+							</h3>
 							<p>{description}</p>
 
 							<div className="flex flex-wrap items-center justify-start">
