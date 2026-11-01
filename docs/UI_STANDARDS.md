@@ -99,7 +99,7 @@ Radio base `--radius: 0.375rem`; la escala (`sm`…`4xl`) se deriva de él
 | `--success` / `--success-foreground` | Confirmación, "publicado" | `oklch(52% 0.13 155)` | `oklch(70% 0.14 155)` |
 | `--destructive` | Error, borrar, validación fallida | `oklch(55% 0.19 25)` | `oklch(70% 0.18 25)` |
 | `--info` / `--info-foreground` | Aviso neutro, ayuda | `oklch(52% 0.14 240)` | `oklch(70% 0.13 240)` |
-| `--warning` / `--warning-foreground` | Advertencia, acción reversible con riesgo | _Pendiente (2.6)_ | _Pendiente (2.6)_ |
+| `--warning` / `--warning-foreground` | Advertencia, acción reversible con riesgo | `oklch(52% 0.12 70)` / `oklch(97% 0.02 80)` | `oklch(78% 0.14 75)` / `oklch(15% 0.03 75)` |
 
 Reglas:
 
@@ -130,7 +130,7 @@ anillos de foco ≥ 3:1 (WCAG 1.4.11).
 | `success` / `background` | 4.7 | 7.7 | AA |
 | `info` / `background` | 4.9 | 7.4 | AA |
 | `ring` (borde de foco) / `background` | 5.8 | 7.5 | Cumple 1.4.11 |
-| **`input` (borde de campo) / `background`** | **1.35** | **1.50** | **No cumple 1.4.11** — ver 2.7 |
+| `input` (borde de campo) / `background` | 3.06 | 3.17 | Cumple 1.4.11 (corregido, ver 2.7) |
 
 Los pares de texto sobre `--success`, `--destructive` e `--info` como
 **fondo** no están medidos: hoy esos tokens se usan como color de texto o
@@ -150,32 +150,30 @@ usan como relleno sólido, hay que medir el par antes de mergear.
 - Los dos temas se diseñan y se prueban siempre; un PR de UI que solo se
   vio en uno no está terminado.
 
-### 2.6 Token `--warning` (propuesto, no implementado)
+### 2.6 Token `--warning`
 
-No existe hoy. Valores propuestos, con contraste ya medido (ámbar sobre el
-fondo del tema):
+Implementado en `app.css` (`:root`, `.dark` y `@theme inline` →
+`bg-warning`, `text-warning`, `text-warning-foreground`). Ámbar con el
+contraste medido contra el fondo del tema:
 
 | Token | Claro | Oscuro | Contraste vs `background` |
 |---|---|---|---|
 | `--warning` | `oklch(52% 0.12 70)` | `oklch(78% 0.14 75)` | 5.2 / 9.5 (AA / AAA) |
 | `--warning-foreground` | `oklch(97% 0.02 80)` | `oklch(15% 0.03 75)` | sobre `--warning`: 5.2 / 9.7 |
 
-Hay que agregarlo a `:root`, `.dark` y `@theme inline`
-(`--color-warning`, `--color-warning-foreground`) en el mismo PR que lo
-use por primera vez.
+Todavía sin usos: es el primer estado de advertencia que se construya el
+que lo estrene.
 
-### 2.7 Hallazgo: borde de campos bajo 3:1
+### 2.7 Borde de campos (corregido)
 
-`--input` (borde de `Input`, `Textarea`, `Select`) mide **1.35:1** en claro
-y **1.50:1** en oscuro contra el fondo. WCAG 1.4.11 exige 3:1 para el
-límite visual de un campo editable. Hoy el único indicador de que un campo
-existe es ese borde casi invisible (más el placeholder).
+`--input` (borde de `Input`, `Textarea`, `Select`) medía **1.35:1** en
+claro y **1.50:1** en oscuro, bajo el 3:1 que exige WCAG 1.4.11. Ahora es
+`oklch(15.9% 0.011 292 / 45%)` en claro (3.06:1) y `oklch(100% 0 0 / 35%)`
+en oscuro (3.17:1).
 
-Corrección propuesta (alfa mínimo para ≥ 3:1, medido): claro
-`oklch(15.9% 0.011 292 / 45%)` (3.06:1); oscuro `oklch(100% 0 0 / 35%)`
-(3.17:1). Es un cambio visual perceptible, por eso **no se hace en esta
-iteración documental**: queda como primer ítem de la fase de
-implementación (sección 10).
+Efecto a tener en cuenta: `Input`/`Textarea` usan `dark:bg-input/30` como
+relleno, así que en oscuro el relleno también se aclara (de ~4.5 % a
+~10.5 % de blanco). Revisado en el formulario de contacto en ambos temas.
 
 ---
 
@@ -207,7 +205,7 @@ para énfasis ("*González*").
 |---|---|---|---|---|---|
 | H1 (hero) | Serif · 400 | `clamp(56px, 8.4vw, 120px)` | 0.98 | −0.02em | En código |
 | H2 (sección) | Serif · 400 | `clamp(32px, 4.5vw, 56px)` | 0.98 | −0.02em | En código |
-| H3 (subsección) | Serif · 400 | `clamp(28px, 4vw, 48px)` | 0.98 | −0.02em | Tamaño en código, pero hoy en `<span>` (ver 10) |
+| H3 (subsección) | Serif · 400 | `clamp(28px, 4vw, 48px)` | 0.98 | −0.02em | Tamaño en código (hoy los títulos de `aboutMe` usan este tamaño con `<h2>`, ver 10) |
 | H4 | Serif · 400 | `clamp(20px, 2.2vw, 28px)` | 1.1 | −0.01em | Definido aquí (el tamaño existe en el eslogan del footer, que es un `<p>`) |
 | H5 | Sans · 600 | 18 px (`text-lg`) | 1.4 | 0 | Definido aquí |
 | H6 | Sans · 600 | 16 px (`text-base`) | 1.4 | 0 | Definido aquí |
@@ -215,7 +213,7 @@ para énfasis ("*González*").
 | Body | Sans · 400 | 16 px (`text-base`) | 1.6 | 0 | Definido aquí |
 | Body pequeño | Sans · 400 | 14 px (`text-sm`) | 1.5 | 0 | En código |
 | Caption | Sans · 400 | 12 px (`text-xs`) | 1.4 | 0 | Definido aquí |
-| Eyebrow | Mono · 500, mayúsculas | 11 px (`.eyebrow`) | — | +0.16em | En código (ver 10) |
+| Eyebrow | Mono · 500, mayúsculas | 12 px / `0.75rem` (`.eyebrow`) | — | +0.16em | En código |
 
 Reglas:
 
@@ -232,7 +230,8 @@ Reglas:
   titular lo usa). Las etiquetas en mayúsculas llevan
   tracking **positivo** (+0.16em) para legibilidad. El cuerpo no se toca.
 - Tamaño mínimo de texto que comunica información: **12 px**. Ningún texto
-  funcional por debajo (ver 10 sobre el eyebrow de 11 px).
+  funcional por debajo (el eyebrow y las etiquetas del footer ya están
+  en 12 px).
 - El texto debe poder ampliarse al 200 % sin pérdida (WCAG 1.4.4): tamaños
   en `rem`/`clamp`, no `px` fijos en contenedores de altura fija.
 - No usar `text-[Npx]` arbitrarios nuevos: si falta un nivel, se agrega a
@@ -361,7 +360,7 @@ sitio de uso o espacio vacío alrededor ≥ 8 px entre objetivos.
 |---|---|
 | Alto | `Input`/`Select` 32 px (`h-8`) en admin; **≥ 40 px** (`h-10`) en formularios públicos |
 | Texto | 16 px en móvil (`text-base`, evita el zoom automático de iOS), 14 px desde `md` |
-| Borde | `border-input`, radio `rounded-lg`, fondo transparente (`dark:bg-input/30`) — ver 2.7 sobre su contraste |
+| Borde | `border-input`, radio `rounded-lg`, fondo transparente (`dark:bg-input/30`) — contraste del borde en 2.7 |
 | Foco | `focus-visible:border-ring` + `ring-3 ring-ring/50`. **No quitar `outline`/ring sin sustituto** (WCAG 2.4.7). Mantener el `border-ring` junto al halo: el halo solo mide 2.2–2.7:1, el borde lleno 5.8–7.5:1 |
 | Disabled | `opacity-50` + `cursor-not-allowed` |
 | Error | `aria-invalid="true"` (pinta borde y anillo `--destructive`) |
@@ -453,12 +452,15 @@ Formularios:
 
 ## 7. Animación y microinteracciones (GSAP)
 
-> **Estado:** GSAP **todavía no está instalado** en el proyecto
-> (`package.json` no lo incluye). Hoy las animaciones son CSS
+> **Estado:** GSAP 3.15 está instalado y toda la lógica de scroll se
+> centraliza en `src/lib/motion.ts` (`withMotion`, `revealOnScroll`,
+> `parallaxOnScroll`, `refreshScrollTriggers`). **Ninguna animación
+> existente se ha migrado todavía**: hoy siguen siendo CSS
 > (`.anim-fade-in`, `.lift-card`, `.skill-pill`, keyframes del cosmos) y
 > JS puntual (`Cosmos.tsx`, `GalaxyBackground.tsx`, el reveal del Footer).
-> Estas reglas rigen **para lo que se construya a partir de ahora**; la
-> migración de lo existente va en la fase de implementación.
+> Estas reglas rigen para lo que se construya a partir de ahora; la
+> migración de lo existente y las animaciones nuevas van en la fase
+> siguiente.
 
 ### 7.1 Reparto de responsabilidades
 
@@ -635,26 +637,17 @@ Antes de abrir un PR que toque UI:
 
 ## 10. Deuda conocida y decisiones pendientes
 
-Esta lista es la **entrada de la fase de implementación**. Nada de esto
-se corrige en la iteración documental.
-
-| # | Hallazgo | Dónde | Acción propuesta |
+| # | Hallazgo | Dónde | Estado |
 |---|---|---|---|
-| 1 | Borde de campos `--input` mide 1.35:1 (claro) / 1.50:1 (oscuro); WCAG 1.4.11 pide 3:1 | `app.css` (`--input`) | Subir alfa a 45 % (claro) y 35 % (oscuro); revisar visualmente |
-| 2 | No existe token `--warning` | `app.css` | Añadir según 2.6 |
-| 3 | GSAP/ScrollTrigger no instalado | `package.json` | `pnpm add gsap`; módulo de movimiento único (7.5) |
-| 4 | Colores hardcodeados fuera de tokens: galaxia 3D (`#FFC896`, `#8C5CFF`, `#FFFFFF`, `rgba(...)`), `wordmark-reveal` (`oklch(11.8% …)`, `rgba(245,242,236,.18)`), `<meta name="theme-color" content="#6f37cf">` | `GalaxyBackground.tsx`, `app.css`, `Layout.astro` | Leer `--primary` desde CSS para el 3D; `theme-color` alineado a `--background`/`--primary`. El 3D es una escena de color propio: decidir si se acepta como excepción documentada |
-| 5 | Eyebrow a 11 px (`.eyebrow`, `text-[11px]`) por debajo del mínimo de 12 px de la sección 3 | `app.css`, varias secciones | Subir a 12 px o documentarlo como excepción de identidad |
-| 6 | Botones CTA del hero son `<a class="rounded-full …">` a mano, no el primitivo `Button` (radio `rounded-lg`, alto 32 px) | `src/components/sections/Header.astro` (contiene el hero) | Decidir: variante "pill" del `Button` o unificar radio; en ambos casos usar el primitivo y ≥ 44 px táctil |
-| 11 | Los títulos de Educación, Experiencia, Habilidades y Sobre mí son `<span class="font-serif-display …">`, no `<h2>`: sin estructura de encabezados para lectores de pantalla (WCAG 1.3.1, 2.4.6) | `src/features/aboutMe/{Educacion,Experiencia,Habilidades,SobreMi}.tsx` | Cambiar a `<h2>` conservando las clases |
-| 7 | Tamaños arbitrarios `text-[Npx]` / `text-[clamp(...)]` repetidos | secciones del home | Convertirlos en utilidades/tokens de tipografía (3.2) |
-| 8 | `Button` `default`/`lg` miden 32/36 px (< 44 px de meta táctil) | `button.tsx` | Mantener en admin; en público añadir `min-h-11` o variante `touch` |
-| 9 | Animaciones existentes mezcladas: CSS, JS manual (`Cosmos.tsx`, Footer) y 3D | varios | Migrar entradas/parallax a GSAP (7.1); dejar Three/cosmos como están |
-| 10 | Cobertura de `prefers-reduced-motion` desigual (CSS global, cosmos y 3D lo respetan; verificar cada sección nueva) | varios | Cubrir con un test e2e emulando `reducedMotion: 'reduce'` |
-
-### Decisión de alcance de esta iteración
-
-Solo documentación: `docs/UI_STANDARDS.md`, `AGENTS.md`, `CLAUDE.md` y
-`README.md`. No se tocó código fuente, ni de páginas Astro ni de
-componentes React ni de CSS. El orden sugerido para implementar es 1 → 2 →
-3 → 11 → 6 → 4 → 9, con revisión visual en ambos temas en cada paso.
+| 1 | Borde de campos `--input` bajo 3:1 (WCAG 1.4.11) | `app.css` | ✅ Resuelto (2.7) |
+| 2 | No existía token `--warning` | `app.css` | ✅ Resuelto (2.6) |
+| 3 | GSAP/ScrollTrigger sin instalar | `package.json`, `src/lib/motion.ts` | ✅ Instalado y arquitectura lista (7); falta migrar/crear animaciones |
+| 4 | Colores hardcodeados fuera de tokens: galaxia 3D (`#FFC896`, `#8C5CFF`, `#FFFFFF`, `rgba(...)`), `wordmark-reveal` (`oklch(11.8% …)`, `rgba(245,242,236,.18)`), `<meta name="theme-color" content="#6f37cf">` | `GalaxyBackground.tsx`, `app.css`, `Layout.astro` | ⏳ Pendiente. Leer `--primary` desde CSS para el 3D; alinear `theme-color`. El 3D es una escena de color propio: decidir si se acepta como excepción |
+| 5 | Etiquetas a 11 px | `app.css`, footer, formulario de contacto, Panel admin | ✅ Resuelto (12 px) |
+| 6 | CTAs del hero eran `<a>` hechos a mano | `Header.astro` | ✅ Resuelto: `buttonVariants` sobre `<a>` (los `.astro` no pueden pasar `render={<a />}`), pill + `min-h-11` |
+| 7 | Tamaños arbitrarios `text-[Npx]` / `text-[clamp(...)]` repetidos | secciones del home | ⏳ Pendiente: convertir en utilidades/tokens de tipografía (3.2) |
+| 8 | `Button` `default`/`lg` miden 32/36 px (< 44 px táctil) | `button.tsx` | ⏳ Parcial: el hero ya usa `min-h-11`; falta el resto del sitio público (`min-h-11` o variante `touch`) |
+| 9 | Animaciones existentes mezcladas: CSS, JS manual (`Cosmos.tsx`, Footer) y 3D | varios | ⏳ Pendiente: migrar entradas/parallax a GSAP (7.1); dejar Three/cosmos como están |
+| 10 | Cobertura de `prefers-reduced-motion` desigual | varios | ⏳ Pendiente: test e2e emulando `reducedMotion: 'reduce'` |
+| 11 | Títulos de Educación, Experiencia, Habilidades y Sobre mí eran `<span>` | `src/features/aboutMe/` | ✅ Resuelto (`<h2>`, mismas clases) |
+| 12 | Jerarquía de encabezados plana: los puestos (`ItemDataExperiencia`) y las cards de proyectos son `<h2>` al mismo nivel que el título de su sección; deberían ser `<h3>` | `ItemDataExperiencia.tsx`, `Proyectos.astro` | ⏳ Pendiente (WCAG 1.3.1) |
