@@ -17,6 +17,7 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 - [💻 Desarrollo Local](#-desarrollo-local)
 - [🌐 Internacionalización](#-internacionalización)
 - [🎨 Temas](#-temas)
+- [🧩 Frontend Architecture & Design System](#-frontend-architecture--design-system)
 - [🔐 Panel de administración](#-panel-de-administración)
 - [📄 Licencia](#-licencia)
 - [🤝 Contribuir](#-contribuir)
@@ -26,20 +27,22 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 
 - **Framework**: [Astro](https://astro.build/) v7 (SSR, adaptador [`@astrojs/vercel`](https://docs.astro.build/en/guides/integrations-guide/vercel/))
 - **UI**: [React](https://react.dev/) v18 (islas vía `@astrojs/react`)
-- **Estilos**: [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/)
+- **Estilos y componentes**: [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/)
+- **Iconos**: [Lucide](https://lucide.dev/) (`lucide-react`) — única librería de iconos
+- **Animación**: [GSAP](https://gsap.com/) + ScrollTrigger es el estándar para animación de scroll (pendiente de instalar; ver [Frontend Architecture & Design System](#-frontend-architecture--design-system))
 - **3D**: [Three.js](https://threejs.org/) (fondo animado, montado como isla `client:idle`)
 - **Formularios**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
-- **Otros**: [TypeScript](https://www.typescriptlang.org/), [Lucide Icons](https://lucide.dev/), [react-country-flag](https://www.npmjs.com/package/react-country-flag), [Swiper](https://swiperjs.com/)
-- **Calidad**: [Biome](https://biomejs.dev/) (lint/format) + [Husky](https://typicode.github.io/husky/) (git hooks)
+- **Otros**: [TypeScript](https://www.typescriptlang.org/), [react-country-flag](https://www.npmjs.com/package/react-country-flag)
+- **Calidad**: [Biome](https://biomejs.dev/) (lint/format) + [Husky](https://typicode.github.io/husky/) (git hooks) + [Vitest](https://vitest.dev/) y [Playwright](https://playwright.dev/) (tests)
 
 ## 📁 Estructura del Proyecto
 
 ```bash
 src/
-├── components/           # Componentes compartidos (secciones, ui/ = primitives shadcn, three/ = fondo 3D)
+├── components/           # Componentes compartidos (sections/, ui/ = primitivos shadcn, icons/ = logos de marca, three/ y cosmos/ = fondos)
 ├── features/             # Lógica por dominio (aboutMe, projects, opinions, contact, navbar, admin)
 ├── i18n/                 # Traducciones (locales/*.json) y locales.ts (fuente única de verdad de idiomas)
-├── layouts/               # Layouts de Astro (Layout.astro: <head>, meta, JSON-LD)
+├── layouts/               # Layouts de Astro (Layout, AdminLayout, AdminLoginLayout)
 ├── lib/                  # Utilidades server-side (sesión admin, rate limit, cliente del backend)
 ├── middleware.ts         # Validación de locale + guard del panel admin
 ├── pages/                # Rutas: /[lang]/home, /admin/*, /api/*
@@ -99,11 +102,27 @@ Las traducciones viven en `src/i18n/locales/{es,en,fr}.json`. El enrutamiento de
 
 Claro/oscuro vía la clase `.dark` en `<html>` (Tailwind v4 `@custom-variant dark`), con persistencia en `localStorage` y detección de `prefers-color-scheme` como valor por defecto.
 
+## 🧩 Frontend Architecture & Design System
+
+El sistema de diseño completo (paleta con contrastes medidos, tipografía, espaciado, componentes base, iconografía y reglas de animación) vive en **[`docs/UI_STANDARDS.md`](./docs/UI_STANDARDS.md)**. Es la fuente de verdad para cualquier cambio de UI, y las reglas obligatorias para agentes de IA están en [`AGENTS.md`](./AGENTS.md).
+
+**Stack de UI**
+
+- **shadcn/ui** (estilo `base-nova`, sobre Base UI): los primitivos viven en `src/components/ui/` y se usan siempre en lugar de HTML estilizado a mano.
+- **Tailwind CSS v4**: los tokens de color, radio y fuente están en `src/styles/app.css` (OKLCH, tema claro/oscuro). No se usan colores fuera de esos tokens.
+- **Lucide**: única librería de iconos (excepción: logos de marca en `src/components/icons/BrandIcons.tsx`).
+- **GSAP + ScrollTrigger**: estándar para animación de scroll (fade-up, stagger, parallax sutil, solo `transform`/`opacity`, con `prefers-reduced-motion` respetado). **Aún no está instalado**; hoy las animaciones son CSS y JS puntual.
+- **Tipografía**: Instrument Serif (titulares), Geist (texto), Geist Mono (etiquetas), autoalojadas con `@fontsource`.
+
+**Accesibilidad**: el objetivo es WCAG 2.1 AA, con el checklist y las deudas conocidas (por ejemplo, el contraste del borde de los campos) documentados en `docs/UI_STANDARDS.md`.
+
 ## 🔐 Panel de administración
 
 `/admin/login` protege `/admin` y `/api/admin/*` con una cookie de sesión firmada (HMAC, `src/lib/adminSession.ts`):
 
-- Sesión de vida corta (2h), comparación de contraseña en tiempo constante, y una lista de revocación en memoria (logout invalida el token del lado del servidor, no solo borra la cookie).
+- El login valida correo y contraseña con Zod (cliente y servidor) y delega la verificación al backend de Hono; el JWT que devuelve viaja dentro de la cookie firmada.
+- Sesión de vida corta (2h) y una lista de revocación en memoria (logout invalida el token del lado del servidor, no solo borra la cookie).
+- Las rutas `/admin*` y `/api/admin*` responden con `Cache-Control: no-store`, para que el botón "atrás" no restaure páginas admin desde la caché del navegador.
 - Rate limiting en memoria sobre `/api/admin/login` (5 intentos / 5 min por IP).
 - Ambas listas en memoria no sobreviven un cold start en serverless — es una mitigación de mejor esfuerzo adecuada para un panel de un solo administrador, no una garantía dura.
 

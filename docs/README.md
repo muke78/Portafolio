@@ -21,6 +21,9 @@ por escrito antes de empezar a construir.
    reconstruir las tablas de Turso desde cero.
 5. [`05-estrategia-testing.md`](./05-estrategia-testing.md) — Playwright +
    Vitest para probar que todo esto funciona antes y después de construirlo.
+6. [`UI_STANDARDS.md`](./UI_STANDARDS.md) — sistema de diseño: tokens,
+   tipografía, componentes, iconos y reglas de animación (GSAP). Fuente de
+   verdad para todo cambio de UI.
 
 ## Punto de partida confirmado (no es propuesta, ya existe)
 
