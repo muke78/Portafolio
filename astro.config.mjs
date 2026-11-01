@@ -1,6 +1,6 @@
+import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 import compress from "astro-compress";
@@ -104,5 +104,5 @@ export default defineConfig({
 		},
 	},
 	output: "server",
-	adapter: vercel(),
+	adapter: cloudflare(),
 });

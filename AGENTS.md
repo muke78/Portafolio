@@ -9,7 +9,7 @@ solo lo importa. Las reglas de aquí son **obligatorias**, no sugerencias.
 Portafolio personal de Erick González (`muke78/Portafolio`).
 
 - Astro 7 en modo SSR (`output: "server"`) con islas de React 18,
-  desplegado en Cloudflare Pages (ver Infraestructura).
+  desplegado en Cloudflare Workers (ver Infraestructura).
 - Tailwind CSS v4 (CSS-first) + shadcn/ui sobre Base UI.
 - Contenido servido por un backend propio (`Backend_Portafolio`: Worker de
   Hono + Cloudflare D1 + R2), consumido a través del proxy `/api/*` de este
@@ -22,7 +22,7 @@ Todo el stack vive en **Cloudflare** (V8 isolates, sin contenedores):
 
 | Pieza | Servicio |
 |---|---|
-| Frontend (este repo, Astro SSR) | **Cloudflare Pages** |
+| Frontend (este repo, Astro SSR) | **Cloudflare Workers** (`@astrojs/cloudflare`; Pages ya no lo soporta) |
 | API de contenido (`Backend_Portafolio`) | **Worker de Hono** |
 | Base de datos | **Cloudflare D1** |
 | Imágenes y archivos | **Cloudflare R2** |
@@ -33,12 +33,14 @@ Todo el stack vive en **Cloudflare** (V8 isolates, sin contenedores):
   recrees.
 - Este sitio solo lee y escribe contenido público a través del proxy
   `/api/*` (que agrega el token server-side).
-- El adaptador de Astro para Cloudflare se configura en su propia rama.
+- Config del Worker: `wrangler.jsonc`. Variables: `VITE_API_URL` (pública,
+  se incrusta al compilar: va como variable de **build**) y `API_SECRET_TOKEN`
+  (secreta, de runtime: `wrangler secret put` o el panel).
 - **CI/CD en GitHub Actions** (`.github/workflows/`): `ci-dev.yml` valida
   los PRs a `dev` (Biome, `astro check`, Vitest, build) y `ci-main.yml`
-  los PRs a `main` (lo mismo + Playwright). El deploy a Pages
-  (`wrangler pages deploy`) está preparado y comentado en `ci-main.yml`
-  hasta cargar los tokens de Cloudflare en GitHub.
+  los PRs a `main` (lo mismo + Playwright). El deploy lo hace la integración
+  Git de Cloudflare al hacer push a `main`; el job de Actions
+  (`wrangler deploy`) queda comentado en `ci-main.yml` como alternativa.
 
 ## Comandos
 

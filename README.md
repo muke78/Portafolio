@@ -1,6 +1,6 @@
 # 🚀 Portafolio Personal
 
-Portafolio construido con [Astro](https://astro.build/) (SSR, `output: "server"`) e islas de [React](https://react.dev/) para las partes interactivas, con [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first, vía `@tailwindcss/vite`) y componentes [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/). Desplegado en [Cloudflare Pages](https://pages.cloudflare.com/).
+Portafolio construido con [Astro](https://astro.build/) (SSR, `output: "server"`) e islas de [React](https://react.dev/) para las partes interactivas, con [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first, vía `@tailwindcss/vite`) y componentes [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/). Desplegado en [Cloudflare Workers](https://workers.cloudflare.com/) (con los archivos estáticos como *assets*).
 
 Contenido (proyectos, experiencia, comentarios) servido desde un backend propio externo (Worker de Hono sobre Cloudflare D1 y R2), consumido a través de un proxy interno en `/api/*` que agrega el token de autenticación server-side.
 
@@ -26,7 +26,7 @@ Contenido (proyectos, experiencia, comentarios) servido desde un backend propio 
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **Framework**: [Astro](https://astro.build/) v7 (SSR, desplegado en [Cloudflare Pages](https://pages.cloudflare.com/))
+- **Framework**: [Astro](https://astro.build/) v7 (SSR con [`@astrojs/cloudflare`](https://docs.astro.build/en/guides/integrations-guide/cloudflare/), desplegado en [Cloudflare Workers](https://workers.cloudflare.com/))
 - **UI**: [React](https://react.dev/) v18 (islas vía `@astrojs/react`)
 - **Estilos y componentes**: [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) sobre [Base UI](https://base-ui.com/)
 - **Iconos**: [Lucide](https://lucide.dev/) (`lucide-react`) — única librería de iconos
@@ -107,7 +107,7 @@ Todo el stack corre en **Cloudflare**, sin contenedores (V8 isolates):
 
 | Pieza | Servicio |
 |---|---|
-| Frontend (este repo, Astro SSR) | **Cloudflare Pages** |
+| Frontend (este repo, Astro SSR) | **Cloudflare Workers** (adaptador de Astro; Pages ya no lo soporta) |
 | API de contenido | **Worker de Hono** ([`Backend_Portafolio`](https://github.com/muke78/Backend_Portafolio)) |
 | Base de datos | **Cloudflare D1** |
 | Imágenes y archivos | **Cloudflare R2** |
@@ -117,7 +117,7 @@ El **panel de administración (CMS) es un sistema *headless* independiente**: ya
 **CI/CD** con GitHub Actions (`.github/workflows/`):
 
 - `ci-dev.yml`: cada Pull Request hacia `dev` corre Biome, `astro check`, Vitest y el build.
-- `ci-main.yml`: cada Pull Request hacia `main` corre lo mismo más Playwright. El deploy a Cloudflare Pages (`wrangler pages deploy`) está preparado y comentado hasta configurar `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID` en GitHub.
+- `ci-main.yml`: cada Pull Request hacia `main` corre lo mismo más Playwright. El deploy lo hace la integración Git de Cloudflare (Workers Builds: build `npx astro build`, deploy `npx wrangler deploy`, rama de producción `main`); el job de deploy de Actions queda comentado como alternativa.
 - Playwright necesita un backend de pruebas: se activa con la variable `E2E_API_URL` y el secreto `E2E_API_SECRET_TOKEN` del repositorio.
 - Husky se limita a lo rápido: valida el mensaje del commit y pasa Biome sobre los archivos en staging.
 
