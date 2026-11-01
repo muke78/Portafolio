@@ -65,10 +65,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 	];
 
 	return (
-		<div
-			className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16"
-			data-reveal-group
-		>
+		<div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
 			{/* Left (4 cols): a short intro and the tab list. Sticky on desktop. */}
 			<div className="lg:col-span-4">
 				<div className="flex flex-col gap-8 lg:sticky lg:top-28">
@@ -88,10 +85,7 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 			</div>
 
 			{/* Right (8 cols): the active panel is the section's focal point. */}
-			<div
-				className="flex min-w-0 flex-col anim-zoom-in lg:col-span-8"
-				data-reveal
-			>
+			<div className="flex min-w-0 flex-col lg:col-span-8" data-reveal>
 				{activeTab === "experiencia" && (
 					<Experiencia currentLocale={currentLocale} />
 				)}

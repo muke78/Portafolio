@@ -1,7 +1,8 @@
 ---
 import { Form } from "@/features/contact/Form";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 
-const { currentLocale } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 ---
 
 <div class="mx-auto max-w-[1240px] px-6 w-full py-24 md:py-32">

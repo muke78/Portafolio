@@ -58,7 +58,7 @@ export const CommentWidget = ({ currentLocale }: PropsLang) => {
 					role="dialog"
 					aria-modal="true"
 					aria-label="Dejar un comentario"
-					className="w-[min(92vw,380px)] max-h-[min(80vh,640px)] overflow-y-auto rounded-2xl border border-border bg-card shadow-lg ring-1 ring-foreground/10 anim-zoom-in"
+					className="w-[min(92vw,380px)] max-h-[min(80vh,640px)] overflow-y-auto rounded-2xl border border-border bg-card shadow-lg ring-1 ring-foreground/10"
 				>
 					<SendOpinions
 						currentLocale={currentLocale}

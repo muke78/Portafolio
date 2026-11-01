@@ -22,7 +22,7 @@ export const SubmittedOpinion = ({
 					: "bg-card rounded-3xl shadow-xl p-8 text-center"
 			}
 		>
-			<div className="w-16 h-16 bg-success/15 rounded-full flex items-center justify-center mx-auto mb-4 anim-zoom-in">
+			<div className="w-16 h-16 bg-success/15 rounded-full flex items-center justify-center mx-auto mb-4">
 				<Check className="w-8 h-8 text-success" />
 			</div>
 
@@ -67,7 +67,7 @@ export const SubmittedOpinion = ({
 
 	return (
 		<div className="min-h-screen flex items-center justify-center p-4">
-			<div className="w-full max-w-md anim-zoom-in">{content}</div>
+			<div className="w-full max-w-md">{content}</div>
 		</div>
 	);
 };

@@ -52,6 +52,14 @@
 		"PROJECTS_TITLE_BUTTON_D": "Analyse des données",
 		"PROJECTS_BADGE_FORK": "Collaboration"
 	},
+	"MANIFESTO": {
+		"LABEL": "Ce que je fais",
+		"TEXT": "Je conçois et construis des produits web complets : interfaces rapides et accessibles, API solides et données qui deviennent des décisions."
+	},
+	"EXPERIENCE_CARD": {
+		"PERIOD": "Période",
+		"PLACE": "Lieu"
+	},
 	"PROJECT_DETAIL": {
 		"BACK": "Retour à l'accueil",
 		"ABOUT": "À propos du projet",

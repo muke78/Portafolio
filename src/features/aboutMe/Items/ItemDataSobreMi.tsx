@@ -35,7 +35,7 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 	return (
 		<div
 			data-reveal
-			className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift anim-zoom-in"
+			className="grid grid-cols-1 w-full rounded-xl border border-border bg-card overflow-hidden hover-lift"
 		>
 			<img
 				className="rounded-t-lg"

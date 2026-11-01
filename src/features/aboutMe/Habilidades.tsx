@@ -10,7 +10,7 @@ export const Habilidades = ({ currentLocale }: PropsLang) => {
 				{i18n.SKILLS.SKILLS_TITLE}
 			</h2>
 
-			<div className="anim-zoom-in p-2">
+			<div className=" p-2">
 				<ItemDataHabilidades currentLocale={currentLocale} />
 			</div>
 		</div>

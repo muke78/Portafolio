@@ -44,19 +44,23 @@ export const SkeletonEducation = ({ label }: SkeletonProps) => (
 );
 
 export const SkeletonExperience = ({ label }: SkeletonProps) => (
-	<Status label={label} className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+	<Status label={label} className="grid grid-cols-1 gap-5 xl:grid-cols-2">
 		{[0, 1, 2, 3].map((i) => (
-			<div key={i} className="rounded-2xl border border-border bg-card p-8">
-				<div className="mb-4 flex items-center gap-4">
-					<Skeleton className="h-12 w-12 rounded-full" />
-					<div className="flex flex-col gap-2">
-						<Skeleton className="h-5 w-40" />
-						<Skeleton className="h-6 w-24 rounded-full" />
-					</div>
+			<div
+				key={i}
+				className="flex flex-col rounded-2xl border border-border bg-card p-7"
+			>
+				<div className="flex items-center gap-3">
+					<Skeleton className="h-10 w-10 shrink-0 rounded-full" />
+					<Skeleton className="h-5 w-40" />
+					<Skeleton className="h-5 w-20 rounded-full" />
 				</div>
-				<Skeleton className="mb-2 h-4 w-full" />
-				<Skeleton className="mb-2 h-4 w-5/6" />
-				<Skeleton className="h-4 w-1/2" />
+				<Skeleton className="mt-6 h-8 w-4/5" />
+				<Skeleton className="mt-2 h-5 w-2/5" />
+				<div className="mt-6 flex flex-col gap-2 border-t border-border pt-5">
+					<Skeleton className="h-4 w-1/2" />
+					<Skeleton className="h-4 w-2/3" />
+				</div>
 			</div>
 		))}
 	</Status>
