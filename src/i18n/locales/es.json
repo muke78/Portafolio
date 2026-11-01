@@ -27,6 +27,7 @@
 		"HEADER_GITHUB_ARIA_LABEL": "Saber más acerca de mis repositorios y lo que he hecho",
 		"HEADER_LINKEDIN_ARIA_LABEL": "Saber más acerca de mi experiencia",
 		"HEADER_WHATSAPP_ARIA_LABEL": "Número de teléfono",
+		"HEADER_SCROLL": "Desplazar",
 		"HEADER_EMAIL_ARIA_LABEL": "Correo electrónico"
 	},
 	"ABOUTME": {
@@ -36,6 +37,8 @@
 		"EXPERIENCE": "Experiencia"
 	},
 	"SKILLS": {
+		"SKILLS_MORE": "Ver todas",
+		"SKILLS_LESS": "Ver menos",
 		"SKILLS_TITLE": "Habilidades"
 	},
 	"EDUCATION": {
@@ -48,6 +51,18 @@
 		"PROJECTS_TITLE_BUTTON_C": "Empresas",
 		"PROJECTS_TITLE_BUTTON_D": "Análisis de datos",
 		"PROJECTS_BADGE_FORK": "Colaboración"
+	},
+	"PROJECT_DETAIL": {
+		"BACK": "Volver al inicio",
+		"ABOUT": "Sobre el proyecto",
+		"STACK": "Stack tecnológico",
+		"LINKS": "Enlaces",
+		"VIEW_CODE": "Ver código",
+		"VIEW_LIVE": "Ver proyecto en vivo",
+		"NOT_AVAILABLE": "No disponible",
+		"NEXT": "Siguiente proyecto",
+		"ERROR_TITLE": "No pudimos cargar el proyecto",
+		"ERROR_BODY": "Vuelve al inicio e inténtalo de nuevo en unos minutos."
 	},
 	"404": {
 		"404_BODY": "¡Ups! La página que estás buscando aún no está en órbita, regresa después",

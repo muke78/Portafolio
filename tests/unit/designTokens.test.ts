@@ -60,6 +60,31 @@ describe.each(["light", "dark"] as const)(
 			}
 		});
 
+		it("keeps the base neutral: violet lives only in the primary family", () => {
+			// Surfaces and text must stay near-neutral (no aubergine/tinted
+			// backgrounds); only the brand accent and its aliases are chromatic.
+			for (const name of [
+				"background",
+				"foreground",
+				"card",
+				"popover",
+				"muted",
+				"muted-foreground",
+				"accent",
+				"secondary",
+				"night",
+				"night-foreground",
+			]) {
+				if (!themes[theme][name]) continue;
+				expect(color(theme, name).c, name).toBeLessThanOrEqual(0.02);
+			}
+			for (const name of ["primary", "ring", "chart-1", "sidebar-primary"]) {
+				expect(color(theme, name).c, name).toBeGreaterThanOrEqual(0.15);
+				expect(color(theme, name).h, name).toBeGreaterThanOrEqual(285);
+				expect(color(theme, name).h, name).toBeLessThanOrEqual(300);
+			}
+		});
+
 		it("keeps every opaque token inside the sRGB gamut", () => {
 			for (const [name, value] of Object.entries(themes[theme])) {
 				const c = parseOklch(value);

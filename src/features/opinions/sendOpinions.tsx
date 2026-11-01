@@ -11,6 +11,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { countries } from "@/data/countries";
 import { SubmittedOpinion } from "@/features/opinions/SubmittedOpinion";
@@ -258,12 +259,14 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 					<button
 						type="submit"
 						disabled={isLoading}
-						className="inline-flex items-center justify-center gap-2 rounded-lg h-10 w-full bg-primary text-primary-foreground font-medium text-sm transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+						className="inline-flex items-center justify-center gap-2 rounded-lg h-10 w-full bg-primary text-primary-foreground font-medium text-sm hover-press active:translate-y-px disabled:opacity-50 disabled:pointer-events-none"
 					>
 						{isLoading ? (
 							<>
-								<div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-								<span>{i18n.OPINIONS.OPINIONS_LOAD_SEND_INFORMATION}</span>
+								<Skeleton className="h-3 w-28 bg-primary-foreground/40" />
+								<output className="sr-only">
+									{i18n.OPINIONS.OPINIONS_LOAD_SEND_INFORMATION}
+								</output>
 							</>
 						) : (
 							<>

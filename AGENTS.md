@@ -79,8 +79,12 @@ reglas que no se negocian:
    `text-primary`, `border-border`, …). Prohibido hex, `rgb()` u `oklch()`
    sueltos en componentes, y **prohibido el blanco y el negro puros**
    (`#fff`, `#000`, `text-white`, `bg-black`): usa `text-primary-foreground`,
-   `bg-night/40`, etc. El oscuro es berenjena, el claro es perla; el test
-   `tests/unit/designTokens.test.ts` lo hace cumplir. ¿Hace falta un color nuevo? Se agrega como
+   `bg-night/40`, etc. La base es **neutra** (oscuro onyx/charcoal, claro
+   silk/blanco roto con texto carbón) y el **violeta vive solo en
+   `--primary`**: nunca teñir fondos ni textos de morado/berenjena. En
+   oscuro las superficies suben fondo < card < muted (nunca un bloque más
+   oscuro que el fondo). El test `tests/unit/designTokens.test.ts` lo hace
+   cumplir. ¿Hace falta un color nuevo? Se agrega como
    token (claro y oscuro) con su contraste medido, no inline.
 2. **Accesibilidad (WCAG 2.1 AA) por encima de la estética.** Contraste
    de texto ≥ 4.5:1 y de componentes/foco ≥ 3:1 en **ambos temas**; foco
@@ -97,8 +101,8 @@ reglas que no se negocian:
 5. **Tipografía del sistema.** Instrument Serif para titulares
    (`font-serif-display`), Geist para texto, Geist Mono para etiquetas
    (`eyebrow`, 13 px en frase normal, sin mayúsculas diminutas). Los
-   tamaños salen de los tokens `text-display`, `text-title`, `text-subtitle`
-   y `text-heading`; no uses `text-[clamp(...)]` ni `text-[Npx]`. Cuerpo
+   tamaños salen de los tokens `text-hero` (solo el nombre del hero),
+   `text-display`, `text-title`, `text-subtitle` y `text-heading`; no uses `text-[clamp(...)]` ni `text-[Npx]`. Cuerpo
    de 17 px, aire generoso, un solo punto focal por sección. No
    introduzcas otras fuentes ni `font-bold` en el serif.
 6. **Animación de scroll con GSAP + ScrollTrigger.** Fade-up, stagger y
@@ -109,9 +113,17 @@ reglas que no se negocian:
    estado inicial, no el CSS).
    Hover y foco se resuelven con CSS. Detalle y parámetros en la sección 7
    de `docs/UI_STANDARDS.md`.
-7. **Ley de Hick.** Un CTA primario por bloque; pocas opciones visibles;
+7. **Hovers táctiles, no cambios de color.** Cards: `hover-lift`;
+   botones y chips: `hover-press`; flechas: `hover-nudge` (definidos en
+   `app.css`, estándar en la sección 5.5). Un solo hover por elemento: la
+   card reacciona entera, **sin animar sus partes internas** (nada de zoom
+   de imagen ni iconos que aparecen al pasar el cursor).
+8. **Skeletons, nunca spinners.** Todo estado de carga usa `<Skeleton />`
+   con la forma del contenido final; prohibido `animate-spin`, `Loader2` y
+   `LoaderCircle` (sección 5.6).
+9. **Ley de Hick.** Un CTA primario por bloque; pocas opciones visibles;
    el detalle bajo demanda.
-8. **Textos por i18n.** Todo texto visible sale de `src/i18n/locales/`
+10. **Textos por i18n.** Todo texto visible sale de `src/i18n/locales/`
    (es, en, fr). Cero cadenas fijas en componentes.
 
 > **Estado actual (importante):** GSAP está instalado y centralizado en

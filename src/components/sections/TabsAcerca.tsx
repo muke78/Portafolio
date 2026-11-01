@@ -1,15 +1,13 @@
-﻿import {
-	Briefcase,
-	GraduationCap,
-	Loader2,
-	PencilRuler,
-	UserRound,
-} from "lucide-react";
+﻿import { Briefcase, GraduationCap, PencilRuler, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { SectionTabs } from "@/components/sections/SectionTabs";
 import { Educacion } from "@/features/aboutMe/Educacion";
 import { Experiencia } from "@/features/aboutMe/Experiencia";
 import { Habilidades } from "@/features/aboutMe/Habilidades";
+import {
+	SkeletonAboutMe,
+	SkeletonTabsRow,
+} from "@/features/aboutMe/Items/SkeletonAbout";
 import { SobreMi } from "@/features/aboutMe/SobreMi";
 import { getI18N } from "@/i18n";
 import type { PropsLang } from "@/types/currentLang.interface";
@@ -36,105 +34,64 @@ export const TabsAcerca = ({ currentLocale }: PropsLang) => {
 
 	if (!mounted) {
 		return (
-			<Loader2
-				className="animate-spin text-primary"
-				size={40}
-				aria-label={i18n.COMMON.LOADING}
-			/>
+			<div className="flex flex-col gap-6">
+				<SkeletonTabsRow count={4} label={i18n.COMMON.LOADING} />
+				<SkeletonAboutMe label={i18n.COMMON.LOADING} />
+			</div>
 		);
 	}
 
-	const getShortText = (text: string, length: number) => {
-		return text.slice(0, length);
-	};
+	const tabs = [
+		{
+			id: "sobreMi",
+			label: i18n.ABOUTME.ABOUT_TITLE,
+			icon: <UserRound size={18} />,
+		},
+		{
+			id: "educacion",
+			label: i18n.EDUCATION.EDUCATION_TITLE,
+			icon: <GraduationCap size={18} />,
+		},
+		{
+			id: "experiencia",
+			label: i18n.ABOUTME.EXPERIENCE,
+			icon: <Briefcase size={18} />,
+		},
+		{
+			id: "habilidades",
+			label: i18n.SKILLS.SKILLS_TITLE,
+			icon: <PencilRuler size={18} />,
+		},
+	];
 
 	return (
-		<div className="flex flex-col lg:flex-col lg:w-full">
-			{/* Contenedor de los botones con un ancho fijo */}
-			<div className="flex justify-center items-center lg:justify-start lg:items-start md:justify-start md:items-start gap-4">
-				<Button
-					type="button"
-					variant={activeTab === "sobreMi" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("sobreMi")}
-				>
-					<span className=" sm:inline md:inline lg:inline">
-						{<UserRound />}
-					</span>
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.ABOUTME.ABOUT_TITLE, 5)}
-					</span>
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.ABOUTME.ABOUT_TITLE}
-					</span>
-				</Button>
-
-				<Button
-					type="button"
-					variant={activeTab === "educacion" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("educacion")}
-				>
-					<span className="sm:inline md:inline lg:inline">
-						{<GraduationCap />}
-					</span>
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.EDUCATION.EDUCATION_TITLE, 5)}
-					</span>
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.EDUCATION.EDUCATION_TITLE}
-					</span>
-				</Button>
-
-				<Button
-					type="button"
-					variant={activeTab === "experiencia" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("experiencia")}
-				>
-					<span className=" sm:inline md:inline lg:inline">
-						{<Briefcase />}
-					</span>
-
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.ABOUTME.EXPERIENCE, 5)}
-					</span>
-
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.ABOUTME.EXPERIENCE}
-					</span>
-				</Button>
-
-				<Button
-					type="button"
-					variant={activeTab === "habilidades" ? "default" : "outline"}
-					className="rounded-full h-11 lg:text-lg md:text-base text-sm px-4"
-					onClick={() => setActiveTab("habilidades")}
-				>
-					<span className=" sm:inline md:inline lg:inline">
-						{<PencilRuler />}
-					</span>
-					{/* Texto para pantallas pequeñas (sm) */}
-					<span className="hidden sm:inline md:hidden lg:hidden">
-						{getShortText(i18n.SKILLS.SKILLS_TITLE, 5)}
-					</span>
-					{/* Texto completo para pantallas medianas y grandes (md y lg) */}
-					<span className="hidden md:inline lg:inline">
-						{i18n.SKILLS.SKILLS_TITLE}
-					</span>
-				</Button>
+		<div
+			className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16"
+			data-reveal-group
+		>
+			{/* Left (4 cols): a short intro and the tab list. Sticky on desktop. */}
+			<div className="lg:col-span-4">
+				<div className="flex flex-col gap-8 lg:sticky lg:top-28">
+					<p
+						className="khelde-lead hidden text-muted-foreground lg:block"
+						data-reveal
+					>
+						{i18n.ABOUTME.ABOUT_TITLE_CARD}
+					</p>
+					<SectionTabs
+						items={tabs}
+						active={activeTab}
+						onChange={setActiveTab}
+						label={i18n.ABOUTME.ABOUT_TITLE}
+					/>
+				</div>
 			</div>
 
-			{/* Separador solo visible en pantallas grandes */}
-			<hr className="my-4 border-border" />
-			{/* Contenedor del contenido del tab con un ancho flexible */}
-			<div className="flex-1 w-full flex flex-col anim-zoom-in">
+			{/* Right (8 cols): the active panel is the section's focal point. */}
+			<div
+				className="flex min-w-0 flex-col anim-zoom-in lg:col-span-8"
+				data-reveal
+			>
 				{activeTab === "experiencia" && (
 					<Experiencia currentLocale={currentLocale} />
 				)}

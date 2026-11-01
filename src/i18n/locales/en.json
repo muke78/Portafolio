@@ -27,6 +27,7 @@
 		"HEADER_GITHUB_ARIA_LABEL": "Learn more about my repositories and what I've built",
 		"HEADER_LINKEDIN_ARIA_LABEL": "Learn more about my experience",
 		"HEADER_WHATSAPP_ARIA_LABEL": "Phone number",
+		"HEADER_SCROLL": "Scroll",
 		"HEADER_EMAIL_ARIA_LABEL": "Email address"
 	},
 	"ABOUTME": {
@@ -36,6 +37,8 @@
 		"EXPERIENCE": "Experience"
 	},
 	"SKILLS": {
+		"SKILLS_MORE": "Show all",
+		"SKILLS_LESS": "Show less",
 		"SKILLS_TITLE": "Skills"
 	},
 	"EDUCATION": {
@@ -48,6 +51,18 @@
 		"PROJECTS_TITLE_BUTTON_C": "Companies",
 		"PROJECTS_TITLE_BUTTON_D": "Data analysis",
 		"PROJECTS_BADGE_FORK": "Collaboration"
+	},
+	"PROJECT_DETAIL": {
+		"BACK": "Back to home",
+		"ABOUT": "About the project",
+		"STACK": "Tech stack",
+		"LINKS": "Links",
+		"VIEW_CODE": "View code",
+		"VIEW_LIVE": "View live project",
+		"NOT_AVAILABLE": "Not available",
+		"NEXT": "Next project",
+		"ERROR_TITLE": "We couldn't load the project",
+		"ERROR_BODY": "Go back home and try again in a few minutes."
 	},
 	"404": {
 		"404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later.",
