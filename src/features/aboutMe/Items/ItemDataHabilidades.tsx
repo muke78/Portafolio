@@ -1,24 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getI18N } from "@/i18n";
 import type { PropsLang, Skill } from "@/types/currentLang.interface";
 
-// Fase 5b: antes leia src/data/locales/*/dataTabsAcercaDe*.ts (estatico) -
-// ahora hace fetch a /api/skills (Backend_Portafolio,
-// docs/06-about-education-skills.md), mismo patron que
-// ItemDataExperiencia.tsx.
-//
-// Ley de Hick (UI_STANDARDS 2.1): cada categoria muestra solo sus TOP
-// primeras tecnologias; el resto se revela con un clic limpio ("Ver todas"),
-// en lugar de volcar decenas de chips a la vez.
-const TOP_SKILLS = 8;
+// Skills are no longer hidden behind a "see all" click: every technology is on
+// the page. The scroll does the storytelling instead - each chip flies in
+// along a curve (MotionPathPlugin, src/lib/motion/skills.ts) and a thin
+// "snake" line is drawn through the section while a dot rides it.
+const SNAKE =
+	"M 80 0 C 80 180, 920 120, 920 420 S 80 700, 80 1000 S 920 1300, 920 1600 S 80 1900, 500 2000";
 
 export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 	const [skills, setSkills] = useState<Skill[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-	const [expanded, setExpanded] = useState<Record<number, boolean>>({});
-	const i18n = getI18N({ currentLocale });
-
 	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
 	const handleImageLoad = useCallback((tech: string) => {
@@ -45,7 +38,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 
 	if (loading) {
 		return (
-			<div className="col-span-full flex flex-col gap-4">
+			<div className="flex flex-col gap-4">
 				{[0, 1, 2].map((i) => (
 					<Skeleton key={i} className="h-24 w-full rounded-lg" />
 				))}
@@ -54,82 +47,78 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 	}
 
 	return (
-		<div className="col-span-full flex flex-col">
-			{skills.map(({ skill_id, title, images_topics }) => {
-				const isOpen = expanded[skill_id] ?? false;
-				const hidden = Math.max(0, images_topics.length - TOP_SKILLS);
-				const visible = isOpen
-					? images_topics
-					: images_topics.slice(0, TOP_SKILLS);
-				return (
-					<div
-						key={skill_id}
-						data-reveal
-						className="py-6 border-b border-border last:border-b-0"
-					>
-						<div className="flex items-baseline gap-2 mb-4">
-							<span className="text-base font-medium">{title}</span>
-							<span className="text-xs font-mono text-muted-foreground">
+		<div className="relative isolate" data-skills>
+			{/* The snake: decorative, desktop only. */}
+			<svg
+				data-snake
+				aria-hidden="true"
+				viewBox="0 0 1000 2000"
+				preserveAspectRatio="none"
+				className="pointer-events-none absolute inset-0 -z-10 hidden h-full w-full md:block"
+			>
+				<path d={SNAKE} fill="none" stroke="var(--border)" strokeWidth="2" />
+				<path
+					data-snake-trace
+					pathLength={1}
+					d={SNAKE}
+					fill="none"
+					stroke="var(--primary)"
+					strokeWidth="2"
+					strokeLinecap="round"
+				/>
+			</svg>
+			<span
+				data-snake-dot
+				aria-hidden="true"
+				className="pointer-events-none absolute left-0 top-0 hidden h-4 w-4 rounded-full bg-primary shadow-[var(--glow)] md:block"
+			/>
+
+			<div className="flex flex-col gap-14 md:gap-20">
+				{skills.map(({ skill_id, title, images_topics }) => (
+					<section key={skill_id} aria-label={title}>
+						<div className="mb-6 flex items-baseline gap-3">
+							<h3 className="font-serif-display text-heading">{title}</h3>
+							<span className="text-sm text-muted-foreground">
 								{images_topics.length}
 							</span>
 						</div>
-						<div
-							className="flex flex-wrap gap-3"
-							data-stagger
-							data-stagger-delay="0.15"
-						>
-							{visible.map((tech, i) => (
-								<div
-									key={tech}
-									title={tech}
-									// Only the chips present at first render stagger in; the ones
-									// added by "see all" mount later and must stay visible.
-									{...(i < TOP_SKILLS && !isOpen
-										? { "data-stagger-item": "" }
-										: {})}
-									className="flex items-center gap-2 rounded-full border border-border bg-muted/50 pl-2 pr-4 py-2"
-								>
-									<span className="relative flex h-7 w-7 shrink-0 items-center justify-center">
-										{!loadedImages[tech] && (
-											<Skeleton className="absolute inset-0 rounded-full" />
-										)}
-										<img
-											className={`h-7 w-7 rounded-full object-contain transition-opacity duration-200 ${
-												loadedImages[tech] ? "opacity-100" : "opacity-0"
-											}`}
-											src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
-											alt=""
-											onLoad={() => handleImageLoad(tech)}
-											loading="lazy"
-											decoding="async"
-											draggable="false"
-											width={28}
-											height={28}
-										/>
-									</span>
-									<span className="text-sm text-muted-foreground whitespace-nowrap">
-										{tech}
-									</span>
-								</div>
+						<ul className="flex flex-wrap gap-3" data-fly-group>
+							{images_topics.map((tech) => (
+								// The <li> is the one the scroll moves along its curve; the pill
+								// inside is the one that drifts on its own once it has arrived.
+								<li key={tech} title={tech} data-fly-chip>
+									<div
+										data-fly-body
+										className="flex items-center gap-2 rounded-full border border-border bg-card py-2 pl-2 pr-4"
+									>
+										<span className="relative flex h-7 w-7 shrink-0 items-center justify-center">
+											{!loadedImages[tech] && (
+												<Skeleton className="absolute inset-0 rounded-full" />
+											)}
+											<img
+												className={`h-7 w-7 rounded-full object-contain transition-opacity duration-200 ${
+													loadedImages[tech] ? "opacity-100" : "opacity-0"
+												}`}
+												src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
+												alt=""
+												onLoad={() => handleImageLoad(tech)}
+												loading="lazy"
+												decoding="async"
+												draggable="false"
+												width={28}
+												height={28}
+											/>
+										</span>
+										<span className="whitespace-nowrap text-sm text-muted-foreground">
+											{tech}
+										</span>
+									</div>
+								</li>
 							))}
-						</div>
-						{hidden > 0 && (
-							<button
-								type="button"
-								aria-expanded={isOpen}
-								onClick={() =>
-									setExpanded((prev) => ({ ...prev, [skill_id]: !isOpen }))
-								}
-								className="mt-4 inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm text-muted-foreground hover-press hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-							>
-								{isOpen
-									? i18n.SKILLS.SKILLS_LESS
-									: `${i18n.SKILLS.SKILLS_MORE} (+${hidden})`}
-							</button>
-						)}
-					</div>
-				);
-			})}
+						</ul>
+					</section>
+				))}
+			</div>
 		</div>
 	);
 };

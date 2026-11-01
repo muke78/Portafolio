@@ -15,6 +15,8 @@
  *   [data-scrub-text]          words lighting up with the scroll (text.ts)
  *   [data-hscroll] + track     pinned sideways showcase (layers.ts)
  *   [data-stack] + cards       layered sticky stack with depth (layers.ts)
+ *   [data-fly-group] + chips   skills flying along curves, MotionPath (skills.ts)
+ *   [data-snake] + trace/dot   snake line drawn with the scroll (skills.ts)
  *   [data-detail] + parts     project detail intro + depth (detail.ts)
  *   [data-scroll-progress]     reading progress hairline (page.ts)
  *
@@ -31,6 +33,7 @@ import {
 	isBrowser,
 	isRegistered,
 	MOTION_CLASS,
+	trackIslands,
 	withMotion,
 } from "./core";
 import { projectDetail } from "./detail";
@@ -41,6 +44,7 @@ import { cardImageParallax, marquees, setupParallax } from "./media";
 import { scrollProgress } from "./page";
 import { observeReveals } from "./reveals";
 import { manifestoScene } from "./scenes";
+import { skillFlights, snakeLine } from "./skills";
 import { splitTitles } from "./split";
 import { scrubText } from "./text";
 
@@ -71,6 +75,7 @@ export const initMotion = (): Cleanup => {
 		document.documentElement.classList.add(MOTION_CLASS);
 
 		const stops: (Cleanup | undefined)[] = [
+			trackIslands(),
 			playHero(tools),
 			observeReveals(tools),
 			manifestoScene(tools),
@@ -83,6 +88,8 @@ export const initMotion = (): Cleanup => {
 			scrubText(tools),
 			horizontalScenes(tools),
 			stackScenes(tools),
+			skillFlights(tools),
+			snakeLine(tools),
 			projectDetail(tools),
 			scrollProgress(tools),
 		];

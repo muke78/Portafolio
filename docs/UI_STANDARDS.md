@@ -657,6 +657,7 @@ sitio usa las mismas piezas, cada una en su módulo:
 | Parallax decorativo | `media.ts` | Anillos de órbita, ±6 % | `[data-parallax="N"]` |
 | **Showcase horizontal fijado** | `layers.ts` | En escritorio (≥ 1024×760) la sección de proyectos se **fija** y el scroll vertical desliza las cards en horizontal (máx. 2.5 pantallas); barra de progreso; se recalcula al cambiar de categoría. En móvil es una grilla | `[data-hscroll]` + `[data-hscroll-track]` / `-viewport` / `-progress` |
 | **Pila de cards** | `layers.ts` | Las cards de experiencia son `sticky` y se apilan (cada una un poco más abajo); la que queda debajo retrocede (`scale`) al llegar la siguiente | `[data-stack]` + `[data-stack-card]` |
+| **Habilidades en vuelo** | `skills.ts` | Cada chip entra desde fuera de pantalla siguiendo una curva en S (`MotionPathPlugin`, `type: "thru"`), girando, y se aplasta un poco al aterrizar; todo escrubado con el scroll. Detrás, una línea "serpiente" se dibuja y un punto la recorre (`align`). En móvil: fade-up escalonado | `[data-fly-group]` + `[data-fly-chip]`, `[data-snake]` + `-trace` / `-dot` |
 | Marcos con máscara | `masks.ts` | Un marco se abre como cortina (`clip-path`) mientras la foto asienta desde un zoom; también hacia el lado (`data-mask="left"`) | `[data-mask]` |
 | Grupos con stagger | `masks.ts` | Los hijos entran uno a uno al aparecer el contenedor (iconos de stack, campos del formulario, enlaces); `data-stagger="pop"` además crece | `[data-stagger]` + `[data-stagger-item]` |
 | Texto con scrub | `text.ts` | Las palabras de un párrafo se encienden mientras cruza la pantalla | `[data-scrub-text]` |
@@ -665,6 +666,12 @@ sitio usa las mismas piezas, cada una en su módulo:
 
 Reglas de las escenas:
 
+- **El Home no esconde contenido detrás de clics.** Nada de pestañas,
+  acordeones ni paneles ocultos para las secciones narrativas: Acerca de mí,
+  Educación, Experiencia, Habilidades y cada categoría de proyectos son
+  secciones/escenas que se recorren con el scroll (`StoryBlock`,
+  `ProjectRail`). En móvil se simplifican (filas con swipe, fade-up), pero el
+  contenido sigue ahí.
 - **El lector nunca queda atrapado**: una escena fijada dura como máximo
   **2.5 pantallas** (lo verifica un test) y siempre tiene contenido que
   cambia mientras dura (si no cambia nada, no se fija).
@@ -873,6 +880,7 @@ vive en `src/lib/motion/` (7.7).
 | `data-scrub-text` | Párrafo de lectura | Palabras que se encienden con el scroll |
 | `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `TabsProyectos` | Showcase horizontal fijado |
 | `data-stack` + `data-stack-card` | Lista de experiencia | Pila sticky con profundidad |
+| `data-fly-group` + `data-fly-chip`, `data-snake` + `-trace` / `-dot` | Habilidades | Vuelo por curvas + serpiente |
 | `data-detail` + `-back` / `-meta` / `-title` / `-figure` / `-img` | Ruta de detalle | Entrada y profundidad |
 | `data-scroll-progress` | `Layout.astro` | Barra de progreso |
 | `data-revealed` | Lo pone el motor | "Ya terminó": el CSS deja de ocultarlo |

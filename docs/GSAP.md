@@ -31,6 +31,7 @@ atributos de datos y el motor los anima.
 | `masks.ts` | `[data-mask]` (marcos que se abren con `clip-path`) y `[data-stagger]` (hijos que entran uno a uno) |
 | `text.ts` | `[data-scrub-text]`: palabras que se encienden con el scroll (sin fijar) |
 | `layers.ts` | `[data-hscroll]`: showcase horizontal fijado; `[data-stack]`: pila de cards `sticky` con profundidad |
+| `skills.ts` | Habilidades en vuelo (`MotionPathPlugin`): chips que entran por curvas en S, escrubadas, y una línea "serpiente" que se dibuja con un punto que la recorre |
 | `detail.ts` | Ruta `/[lang]/project/[id]`: timeline de entrada + profundidad al hacer scroll |
 | `page.ts` | `[data-scroll-progress]`: barra de progreso de lectura |
 | `index.ts` | `initMotion()`: arranca todo una vez desde `Layout.astro` |

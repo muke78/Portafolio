@@ -50,7 +50,8 @@
 		"PROJECTS_TITLE_BUTTON_B": "Backend",
 		"PROJECTS_TITLE_BUTTON_C": "Companies",
 		"PROJECTS_TITLE_BUTTON_D": "Data analysis",
-		"PROJECTS_BADGE_FORK": "Collaboration"
+		"PROJECTS_BADGE_FORK": "Collaboration",
+		"PROJECTS_COUNT_LABEL": "projects"
 	},
 	"MANIFESTO": {
 		"LABEL": "What I do",

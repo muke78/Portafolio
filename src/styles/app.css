@@ -429,6 +429,7 @@
 	clip-path: inset(0 100% 0 0);
 }
 .motion-ok [data-stagger-item]:not([data-revealed]),
+.motion-ok [data-fly-chip]:not([data-revealed]),
 .motion-ok [data-detail-back]:not([data-revealed]),
 .motion-ok [data-detail-meta]:not([data-revealed]) {
 	opacity: 0;

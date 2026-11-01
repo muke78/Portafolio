@@ -36,7 +36,7 @@ export const ItemDataProjects = ({
 	return (
 		<div
 			data-hscroll-track
-			className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:flex lg:w-max lg:items-stretch lg:pr-6"
+			className="flex w-max items-stretch gap-4 pr-6 lg:gap-5"
 		>
 			{data?.map(
 				({
@@ -53,7 +53,7 @@ export const ItemDataProjects = ({
 						<article
 							key={project_id}
 							data-reveal
-							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift lg:w-[400px] lg:shrink-0"
+							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift w-[82vw] max-w-[400px] shrink-0 snap-start lg:w-[400px]"
 						>
 							<figure
 								data-mask

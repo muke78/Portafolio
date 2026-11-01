@@ -7,6 +7,7 @@
  * the module graph is SSR-safe.
  */
 import gsap from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
@@ -40,8 +41,12 @@ export const MOTION = {
 	},
 	// Groups of items entering one after another (stack icons, fields, links).
 	stagger: { duration: 0.8, distance: 20, each: 0.07, start: "top 85%" },
+	// Skills adrift (skills.ts): seconds between chips inside the scrubbed
+	// timeline, the largest tilt (degrees) a chip starts with, how far (px) it
+	// drifts in from, and the scrub lag (higher = floatier).
+	fly: { stagger: 0.09, tilt: 14, near: 240, far: 460, scrub: 1.8 },
 	// Pinned sideways showcase and layered stack (layers.ts).
-	hscroll: { maxScreens: 2.5 },
+	hscroll: { maxScreens: 2.5, smooth: 0.7 },
 	stack: { scale: 0.95 },
 	// Project detail page: intro timeline and scroll-linked depth.
 	detail: { total: 2, figureScale: 0.92, imgDrift: 7 },
@@ -68,7 +73,7 @@ export const isBrowser = () => typeof window !== "undefined";
 
 const register = () => {
 	if (registered) return;
-	gsap.registerPlugin(ScrollTrigger, SplitText);
+	gsap.registerPlugin(ScrollTrigger, SplitText, MotionPathPlugin);
 	registered = true;
 };
 
@@ -113,6 +118,43 @@ export const settle = (el: Element) => {
 export const UNHYDRATED = "astro-island[ssr]";
 
 /**
+ * Astro drops `ssr` as soon as it *starts* hydrating; React finishes a few
+ * frames later. Touching the DOM in between is still a hydration mismatch, so
+ * anything inside an island waits this long after the island went live.
+ */
+export const HYDRATION_SETTLE_MS = 160;
+
+const liveAt = new WeakMap<Element, number>();
+
+/** Starts noting when each island goes live (call once, from the client). */
+export const trackIslands = (): Cleanup => {
+	const mo = new MutationObserver((mutations) => {
+		for (const m of mutations) {
+			if (m.target instanceof Element) liveAt.set(m.target, performance.now());
+		}
+	});
+	mo.observe(document.body, {
+		subtree: true,
+		attributes: true,
+		attributeFilter: ["ssr"],
+	});
+	return () => mo.disconnect();
+};
+
+/**
+ * True while an element sits in an island that has not hydrated, or went
+ * live moments ago and may still be hydrating: do not touch its DOM or its
+ * inline styles yet.
+ */
+export const isHydrating = (el: Element): boolean => {
+	const island = el.closest("astro-island");
+	if (!island) return false;
+	if (island.hasAttribute("ssr")) return true;
+	const at = liveAt.get(island);
+	return at !== undefined && performance.now() - at < HYDRATION_SETTLE_MS;
+};
+
+/**
  * Runs `handler` for every element matching `selector`, now and whenever
  * one appears later (islands hydrating, tab switches, data arriving). The
  * handler runs once per element, only after its island has hydrated, and
@@ -130,8 +172,17 @@ export const watch = (
 	const tryRun = (el: Element) => {
 		if (done.has(el) || el.closest(UNHYDRATED)) return;
 		done.add(el);
-		const cleanup = handler(el as HTMLElement);
-		if (cleanup) cleanups.push(cleanup);
+		const run = () => {
+			if (!el.isConnected) return;
+			const cleanup = handler(el as HTMLElement);
+			if (cleanup) cleanups.push(cleanup);
+		};
+		if (el.closest("astro-island")) {
+			const t = window.setTimeout(run, HYDRATION_SETTLE_MS);
+			cleanups.push(() => window.clearTimeout(t));
+		} else {
+			run();
+		}
 	};
 	const scan = (root: ParentNode) => {
 		if (root instanceof Element && root.matches(selector)) tryRun(root);

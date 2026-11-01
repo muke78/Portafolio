@@ -36,6 +36,10 @@ describe("motion (SSR safety)", () => {
 		// A sideways showcase is a pinned scene too: same cap, and a gentle lean.
 		expect(MOTION.hscroll.maxScreens).toBeLessThanOrEqual(2.5);
 		expect(MOTION.marquee.maxSkew).toBeLessThanOrEqual(4);
+		// Skills drift, they do not spin: small tilt, short distances.
+		expect(MOTION.fly.tilt).toBeLessThanOrEqual(20);
+		expect(MOTION.fly.far).toBeLessThanOrEqual(600);
+		expect(MOTION.hscroll.smooth).toBeLessThanOrEqual(1);
 		expect(MOTION.stack.scale).toBeGreaterThanOrEqual(0.9);
 		expect(MOTION.detail.figureScale).toBeGreaterThanOrEqual(0.9);
 	});

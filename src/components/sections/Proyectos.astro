@@ -1,6 +1,6 @@
 ---
 import { API_SECRET_TOKEN } from "astro:env/server";
-import { TabsProyectos } from "@/components/sections/TabsProyectos";
+import { ProjectRail } from "@/features/projects/ProjectRail";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
 import { api } from "@/lib/api";
@@ -18,15 +18,34 @@ try {
 } catch (err) {
 	console.error("SSR proyectos fetch failed", err);
 }
+
+// No tabs: one rail per category, in this order, skipping empty ones.
+const categories = ["frontend", "backend", "companies", "dataAnalyst"] as const;
+const rails = categories
+	.map((category) => ({
+		category,
+		data: initialData.filter((p) => p.category === category),
+	}))
+	.filter((rail) => rail.data.length > 0);
 ---
 
-<div class="mx-auto max-w-[1240px] px-6 w-full py-24 md:py-32">
-	<div data-hscroll>
-		<TabsProyectos
-			client:visible
-			currentLocale={currentLocale}
-			initialData={initialData}
-			title={i18n.PROJECTS.PROJECTS_TITLE}
-		/>
+<div class="mx-auto w-full max-w-[1240px] px-6 py-24 md:py-32">
+	<h2 class="font-serif-display text-title" data-split>
+		{i18n.PROJECTS.PROJECTS_TITLE}
+	</h2>
+
+	<div class="mt-16 flex flex-col gap-24 lg:gap-32">
+		{
+			rails.map((rail) => (
+				<div data-hscroll>
+					<ProjectRail
+						client:visible
+						currentLocale={currentLocale}
+						category={rail.category}
+						data={rail.data}
+					/>
+				</div>
+			))
+		}
 	</div>
 </div>

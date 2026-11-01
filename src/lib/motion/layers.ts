@@ -1,4 +1,10 @@
-import { type Cleanup, MOTION, type MotionTools, watch } from "./core";
+import {
+	type Cleanup,
+	isHydrating,
+	MOTION,
+	type MotionTools,
+	watch,
+} from "./core";
 
 /**
  * Horizontal pinned showcase: [data-hscroll] is a stable (Astro-rendered)
@@ -59,16 +65,18 @@ export const horizontalScenes = ({
 				invalidateOnRefresh: true,
 				onUpdate: (self) => {
 					const t = track();
-					if (t) {
+					if (t && !isHydrating(t)) {
 						gsap.to(t, {
 							x: -self.progress * distance(),
-							duration: 0.5,
-							ease: MOTION.ease,
+							// Smoothing: absorbs the coarse steps of a mouse wheel and the
+							// fine, fast ones of a trackpad alike.
+							duration: MOTION.hscroll.smooth,
+							ease: "power3.out",
 							overwrite: true,
 						});
 					}
 					const b = bar();
-					if (b) gsap.set(b, { scaleX: self.progress });
+					if (b && !isHydrating(b)) gsap.set(b, { scaleX: self.progress });
 				},
 			});
 
