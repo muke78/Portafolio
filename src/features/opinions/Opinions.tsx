@@ -138,13 +138,23 @@ export const Opinions = ({
 					<div
 						data-marquee
 						data-mask="left"
-						className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+						className="relative w-full overflow-hidden"
 						style={
 							{
 								"--marquee-duration": `${Math.max(50, data.length * 14)}s`,
 							} as CSSProperties
 						}
 					>
+						{/* Edge fade as two static overlays: a mask over moving content
+						    would be recomposited every frame. */}
+						<div
+							aria-hidden="true"
+							className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[6%] bg-gradient-to-r from-background to-transparent"
+						/>
+						<div
+							aria-hidden="true"
+							className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[6%] bg-gradient-to-l from-background to-transparent"
+						/>
 						<div
 							data-marquee-track
 							className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]"
@@ -157,7 +167,7 @@ export const Opinions = ({
 									// biome-ignore lint/a11y/noNoninteractiveTabindex: intentional - focusing a card is what pauses the auto-scrolling marquee (see focus-within: below), not a click target
 									tabIndex={0}
 									aria-label={`${testimonial.name}: ${testimonial.description}`}
-									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden hover-lift focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden hover-lift [contain:layout_paint] focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
 								>
 									<div className="flex flex-col p-6">
 										<div className="flex items-start justify-between mb-4">

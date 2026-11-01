@@ -9,6 +9,7 @@ import {
 	Points,
 	Scene,
 	ShaderMaterial,
+	Vector3,
 	WebGLRenderer,
 } from "three";
 import { galaxyState } from "@/lib/galaxyState";
@@ -164,6 +165,8 @@ attribute vec4 aRand;
 uniform float uTime;
 uniform float uBurst;
 uniform float uPixel;
+uniform vec3 uOrigin;
+uniform float uInvScale;
 varying float vMix;
 varying float vFlash;
 varying float vAlpha;
@@ -177,8 +180,10 @@ void main() {
 	float gather = smoothstep(0.0, 0.58, uBurst);
 	float boom = smoothstep(0.58, 1.0, uBurst);
 
-	// 1. stardust drifting on its own
-	vec3 d = aDust + vec3(
+	// 1. stardust drifting on its own. The cloud stays centred on the SCREEN
+	// (uOrigin = where the screen centre sits in the galaxy's own space, uInvScale
+	// undoes its scale) even though the galaxy itself is placed off to the side.
+	vec3 d = aDust * uInvScale + uOrigin + vec3(
 		sin(uTime * 0.11 + aRand.x * 40.0),
 		cos(uTime * 0.09 + aRand.x * 31.0),
 		sin(uTime * 0.07 + aRand.x * 17.0)
@@ -256,6 +261,8 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 			uTime: { value: 0 },
 			uBurst: { value: 0 },
 			uPixel: { value: renderer.getPixelRatio() * 2.4 },
+			uOrigin: { value: new Vector3() },
+			uInvScale: { value: 1 },
 			uOpacity: { value: 0 },
 			uCore: { value: new Color() },
 			uArm: { value: new Color() },
@@ -317,22 +324,37 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		u.uBurst.value = burst;
 		u.uOpacity.value = intro * (1 - 0.42 * settle);
 
-		// Where the galaxy sits: centre while it forms, then the lower-right
-		// corner, smaller, so the content keeps the stage.
+		// Where the galaxy sits. While the dust gathers and blasts, the epicentre
+		// is the empty space to the right of the statement ("Qué hago" reads
+		// from the left), a little smaller so its arms stop short of the text;
+		// then it drifts to the lower-right corner, smaller still. On phones
+		// there is no free side, so it sits low and small.
 		const visH = 2 * Math.tan((FOV * Math.PI) / 360) * CAMERA_Z;
 		const visW = visH * camera.aspect;
 		const rest = small
 			? { x: 0.16, y: -0.2, s: 0.7 }
 			: { x: 0.3, y: -0.24, s: 0.62 };
+		const blast = small
+			? { x: 0.14, y: -0.3, s: 0.55 }
+			: { x: 0.31, y: -0.06, s: 0.78 };
 		const e = settle * settle * (3 - 2 * settle);
-		group.position.set(rest.x * visW * e, rest.y * visH * e, 0);
-		const base = 1 + (rest.s - 1) * e;
+		group.position.set(
+			(blast.x + (rest.x - blast.x) * e) * visW,
+			(blast.y + (rest.y - blast.y) * e) * visH,
+			0,
+		);
+		const base = blast.s + (rest.s - blast.s) * e;
 		group.scale.setScalar(base);
 
 		pointer.sx += (pointer.x - pointer.sx) * 0.04;
 		pointer.sy += (pointer.y - pointer.sy) * 0.04;
 		group.rotation.x = 0.95 + pointer.sy * 0.12;
 		group.rotation.z = pointer.sx * 0.1;
+
+		// Where the screen centre lies in the galaxy's own space (for the dust).
+		group.updateMatrixWorld(true);
+		group.worldToLocal(u.uOrigin.value.set(0, 0, 0));
+		u.uInvScale.value = 1 / base;
 
 		renderer.render(scene, camera);
 	};

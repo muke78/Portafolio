@@ -664,6 +664,26 @@
 	color: var(--primary);
 }
 
+/* Opinions marquee: the moving track is its own compositor layer. */
+.motion-ok [data-marquee-track] {
+	will-change: transform;
+}
+
+/* Manifesto: a soft veil of the page colour behind the statement, so the
+   particle galaxy (a bright, additive glow) can never wash out the words. */
+[data-manifesto]::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: radial-gradient(
+		ellipse 62% 58% at 34% 50%,
+		color-mix(in oklch, var(--background) 86%, transparent),
+		transparent 78%
+	);
+}
+
 /* Skills in flight: promote the moving pieces to their own layers only while
    the engine runs (see skills.ts), so the scrub never repaints the page. */
 .motion-ok [data-fly-chip],
