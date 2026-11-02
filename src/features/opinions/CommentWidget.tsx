@@ -1,0 +1,96 @@
+import { MessageSquareText, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { SendOpinions } from "@/features/opinions/sendOpinions";
+import type { PropsLang } from "@/types/currentLang.interface";
+
+/**
+ * Floating "leave a comment" widget - bottom-right FAB (like a
+ * WhatsApp/chat launcher) that opens an inline panel in place,
+ * instead of navigating to a separate page.
+ */
+export const CommentWidget = ({ currentLocale }: PropsLang) => {
+	const [open, setOpen] = useState(false);
+	const panelRef = useRef<HTMLDivElement>(null);
+	const triggerRef = useRef<HTMLButtonElement>(null);
+
+	useEffect(() => {
+		const onOpenRequest = () => setOpen(true);
+		window.addEventListener("khelde:open-comment-widget", onOpenRequest);
+		return () =>
+			window.removeEventListener("khelde:open-comment-widget", onOpenRequest);
+	}, []);
+
+	useEffect(() => {
+		if (!open) return;
+		const onKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") {
+				setOpen(false);
+				triggerRef.current?.focus();
+			}
+		};
+		// mousedown (not click) fires before the trigger button's own
+		// click handler, so closing here never races with the toggle -
+		// clicking the trigger while open is excluded below and stays
+		// governed solely by its own onClick.
+		const onPointerDown = (e: PointerEvent) => {
+			const target = e.target as Node;
+			if (panelRef.current?.contains(target)) return;
+			if (triggerRef.current?.contains(target)) return;
+			// The country list is a popup portaled outside the panel: picking an
+			// option is still "inside" the dialog.
+			if (
+				(target as Element).closest?.(
+					'[data-slot^="select-"], [role="listbox"]',
+				)
+			) {
+				return;
+			}
+			setOpen(false);
+		};
+		document.addEventListener("keydown", onKeyDown);
+		document.addEventListener("pointerdown", onPointerDown);
+		const firstField = panelRef.current?.querySelector<HTMLElement>(
+			"input, textarea, select",
+		);
+		firstField?.focus();
+		return () => {
+			document.removeEventListener("keydown", onKeyDown);
+			document.removeEventListener("pointerdown", onPointerDown);
+		};
+	}, [open]);
+
+	return (
+		<div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+			{open && (
+				// A compact panel that grows out of the launcher (bottom-right). It
+				// does not dim or cover the page: the reader keeps the context.
+				<div
+					ref={panelRef}
+					data-dialog
+					role="dialog"
+					aria-label="Dejar un comentario"
+					className="max-h-[min(80vh,640px)] w-[min(92vw,400px)] overflow-y-auto rounded-2xl border border-border bg-card shadow-lg ring-1 ring-foreground/10"
+				>
+					<SendOpinions
+						currentLocale={currentLocale}
+						onClose={() => setOpen(false)}
+					/>
+				</div>
+			)}
+
+			<button
+				ref={triggerRef}
+				data-fab
+				type="button"
+				onClick={() => setOpen((v) => !v)}
+				aria-expanded={open}
+				aria-label={
+					open ? "Cerrar formulario de comentario" : "Dejar un comentario"
+				}
+				className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground hover-press active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+			>
+				{open ? <X size={24} /> : <MessageSquareText size={24} />}
+			</button>
+		</div>
+	);
+};

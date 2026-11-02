@@ -1,0 +1,259 @@
+---
+import { API_SECRET_TOKEN } from "astro:env/server";
+import { ArrowLeft, ArrowUpRight, ExternalLink } from "lucide-react";
+import { GithubIcon } from "@/components/icons/BrandIcons";
+import { buttonVariants } from "@/components/ui/button";
+import { LangDrop } from "@/features/navbar/LangDrop";
+import { ThemeDrop } from "@/features/navbar/ThemeSwitch";
+import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
+import Layout from "@/layouts/Layout.astro";
+import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
+import type { Projects } from "@/types/currentLang.interface";
+
+/**
+ * Project detail view: /[lang]/project/[id]
+ * `id` is the project's slug (canonical, shareable) or its numeric
+ * project_id. Rendered on the server, so the URL is crawlable and the
+ * page has its own title, description and social preview.
+ */
+const { params } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+const i18n = getI18N({ currentLocale });
+const t = i18n.PROJECT_DETAIL;
+
+const R2 = "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev";
+
+let projects: Projects[] = [];
+let fetchFailed = false;
+try {
+	const { data } = await api.get(`/projects?currentLocale=${currentLocale}`, {
+		headers: { Authorization: `Bearer ${API_SECRET_TOKEN}` },
+	});
+	projects = (data?.data?.rows ?? []) as Projects[];
+} catch (err) {
+	fetchFailed = true;
+	// Solo el mensaje: el error de axios trae `config.headers.Authorization`
+	// (el token del backend) y acabaria en los logs del Worker.
+	console.error(
+		"SSR project detail fetch failed",
+		err instanceof Error ? err.message : "unknown error",
+	);
+}
+
+const id = params.id ?? "";
+const project = projects.find(
+	(p) => p.slug === id || String(p.project_id) === id,
+);
+
+if (fetchFailed) Astro.response.status = 503;
+else if (!project) Astro.response.status = 404;
+
+const categoryLabels: Record<string, string> = {
+	frontend: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_F,
+	backend: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_B,
+	companies: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C,
+	dataAnalyst: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D,
+};
+
+// Next project inside the same category (wraps around); a single, clear
+// next step instead of a list of options.
+const siblings = project
+	? projects.filter((p) => p.category === project.category)
+	: [];
+const nextProject =
+	project && siblings.length > 1
+		? siblings[(siblings.indexOf(project) + 1) % siblings.length]
+		: undefined;
+
+const pageTitle = project
+	? `${project.title} — ${i18n.HEADER.HEADER_NAME}`
+	: undefined;
+const imageUrl = project ? `${R2}/${project.card_image}` : undefined;
+
+// Long names get the smaller display size so they never overflow.
+const titleSize =
+	project && project.title.length > 18 ? "text-title" : "text-display";
+
+const pill = "h-auto min-h-11 gap-2 rounded-full px-5 py-3";
+---
+
+<Layout title={pageTitle} description={project?.description} image={imageUrl}>
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+    <div class="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between gap-4 px-6">
+      <a
+        href={`/${currentLocale}/home#projects`}
+        data-detail-back
+        class={cn(buttonVariants({ variant: "outline" }), pill)}
+      >
+        <ArrowLeft
+          size={18}
+          aria-hidden="true"
+          className="transition-transform duration-300 motion-safe:group-hover/button:-translate-x-1"
+        />
+        {t.BACK}
+      </a>
+      <div class="flex items-center gap-3">
+        <LangDrop client:idle currentLocale={currentLocale} />
+        <ThemeDrop client:idle />
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" role="main" class="pt-[72px]" data-detail>
+    {
+      project ? (
+        <article class="mx-auto max-w-[1240px] px-6 pb-24 pt-10 md:pt-16">
+          <div class="max-w-4xl">
+            <p class="eyebrow flex flex-wrap items-center gap-3" data-detail-meta>
+              {categoryLabels[project.category]}
+              {project.fork && (
+                <span class="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+                  {i18n.PROJECTS.PROJECTS_BADGE_FORK}
+                </span>
+              )}
+            </p>
+            <h1 class={`font-serif-display ${titleSize} mt-4 text-balance`} data-detail-title>
+              {project.title}
+            </h1>
+          </div>
+
+          <figure
+            data-detail-figure
+            class="relative mt-10 aspect-[2/1] overflow-hidden rounded-2xl border border-border bg-muted shadow-[var(--glow)] md:mt-14"
+          >
+            <img
+              data-detail-img
+              src={imageUrl}
+              alt={project.title}
+              width={1240}
+              height={620}
+              class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              draggable="false"
+            />
+          </figure>
+
+          <div class="mt-12 grid grid-cols-1 items-start gap-10 md:mt-16 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
+            <section aria-labelledby="project-about">
+              <h2 id="project-about" class="font-serif-display text-subtitle" data-split>
+                {t.ABOUT}
+              </h2>
+              <p class="khelde-lead mt-6 text-muted-foreground" data-scrub-text>
+                {project.description}
+              </p>
+            </section>
+
+            <aside data-reveal class="flex flex-col gap-8 rounded-2xl border border-border bg-card p-6 lg:sticky lg:top-24">
+              <section aria-labelledby="project-stack">
+                <h2 id="project-stack" class="eyebrow">{t.STACK}</h2>
+                <ul class="mt-4 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-3" data-stagger="pop" data-stagger-delay="0.2">
+                  {project.images_topics.map((topic) => (
+                    <li class="flex flex-col items-center gap-2 text-center" data-stagger-item>
+                      <span class="h-11 w-11 overflow-hidden rounded-full border border-border bg-muted">
+                        <img
+                          src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
+                          alt=""
+                          width={44}
+                          height={44}
+                          loading="lazy"
+                          decoding="async"
+                          draggable="false"
+                        />
+                      </span>
+                      <span class="text-xs capitalize text-muted-foreground">
+                        {topic}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              <section aria-labelledby="project-links">
+                <h2 id="project-links" class="eyebrow">{t.LINKS}</h2>
+                <div class="mt-4 flex flex-col gap-3" data-stagger data-stagger-delay="0.35">
+                  {project.link_web ? (
+                    <a
+                      data-stagger-item
+                      href={project.link_web}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class={cn(buttonVariants({ variant: "default" }), pill, "justify-center")}
+                    >
+                      {t.VIEW_LIVE}
+                      <ExternalLink size={16} aria-hidden="true" />
+                    </a>
+                  ) : (
+                    <span
+                      data-stagger-item
+                      aria-disabled="true"
+                      class={cn(buttonVariants({ variant: "outline" }), pill, "justify-center opacity-50")}
+                    >
+                      {t.VIEW_LIVE} · {t.NOT_AVAILABLE}
+                    </span>
+                  )}
+                  {project.link_repo ? (
+                    <a
+                      data-stagger-item
+                      href={project.link_repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class={cn(buttonVariants({ variant: "outline" }), pill, "justify-center")}
+                    >
+                      <GithubIcon size={18} aria-hidden="true" />
+                      {t.VIEW_CODE}
+                    </a>
+                  ) : (
+                    <span
+                      data-stagger-item
+                      aria-disabled="true"
+                      class={cn(buttonVariants({ variant: "outline" }), pill, "justify-center opacity-50")}
+                    >
+                      {t.VIEW_CODE} · {t.NOT_AVAILABLE}
+                    </span>
+                  )}
+                </div>
+              </section>
+            </aside>
+          </div>
+
+          {nextProject && (
+            <a
+              href={`/${currentLocale}/project/${nextProject.slug}`}
+              data-reveal class="group/next hover-lift mt-16 flex items-center justify-between gap-6 rounded-2xl border border-border bg-card p-6 md:mt-24 md:p-8"
+            >
+              <span class="flex flex-col gap-2">
+                <span class="eyebrow">{t.NEXT}</span>
+                <span class="font-serif-display text-heading">{nextProject.title}</span>
+              </span>
+              <ArrowUpRight
+                size={28}
+                aria-hidden="true"
+                className="shrink-0 text-primary"
+              />
+            </a>
+          )}
+        </article>
+      ) : (
+        <section class="mx-auto flex min-h-[70vh] max-w-[1240px] flex-col items-start justify-center gap-6 px-6">
+          <h1 class="font-serif-display text-title text-balance">
+            {fetchFailed ? t.ERROR_TITLE : "404"}
+          </h1>
+          <p class="khelde-lead text-muted-foreground">
+            {fetchFailed ? t.ERROR_BODY : i18n[404]["404_BODY"]}
+          </p>
+          <a
+            href={`/${currentLocale}/home#projects`}
+            class={cn(buttonVariants({ variant: "default" }), pill)}
+          >
+            <ArrowLeft size={18} aria-hidden="true" />
+            {t.BACK}
+          </a>
+        </section>
+      )
+    }
+  </main>
+</Layout>

@@ -1,0 +1,12 @@
+---
+import { Opinions } from "@/features/opinions/Opinions";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
+
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+---
+
+<!-- No server fetch: the island loads the comments from the browser when the
+     section is about to come into view, so the first render stays light. -->
+<div class="w-full py-24 md:py-32">
+	<Opinions client:visible={{ rootMargin: "500px" }} currentLocale={currentLocale} />
+</div>

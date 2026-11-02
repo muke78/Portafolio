@@ -1,17 +1,39 @@
 {
+	"META": {
+		"META_TITLE": "Erick González — Développeur Full-Stack",
+		"META_DESCRIPTION": "Portfolio d'Erick González, développeur web avec de l'expérience en frontend et backend. Découvrez mes projets et compétences.",
+		"META_IMAGE_ALT": "Logo d'Erick González, développeur web."
+	},
+	"COMMON": {
+		"SKIP_TO_CONTENT": "Aller au contenu",
+		"LOADING": "Chargement"
+	},
+	"NAVBAR": {
+		"NAVBAR_SELECT_LANGUAGE": "Sélectionner la langue",
+		"NAVBAR_FLAG_OF": "Drapeau de",
+		"NAVBAR_CHANGE_TO": "Passer à",
+		"NAVBAR_LANGUAGES_AVAILABLE": "langues disponibles",
+		"NAVBAR_OPEN_MENU": "Ouvrir le menu",
+		"NAVBAR_MENU": "Menu"
+	},
 	"HEADER": {
 		"HEADER_TITLE": "Bonjour",
 		"HEADER_SUBTITLE": "Développeur full-stack",
 		"HEADER_NAME": "Érick González",
 		"HEADER_ABOUT": "Ingénieur diplômé en technologies de l'information, spécialisé dans le développement FullStack et l'analyse de données. Avec plus de deux ans d'expérience dans la création d'applications efficaces, évolutives et bien structurées.",
-		"HEADER_BUTTON": "Voir les projets"
+		"HEADER_BUTTON": "Voir les projets",
+		"HEADER_TALK": "Discutons",
+		"HEADER_CV_ARIA_LABEL": "Voir le CV pour en savoir plus sur moi",
+		"HEADER_GITHUB_ARIA_LABEL": "En savoir plus sur mes dépôts et ce que j'ai créé",
+		"HEADER_LINKEDIN_ARIA_LABEL": "En savoir plus sur mon expérience",
+		"HEADER_WHATSAPP_ARIA_LABEL": "Numéro de téléphone",
+		"HEADER_SCROLL": "Défiler",
+		"HEADER_EMAIL_ARIA_LABEL": "Adresse e-mail"
 	},
 	"ABOUTME": {
 		"ABOUT_TITLE": "À propos de moi",
-		"ABOUT_ABOUT_DESCRIPTION": "Je suis un développeur web spécialisé dans la création d'applications complètes, de la conception d'interfaces à la mise en œuvre de la logique sur le serveur. J'ai de l'expérience dans les bases de données et le déploiement d'applications, garantissant des performances optimales et une expérience utilisateur fluide. De plus, je maîtrise le contrôle de version via Git et j'utilise Power BI pour l'analyse des données, ce qui me permet de prendre des décisions éclairées basées sur des métriques.",
 		"ABOUT_DOWNLOAD_CV": "Voir cv",
 		"ABOUT_TITLE_CARD": "Ingénieur en technologies de l'information. Développeur Full-Stack.",
-		"ABOUT_SUBTITLE": "Autonome",
 		"EXPERIENCE": "Expérience"
 	},
 	"SKILLS": {
@@ -21,24 +43,49 @@
 		"EDUCATION_TITLE": "Éducation"
 	},
 	"PROJECTS": {
+		"PROJECTS_TITLE": "Projets",
 		"PROJECTS_TITLE_BUTTON_F": "L'extrémité avant",
 		"PROJECTS_TITLE_BUTTON_B": "Back-end",
 		"PROJECTS_TITLE_BUTTON_C": "Entreprises",
 		"PROJECTS_TITLE_BUTTON_D": "Analyse des données",
-		"PROJECTS_BADGE_FORK": "Collaboration"
+		"PROJECTS_BADGE_FORK": "Collaboration",
+		"PROJECTS_COUNT_LABEL": "projets",
+		"PROJECTS_EMPTY": "Des projets arrivent bientôt dans cette catégorie."
+	},
+	"MANIFESTO": {
+		"LABEL": "Ce que je fais",
+		"TEXT": "Je conçois et construis des produits web complets : interfaces rapides et accessibles, API solides et données qui deviennent des décisions."
+	},
+	"EXPERIENCE_CARD": {
+		"PERIOD": "Période",
+		"PLACE": "Lieu"
+	},
+	"PROJECT_DETAIL": {
+		"BACK": "Retour à l'accueil",
+		"ABOUT": "À propos du projet",
+		"STACK": "Stack technique",
+		"LINKS": "Liens",
+		"VIEW_CODE": "Voir le code",
+		"VIEW_LIVE": "Voir le projet en ligne",
+		"NOT_AVAILABLE": "Indisponible",
+		"NEXT": "Projet suivant",
+		"ERROR_TITLE": "Impossible de charger le projet",
+		"ERROR_BODY": "Retournez à l'accueil et réessayez dans quelques minutes."
 	},
 	"404": {
-		"404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard."
+		"404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard.",
+		"404_IMG_ALT": "Page introuvable",
+		"404_IMG_ARIA_LABEL": "L'itinéraire demandé est introuvable"
 	},
-	"UNIVERSITY": {
-		"UNIVERSITY_TITLE": "Université Polytechnique de la Vallée de Mexico (UPVM)",
-		"UNIVERSITY_SUBTITLE": "Ingénierie en Technologies de l'Information",
-		"UNIVERSITY_TEXT": "Au cours de mes études universitaires, j'ai découvert divers domaines de l'informatique, tels que la maintenance des équipements, la mise en réseau, la programmation orientée objet, le développement mobile avec Xamarin, la cybersécurité, l'ingénierie des exigences et les bases de données. J'ai également travaillé avec Arduino en robotique. Cependant, ce qui m'intéressait le plus était le développement web. Même si je n'ai appris que les bases de jQuery, j'ai toujours eu l'envie de continuer à apprendre sur ce sujet. Actuellement, je suis autodidacte et je m'efforce d'apprendre quelque chose de nouveau chaque jour."
+	"FOOTER": {
+		"SITE": "Site",
+		"ELSEWHERE": "Ailleurs"
 	},
 	"OPINIONS": {
 		"OPINIONS_SUBTITLE": "Soyez très patient avec vous-même et ne vous comparez pas trop aux autres.",
 		"OPINIONS_TITLE": "Avis sur mon travail",
-		"OPINIONS_SUB_SUBTILE": "Voici quelques commentaires !",
+		"OPINIONS_SUB_SUBTILE": "On a travaillé ensemble ? Racontez-moi comment ça s'est passé.",
+		"OPINIONS_COUNT_LABEL": "avis",
 
 		"OPINIONS_NOT_FOUND": "Il n'y a pas encore de témoignages.",
 		"OPINIONS_NOT_FOUND_DESCRIPTION": "Oups ! Rien ici ni là pour l'instant. Vous verrez quelque chose ici bientôt.",

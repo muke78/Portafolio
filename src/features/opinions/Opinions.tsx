@@ -1,0 +1,235 @@
+import { MessageSquare, Quote } from "lucide-react";
+import { type CSSProperties, useEffect, useState } from "react";
+import { CountryFlag } from "@/features/opinions/Items/CountryFlag";
+import { SkeletonTestimonialCard } from "@/features/opinions/SkeletonTestimonialCard";
+import { getI18N } from "@/i18n";
+import { isLocale, LOCALE_META } from "@/i18n/locales";
+import type {
+	PropsLangWithOpinions,
+	Testimonial,
+} from "@/types/currentLang.interface";
+
+export const Opinions = ({
+	currentLocale,
+	initialData = [],
+}: PropsLangWithOpinions) => {
+	const [data, setData] = useState<Testimonial[]>(initialData);
+	const [loading, setLoading] = useState<boolean>(initialData.length === 0);
+	const i18n = getI18N({ currentLocale });
+	const dateLocale =
+		LOCALE_META[isLocale(currentLocale) ? currentLocale : "es"].bcp47;
+
+	useEffect(() => {
+		if (initialData.length > 0) return;
+		async function fetchData() {
+			try {
+				const result = await fetch("/api/comments");
+				const comments = await result.json();
+				setData((comments.data ?? []) as Testimonial[]);
+			} catch (error) {
+				console.error("Error al cargar comentarios:", error);
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		fetchData();
+	}, [initialData.length]);
+
+	if (loading) {
+		return (
+			// biome-ignore lint/a11y/useSemanticElements: <output> isn't the right fit either (not a calculation result) - role=status on a div is the standard live-region loading pattern
+			<div
+				className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+				role="status"
+				aria-busy="true"
+				aria-label={i18n.COMMON.LOADING}
+			>
+				<div className="flex w-max gap-6 py-4">
+					{[0, 1, 2, 3].map((i) => (
+						<SkeletonTestimonialCard key={i} />
+					))}
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className="relative w-full overflow-hidden">
+			<div className="mx-auto mb-16 grid max-w-[1240px] grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:items-end lg:gap-16">
+				<div className="lg:col-span-7">
+					<h2 className="font-serif-display text-title text-balance" data-split>
+						{i18n.OPINIONS.OPINIONS_TITLE}
+					</h2>
+					<p
+						className="khelde-lead mt-6 max-w-xl text-muted-foreground"
+						data-reveal
+					>
+						{i18n.OPINIONS.OPINIONS_SUBTITLE}
+					</p>
+				</div>
+
+				{/* One quiet column: how many people wrote, one line, one action. */}
+				<div
+					className="flex flex-col gap-6 border-t border-border pt-8 lg:col-span-5 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0"
+					data-reveal
+				>
+					{data.length > 0 && (
+						<p className="flex items-baseline gap-3">
+							<span className="font-serif-display text-display leading-none">
+								{data.length}
+							</span>
+							<span className="text-lg text-muted-foreground">
+								{i18n.OPINIONS.OPINIONS_COUNT_LABEL}
+							</span>
+						</p>
+					)}
+					<p className="max-w-sm text-muted-foreground">
+						{i18n.OPINIONS.OPINIONS_SUB_SUBTILE}
+					</p>
+					<button
+						type="button"
+						className="inline-flex h-12 w-fit items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-medium text-primary-foreground hover-press focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						onClick={() =>
+							window.dispatchEvent(
+								new CustomEvent("khelde:open-comment-widget"),
+							)
+						}
+						aria-label={i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
+					>
+						<MessageSquare className="h-4 w-4" />
+						{i18n.OPINIONS.OPINIONS_REDIRECT_COMMENTS_PAGE}
+					</button>
+				</div>
+			</div>
+
+			<div>
+				{data.length === 0 ? (
+					<div
+						className="flex flex-col items-center justify-center min-h-[400px] px-8 py-12"
+						aria-live="polite"
+					>
+						<div className="relative mb-8">
+							<img
+								src="/no_data.svg"
+								alt={i18n.OPINIONS.OPINIONS_NOT_FOUND}
+								aria-label={i18n.OPINIONS.OPINIONS_NOT_FOUND_DESCRIPTION}
+								className="w-52 h-52 mx-auto opacity-70"
+								loading="lazy"
+								decoding="async"
+								draggable="false"
+							/>
+
+							<div className="absolute -inset-6 rounded-full border-2 border-dashed border-primary/30" />
+							<div className="absolute -top-2 -right-2 w-3 h-3 bg-primary/40 rounded-full" />
+							<div className="absolute -bottom-2 -left-2 w-2 h-2 bg-secondary/40 rounded-full" />
+						</div>
+
+						<div className="text-center space-y-4 max-w-md">
+							<h3 className="text-2xl font-semibold text-muted-foreground mb-3">
+								{i18n.OPINIONS.OPINIONS_NOT_FOUND}
+							</h3>
+							<p className="text-sm text-primary/90 leading-relaxed">
+								{i18n.OPINIONS.OPINIONS_NOT_FOUND_DESCRIPTION}
+							</p>
+						</div>
+					</div>
+				) : (
+					<div
+						data-marquee
+						data-mask="left"
+						className="relative w-full overflow-hidden"
+						style={
+							{
+								"--marquee-duration": `${Math.max(50, data.length * 14)}s`,
+							} as CSSProperties
+						}
+					>
+						{/* Edge fade as two static overlays: a mask over moving content
+						    would be recomposited every frame. */}
+						<div
+							aria-hidden="true"
+							className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[6%] bg-gradient-to-r from-background to-transparent"
+						/>
+						<div
+							aria-hidden="true"
+							className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[6%] bg-gradient-to-l from-background to-transparent"
+						/>
+						<div
+							data-marquee-track
+							className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]"
+						>
+							{[...data, ...data].map((testimonial, i) => (
+								// biome-ignore lint/a11y/useSemanticElements: <fieldset> brings its own default border/padding UA styling that would fight this card's design - role=group keeps the semantics without it
+								<div
+									key={`${testimonial.comment_id}-${i}`}
+									role="group"
+									// biome-ignore lint/a11y/noNoninteractiveTabindex: intentional - focusing a card is what pauses the auto-scrolling marquee (see focus-within: below), not a click target
+									tabIndex={0}
+									aria-label={`${testimonial.name}: ${testimonial.description}`}
+									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden hover-lift [contain:layout_paint] focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+								>
+									<div className="flex flex-col p-6">
+										<div className="flex items-start justify-between mb-4">
+											<div className="flex-shrink-0 rounded-lg bg-muted p-2">
+												<Quote className="w-6 h-6 text-primary" />
+											</div>
+
+											<div className="inline-flex items-center rounded-full border border-border text-muted-foreground text-xs font-mono px-2.5 py-0.5">
+												{new Date(testimonial.created_at).toLocaleDateString(
+													dateLocale,
+													{
+														day: "numeric",
+														month: "short",
+														year: "numeric",
+													},
+												)}
+											</div>
+										</div>
+
+										<div className="flex items-center gap-3 mb-4">
+											<div className="flex-1 min-w-0">
+												<div className="flex items-center gap-2 mb-1">
+													<h3 className="font-medium text-foreground text-base leading-tight truncate">
+														{testimonial.name}
+													</h3>
+													<CountryFlag
+														countryCode={testimonial.country_flag}
+														size="1em"
+													/>
+												</div>
+												<p className="text-sm text-muted-foreground truncate">
+													{testimonial.job}
+												</p>
+											</div>
+										</div>
+
+										<div className="flex-1">
+											<p className="text-muted-foreground leading-relaxed text-sm mb-4 line-clamp-4">
+												"{testimonial.description}"
+											</p>
+										</div>
+
+										<div className="flex items-center justify-between pt-4 border-t border-border">
+											<div className="flex items-center gap-2 text-xs text-muted-foreground">
+												<CountryFlag
+													countryCode={testimonial.country_flag}
+													size="1em"
+												/>
+												<span className="text-sm">
+													{testimonial.country
+														? testimonial.country
+														: i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+};

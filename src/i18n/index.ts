@@ -1,29 +1,18 @@
 // Importación de los archivos de idiomas
+
+import { DEFAULT_LOCALE, type Locale } from "@/i18n/locales";
 import en from "@/i18n/locales/en.json";
 import es from "@/i18n/locales/es.json";
 import fr from "@/i18n/locales/fr.json";
 
-// Definición de idiomas soportados
-const LANG = {
-	ENGLISH: "en",
-	SPANISH: "es",
-	FRENCH: "fr",
-} as const;
-
 // Objeto con los locales cargados
-const locales = {
-	[LANG.ENGLISH]: en,
-	[LANG.SPANISH]: es,
-	[LANG.FRENCH]: fr,
-};
+const locales: Record<Locale, typeof es> = { es, en, fr };
 
 // Función para obtener las traducciones
 export const getI18N = ({
-	currentLocale = LANG.SPANISH,
+	currentLocale = DEFAULT_LOCALE,
 }: {
 	currentLocale?: string;
 }) => {
-	return (
-		locales[currentLocale as keyof typeof locales] || locales[LANG.SPANISH]
-	);
+	return locales[currentLocale as Locale] || locales[DEFAULT_LOCALE];
 };

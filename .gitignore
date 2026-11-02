@@ -24,4 +24,20 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-.vercel
+# Cloudflare / Wrangler (local state and dev secrets)
+.wrangler
+.dev.vars
+
+# claude code local-only settings
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Vitest coverage
+/coverage/
+.vercel/

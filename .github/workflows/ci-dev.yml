@@ -1,0 +1,21 @@
+# Pipeline de dev: todo Pull Request hacia `dev`. Rápido (sin e2e): lint,
+# tipos, unit y build. El e2e completo corre en el pipeline de main.
+name: CI dev
+
+on:
+  pull_request:
+    branches: [dev]
+
+concurrency:
+  group: ci-dev-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+    with:
+      run-e2e: false
+      strict-audit: false

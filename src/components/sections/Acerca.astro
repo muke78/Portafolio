@@ -1,0 +1,19 @@
+---
+import {
+	AboutMeBlock,
+	EducationBlock,
+	ExperienceBlock,
+	SkillsBlock,
+} from "@/features/aboutMe/AboutBlocks";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
+
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+---
+
+<!-- No tabs: the four scenes of the About story, one after another. -->
+<div class="mx-auto flex w-full max-w-[1240px] flex-col gap-28 px-6 py-24 md:gap-44 md:py-32">
+	<AboutMeBlock client:visible currentLocale={currentLocale} />
+	<EducationBlock client:visible currentLocale={currentLocale} />
+	<ExperienceBlock client:visible currentLocale={currentLocale} />
+	<SkillsBlock client:visible currentLocale={currentLocale} />
+</div>

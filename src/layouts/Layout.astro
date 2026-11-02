@@ -1,122 +1,129 @@
 ---
-import "animate.css";
 import "@/styles/styles.css";
 import "@/styles/app.css";
-import "swiper/swiper-bundle.css";
-import {
-	dataTitlePage,
-	dataTitlePageEN,
-	dataTitlePageFR,
-} from "@/utils/dataTitlePage";
+import { BackgroundEffects } from "@/components/three/BackgroundEffects";
+import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 
-const pathSegments = Astro.url.pathname.split("/");
-const { currentLocale } = Astro;
-
-const titles =
-	currentLocale === "en"
-		? dataTitlePageEN
-		: currentLocale === "fr"
-			? dataTitlePageFR
-			: dataTitlePage;
-
-const pageIndex =
-	pathSegments[2] === "about"
-		? 1
-		: pathSegments[2] === "projects"
-			? 2
-			: pathSegments[2] === "contact"
-				? 3
-				: 0;
-
-const titleLang = titles[pageIndex];
-
-function capitalizeFirstLetter(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
+interface Props {
+	/** Page <title> / og:title. Defaults to the site title. */
+	title?: string;
+	/** Meta description. Defaults to the site description. */
+	description?: string;
+	/** Absolute URL of the social preview image. Defaults to /kdl.webp. */
+	image?: string;
 }
 
-const capitalizedTitle = capitalizeFirstLetter(titleLang);
+const { url, site } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+const { title, description, image } = Astro.props;
+const i18n = getI18N({ currentLocale });
+
+const currentYear = new Date().getFullYear();
+const siteOrigin = site ?? new URL("https://khelde.vercel.app");
+const canonicalUrl = new URL(url.pathname, siteOrigin).toString();
+const ogImageUrl = image ?? new URL("/kdl.webp", siteOrigin).toString();
+const pageTitle = title ?? i18n.META.META_TITLE;
+const pageDescription = description ?? i18n.META.META_DESCRIPTION;
+
+const personSchema = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: i18n.HEADER.HEADER_NAME,
+	jobTitle: i18n.ABOUTME.ABOUT_TITLE_CARD,
+	description: i18n.META.META_DESCRIPTION,
+	url: siteOrigin.toString(),
+	image: ogImageUrl,
+	sameAs: [
+		"https://github.com/muke78",
+		"https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/",
+	],
+};
 ---
 
 <!doctype html>
-<html lang={currentLocale} class="scroll-smooth">
+<html lang={currentLocale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{capitalizedTitle}</title>
-    <meta name="description" content="Web developer JR - IT Engineer" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
     <!-- Open Graph Meta Tags (para Facebook, LinkedIn, y otras redes) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://khelde.vercel.app/es/home" />
-    <meta property="og:title" content="Portafolio de Erick Gonzalez" />
-    <meta
-      property="og:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
-    />
-    <meta property="og:image" content="https://khelde.vercel.app/kdl.webp" />
-    <meta
-      property="og:image:alt"
-      content="Logo de Erick Gonzalez, desarrollador web."
-    />
-    <meta property="og:site_name" content="Portafolio Erick Gonzalez" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={i18n.META.META_IMAGE_ALT} />
+    <meta property="og:site_name" content={i18n.META.META_TITLE} />
 
     <!-- Twitter Meta Tags -->
     <meta property="twitter:card" content="summary_large_image">
-     <meta
-      property="twitter:image"
-      content="https://khelde.vercel.app/kdl.webp"
-    />
-    <meta property="twitter:url" content="https://khelde.vercel.app/es/home" />
-    <meta property="twitter:title" content="Portafolio de Erick Gonzalez" />
-    <meta
-      property="twitter:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
-    />
-    <meta
-      property="twitter:image:alt"
-      content="Logo de Erick Gonzalez, desarrollador web."
-    />
+     <meta property="twitter:image" content={ogImageUrl} />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={pageTitle} />
+    <meta property="twitter:description" content={pageDescription} />
+    <meta property="twitter:image:alt" content={i18n.META.META_IMAGE_ALT} />
 
-    <!-- Metadatos para WhatsApp (Usa los mismos que para Open Graph) -->
-    <meta property="og:image" content="https://khelde.vercel.app/kdl.webp" />
-    <meta property="og:title" content="Portafolio de Erick Gonzalez" />
-    <meta
-      property="og:description"
-      content="Portafolio de Erick Gonzalez, desarrollador web con experiencia en frontend y backend. Mira mis proyectos y habilidades."
-    />
-    <!-- Metadatos personalizados para IA u otras plataformas -->
-    <meta property="ia:markup_url" content="https://khelde.vercel.app/markup" />
-    <meta
-      property="ia:markup_url_dev"
-      content="https://khelde.vercel.app/markup_dev"
-    />
-    <meta property="ia:rules_url" content="https://khelde.vercel.app/rules" />
-    <meta
-      property="ia:rules_url_dev"
-      content="https://khelde.vercel.app/rules_dev"
-    />
     <!-- Metadatos adicionales -->
-    <meta name="theme-color" content="#6f37cf" />
+    <meta name="theme-color" content="#f8f7f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0d13" media="(prefers-color-scheme: dark)" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="muke78" />
-    <meta name="copyright" content="Copyright © 2025" />
-    <link rel="icon" type="image/svg+xml" href="/kdl.webp" />
-    <link rel="canonical" href="https://khelde.vercel.app/es" />
+    <meta name="copyright" content={`Copyright © ${currentYear}`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <!-- Fuentes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Structured data (SEO) -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />
+    <script is:inline>
+      // Motion gate: CSS may hide [data-reveal] only while this class exists
+      // (JS running AND motion allowed). The engine sets __motionReady; if it
+      // never does (error, blocked script) the watchdog reveals everything.
+      (function () {
+        var d = document.documentElement;
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          d.classList.add("motion-ok");
+          setTimeout(function () {
+            if (!window.__motionReady) d.classList.remove("motion-ok");
+          }, 4000);
+        }
+      })();
+    </script>
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var dark = stored
+          ? stored === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
   </head>
-  <body class="bg-base-300">
-    <div>
+  <body class="bg-background text-foreground overflow-x-hidden">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:rounded-full focus:bg-primary focus:text-primary-foreground focus:px-5 focus:py-3 focus:text-sm focus:font-medium"
+    >
+      {i18n.COMMON.SKIP_TO_CONTENT}
+    </a>
+    <div
+      data-scroll-progress
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-x-0 top-0 z-100 h-0.5 bg-primary"
+    >
+    </div>
+    <BackgroundEffects client:idle />
+    <div class="relative z-2">
       <slot />
     </div>
     <script>
-      (function () {
-        const theme = localStorage.getItem("theme") || "winter";
-        document.documentElement.setAttribute("data-theme", theme);
-      })();
+      import { initMotion } from "@/lib/motion";
+
+      initMotion();
     </script>
     <script src="../js/ascii.js"></script>
+    <script src="../js/scrollFix.js"></script>
   </body>
 </html>

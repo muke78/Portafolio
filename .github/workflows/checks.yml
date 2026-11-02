@@ -1,0 +1,131 @@
+# Pasos compartidos por los pipelines de dev y de main (workflow reutilizable).
+# Corre en un runner estándar de Ubuntu: Cloudflare Pages/Workers no usan
+# contenedores, así que no hace falta ninguna imagen ni servicio extra.
+name: Checks
+
+on:
+  workflow_call:
+    inputs:
+      run-e2e:
+        description: "Corre también Playwright (necesita un backend alcanzable)"
+        type: boolean
+        default: false
+      strict-audit:
+        description: "Falla si hay dependencias de producción con vulnerabilidades altas o críticas"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Valores de relleno: `astro:env` valida que existan al compilar, pero ni el
+# lint, ni los tipos, ni Vitest, ni el build hablan con ningún backend.
+env:
+  VITE_API_URL: https://api.invalid
+  API_SECRET_TOKEN: ci-placeholder
+
+jobs:
+  quality:
+    name: Lint, tipos, unit y build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # La versión de pnpm sale del campo `packageManager` de package.json.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint y formato (Biome)
+        run: pnpm exec biome ci ./src
+
+      - name: Tipos (astro check)
+        run: pnpm check
+
+      # Con cobertura (v8): vitest.config.ts define los pisos mínimos y el job
+      # falla si un cambio los baja.
+      - name: Tests unitarios y cobertura (Vitest)
+        run: pnpm test:unit:coverage
+
+      - name: Subir el reporte de cobertura
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+      - name: Build de Astro
+        run: pnpm build
+
+      # Lo que hay en dist/client lo descarga cualquiera: el valor del secreto
+      # del backend (aquí un relleno) no puede aparecer ahí.
+      - name: Buscar secretos en el bundle del cliente
+        run: node scripts/check-bundle-secrets.mjs dist/client
+
+  e2e:
+    name: Playwright (Chromium)
+    needs: quality
+    # Playwright levanta `pnpm dev`, que proxea /api/* a un backend real: sin
+    # él casi todas las specs fallan. Se activa definiendo la variable de
+    # repositorio E2E_API_URL y el secreto E2E_API_SECRET_TOKEN (un backend de
+    # pruebas, nunca el de producción).
+    if: ${{ inputs.run-e2e && vars.E2E_API_URL != '' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      VITE_API_URL: ${{ vars.E2E_API_URL }}
+      API_SECRET_TOKEN: ${{ secrets.E2E_API_SECRET_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Instalar Chromium de Playwright
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Tests e2e
+        run: pnpm test:e2e
+
+      - name: Subir el reporte de Playwright
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  audit:
+    name: Auditoría de dependencias
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    # En dev solo informa (un CVE nuevo no debe bloquear un PR ajeno); en
+    # main es obligatoria.
+    continue-on-error: ${{ !inputs.strict-audit }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      # Solo lo que llega a producción; las altas y críticas bloquean.
+      - name: pnpm audit (producción)
+        run: pnpm audit --prod --audit-level high

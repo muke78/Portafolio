@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # Dependencias de pnpm (package.json / pnpm-lock.yaml). Un PR a la semana,
+  # agrupado, para no inundar dev; las alertas de seguridad llegan por su cuenta.
+  - package-ecosystem: npm
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Versiones de las acciones de GitHub usadas por los workflows.
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "ci(deps)"

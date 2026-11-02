@@ -1,39 +1,41 @@
 ---
-import { Nav } from "@/components/organisms/Nav";
-import Acerca from "@/components/templates/Acerca.astro";
-import Contactos from "@/components/templates/Contacto.astro";
-import Header from "@/components/templates/Header.astro";
-import Opiniones from "@/components/templates/Opiniones.astro";
-import Proyectos from "@/components/templates/Proyectos.astro";
+import Acerca from "@/components/sections/Acerca.astro";
+import Contactos from "@/components/sections/Contacto.astro";
+import Footer from "@/components/sections/Footer.astro";
+import Header from "@/components/sections/Header.astro";
+import Manifiesto from "@/components/sections/Manifiesto.astro";
+import { Nav } from "@/components/sections/Nav";
+import Opiniones from "@/components/sections/Opiniones.astro";
+import Proyectos from "@/components/sections/Proyectos.astro";
+import { CommentWidget } from "@/features/opinions/CommentWidget";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import Layout from "@/layouts/Layout.astro";
 
-const { currentLocale } = Astro;
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 ---
 
 <Layout>
-  <header class="relative w-full" role="banner"> 
-    <div class="w-full lg:p-0 md:p-10 p-10">
-      <Nav client:load currentLocale={currentLocale}/>
+  <Nav client:idle currentLocale={currentLocale} />
+  <main id="main-content" role="main" class="pt-18">
+    <div class="mx-auto max-w-310 px-6 scroll-mt-22" id="home">
+      <Header />
     </div>
-    <main role="main">
-      <section class="w-full h-full">
-        <div class="hero bg-base-300 min-h-screen scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="home">
-          <Header />
-        </div>
-        <div class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="about">
-          <Acerca />
-        </div>
-        <div class="hero bg-base-300 min-h-screen flex justify-center items-start scroll-m-4 lg:scroll-m-0 md:scroll-m-0" id="projects">
-          <Proyectos />
-        </div>
-        <div class="hero bg-base-300 min-h-screen flex justify-center items-start" id="opinions">
-          <Opiniones />
-        </div>
-        <div class="hero bg-base-300 min-h-screen scroll-m-14 lg:scroll-m-12 md:scroll-m-0" id="contact">
-          <Contactos />
-        </div>
-      </section>
-    </main>
-  </header>
+    <div id="what" class="scroll-mt-22">
+      <Manifiesto />
+    </div>
+    <div id="about" class="scroll-mt-22">
+      <Acerca />
+    </div>
+    <div id="projects" class="scroll-mt-22">
+      <Proyectos />
+    </div>
+    <div id="opinions" class="scroll-mt-22">
+      <Opiniones />
+    </div>
+    <div id="contact" class="scroll-mt-22">
+      <Contactos />
+    </div>
+  </main>
+  <Footer />
+  <CommentWidget client:idle currentLocale={currentLocale} />
 </Layout>
-
