@@ -123,8 +123,24 @@ export const dimFloor = (el: Element): number => {
 	const theme = document.documentElement.classList.contains("dark")
 		? "dark"
 		: "light";
-	const size = Number.parseFloat(getComputedStyle(el).fontSize);
+	const size = fontSizeOf(el);
 	return MOTION.dim[size >= 24 ? "large" : "body"][theme];
+};
+
+// GSAP evaluates `opacity: () => dimFloor(el)` once per word, and each
+// evaluation is followed by a write, so every getComputedStyle forced a style
+// recalculation (a reflow per word). The size is read once per element per
+// synchronous pass; the cache is dropped right after, so a later refresh
+// (resize, font load) measures again.
+const fontSizes = new WeakMap<Element, number>();
+const fontSizeOf = (el: Element): number => {
+	let size = fontSizes.get(el);
+	if (size === undefined) {
+		size = Number.parseFloat(getComputedStyle(el).fontSize);
+		fontSizes.set(el, size);
+		queueMicrotask(() => fontSizes.delete(el));
+	}
+	return size;
 };
 
 /** Visual reading order (top to bottom, then left to right). */
