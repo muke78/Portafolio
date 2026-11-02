@@ -20,7 +20,7 @@ const { title, description, image } = Astro.props;
 const i18n = getI18N({ currentLocale });
 
 const currentYear = new Date().getFullYear();
-const siteOrigin = site ?? new URL("https://khelde.vercel.app");
+const siteOrigin = site ?? new URL(url.origin);
 const canonicalUrl = new URL(url.pathname, siteOrigin).toString();
 const ogImageUrl = image ?? new URL("/kdl.webp", siteOrigin).toString();
 const pageTitle = title ?? i18n.META.META_TITLE;
