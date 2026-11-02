@@ -32,9 +32,10 @@ export const manifestoScene = ({
 		? MOTION.manifesto.screensMobile
 		: MOTION.manifesto.screens;
 
-	// SplitText also sets aria-label on the original element, so screen
-	// readers still read the sentence as a whole.
-	const split = SplitText.create(text, { type: "words" });
+	// aria "none": the words stay real inline text, so screen readers read the
+	// sentence as is. The default adds aria-label to this <p>, which is not
+	// allowed on a paragraph (axe: aria-allowed-attr).
+	const split = SplitText.create(text, { type: "words", aria: "none" });
 
 	const tl = gsap.timeline({
 		defaults: { ease: "none" },

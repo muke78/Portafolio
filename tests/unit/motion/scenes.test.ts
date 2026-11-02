@@ -68,7 +68,7 @@ describe("playHero", () => {
 			<h1><span data-hero-line>Erick</span><span data-hero-line>González</span></h1>
 			<p data-hero-lead>Lead</p>
 			<div data-hero-cta><a>Uno</a><a>Dos</a></div>
-			<figure data-hero-portrait><img alt="" src="x.png" /></figure>
+			<figure data-hero-portrait><img alt="" src="x.png" /><div data-hero-cover></div></figure>
 			<svg data-hero-rings><circle data-hero-ring-solid /><circle data-hero-ring-accent /></svg>
 			<div data-hero-bar></div>
 		</section>`;
@@ -92,6 +92,9 @@ describe("playHero", () => {
 		)) {
 			expect(el).toHaveAttribute(REVEALED);
 		}
+		// The cover that hid the photo is gone, the photo was never clipped.
+		expect(document.querySelector("[data-hero-cover]")).toBeNull();
+		expect($("[data-hero-portrait] img").style.clipPath).toBe("");
 		// The exit scrub only starts after the sequence ended.
 		expect(ScrollTrigger.getAll().length).toBeGreaterThan(0);
 	});
@@ -120,13 +123,15 @@ describe("manifestoScene", () => {
 		expect(ScrollTrigger.getAll()).toHaveLength(0);
 	});
 
-	it("builds one pinned, scrubbed timeline and keeps the sentence for screen readers", () => {
+	it("builds one pinned, scrubbed timeline and leaves the sentence as plain text", () => {
 		html(manifesto);
 		run(manifestoScene);
 		expect(ScrollTrigger.getAll()).toHaveLength(1);
 		const trigger = ScrollTrigger.getAll()[0];
 		expect(trigger.pin).toBe($("[data-manifesto]"));
-		expect($("[data-manifesto-text]")).toHaveAttribute("aria-label");
+		// aria-label is not allowed on a <p>.
+		expect($("[data-manifesto-text]")).not.toHaveAttribute("aria-label");
+		expect($("[data-manifesto-text]").textContent).toContain("Una frase");
 	});
 
 	it("uses the shorter scene on a phone", () => {
@@ -177,7 +182,7 @@ describe("scrubText", () => {
 		html("<p data-scrub-text>Tres palabras aquí</p>");
 		run(scrubText);
 		expect(ScrollTrigger.getAll().length).toBeGreaterThanOrEqual(1);
-		expect($("[data-scrub-text]")).toHaveAttribute("aria-label");
+		expect($("[data-scrub-text]")).not.toHaveAttribute("aria-label");
 	});
 
 	it("never starts below the legibility floor", () => {

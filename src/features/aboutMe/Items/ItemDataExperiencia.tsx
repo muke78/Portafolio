@@ -2,6 +2,7 @@ import { Clock, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SkeletonExperience } from "@/features/aboutMe/Items/SkeletonAbout";
 import { getI18N } from "@/i18n";
+import { mediaUrl } from "@/lib/media";
 import type { Experiences, PropsLang } from "@/types/currentLang.interface";
 
 // Each stacked card sticks a little lower than the one before so the edges of
@@ -11,8 +12,6 @@ import type { Experiences, PropsLang } from "@/types/currentLang.interface";
 // inline styles).
 const STACK_STEP_PX = 14;
 const STACK_MAX_STEPS = 8;
-
-const R2 = "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev";
 
 // The backend packs several facts into one string; split them so each gets
 // its own level of the hierarchy.
@@ -78,7 +77,7 @@ export const ItemDataExperiencia = ({ currentLocale }: PropsLang) => {
 							{/* 2 - company */}
 							<div className="flex items-center gap-3">
 								<img
-									src={`${R2}/${img}`}
+									src={mediaUrl(img)}
 									alt={alt}
 									width={40}
 									height={40}

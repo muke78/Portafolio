@@ -163,7 +163,7 @@ const social =
 				</div>
 
 				<div
-					class="aspect-[3/4] overflow-hidden rounded-t-[999px] rounded-b-3xl border border-border bg-muted shadow-[var(--glow)]"
+					class="relative aspect-[3/4] overflow-hidden rounded-t-[999px] rounded-b-3xl border border-border bg-muted shadow-[var(--glow)]"
 					data-hero-portrait
 				>
 					<Image
@@ -171,8 +171,13 @@ const social =
 						alt="muke78"
 						draggable="false"
 						loading="eager"
+						fetchpriority="high"
 						class="h-full w-full object-cover"
 					/>
+					<!-- LCP: the photo is painted from the first frame; while .motion-ok this
+					     cover hides it and the hero sequence wipes the cover away. Clipping
+					     the photo itself kept it out of the LCP until the JS engine ran. -->
+					<div data-hero-cover aria-hidden="true" class="absolute inset-0 hidden bg-background"></div>
 				</div>
 			</div>
 		</div>

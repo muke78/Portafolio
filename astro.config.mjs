@@ -6,7 +6,12 @@ import { defineConfig, envField } from "astro/config";
 import compress from "astro-compress";
 import { DEFAULT_LOCALE, LOCALE_META, LOCALES } from "./src/i18n/locales.ts";
 
-const SITE_URL = "https://khelde.vercel.app";
+// Unica fuente de la URL del sitio: canonicos, sitemap y robots.txt salen de
+// aqui. Con dominio propio: define SITE_URL en las variables de build.
+const SITE_URL = (
+	process.env.SITE_URL ??
+	"https://portafolio.erickm-gonzalez-rivera.workers.dev"
+).replace(/\/+$/, "");
 
 const bcp47s = Object.fromEntries(
 	LOCALES.map((locale) => [locale, LOCALE_META[locale].bcp47]),
@@ -44,6 +49,10 @@ export default defineConfig({
 
 	compressHTML: true,
 	prefetch: true,
+
+	// Inline the (~18 kB) stylesheet: as a <link> it blocks the first render
+	// and delays the LCP by a full round trip (Lighthouse "render blocking").
+	build: { inlineStylesheets: "always" },
 
 	devToolbar: {
 		enabled: false,
@@ -102,6 +111,13 @@ export default defineConfig({
 				access: "public",
 				default:
 					"https://backend-portafolio.erickm-gonzalez-rivera.workers.dev/api",
+			}),
+			// Origen publico del bucket R2 (imagenes). Con dominio propio:
+			// https://media.khelde.dev. Ver src/lib/media.ts.
+			PUBLIC_MEDIA_URL: envField.string({
+				context: "client",
+				access: "public",
+				default: "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev",
 			}),
 			API_SECRET_TOKEN: envField.string({
 				context: "server",

@@ -35,7 +35,11 @@ Todo el stack vive en **Cloudflare** (V8 isolates, sin contenedores):
   `/api/*` (que agrega el token server-side).
 - Config del Worker: `wrangler.jsonc`. Variables: `VITE_API_URL` (pública,
   se incrusta al compilar: va como variable de **build**) y `API_SECRET_TOKEN`
-  (secreta, de runtime: `wrangler secret put` o el panel).
+  (secreta, de runtime: `wrangler secret put` o el panel). Las URLs del sitio
+  viven en **una sola variable cada una**, con valor por defecto: `SITE_URL`
+  (build; canónicos, sitemap y `robots.txt`) y `PUBLIC_MEDIA_URL` (origen de
+  R2; se usa solo a través de `src/lib/media.ts`). No escribas esas URLs en
+  componentes: al comprar el dominio solo cambian estas variables.
 - **CI/CD en GitHub Actions** (`.github/workflows/`): `ci-dev.yml` valida
   los PRs a `dev` (Biome, `astro check`, Vitest, build) y `ci-main.yml`
   los PRs a `main` (lo mismo + Playwright). El deploy lo hace la integración

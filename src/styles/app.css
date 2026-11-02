@@ -426,7 +426,11 @@
 .motion-ok [data-split]:not([data-revealed]) {
 	opacity: 0;
 }
-.motion-ok [data-hero-portrait]:not([data-revealed]),
+/* Hero portrait: the photo is never hidden (it is the LCP); an opaque cover
+   sits over it while motion is on and the hero sequence wipes it away. */
+.motion-ok [data-hero-cover] {
+	display: block;
+}
 .motion-ok [data-mask]:not([data-mask="left"]):not([data-revealed]),
 .motion-ok [data-detail-figure]:not([data-revealed]) {
 	clip-path: inset(100% 0 0 0);

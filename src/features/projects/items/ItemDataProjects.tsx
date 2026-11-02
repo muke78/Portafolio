@@ -2,9 +2,8 @@ import { ArrowUpRight } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getI18N } from "@/i18n";
+import { mediaUrl } from "@/lib/media";
 import type { PropsLangWithData } from "@/types/currentLang.interface";
-
-const R2 = "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev";
 
 /**
  * Project card - reading hierarchy (UI_STANDARDS 5.3):
@@ -70,7 +69,7 @@ export const ItemDataProjects = ({
 									<Skeleton className="absolute inset-0 rounded-none" />
 								)}
 								<img
-									src={`${R2}/${card_image}`}
+									src={mediaUrl(card_image)}
 									alt=""
 									width={400}
 									height={200}
