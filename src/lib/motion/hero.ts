@@ -23,7 +23,7 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 	const lines = all("[data-hero-line]");
 	const lead = all("[data-hero-lead]");
 	const actions = all("[data-hero-cta] > *");
-	const portrait = all("[data-hero-portrait]");
+	const cover = all("[data-hero-cover]");
 	const portraitImg = all("[data-hero-portrait] img");
 	const rings = all("[data-hero-rings]");
 	const solidRing = all("[data-hero-ring-solid]");
@@ -39,6 +39,7 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 		defaults: { ease: MOTION.ease },
 		onComplete: () => {
 			for (const el of hero.querySelectorAll(HERO_PARTS)) settle(el);
+			for (const el of cover) el.remove();
 			gsap.set(solidRing, { clearProps: "strokeDasharray,strokeDashoffset" });
 			gsap.set(ringAccents, { clearProps: "all" });
 			gsap.set(portraitImg, { clearProps: "all" });
@@ -79,10 +80,11 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 			{ autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.08 },
 			0.7,
 		)
+		// The arch opens bottom-up: the cover shrinks toward the top edge.
 		.fromTo(
-			portrait,
-			{ clipPath: "inset(100% 0% 0% 0%)" },
-			{ clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: MOTION.easeInOut },
+			cover,
+			{ scaleY: 1, transformOrigin: "50% 0%" },
+			{ scaleY: 0, duration: 1.2, ease: MOTION.easeInOut },
 			0.25,
 		)
 		.fromTo(portraitImg, { scale: 1.18 }, { scale: 1, duration: 1.6 }, 0.25)

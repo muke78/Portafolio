@@ -50,6 +50,10 @@ export default defineConfig({
 	compressHTML: true,
 	prefetch: true,
 
+	// Inline the (~18 kB) stylesheet: as a <link> it blocks the first render
+	// and delays the LCP by a full round trip (Lighthouse "render blocking").
+	build: { inlineStylesheets: "always" },
+
 	devToolbar: {
 		enabled: false,
 	},
