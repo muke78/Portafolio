@@ -94,6 +94,15 @@ Gestor de paquetes: **pnpm**. No uses npm ni yarn.
   de código y deja dicho qué no se verificó.
 - Toda entrada del usuario se valida con Zod en cliente **y** servidor
   (esquemas compartidos en `src/schemas/`).
+- **El repositorio y el sitio son públicos.** Todo POST público pasa por las
+  guardias de `src/lib/requestGuards.ts` (mismo origen, `application/json`,
+  tope de tamaño) y se valida antes de llamar al backend. Las respuestas de
+  error son genéricas: nunca devuelvas ni registres el error de axios (trae el
+  token en `config.headers`). `API_SECRET_TOKEN` solo se usa en código de
+  servidor.
+- Las cabeceras de seguridad salen de `src/lib/securityHeaders.ts` y deben
+  coincidir con `public/_headers`. Detalle, pruebas y pendientes en
+  `docs/SECURITY.md`; las pruebas viven en `tests/unit/security/`.
 
 ## Sistema de diseño (obligatorio para cualquier cambio de UI)
 

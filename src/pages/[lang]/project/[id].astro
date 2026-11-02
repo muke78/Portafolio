@@ -34,7 +34,12 @@ try {
 	projects = (data?.data?.rows ?? []) as Projects[];
 } catch (err) {
 	fetchFailed = true;
-	console.error("SSR project detail fetch failed", err);
+	// Solo el mensaje: el error de axios trae `config.headers.Authorization`
+	// (el token del backend) y acabaria en los logs del Worker.
+	console.error(
+		"SSR project detail fetch failed",
+		err instanceof Error ? err.message : "unknown error",
+	);
 }
 
 const id = params.id ?? "";

@@ -20,6 +20,7 @@ jobs:
     uses: ./.github/workflows/checks.yml
     with:
       run-e2e: true
+      strict-audit: true
 
   # ---------------------------------------------------------------------------
   # Deploy a Cloudflare Workers desde GitHub Actions. DESACTIVADO: hoy el
@@ -34,7 +35,7 @@ jobs:
   #   name: Deploy a Cloudflare Workers
   #   needs: checks
   #   if: ${{ github.event_name == 'push' }}
-  #   runs-on: ubuntu-latest
+  #   runs-on: ubuntu-24.04
   #   timeout-minutes: 15
   #   permissions:
   #     contents: read

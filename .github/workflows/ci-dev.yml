@@ -18,3 +18,4 @@ jobs:
     uses: ./.github/workflows/checks.yml
     with:
       run-e2e: false
+      strict-audit: false

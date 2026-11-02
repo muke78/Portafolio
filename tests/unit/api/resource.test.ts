@@ -18,6 +18,14 @@ const getCtx = (resource: string | undefined, query = "") =>
 		url: new URL(`http://localhost/api/${resource}${query}`),
 	}) as never;
 
+const comment = {
+	name: "Erick Gonzalez",
+	job: "Developer",
+	description: "Excelente trabajo, muy recomendable.",
+	country: "Mexico",
+	country_flag: "mx",
+};
+
 const postCtx = (
 	resource: string | undefined,
 	body: unknown,
@@ -25,8 +33,10 @@ const postCtx = (
 ) =>
 	({
 		params: { resource },
+		url: new URL("http://localhost/api/x"),
 		request: new Request("http://localhost/api/x", {
 			method: "POST",
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		}),
 		clientAddress: ip,
@@ -55,10 +65,12 @@ describe("GET /api/[resource]", () => {
 		});
 	});
 
-	it("forwards currentLocale", async () => {
+	it("forwards the locale to the backend", async () => {
 		get.mockResolvedValue({ data: {} });
 		await GET(getCtx("projects", "?currentLocale=en"));
-		expect(get.mock.calls[0][0]).toBe("/projects?currentLocale=en");
+		expect(get).toHaveBeenCalledWith("/projects?currentLocale=en", {
+			headers: { Authorization: "Bearer secret-token" },
+		});
 	});
 
 	it("404s an unknown or missing resource without calling the backend", async () => {
@@ -81,15 +93,13 @@ describe("POST /api/[resource]", () => {
 	it("creates a comment and answers 201", async () => {
 		post.mockResolvedValue({ data: { id: 7 } });
 		const res = (await POST(
-			postCtx("comments", { text: "hi" }, "20.0.0.2"),
+			postCtx("comments", comment, "20.0.0.2"),
 		)) as Response;
 		expect(res.status).toBe(201);
 		expect(await res.json()).toEqual({ id: 7 });
-		expect(post).toHaveBeenCalledWith(
-			"/comments",
-			{ text: "hi" },
-			{ headers: { Authorization: "Bearer secret-token" } },
-		);
+		expect(post).toHaveBeenCalledWith("/comments", comment, {
+			headers: { Authorization: "Bearer secret-token" },
+		});
 	});
 
 	it("is read-only for every other resource (405)", async () => {
@@ -101,7 +111,9 @@ describe("POST /api/[resource]", () => {
 
 	it("answers 503 when the backend fails", async () => {
 		post.mockImplementation(() => Promise.reject(new Error("down")));
-		const res = (await POST(postCtx("comments", {}, "20.0.0.3"))) as Response;
+		const res = (await POST(
+			postCtx("comments", comment, "20.0.0.3"),
+		)) as Response;
 		expect(res.status).toBe(503);
 	});
 
@@ -109,9 +121,11 @@ describe("POST /api/[resource]", () => {
 		post.mockResolvedValue({ data: {} });
 		const ctx = {
 			params: { resource: "comments" },
+			url: new URL("http://localhost/x"),
 			request: new Request("http://localhost/x", {
 				method: "POST",
-				body: "{}",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(comment),
 			}),
 			get clientAddress(): string {
 				throw new Error("no address");
@@ -125,7 +139,9 @@ describe("POST /api/[resource]", () => {
 		post.mockResolvedValue({ data: {} });
 		const statuses: number[] = [];
 		for (let i = 0; i < 6; i++) {
-			const res = (await POST(postCtx("comments", {}, "20.0.0.9"))) as Response;
+			const res = (await POST(
+				postCtx("comments", comment, "20.0.0.9"),
+			)) as Response;
 			statuses.push(res.status);
 		}
 		expect(statuses).toEqual([201, 201, 201, 201, 201, 429]);

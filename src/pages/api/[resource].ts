@@ -2,6 +2,8 @@ import { API_SECRET_TOKEN } from "astro:env/server";
 import type { APIRoute } from "astro";
 import { api } from "@/lib/api";
 import { isRateLimited } from "@/lib/rateLimit";
+import { isSameOrigin, readJsonBody } from "@/lib/requestGuards";
+import { opinionsSchema } from "@/schemas/opinionsSchema";
 
 const READABLE = new Set([
 	"projects",
@@ -38,7 +40,9 @@ export const GET: APIRoute = async ({ params, url }) => {
 		return json({ message: "Resource not found" }, 404);
 	}
 	const locale = url.searchParams.get("currentLocale");
-	const qs = locale ? `?currentLocale=${locale}` : "";
+	// Se codifica: sin esto, `?currentLocale=es%26x%3D1` colaba parametros
+	// propios en la consulta que se manda al backend.
+	const qs = locale ? `?currentLocale=${encodeURIComponent(locale)}` : "";
 	try {
 		const { data } = await api.get(`/${resource}${qs}`, {
 			headers: authHeaders(),
@@ -50,10 +54,14 @@ export const GET: APIRoute = async ({ params, url }) => {
 };
 
 export const POST: APIRoute = async (ctx) => {
-	const { params, request } = ctx;
+	const { params, request, url } = ctx;
 	const resource = params.resource;
 	if (!resource || !WRITABLE_PUBLIC.has(resource)) {
 		return json({ message: "Method not allowed" }, 405);
+	}
+
+	if (!isSameOrigin(request, url.origin)) {
+		return json({ message: "Forbidden" }, 403);
 	}
 
 	let ip = "unknown";
@@ -69,9 +77,17 @@ export const POST: APIRoute = async (ctx) => {
 		return json({ message: "Too many requests, try again later" }, 429);
 	}
 
+	const body = await readJsonBody(request);
+	if (body.ok === false) return json({ message: body.message }, body.status);
+
+	// Se valida aqui con el mismo esquema del formulario (el idioma solo afecta
+	// a los textos de error) y SOLO se reenvian los campos conocidos: lo demas
+	// que mande el cliente no llega al backend.
+	const parsed = opinionsSchema({ currentLocale: "es" }).safeParse(body.value);
+	if (!parsed.success) return json({ message: "Invalid data" }, 400);
+
 	try {
-		const body = await request.json();
-		const { data } = await api.post(`/${resource}`, body, {
+		const { data } = await api.post(`/${resource}`, parsed.data, {
 			headers: authHeaders(),
 		});
 		return json(data, 201);
