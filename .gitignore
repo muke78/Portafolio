@@ -40,3 +40,4 @@ pnpm-debug.log*
 
 # Vitest coverage
 /coverage/
+.vercel/

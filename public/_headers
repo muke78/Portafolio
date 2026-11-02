@@ -1,0 +1,13 @@
+# Cabeceras de seguridad para los archivos ESTATICOS (imagenes, favicon, JS y
+# CSS del build): el Worker no pasa por el middleware de Astro para estos.
+# Las respuestas dinamicas las pone src/middleware.ts; ambas listas salen de
+# src/lib/securityHeaders.ts y tests/unit/security/headers.test.ts las compara.
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'
+

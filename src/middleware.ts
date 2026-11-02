@@ -1,5 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
 import { isLocale } from "@/i18n/locales";
+import { withSecurityHeaders } from "@/lib/securityHeaders";
 
 // Routes that intentionally live outside the /[lang]/* locale tree and
 // must never be caught by the locale guard below. "404" has to be here
@@ -40,4 +41,10 @@ const localeGuard = defineMiddleware(async (ctx, next) => {
 	return next();
 });
 
-export const onRequest = localeGuard;
+// Las cabeceras de seguridad van en TODA respuesta, incluida la 404 y /api/*.
+const securityHeaders = defineMiddleware(async (ctx, next) => {
+	const handled = (await localeGuard(ctx, next)) as Response;
+	return withSecurityHeaders(handled);
+});
+
+export const onRequest = securityHeaders;

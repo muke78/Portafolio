@@ -10,6 +10,13 @@ on:
         description: "Corre también Playwright (necesita un backend alcanzable)"
         type: boolean
         default: false
+      strict-audit:
+        description: "Falla si hay dependencias de producción con vulnerabilidades altas o críticas"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
 
 # Valores de relleno: `astro:env` valida que existan al compilar, pero ni el
 # lint, ni los tipos, ni Vitest, ni el build hablan con ningún backend.
@@ -20,7 +27,7 @@ env:
 jobs:
   quality:
     name: Lint, tipos, unit y build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
@@ -58,6 +65,11 @@ jobs:
       - name: Build de Astro
         run: pnpm build
 
+      # Lo que hay en dist/client lo descarga cualquiera: el valor del secreto
+      # del backend (aquí un relleno) no puede aparecer ahí.
+      - name: Buscar secretos en el bundle del cliente
+        run: node scripts/check-bundle-secrets.mjs dist/client
+
   e2e:
     name: Playwright (Chromium)
     needs: quality
@@ -66,7 +78,7 @@ jobs:
     # repositorio E2E_API_URL y el secreto E2E_API_SECRET_TOKEN (un backend de
     # pruebas, nunca el de producción).
     if: ${{ inputs.run-e2e && vars.E2E_API_URL != '' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       VITE_API_URL: ${{ vars.E2E_API_URL }}
@@ -95,3 +107,25 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  audit:
+    name: Auditoría de dependencias
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    # En dev solo informa (un CVE nuevo no debe bloquear un PR ajeno); en
+    # main es obligatoria.
+    continue-on-error: ${{ !inputs.strict-audit }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      # Solo lo que llega a producción; las altas y críticas bloquean.
+      - name: pnpm audit (producción)
+        run: pnpm audit --prod --audit-level high
