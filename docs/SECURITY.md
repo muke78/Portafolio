@@ -75,7 +75,8 @@ sitio en producción.
 - Dependency graph y Dependabot alerts activados; secret scanning con push
   protection.
 - Worker `portafolio`: rama de producción `main`, builds de otras ramas
-  apagados; `VITE_API_URL` como variable de build y `API_SECRET_TOKEN` como
+  apagados; `VITE_API_URL` como variable de build (opcional: `astro.config.mjs`
+  trae un valor por defecto, porque es una URL pública) y `API_SECRET_TOKEN` como
   secreto.
 
 ## Qué no cubre

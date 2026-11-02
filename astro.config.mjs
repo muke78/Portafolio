@@ -93,9 +93,15 @@ export default defineConfig({
 
 	env: {
 		schema: {
+			// Es una URL publica (el navegador la ve), asi que puede tener un valor
+			// por defecto: si el panel de Cloudflare no inyecta la variable de
+			// build, el build no falla. Con la variable definida (o en `.env`) ese
+			// valor manda; al tener dominio propio, cambia aqui o en el panel.
 			VITE_API_URL: envField.string({
 				context: "client",
 				access: "public",
+				default:
+					"https://backend-portafolio.erickm-gonzalez-rivera.workers.dev/api",
 			}),
 			API_SECRET_TOKEN: envField.string({
 				context: "server",
