@@ -1,5 +1,4 @@
 ---
-import { API_SECRET_TOKEN } from "astro:env/server";
 import { ArrowLeft, ArrowUpRight, ExternalLink } from "lucide-react";
 import { GithubIcon } from "@/components/icons/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
@@ -27,14 +26,14 @@ const t = i18n.PROJECT_DETAIL;
 let projects: Projects[] = [];
 let fetchFailed = false;
 try {
-	const { data } = await api.get(`/projects?currentLocale=${currentLocale}`, {
-		headers: { Authorization: `Bearer ${API_SECRET_TOKEN}` },
-	});
-	projects = (data?.data?.rows ?? []) as Projects[];
+	const { data } = await api.get<{ data?: { rows?: Projects[] } }>(
+		`/projects?currentLocale=${currentLocale}`,
+	);
+	projects = data?.data?.rows ?? [];
 } catch (err) {
 	fetchFailed = true;
-	// Solo el mensaje: el error de axios trae `config.headers.Authorization`
-	// (el token del backend) y acabaria en los logs del Worker.
+	// Solo el mensaje, nunca el objeto entero: por costumbre, y porque un error
+	// de red o de `fetch` no debe volcarse tal cual a los logs del Worker.
 	console.error(
 		"SSR project detail fetch failed",
 		err instanceof Error ? err.message : "unknown error",

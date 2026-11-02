@@ -60,17 +60,13 @@ describe("GET /api/[resource]", () => {
 		const res = (await GET(getCtx(resource))) as Response;
 		expect(res.status).toBe(200);
 		expect(await res.json()).toEqual({ ok: resource });
-		expect(get).toHaveBeenCalledWith(`/${resource}`, {
-			headers: { Authorization: "Bearer secret-token" },
-		});
+		expect(get).toHaveBeenCalledWith(`/${resource}`);
 	});
 
 	it("forwards the locale to the backend", async () => {
 		get.mockResolvedValue({ data: {} });
 		await GET(getCtx("projects", "?currentLocale=en"));
-		expect(get).toHaveBeenCalledWith("/projects?currentLocale=en", {
-			headers: { Authorization: "Bearer secret-token" },
-		});
+		expect(get).toHaveBeenCalledWith("/projects?currentLocale=en");
 	});
 
 	it("404s an unknown or missing resource without calling the backend", async () => {
@@ -97,9 +93,7 @@ describe("POST /api/[resource]", () => {
 		)) as Response;
 		expect(res.status).toBe(201);
 		expect(await res.json()).toEqual({ id: 7 });
-		expect(post).toHaveBeenCalledWith("/comments", comment, {
-			headers: { Authorization: "Bearer secret-token" },
-		});
+		expect(post).toHaveBeenCalledWith("/comments", comment);
 	});
 
 	it("is read-only for every other resource (405)", async () => {

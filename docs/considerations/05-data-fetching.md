@@ -22,7 +22,7 @@ clasificada por dónde se ejecuta:
 
 | Archivo | Qué pide | Cómo |
 |---|---|---|
-| `Proyectos.astro` | `GET /projects?currentLocale=...` a Hono | `api.get(...)` (axios), con `Authorization: Bearer API_SECRET_TOKEN` inyectado server-side — el secreto nunca llega al navegador |
+| `Proyectos.astro` | `GET /projects?currentLocale=...` a Hono | `api.get(...)` (`fetch`), con `Authorization: Bearer API_SECRET_TOKEN` inyectado server-side — el secreto nunca llega al navegador |
 | `Opiniones.astro` | comentarios/opiniones a Hono | Mismo patrón |
 
 Ambos ya hacen exactamente lo que la guía recomienda: `await` de nivel
@@ -62,15 +62,14 @@ datos en vez de pedirlos. Si además se adopta Server Islands (doc 01), este
 fetch nace directo como `server:defer` en vez de bloquear el render de la
 sección.
 
-### Nota menor: axios vs `fetch()` nativo
+### Resuelto: axios → `fetch()` nativo
 
-`Proyectos.astro` y `Opiniones.astro` usan `axios` (vía `src/lib/api.ts`)
-para hablar con Hono directo. La guía de Astro recomienda el `fetch()`
-global nativo — no es que axios esté mal (el interceptor de headers/baseURL
-es cómodo), pero es una dependencia extra para algo que `fetch()` +
-`new URL()` resuelve sin librería. No es urgente cambiarlo: es una
-simplificación opcional, no un bug. Si en algún momento se toca
-`src/lib/api.ts` por otra razón, vale la pena evaluarlo ahí mismo.
+`src/lib/api.ts` ya no usa `axios`: es un cliente de `fetch()` que agrega el
+bearer, aplica un tiempo límite de 10 s, rechaza rutas que escapen de la base
+y, ante un error, lanza un `ApiError` con solo el estado HTTP. Un error de
+axios traía `config.headers.Authorization` (el token) y bastaba un `console`
+descuidado para filtrarlo. El Portafolio_Admin sigue las mismas reglas en
+`src/server/backendClient.ts`.
 
 ## Referencias cruzadas
 
