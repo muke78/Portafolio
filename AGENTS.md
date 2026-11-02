@@ -101,9 +101,11 @@ Gestor de paquetes: **pnpm**. No uses npm ni yarn.
 - **El repositorio y el sitio son públicos.** Todo POST público pasa por las
   guardias de `src/lib/requestGuards.ts` (mismo origen, `application/json`,
   tope de tamaño) y se valida antes de llamar al backend. Las respuestas de
-  error son genéricas: nunca devuelvas ni registres el error de axios (trae el
-  token en `config.headers`). `API_SECRET_TOKEN` solo se usa en código de
-  servidor.
+  error son genéricas: nunca devuelvas ni registres el error crudo del
+  backend, solo su mensaje. El backend se consume **solo** con
+  `src/lib/api.ts` (`fetch`, sin axios): es el único archivo que importa
+  `API_SECRET_TOKEN`, y ningún componente, isla ni hook puede importarlo. Un
+  `ApiError` lleva únicamente el estado HTTP.
 - Las cabeceras de seguridad salen de `src/lib/securityHeaders.ts` y deben
   coincidir con `public/_headers`. Detalle, pruebas y pendientes en
   `docs/SECURITY.md`; las pruebas viven en `tests/unit/security/`.

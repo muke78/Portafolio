@@ -8,7 +8,7 @@ y contacto). Este documento resume cómo se protege y cómo se prueba.
 
 | Activo | Riesgo | Control |
 |---|---|---|
-| Token del backend (`API_SECRET_TOKEN`) | Filtración al navegador, al repo o a los logs | Secreto de servidor (`astro:env`), prueba de que solo vive en rutas de servidor, escáner del bundle del cliente, logs sin el error de axios |
+| Token del backend (`API_SECRET_TOKEN`) | Filtración al navegador, al repo o a los logs | Secreto de servidor (`astro:env`), prueba de que solo vive en rutas de servidor, escáner del bundle del cliente, cliente único con `fetch` (`src/lib/api.ts`) cuyo error lleva solo el estado HTTP, y logs que imprimen solo el mensaje |
 | Backend (D1) | Que alguien lo escriba saltándose el sitio | El token solo lo conoce el Worker del sitio; el backend valida y limita por su cuenta |
 | Formularios públicos | Spam, CSRF, cuerpos enormes o malformados | Origen, `Content-Type: application/json`, tope de 10 KB, validación Zod, límite de 5 peticiones por minuto |
 | Visitantes | XSS, clickjacking, sniffing | Cabeceras de seguridad, sin `innerHTML`, `rel="noopener"` |
