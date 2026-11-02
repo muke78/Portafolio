@@ -113,12 +113,12 @@ describe("el token del backend es solo de servidor", () => {
 		);
 	});
 
-	it("la unica variable publica es la URL del backend", () => {
+	it("las unicas variables publicas son URLs (backend y medios)", () => {
 		const config = read(join(ROOT, "astro.config.mjs"));
 		const clientVars = [
 			...config.matchAll(/(\w+):\s*envField\.\w+\(\{\s*context:\s*"client"/g),
 		].map((m) => m[1]);
-		expect(clientVars).toEqual(["VITE_API_URL"]);
+		expect(clientVars.sort()).toEqual(["PUBLIC_MEDIA_URL", "VITE_API_URL"]);
 	});
 
 	it("ningun componente usa import.meta.env con secretos", () => {
@@ -187,7 +187,9 @@ describe("rastreadores y servicios externos", () => {
 	});
 
 	it("robots.txt deja fuera /api", () => {
-		expect(read(join(ROOT, "public/robots.txt"))).toMatch(/Disallow:\s*\/api/);
+		expect(read(join(ROOT, "src/pages/robots.txt.ts"))).toContain(
+			"Disallow: /api",
+		);
 	});
 });
 
