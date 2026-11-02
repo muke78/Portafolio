@@ -109,6 +109,11 @@ export default defineConfig({
 			}),
 		},
 	},
+	// El sitio no usa sesiones. Sin esto el adaptador de Cloudflare agrega solo un
+	// binding KV `SESSION` sin namespace_id y `wrangler preview` (builds de
+	// ramas) falla con "binding SESSION of type kv_namespace must have a
+	// namespace_id" [code 10021]; en produccion crearia un KV que nadie usa.
+	session: false,
 	output: "server",
 	// Vitest loads this config through getViteConfig(); the adapter's Vite plugin
 	// would boot a workerd runtime for every test run, so tests run without it.
