@@ -71,6 +71,18 @@ describe("dimFloor", () => {
 		expect(dimFloor(textOf("17px"))).toBe(MOTION.dim.body.light);
 	});
 
+	it("measures the font size once per element per pass, not once per word", async () => {
+		const el = textOf("30px");
+		const spy = vi.spyOn(window, "getComputedStyle");
+		for (let i = 0; i < 40; i++) dimFloor(el);
+		expect(spy).toHaveBeenCalledTimes(1);
+		// Next pass (after the microtask) measures again.
+		await Promise.resolve();
+		el.style.fontSize = "17px";
+		expect(dimFloor(el)).toBe(MOTION.dim.body.light);
+		spy.mockRestore();
+	});
+
 	it("follows the theme class on <html>", () => {
 		document.documentElement.classList.add("dark");
 		expect(dimFloor(textOf("30px"))).toBe(MOTION.dim.large.dark);
