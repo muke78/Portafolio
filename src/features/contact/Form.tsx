@@ -7,10 +7,15 @@ import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getI18N } from "@/i18n";
+import { githubHandle, mailtoUrl, whatsappUrl } from "@/lib/contactLinks";
 import { contactSchema } from "@/schemas/contactSchema";
+import type { SiteContact } from "@/schemas/siteContactSchema";
 import type { FormData, PropsLang } from "@/types/currentLang.interface";
 
-export const Form = ({ currentLocale }: PropsLang) => {
+export const Form = ({
+	currentLocale,
+	contact,
+}: PropsLang & { contact: SiteContact }) => {
 	const i18n = getI18N({ currentLocale });
 	const sendInformationValid = `${i18n.FORM.FORM_SEND_INFORMATION_CORRECT}`;
 	const errorSendInformation = `${i18n.FORM.FORM_SEND_INFORMATION_INCORRECT}`;
@@ -98,12 +103,12 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								Github
 							</strong>{" "}
 							<a
-								href="https://github.com/muke78"
+								href={contact.github_url}
 								target="_blank"
 								className="flex"
 								rel="noopener noreferrer"
 							>
-								muke78
+								{githubHandle(contact.github_url)}
 							</a>
 						</span>
 					</li>
@@ -118,12 +123,12 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								Linkedin
 							</strong>{" "}
 							<a
-								href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
+								href={contact.linkedin_url}
 								target="_blank"
 								className="flex"
 								rel="noopener noreferrer"
 							>
-								Erick Miguel Gonzalez Rivera
+								{contact.linkedin_name}
 							</a>
 						</span>
 					</li>
@@ -137,13 +142,13 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								{i18n.FORM.FORM_OPTIONS_CONTACT_PHONE}
 							</strong>{" "}
 							<a
-								href="https://wa.me/+527203966119"
+								href={whatsappUrl(contact.phone)}
 								target="_blank"
-								aria-label="+52-551-190 9105"
+								aria-label={contact.phone}
 								className="flex"
 								rel="noopener noreferrer"
 							>
-								+52-551-190 9105
+								{contact.phone}
 							</a>
 						</span>
 					</li>
@@ -157,13 +162,13 @@ export const Form = ({ currentLocale }: PropsLang) => {
 								{i18n.FORM.FORM_OPTIONS_CONTACT_EMAIL}
 							</strong>{" "}
 							<a
-								href="mailto:erickm.gonzalez.rivera@gmail.com"
+								href={mailtoUrl(contact.email)}
 								target="_blank"
-								aria-label="erickm.gonzalez.rivera@gmail.com"
+								aria-label={contact.email}
 								className="flex"
 								rel="noopener noreferrer"
 							>
-								erickm.gonzalez.rivera@gmail.com
+								{contact.email}
 							</a>
 						</span>
 					</li>

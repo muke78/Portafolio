@@ -1,10 +1,12 @@
 ---
 import { Form } from "@/features/contact/Form";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
+import { getContact } from "@/lib/siteContact";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+const contact = await getContact();
 ---
 
 <div class="mx-auto max-w-[1240px] px-6 w-full py-24 md:py-32">
-  <Form client:visible currentLocale={currentLocale} />
+  <Form client:visible currentLocale={currentLocale} contact={contact} />
 </div>

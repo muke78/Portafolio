@@ -32,6 +32,18 @@ describe("buildApiUrl", () => {
 });
 
 describe("api", () => {
+	it("el tiempo maximo se puede acortar para lo que no debe frenar una pagina", async () => {
+		const timeout = vi.spyOn(AbortSignal, "timeout");
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockImplementation(async () => Response.json({ data: {} })),
+		);
+		await api.get("/contact-info", { timeoutMs: 2000 });
+		await api.get("/projects");
+		expect(timeout.mock.calls.map((c) => c[0])).toEqual([2000, 10_000]);
+		timeout.mockRestore();
+	});
+
 	it("GET manda el bearer y pide JSON", async () => {
 		const fetchMock = stubFetch(Response.json({ data: { rows: [] } }));
 		const { data } = await api.get("/projects");

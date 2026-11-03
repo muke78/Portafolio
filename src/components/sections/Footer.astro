@@ -4,9 +4,12 @@ import { dataListNavbar } from "@/data/locales/es/dataNavbar";
 import { dataListNavbarFR } from "@/data/locales/fr/dataNavbarFR";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
+import { mailtoUrl } from "@/lib/contactLinks";
+import { getContact } from "@/lib/siteContact";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
+const contact = await getContact();
 
 const navByLocale = {
 	es: dataListNavbar,
@@ -58,9 +61,9 @@ const year = new Date().getFullYear();
 			<div>
 				<h2 class="eyebrow mb-4">{i18n.FOOTER.ELSEWHERE}</h2>
 				<ul class="flex flex-col gap-2">
-					<li><a href="https://github.com/muke78" target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">GitHub</a></li>
-					<li><a href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/" target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">LinkedIn</a></li>
-					<li><a href="mailto:erickm.gonzalez.rivera@gmail.com" class="text-sm text-muted-foreground transition-colors hover:text-primary">Email</a></li>
+					<li><a href={contact.github_url} target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">GitHub</a></li>
+					<li><a href={contact.linkedin_url} target="_blank" rel="noopener noreferrer" class="text-sm text-muted-foreground transition-colors hover:text-primary">LinkedIn</a></li>
+					<li><a href={mailtoUrl(contact.email)} class="text-sm text-muted-foreground transition-colors hover:text-primary">Email</a></li>
 				</ul>
 			</div>
 		</div>

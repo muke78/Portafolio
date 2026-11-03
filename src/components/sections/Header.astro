@@ -12,10 +12,13 @@ import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
+import { mailtoUrl, whatsappUrl } from "@/lib/contactLinks";
+import { getContact } from "@/lib/siteContact";
 import { cn } from "@/lib/utils";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
+const contact = await getContact();
 
 // Hero CTAs reuse the shadcn Button styles (buttonVariants) on a real <a>:
 // .astro files can't pass the JSX element Base UI's `render` prop needs.
@@ -191,7 +194,7 @@ const social =
 	>
 		<div class="flex items-center gap-1">
 			<a
-				href="https://github.com/muke78"
+				href={contact.github_url}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_GITHUB_ARIA_LABEL}
@@ -200,7 +203,7 @@ const social =
 				<GithubIcon size={22} aria-hidden="true" />
 			</a>
 			<a
-				href="https://www.linkedin.com/in/erick-miguel-gonz%C3%A1lez-rivera-96265b248/"
+				href={contact.linkedin_url}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_LINKEDIN_ARIA_LABEL}
@@ -209,7 +212,7 @@ const social =
 				<LinkedinIcon size={22} aria-hidden="true" />
 			</a>
 			<a
-				href="https://wa.me/+525511909105"
+				href={whatsappUrl(contact.phone)}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_WHATSAPP_ARIA_LABEL}
@@ -218,7 +221,7 @@ const social =
 				<MessageCircle size={22} />
 			</a>
 			<a
-				href="mailto:erickm.gonzalez.rivera@gmail.com"
+				href={mailtoUrl(contact.email)}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label={i18n.HEADER.HEADER_EMAIL_ARIA_LABEL}
