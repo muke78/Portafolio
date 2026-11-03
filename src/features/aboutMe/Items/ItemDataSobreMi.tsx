@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SkeletonAboutMe } from "@/features/aboutMe/Items/SkeletonAbout";
 import { getI18N } from "@/i18n";
+import { mediaUrl } from "@/lib/media";
 import type { About, PropsLang } from "@/types/currentLang.interface";
 
 // Fase 5b: antes SobreMi.tsx leia texto fijo de i18n ABOUTME.* - ahora
@@ -41,7 +42,7 @@ export const ItemDataSobreMi = ({ currentLocale }: PropsLang) => {
 				<img
 					data-parallax-img
 					className="absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover"
-					src={image}
+					src={mediaUrl(image)}
 					alt={i18n.ABOUTME.ABOUT_TITLE}
 					width={1600}
 					height={400}

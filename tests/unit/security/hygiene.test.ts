@@ -155,14 +155,18 @@ describe("superficie de XSS", () => {
 		).toEqual([]);
 	});
 
-	it("set:html solo inyecta el JSON-LD propio, serializado con JSON.stringify", () => {
+	it("set:html solo inyecta el JSON-LD propio (con JSON.stringify) y los dos scripts fijos del CSP", () => {
 		const uses = source.flatMap((f) =>
 			[...read(f).matchAll(/set:html=\{([^}]*)\}/g)].map(
 				(m) => `${rel(f)} -> ${m[1]}`,
 			),
 		);
+		// Los dos scripts son constantes de src/lib/inlineScripts.ts (texto del repo, no
+		// datos de nadie) y su hash esta en el CSP (astro.config.mjs).
 		expect(uses).toEqual([
 			"src/layouts/Layout.astro -> JSON.stringify(personSchema)",
+			"src/layouts/Layout.astro -> MOTION_GATE_SCRIPT",
+			"src/layouts/Layout.astro -> THEME_SCRIPT",
 		]);
 	});
 

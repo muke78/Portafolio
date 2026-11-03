@@ -5,11 +5,10 @@
  * los archivos estaticos (imagenes, favicon, JS/CSS del build) las reciben de
  * `public/_headers`. Una prueba compara ambas listas para que no se separen.
  *
- * El CSP es PARCIAL a proposito: solo las directivas que no dependen de lo que
- * el sitio carga (marcos, `<base>`, plugins, formularios). Un `script-src` /
- * `style-src` real exige hashes de todo el JS/CSS en linea del sitio (Three.js,
- * GSAP, estilos de React) y debe verificarse en un navegador antes de activarse
- * (`security.csp` de Astro); ver docs/SECURITY.md.
+ * El CSP de aqui es el MINIMO (marcos, `<base>`, plugins, formularios) y vale para
+ * lo que no es una pagina: la API y los archivos estaticos. Las paginas SSR llevan el
+ * CSP completo, con hashes, que genera Astro (`security.csp` en astro.config.mjs) y
+ * que ya incluye esas mismas cuatro directivas; ver docs/SECURITY.md.
  */
 export const SECURITY_HEADERS = {
 	"Strict-Transport-Security": "max-age=31536000; includeSubDomains",

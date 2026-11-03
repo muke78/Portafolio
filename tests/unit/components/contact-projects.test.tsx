@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import toast from "react-hot-toast";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { toast } from "@/components/Toaster";
 import { Form } from "@/features/contact/Form";
 import { ItemDataProjects } from "@/features/projects/items/ItemDataProjects";
 import { SkeletonProjectsCard } from "@/features/projects/items/SkeletonProjectsCard";
@@ -11,6 +11,14 @@ import { getI18N } from "@/i18n";
 import type { Projects } from "@/types/currentLang.interface";
 
 const es = getI18N({ currentLocale: "es" });
+
+const contact = {
+	github_url: "https://github.com/muke78",
+	linkedin_url: "https://www.linkedin.com/in/alguien/",
+	linkedin_name: "Erick Gonzalez",
+	phone: "+52 55 1190 9105",
+	email: "persona@example.com",
+};
 
 const project = (over: Partial<Projects> = {}): Projects => ({
 	project_id: 1,
@@ -27,7 +35,7 @@ const project = (over: Partial<Projects> = {}): Projects => ({
 });
 
 afterEach(() => {
-	// react-hot-toast keeps its toasts in a module-level store.
+	// The toasts live in a module-level store.
 	toast.remove();
 	vi.restoreAllMocks();
 	vi.unstubAllGlobals();
@@ -57,7 +65,7 @@ describe("contact Form", () => {
 		userEvent.click(screen.getByRole("button", { name: es.FORM.BUTTON_LABEL }));
 
 	it("marks its pieces for the motion engine and links the profiles", () => {
-		const { container } = render(<Form currentLocale="es" />);
+		const { container } = render(<Form currentLocale="es" contact={contact} />);
 		expect(container.querySelector("[data-split]")).toBeInTheDocument();
 		expect(container.querySelector("[data-stagger]")).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "muke78" })).toHaveAttribute(
@@ -66,10 +74,23 @@ describe("contact Form", () => {
 		);
 	});
 
+	it("shows the contact data it receives: handle, name, phone and email", () => {
+		render(<Form currentLocale="es" contact={contact} />);
+		expect(
+			screen.getByRole("link", { name: "Erick Gonzalez" }),
+		).toHaveAttribute("href", "https://www.linkedin.com/in/alguien/");
+		// The WhatsApp link is built from the phone, and it is the one shown.
+		const phone = screen.getByRole("link", { name: "+52 55 1190 9105" });
+		expect(phone).toHaveAttribute("href", "https://wa.me/525511909105");
+		expect(
+			screen.getByRole("link", { name: "persona@example.com" }),
+		).toHaveAttribute("href", "mailto:persona@example.com");
+	});
+
 	it("shows field errors and sends nothing when the form is empty", async () => {
 		const fetchMock = vi.fn();
 		vi.stubGlobal("fetch", fetchMock);
-		render(<Form currentLocale="es" />);
+		render(<Form currentLocale="es" contact={contact} />);
 		await submit();
 		expect(
 			await screen.findByText(es.FORM.FORM_VALID_NAME),
@@ -78,7 +99,7 @@ describe("contact Form", () => {
 	});
 
 	it("accepts an international phone number (type=tel, not number)", () => {
-		render(<Form currentLocale="es" />);
+		render(<Form currentLocale="es" contact={contact} />);
 		expect(screen.getByPlaceholderText(es.FORM.INPUT_PHONE)).toHaveAttribute(
 			"type",
 			"tel",
@@ -90,7 +111,7 @@ describe("contact Form", () => {
 			.fn()
 			.mockResolvedValue(new Response("{}", { status: 200 }));
 		vi.stubGlobal("fetch", fetchMock);
-		render(<Form currentLocale="es" />);
+		render(<Form currentLocale="es" contact={contact} />);
 		await fill();
 		await submit();
 
@@ -111,7 +132,7 @@ describe("contact Form", () => {
 			"fetch",
 			vi.fn().mockResolvedValue(new Response("x", { status: 500 })),
 		);
-		render(<Form currentLocale="es" />);
+		render(<Form currentLocale="es" contact={contact} />);
 		await fill();
 		await submit();
 
@@ -127,7 +148,7 @@ describe("contact Form", () => {
 
 	it("reports a network failure the same way", async () => {
 		vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("offline")));
-		render(<Form currentLocale="es" />);
+		render(<Form currentLocale="es" contact={contact} />);
 		await fill();
 		await submit();
 		expect(

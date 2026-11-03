@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SkeletonEducation } from "@/features/aboutMe/Items/SkeletonAbout";
 import { getI18N } from "@/i18n";
+import { mediaUrl } from "@/lib/media";
 import type { Education, PropsLang } from "@/types/currentLang.interface";
 
 // Fase 5b: antes Educacion.tsx tenia UNA institucion hardcodeada (imagen y
@@ -52,7 +53,7 @@ export const ItemDataEducacion = ({ currentLocale }: PropsLang) => {
 					>
 						<img
 							className="h-auto w-full"
-							src={image}
+							src={mediaUrl(image)}
 							alt={institution}
 							width={940}
 							height={220}

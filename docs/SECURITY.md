@@ -40,14 +40,31 @@ estáticos, `public/_headers`. Una prueba compara ambas listas.
 `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy` y un CSP
 **parcial** (`frame-ancestors`, `base-uri`, `object-src`, `form-action`).
 
-### Pendiente: CSP completo
+### CSP con hashes (`security.csp` de Astro)
 
-Un `script-src`/`style-src` real exige hashes de todo el JS y CSS en línea del
-sitio (Three.js, GSAP, estilos de React). Astro lo soporta con `security.csp`,
-pero **no funciona en `dev`** y tiene que verificarse en un navegador contra
-`build` + `preview` (consola sin violaciones, claro y oscuro, móvil y
-escritorio). Se deja fuera hasta poder hacer esa verificación, para no romper el
-sitio en producción.
+Las páginas SSR llevan un `Content-Security-Policy` completo, generado por Astro en
+cada build:
+
+- `script-src` y `style-src` con el **hash** de cada `<script>` y `<style>` que
+  genera Astro, más los de los dos `<script is:inline>` del Layout (el motion gate y
+  el tema, de `src/lib/inlineScripts.ts`, cuyo hash calcula `astro.config.mjs` del
+  mismo texto). No hay `unsafe-inline` en scripts ni en etiquetas `<style>`.
+- Los atributos `style=""` (Astro, React y GSAP los ponen) no se pueden hashear:
+  solo ellos llevan `style-src-attr 'unsafe-inline'`. No ejecutan código.
+- `img-src` permite el bucket de R2 (`PUBLIC_MEDIA_URL`), `go-skill-icons.vercel.app`
+  (tecnologías) y `cdn.jsdelivr.net` (banderas); `connect-src 'self'`,
+  `frame-src 'none'`, `base-uri`, `object-src`, `frame-ancestors` y `form-action`.
+- **Avisos:** `react-hot-toast` inyectaba su CSS en una etiqueta `<style>` en tiempo
+  de ejecución, algo que un CSP con hashes no admite; se reemplazó por
+  `src/components/Toaster.tsx`, que solo usa clases de Tailwind.
+
+Verificación (en un navegador, contra `build` + `preview`, porque Astro no aplica el
+CSP en `dev`): 13 islas hidratadas, fondo 3D, movimiento y tema funcionando, sin
+violaciones en la consola; una imagen de otro origen, un `<script>` inyectado y un
+`<style>` inyectado se bloquean. **Si agregas un origen nuevo** (otra CDN, un
+analítico), va en `security.csp.directives` de `astro.config.mjs`; si no, el
+navegador lo bloquea. Un build local con `NODE_ENV=development` en el `.env` compila
+React en modo desarrollo y no sirve para esta prueba: quítalo del `.env`.
 
 ## Pruebas (`tests/unit/security/`)
 
@@ -81,7 +98,7 @@ sitio en producción.
 
 ## Qué no cubre
 
-- CSP completo (ver arriba).
+- `style-src-attr 'unsafe-inline'` (ver arriba): un atributo `style=""` inyectado no se bloquea.
 - Limitación distribuida: el límite del proxy es en memoria (un contador por
   instancia del Worker); la limitación real y compartida la hace el backend.
 - Pruebas de carga o denegación de servicio.
