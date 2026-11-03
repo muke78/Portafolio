@@ -1,9 +1,13 @@
 ---
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
+import { getSiteCopy } from "@/lib/siteCopy";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const t = getI18N({ currentLocale }).MANIFESTO;
+// La frase viene del CMS; los archivos de idioma son el respaldo.
+const manifestoText =
+	(await getSiteCopy(currentLocale))?.manifesto_text ?? t.TEXT;
 
 // Technology names are not translated. Two lines of the same words in a
 // different order so the two tracks never line up.
@@ -45,7 +49,7 @@ const chips = ["React", "Astro", "Hono"];
 		<h2 id="manifesto-label" class="eyebrow mb-8">{t.LABEL}</h2>
 
 		<p data-manifesto-text class="font-serif-display text-subtitle max-w-4xl text-balance">
-			{t.TEXT}
+			{manifestoText}
 		</p>
 
 		<ul class="mt-10 flex flex-wrap gap-3" aria-hidden="true">

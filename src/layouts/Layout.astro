@@ -5,6 +5,7 @@ import { BackgroundEffects } from "@/components/three/BackgroundEffects";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
 import { getContact } from "@/lib/siteContact";
+import { getSiteCopy } from "@/lib/siteCopy";
 
 interface Props {
 	/** Page <title> / og:title. Defaults to the site title. */
@@ -20,20 +21,22 @@ const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const { title, description, image } = Astro.props;
 const i18n = getI18N({ currentLocale });
 const contact = await getContact();
+const copy = await getSiteCopy(currentLocale);
 
 const currentYear = new Date().getFullYear();
 const siteOrigin = site ?? new URL(url.origin);
 const canonicalUrl = new URL(url.pathname, siteOrigin).toString();
 const ogImageUrl = image ?? new URL("/kdl.webp", siteOrigin).toString();
 const pageTitle = title ?? i18n.META.META_TITLE;
-const pageDescription = description ?? i18n.META.META_DESCRIPTION;
+const siteDescription = copy?.meta_description ?? i18n.META.META_DESCRIPTION;
+const pageDescription = description ?? siteDescription;
 
 const personSchema = {
 	"@context": "https://schema.org",
 	"@type": "Person",
 	name: i18n.HEADER.HEADER_NAME,
 	jobTitle: i18n.ABOUTME.ABOUT_TITLE_CARD,
-	description: i18n.META.META_DESCRIPTION,
+	description: siteDescription,
 	url: siteOrigin.toString(),
 	image: ogImageUrl,
 	sameAs: [contact.github_url, contact.linkedin_url],

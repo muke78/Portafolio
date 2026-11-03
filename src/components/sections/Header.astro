@@ -13,12 +13,21 @@ import { buttonVariants } from "@/components/ui/button";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
 import { mailtoUrl, whatsappUrl } from "@/lib/contactLinks";
+import { mediaUrl } from "@/lib/media";
 import { getContact } from "@/lib/siteContact";
+import { getSiteCopy } from "@/lib/siteCopy";
 import { cn } from "@/lib/utils";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
 const contact = await getContact();
+// Foto y textos del hero vienen del CMS; si el backend no responde, los archivos de
+// idioma y la foto estatica del repo (`hero-portrait.webp`) hacen de respaldo.
+const copy = await getSiteCopy(currentLocale);
+const heroLabel = copy?.hero_label ?? i18n.HEADER.HEADER_SUBTITLE;
+const heroLead = copy?.hero_lead ?? i18n.HEADER.HEADER_ABOUT;
+const heroAlt = copy?.hero_image_alt ?? "muke78";
+const heroSrc = copy ? mediaUrl(copy.hero_image) : null;
 
 // Hero CTAs reuse the shadcn Button styles (buttonVariants) on a real <a>:
 // .astro files can't pass the JSX element Base UI's `render` prop needs.
@@ -61,7 +70,7 @@ const social =
 			>
 			</div>
 
-			<p class="eyebrow mb-6" data-hero-label>{i18n.HEADER.HEADER_SUBTITLE}</p>
+			<p class="eyebrow mb-6" data-hero-label>{heroLabel}</p>
 
 			<h1 class="font-serif-display text-hero">
 				<!--
@@ -87,7 +96,7 @@ const social =
 				class="khelde-lead mt-8 max-w-[46ch] text-muted-foreground"
 				data-hero-lead
 			>
-				{i18n.HEADER.HEADER_ABOUT}
+				{heroLead}
 			</p>
 
 			<div class="mt-8 flex flex-wrap items-center gap-3" data-hero-cta>
@@ -169,16 +178,34 @@ const social =
 					class="relative aspect-[3/4] overflow-hidden rounded-t-[999px] rounded-b-3xl border border-border bg-muted shadow-[var(--glow)]"
 					data-hero-portrait
 				>
-					<Image
-						src={heroPortrait}
-						alt="muke78"
-						draggable="false"
-						loading="eager"
-						fetchpriority="high"
-						widths={[360, 540, 672]}
-						sizes="(min-width: 1024px) 400px, 72vw"
-						class="h-full w-full object-cover"
-					/>
+					{
+						heroSrc ? (
+							<>
+								{/* LCP: se pide desde el primer byte del HTML, no al llegar al <img>. */}
+								<link rel="preload" as="image" href={heroSrc} fetchpriority="high" />
+								<img
+									src={heroSrc}
+									alt={heroAlt}
+									draggable="false"
+									loading="eager"
+									fetchpriority="high"
+									decoding="async"
+									class="h-full w-full object-cover"
+								/>
+							</>
+						) : (
+							<Image
+								src={heroPortrait}
+								alt={heroAlt}
+								draggable="false"
+								loading="eager"
+								fetchpriority="high"
+								widths={[360, 540, 672]}
+								sizes="(min-width: 1024px) 400px, 72vw"
+								class="h-full w-full object-cover"
+							/>
+						)
+					}
 					<!-- LCP: the photo is painted from the first frame; while .motion-ok this
 					     cover hides it and the hero sequence wipes the cover away. Clipping
 					     the photo itself kept it out of the LCP until the JS engine ran. -->
