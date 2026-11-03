@@ -1,4 +1,3 @@
-import { API_SECRET_TOKEN } from "astro:env/server";
 import type { APIRoute } from "astro";
 import { api } from "@/lib/api";
 import { isRateLimited } from "@/lib/rateLimit";
@@ -51,20 +50,12 @@ export const POST: APIRoute = async (ctx) => {
 		// sigue mandando camelCase (moreInformation), sin tocarlo, este
 		// endpoint es el limite de traduccion (mismo rol que ya cumplia
 		// tlgrm.ts).
-		await api.post(
-			"/contact-messages",
-			{
-				name: body.name,
-				email: body.email,
-				phone: body.phone,
-				more_information: body.moreInformation || undefined,
-			},
-			{
-				headers: {
-					Authorization: `Bearer ${API_SECRET_TOKEN}`,
-				},
-			},
-		);
+		await api.post("/contact-messages", {
+			name: body.name,
+			email: body.email,
+			phone: body.phone,
+			more_information: body.moreInformation || undefined,
+		});
 
 		return json(
 			{

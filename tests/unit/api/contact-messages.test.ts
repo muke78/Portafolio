@@ -36,16 +36,12 @@ describe("POST /api/contact-messages", () => {
 		const res = await call(form, "10.0.0.2");
 
 		expect(res.status).toBe(200);
-		expect(post).toHaveBeenCalledWith(
-			"/contact-messages",
-			{
-				name: "Erick",
-				email: "e@example.com",
-				phone: "+52 55 1234 5678",
-				more_information: "Hola que tal",
-			},
-			{ headers: { Authorization: "Bearer secret-token" } },
-		);
+		expect(post).toHaveBeenCalledWith("/contact-messages", {
+			name: "Erick",
+			email: "e@example.com",
+			phone: "+52 55 1234 5678",
+			more_information: "Hola que tal",
+		});
 		expect((await res.json()).message.moreInformation).toBe("Hola que tal");
 	});
 

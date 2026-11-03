@@ -314,12 +314,10 @@ describe("Project detail page", () => {
 		expect(html).toContain("Segundo");
 	});
 
-	it("sends the language and the bearer token to the API", async () => {
+	it("sends the language to the API (the client adds the token)", async () => {
 		apiGet.mockResolvedValue({ data: { data: { rows } } });
 		await renderDetail("mi-proyecto");
-		expect(apiGet).toHaveBeenCalledWith("/projects?currentLocale=es", {
-			headers: { Authorization: "Bearer secret-token" },
-		});
+		expect(apiGet).toHaveBeenCalledWith("/projects?currentLocale=es");
 	});
 
 	it("links to the next project of the same category only", async () => {

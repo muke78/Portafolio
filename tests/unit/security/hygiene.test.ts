@@ -78,11 +78,17 @@ describe("el token del backend es solo de servidor", () => {
 			.filter((f) => read(f).includes("API_SECRET_TOKEN"))
 			.map(rel)
 			.sort();
-		expect(users).toEqual([
-			"src/pages/[lang]/project/[id].astro",
-			"src/pages/api/[resource].ts",
-			"src/pages/api/contact-messages.ts",
-		]);
+		// Un solo punto: el cliente del backend agrega el bearer; ninguna ruta ni
+		// pagina maneja el token.
+		expect(users).toEqual(["src/lib/api.ts"]);
+	});
+
+	it("ningun componente, isla ni hook importa el cliente del backend", () => {
+		const hits = source
+			.filter((f) => /^src\/(components|features|hooks)\//.test(rel(f)))
+			.filter((f) => /from ["']@\/lib\/api["']/.test(read(f)))
+			.map(rel);
+		expect(hits).toEqual([]);
 	});
 
 	it("en las paginas .astro el token vive solo en el frontmatter (servidor)", () => {
@@ -95,7 +101,7 @@ describe("el token del backend es solo de servidor", () => {
 		}
 	});
 
-	it("los errores de axios no se imprimen enteros (traen el token en config.headers)", () => {
+	it("los errores del backend no se imprimen enteros (solo su mensaje)", () => {
 		const hits = source
 			.filter(
 				(f) =>

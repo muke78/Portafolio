@@ -1,4 +1,3 @@
-import { API_SECRET_TOKEN } from "astro:env/server";
 import type { APIRoute } from "astro";
 import { api } from "@/lib/api";
 import { isRateLimited } from "@/lib/rateLimit";
@@ -30,10 +29,6 @@ const json = (body: unknown, status = 200) =>
 		headers: { "Content-Type": "application/json" },
 	});
 
-const authHeaders = () => ({
-	Authorization: `Bearer ${API_SECRET_TOKEN}`,
-});
-
 export const GET: APIRoute = async ({ params, url }) => {
 	const resource = params.resource;
 	if (!resource || !READABLE.has(resource)) {
@@ -44,9 +39,7 @@ export const GET: APIRoute = async ({ params, url }) => {
 	// propios en la consulta que se manda al backend.
 	const qs = locale ? `?currentLocale=${encodeURIComponent(locale)}` : "";
 	try {
-		const { data } = await api.get(`/${resource}${qs}`, {
-			headers: authHeaders(),
-		});
+		const { data } = await api.get(`/${resource}${qs}`);
 		return json(data);
 	} catch {
 		return json({ message: `No se pudo obtener ${resource}` }, 503);
@@ -87,9 +80,7 @@ export const POST: APIRoute = async (ctx) => {
 	if (!parsed.success) return json({ message: "Invalid data" }, 400);
 
 	try {
-		const { data } = await api.post(`/${resource}`, parsed.data, {
-			headers: authHeaders(),
-		});
+		const { data } = await api.post(`/${resource}`, parsed.data);
 		return json(data, 201);
 	} catch {
 		return json({ message: `No se pudo crear ${resource}` }, 503);

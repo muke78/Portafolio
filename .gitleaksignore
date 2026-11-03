@@ -1,0 +1,6 @@
+# Enlaces prefirmados de S3 de un CV viejo (octubre de 2024), ya en el historial.
+# La firma expiro el 2024-10-29 04:12 UTC (Expires=1730175134): el enlace ya no
+# da acceso a nada, y reescribir el historial para quitarlo no aporta seguridad.
+# Cada linea es el "Fingerprint" que imprime gitleaks.
+a20976c5edd36bd9b1db4417182ba9f0177e871e:src/components/Acerca.astro:aws-access-token:124
+17603b49afaf464504bb0b4c268361c7dce33cad:src/components/Acerca.astro:aws-access-token:114
