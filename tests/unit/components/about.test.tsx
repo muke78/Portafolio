@@ -18,6 +18,7 @@ import {
 	SkeletonExperience,
 } from "@/features/aboutMe/Items/SkeletonAbout";
 import { getI18N } from "@/i18n";
+import { mediaUrl } from "@/lib/media";
 
 const es = getI18N({ currentLocale: "es" });
 
@@ -81,7 +82,7 @@ describe("skeletons", () => {
 describe("ItemDataSobreMi", () => {
 	const about = {
 		about_id: 1,
-		image: "https://img/x.png",
+		image: "Aboutme.webp",
 		title_card: "Desarrollador",
 		subtitle: "Quién soy",
 		description: "Texto largo",
@@ -99,7 +100,7 @@ describe("ItemDataSobreMi", () => {
 		expect(screen.getByText("Texto largo")).toHaveAttribute("data-scrub-text");
 		expect(
 			screen.getByRole("img", { name: es.ABOUTME.ABOUT_TITLE }),
-		).toHaveAttribute("src", about.image);
+		).toHaveAttribute("src", mediaUrl(about.image));
 	});
 
 	it("asks the API for the page language", async () => {
@@ -135,7 +136,7 @@ describe("ItemDataEducacion", () => {
 			institution: "UNAM",
 			subtitle: "Ingeniería",
 			description: "Cuatro años",
-			image: "https://img/u.png",
+			image: "UPVM.webp",
 			period: "2019-2022",
 		},
 		{
@@ -143,7 +144,7 @@ describe("ItemDataEducacion", () => {
 			institution: "Platzi",
 			subtitle: "Cursos",
 			description: "Varios",
-			image: "https://img/p.png",
+			image: "/Platzi.webp",
 			period: "2023",
 		},
 	];
@@ -161,9 +162,15 @@ describe("ItemDataEducacion", () => {
 		expect(within(cards[0]).getByText("Cuatro años")).toHaveAttribute(
 			"data-scrub-text",
 		);
+		// La base guarda claves de R2, no URLs: se arma la URL del bucket (antes la
+		// clave iba tal cual y el navegador la pedia al propio sitio: 404).
+		expect(within(cards[0]).getByRole("img", { name: "UNAM" })).toHaveAttribute(
+			"src",
+			mediaUrl("UPVM.webp"),
+		);
 		expect(
-			within(cards[0]).getByRole("img", { name: "UNAM" }),
-		).toBeInTheDocument();
+			within(cards[1]).getByRole("img", { name: "Platzi" }),
+		).toHaveAttribute("src", mediaUrl("Platzi.webp"));
 	});
 
 	it("shows nothing (not a crash) when the API answers without data", async () => {
