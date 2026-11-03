@@ -49,3 +49,23 @@ describe("Toaster", () => {
 		expect(document.querySelectorAll("style")).toHaveLength(before);
 	});
 });
+
+describe("Toaster (hidratacion)", () => {
+	it("hidrata sin avisos de React: el snapshot del servidor es estable", async () => {
+		const { renderToString } = await import("react-dom/server");
+		const { hydrateRoot } = await import("react-dom/client");
+		const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+		const container = document.createElement("div");
+		container.innerHTML = renderToString(<Toaster closeLabel="Cerrar aviso" />);
+		document.body.appendChild(container);
+		await act(async () => {
+			hydrateRoot(container, <Toaster closeLabel="Cerrar aviso" />);
+		});
+		const complaints = errors.mock.calls.filter((call) =>
+			String(call[0]).includes("getServerSnapshot"),
+		);
+		errors.mockRestore();
+		container.remove();
+		expect(complaints).toHaveLength(0);
+	});
+});
