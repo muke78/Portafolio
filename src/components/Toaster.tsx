@@ -65,7 +65,10 @@ const subscribe = (notify: () => void) => {
 	};
 };
 const getSnapshot = () => toasts;
-const getServerSnapshot = (): ToastItem[] => [];
+// Una sola lista vacia: React compara el snapshot por identidad, y uno nuevo en
+// cada llamada se queja ("getServerSnapshot should be cached") al hidratar.
+const NO_TOASTS: ToastItem[] = [];
+const getServerSnapshot = (): ToastItem[] => NO_TOASTS;
 
 export const Toaster = ({ closeLabel }: { closeLabel: string }) => {
 	const items = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
