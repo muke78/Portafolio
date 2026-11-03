@@ -39,6 +39,7 @@ const request = async <T>(
 	path: string,
 	method: "GET" | "POST",
 	body?: unknown,
+	timeoutMs = TIMEOUT_MS,
 ): Promise<{ data: T }> => {
 	const headers: Record<string, string> = {
 		Authorization: `Bearer ${API_SECRET_TOKEN}`,
@@ -50,7 +51,7 @@ const request = async <T>(
 		method,
 		headers,
 		body: body === undefined ? undefined : JSON.stringify(body),
-		signal: AbortSignal.timeout(TIMEOUT_MS),
+		signal: AbortSignal.timeout(timeoutMs),
 	});
 	if (!response.ok) throw new ApiError(response.status);
 	// Una respuesta sin cuerpo (204) es valida: no debe contar como fallo.
@@ -59,7 +60,9 @@ const request = async <T>(
 };
 
 export const api = {
-	get: <T = unknown>(path: string) => request<T>(path, "GET"),
+	/** `timeoutMs` es para lo que no debe frenar una pagina (datos con respaldo). */
+	get: <T = unknown>(path: string, options: { timeoutMs?: number } = {}) =>
+		request<T>(path, "GET", undefined, options.timeoutMs),
 	post: <T = unknown>(path: string, body: unknown) =>
 		request<T>(path, "POST", body),
 };
