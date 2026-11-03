@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import toast from "react-hot-toast";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { toast } from "@/components/Toaster";
 import { Form } from "@/features/contact/Form";
 import { ItemDataProjects } from "@/features/projects/items/ItemDataProjects";
 import { SkeletonProjectsCard } from "@/features/projects/items/SkeletonProjectsCard";
@@ -35,7 +35,7 @@ const project = (over: Partial<Projects> = {}): Projects => ({
 });
 
 afterEach(() => {
-	// react-hot-toast keeps its toasts in a module-level store.
+	// The toasts live in a module-level store.
 	toast.remove();
 	vi.restoreAllMocks();
 	vi.unstubAllGlobals();
