@@ -6,7 +6,8 @@
 	},
 	"COMMON": {
 		"SKIP_TO_CONTENT": "Saltar al contenido",
-		"LOADING": "Cargando"
+		"LOADING": "Cargando",
+		"CLOSE_NOTICE": "Cerrar aviso"
 	},
 	"NAVBAR": {
 		"NAVBAR_SELECT_LANGUAGE": "Seleccionar idioma",

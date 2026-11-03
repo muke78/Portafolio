@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -5,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 import compress from "astro-compress";
 import { DEFAULT_LOCALE, LOCALE_META, LOCALES } from "./src/i18n/locales.ts";
+import { MOTION_GATE_SCRIPT, THEME_SCRIPT } from "./src/lib/inlineScripts.ts";
 
 // Unica fuente de la URL del sitio: canonicos, sitemap y robots.txt salen de
 // aqui. Con dominio propio: define SITE_URL en las variables de build.
@@ -12,6 +14,17 @@ const SITE_URL = (
 	process.env.SITE_URL ??
 	"https://portafolio.erickm-gonzalez-rivera.workers.dev"
 ).replace(/\/+$/, "");
+
+// Origen del bucket R2 (imagenes): el CSP lo permite en `img-src`. Misma variable y
+// mismo valor por defecto que `PUBLIC_MEDIA_URL` en el esquema de abajo.
+const MEDIA_ORIGIN = new URL(
+	process.env.PUBLIC_MEDIA_URL ??
+		"https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev",
+).origin;
+
+// sha256 de los <script is:inline> del Layout (Astro no hashea los `is:inline`).
+const hashOf = (source) =>
+	`sha256-${createHash("sha256").update(source).digest("base64")}`;
 
 const bcp47s = Object.fromEntries(
 	LOCALES.map((locale) => [locale, LOCALE_META[locale].bcp47]),
@@ -46,6 +59,45 @@ export default defineConfig({
 			Logger: true,
 		}),
 	],
+
+	// CSP con hashes: Astro calcula el hash de cada <script> y <style> que genera y lo
+	// pone en un <meta http-equiv="content-security-policy"> por pagina (script-src y
+	// style-src). Solo funciona en `build` + `preview`, no en `dev`. Las directivas de
+	// abajo cubren el resto de lo que carga el sitio; las que no pueden ir en un <meta>
+	// (frame-ancestors...) siguen en src/lib/securityHeaders.ts y public/_headers.
+	security: {
+		csp: {
+			directives: [
+				"default-src 'self'",
+				// R2 (fotos), go-skill-icons (tecnologias) y jsDelivr (banderas de react-country-flag).
+				`img-src 'self' data: blob: ${MEDIA_ORIGIN} https://go-skill-icons.vercel.app https://cdn.jsdelivr.net`,
+				"font-src 'self' data:",
+				"connect-src 'self'",
+				"worker-src 'self' blob:",
+				"media-src 'self'",
+				"manifest-src 'self'",
+				"frame-src 'none'",
+				// Las que antes mandaba el middleware; con CSP de Astro la cabecera la
+				// pone Astro y el middleware respeta la de la ruta, asi que van aqui.
+				"base-uri 'self'",
+				"object-src 'none'",
+				"frame-ancestors 'none'",
+				"form-action 'self'",
+			],
+			scriptDirective: {
+				hashes: [hashOf(MOTION_GATE_SCRIPT), hashOf(THEME_SCRIPT)],
+			},
+			// Los atributos style="" (Astro, React y GSAP los ponen) no se pueden
+			// hashear; no ejecutan codigo, asi que solo ellos quedan en `unsafe-inline`.
+			// Las etiquetas <style> y <script> siguen exigiendo hash.
+			styleDirective: {
+				resources: [
+					"'self'",
+					{ resource: "'unsafe-inline'", kind: "attribute" },
+				],
+			},
+		},
+	},
 
 	compressHTML: true,
 	prefetch: true,

@@ -2,8 +2,8 @@
 import { Mail, MessageCircle, Send } from "lucide-react";
 import { useId } from "react";
 import { type FieldError, useForm } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
 import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
+import { Toaster, toast } from "@/components/Toaster";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getI18N } from "@/i18n";
@@ -54,16 +54,10 @@ export const Form = ({
 
 			if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-			toast.success(sendInformationValid, {
-				duration: 5000,
-				position: "bottom-right",
-			});
+			toast.success(sendInformationValid);
 			reset();
 		} catch (error) {
-			toast.error(`${errorSendInformation}, ${error}`, {
-				duration: 5000,
-				position: "bottom-right",
-			});
+			toast.error(`${errorSendInformation}, ${error}`);
 			console.error("Error:", error);
 		}
 	};
@@ -273,16 +267,7 @@ export const Form = ({
 						</button>
 					</div>
 
-					<Toaster
-						toastOptions={{
-							style: {
-								background: "var(--card)",
-								color: "var(--card-foreground)",
-								border: "1px solid var(--border)",
-							},
-						}}
-						reverseOrder={false}
-					/>
+					<Toaster closeLabel={i18n.COMMON.CLOSE_NOTICE} />
 				</form>
 			</div>
 		</div>
