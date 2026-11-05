@@ -51,7 +51,11 @@
 		"PROJECTS_TITLE_BUTTON_D": "Análisis de datos",
 		"PROJECTS_BADGE_FORK": "Colaboración",
 		"PROJECTS_COUNT_LABEL": "proyectos",
-		"PROJECTS_EMPTY": "Pronto habrá proyectos en esta categoría."
+		"PROJECTS_EMPTY": "Pronto habrá proyectos en esta categoría.",
+		"PROJECTS_BADGE_FEATURED": "Destacado",
+		"PROJECTS_SHOW_MORE": "Ver {n} más de {category}",
+		"PROJECTS_SHOW_LESS": "Mostrar menos",
+		"PROJECTS_LOAD_MORE": "Mostrar {n} más"
 	},
 	"MANIFESTO": {
 		"LABEL": "Qué hago",
@@ -71,7 +75,14 @@
 		"NOT_AVAILABLE": "No disponible",
 		"NEXT": "Siguiente proyecto",
 		"ERROR_TITLE": "No pudimos cargar el proyecto",
-		"ERROR_BODY": "Vuelve al inicio e inténtalo de nuevo en unos minutos."
+		"ERROR_BODY": "Vuelve al inicio e inténtalo de nuevo en unos minutos.",
+		"GALLERY": "Galería del proyecto",
+		"GALLERY_PREV": "Imagen anterior",
+		"GALLERY_NEXT": "Imagen siguiente",
+		"GALLERY_COUNT": "Imagen {n} de {total}",
+		"GALLERY_GOTO": "Ir a la imagen {n}",
+		"GALLERY_OPEN": "Ver la imagen en grande",
+		"GALLERY_CLOSE": "Cerrar imagen"
 	},
 	"404": {
 		"404_BODY": "¡Ups! La página que estás buscando aún no está en órbita, regresa después",

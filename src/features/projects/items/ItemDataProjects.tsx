@@ -18,7 +18,9 @@ import type { PropsLangWithData } from "@/types/currentLang.interface";
 export const ItemDataProjects = ({
 	currentLocale,
 	data,
+	layout = "rail",
 }: PropsLangWithData) => {
+	const grid = layout === "grid";
 	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 	const i18n = getI18N({ currentLocale });
 
@@ -41,8 +43,12 @@ export const ItemDataProjects = ({
 
 	return (
 		<div
-			data-hscroll-track
-			className="flex w-max items-stretch gap-4 pr-6 lg:gap-5"
+			data-hscroll-track={grid ? undefined : ""}
+			className={
+				grid
+					? "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+					: "flex w-max items-stretch gap-4 pr-6 lg:gap-5"
+			}
 		>
 			{data?.map(
 				({
@@ -52,14 +58,20 @@ export const ItemDataProjects = ({
 					card_image,
 					images_topics,
 					title,
+					summary,
 					description,
 					fork,
+					featured,
 				}) => {
 					return (
 						<article
 							key={project_id}
 							data-reveal
-							className="relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift w-[82vw] max-w-[400px] shrink-0 snap-start lg:w-[400px]"
+							className={`relative flex flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift ${
+								grid
+									? "w-full"
+									: "w-[82vw] max-w-[400px] shrink-0 snap-start lg:w-[400px]"
+							}`}
 						>
 							<figure
 								data-mask
@@ -80,7 +92,7 @@ export const ItemDataProjects = ({
 									}`}
 									ref={(el) => markIfLoaded(el, card_image)}
 									onLoad={() => handleImageLoad(card_image)}
-									loading="eager"
+									loading={grid ? "lazy" : "eager"}
 									decoding="async"
 									draggable="false"
 								/>
@@ -90,6 +102,11 @@ export const ItemDataProjects = ({
 								{/* 2 - category (+ collaboration) */}
 								<p className="eyebrow flex flex-wrap items-center gap-x-3 gap-y-1">
 									{categoryLabels[category]}
+									{featured && (
+										<span className="inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
+											{i18n.PROJECTS.PROJECTS_BADGE_FEATURED}
+										</span>
+									)}
 									{fork && (
 										<span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 text-xs font-medium text-foreground">
 											{i18n.PROJECTS.PROJECTS_BADGE_FORK}
@@ -114,7 +131,7 @@ export const ItemDataProjects = ({
 
 								{/* 3 - description */}
 								<p className="mt-3 line-clamp-3 text-base leading-relaxed text-muted-foreground">
-									{description}
+									{summary || description}
 								</p>
 
 								{/* 4 - stack: round icons, overlapped */}
@@ -136,7 +153,7 @@ export const ItemDataProjects = ({
 												alt={topic}
 												ref={(el) => markIfLoaded(el, topic)}
 												onLoad={() => handleImageLoad(topic)}
-												loading="eager"
+												loading={grid ? "lazy" : "eager"}
 												decoding="async"
 												draggable="false"
 											/>

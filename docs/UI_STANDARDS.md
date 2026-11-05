@@ -680,7 +680,12 @@ Reglas de las escenas:
   Educación, Experiencia, Habilidades y cada categoría de proyectos son
   secciones/escenas que se recorren con el scroll (`StoryBlock`,
   `ProjectRail`). En móvil se simplifican (filas con swipe, fade-up), pero el
-  contenido sigue ahí.
+  contenido sigue ahí. **Única excepción: el resto del catálogo de proyectos.**
+  Cada categoría muestra en su riel fijado hasta 6 tarjetas (los destacados
+  primero) y, solo si hay más, un botón «Ver N más de …» (`ProjectMore`) abre
+  el resto en una cuadricula normal, de a 9. Un riel con decenas de tarjetas
+  obligaba a recorrer demasiado scroll; el botón es un `<button>` con
+  `aria-expanded`/`aria-controls`, sin fijar nada y sin mover la página.
 - **El lector nunca queda atrapado**: una escena fijada dura como máximo
   **2.5 pantallas** (lo verifica un test) y siempre tiene contenido que
   cambia mientras dura (si no cambia nada, no se fija).
@@ -871,8 +876,9 @@ página y se compone a escala de cartel; todo lo demás es silencio.
   brazos asomando por el borde del arco, nunca bajo el texto.
 - **Fusión orgánica**: `mask-image` radial (opaco al centro, transparente
   hacia el borde) disuelve el canvas en el color base; nunca se ve un
-  rectángulo. Bajo el texto hay además un degradado radial del color de
-  fondo (scrim) que garantiza el contraste.
+  rectángulo. Bajo el texto **no** hay scrim ni recuadro de fondo: las
+  partículas se ven por detrás del nombre, y el contraste lo da el propio
+  color del texto (tokens `foreground` y `muted-foreground`).
 - En móvil la galaxia es más pequeña (0.72), más abajo y atenuada al 55 %;
   el retrato queda debajo del texto. Al hacer scroll la galaxia viaja a la
   esquina, y al llegar al wordmark del footer sube como un atardecer.
@@ -903,7 +909,7 @@ vive en `src/lib/motion/` (7.7).
 | `data-mask` (`="left"`, `data-mask-delay`) | Marco de foto, formulario, cinta | Se abre como cortina al entrar |
 | `data-stagger` (`="pop"`, `data-stagger-delay`) + `data-stagger-item` | Contenedor y sus hijos | Entrada uno a uno |
 | `data-scrub-text` | Párrafo de lectura | Palabras que se encienden con el scroll |
-| `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `ProjectRail` | Showcase horizontal fijado (un carril por categoría) |
+| `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `ProjectRail` | Showcase horizontal fijado (un carril por categoría, máx. 6 tarjetas; el resto, en `ProjectMore`, fuera del contenedor fijado) |
 | `data-stack` + `data-stack-card` | Lista de experiencia | Pila sticky con profundidad |
 | `data-fly-group` + `data-fly-chip`, `data-snake` + `-trace` / `-dot` | Habilidades | Vuelo por curvas + serpiente |
 | `data-detail` + `-back` / `-meta` / `-title` / `-figure` / `-img` | Ruta de detalle | Entrada y profundidad |

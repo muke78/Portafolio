@@ -13,10 +13,11 @@ import {
  *   [data-detail-back]    "back" button (header), slides in from the left
  *   [data-detail-meta]    category label
  *   [data-detail-title]   the h1: characters rise out of line masks
- *   [data-detail-figure]  hero picture frame: opens from the bottom, then
+ *   [data-detail-figure]  the gallery frame: opens from the bottom, then
  *                         shrinks a little while you scroll down to read
- *   [data-detail-img]     the picture: settles from a zoom, then drifts
- *                         (parallax) inside the frame
+ *
+ * The pictures inside never zoom or drift: they are shown whole (the gallery
+ * uses object-contain), and a scaled-up bitmap looks soft.
  *
  * The stack icons, links, description and "next project" use the generic
  * data-stagger / data-scrub-text / data-split / data-reveal hooks.
@@ -33,7 +34,6 @@ export const projectDetail = ({
 	const meta = pick("[data-detail-meta]");
 	const title = pick("[data-detail-title]");
 	const figure = pick("[data-detail-figure]");
-	const img = pick("[data-detail-img]");
 
 	const split = title
 		? SplitText.create(title, { type: "lines,chars", mask: "lines" })
@@ -91,20 +91,11 @@ export const projectDetail = ({
 			0.45,
 		);
 	}
-	if (img) {
-		tl.fromTo(
-			img,
-			{ scale: 1.35 },
-			{ scale: 1, duration: 1.8, ease: MOTION.ease },
-			0.45,
-		);
-	}
-
 	// First frames are inline now: CSS can stop hiding the parts.
 	for (const el of [back, meta, title, figure]) el?.setAttribute(REVEALED, "");
 
-	// Scroll-linked depth: the frame recedes while the text takes over, and
-	// the picture drifts inside it. Both only move transform.
+	// Scroll-linked depth: the frame recedes while the text takes over (only
+	// transform).
 	if (figure) {
 		gsap.to(figure, {
 			scale: MOTION.detail.figureScale,
@@ -118,23 +109,6 @@ export const projectDetail = ({
 			},
 		});
 	}
-	if (img && figure) {
-		gsap.fromTo(
-			img,
-			{ yPercent: -MOTION.detail.imgDrift },
-			{
-				yPercent: MOTION.detail.imgDrift,
-				ease: "none",
-				scrollTrigger: {
-					trigger: figure,
-					start: "top bottom",
-					end: "bottom top",
-					scrub: true,
-				},
-			},
-		);
-	}
-
 	return () => {
 		tl.kill();
 		split?.revert();

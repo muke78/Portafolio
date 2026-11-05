@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ItemDataProjects } from "@/features/projects/items/ItemDataProjects";
 import { SkeletonProjectsCard } from "@/features/projects/items/SkeletonProjectsCard";
 import { getI18N } from "@/i18n";
+import { orderProjects, RAIL_LIMIT } from "@/lib/projectsOrder";
 import { loadProjects } from "@/lib/projectsStore";
 import type { Projects, PropsLang } from "@/types/currentLang.interface";
 
@@ -17,8 +18,10 @@ interface ProjectRailProps extends PropsLang {
  *
  * Data is fetched on the client, only once the island is close to the
  * viewport (client:visible), through one shared request (projectsStore).
- * The rail takes however many cards the CMS returns: the scroll distance is
- * measured from the DOM, never assumed.
+ * The rail shows the first RAIL_LIMIT cards (featured ones first): a pinned scene
+ * has to stay short however big the catalog grows, so the scroll distance is
+ * measured from the DOM but the card count is capped. The rest of the category
+ * lives in <ProjectMore>, a plain grid below the rail.
  */
 export const ProjectRail = ({ currentLocale, category }: ProjectRailProps) => {
 	const i18n = getI18N({ currentLocale });
@@ -40,7 +43,7 @@ export const ProjectRail = ({ currentLocale, category }: ProjectRailProps) => {
 		companies: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_C,
 		dataAnalyst: i18n.PROJECTS.PROJECTS_TITLE_BUTTON_D,
 	};
-	const data = all?.filter((p) => p.category === category) ?? [];
+	const data = orderProjects(all?.filter((p) => p.category === category) ?? []);
 
 	return (
 		<div className="flex flex-col gap-8 lg:gap-10">
@@ -82,7 +85,10 @@ export const ProjectRail = ({ currentLocale, category }: ProjectRailProps) => {
 						{i18n.PROJECTS.PROJECTS_EMPTY}
 					</p>
 				) : (
-					<ItemDataProjects currentLocale={currentLocale} data={data} />
+					<ItemDataProjects
+						currentLocale={currentLocale}
+						data={data.slice(0, RAIL_LIMIT)}
+					/>
 				)}
 			</div>
 

@@ -67,7 +67,8 @@ describe("Proyectos", () => {
 	it("renders one pinned rail wrapper per category and fetches nothing on the server", async () => {
 		const html = await render(Proyectos);
 		expect(count(html, /<div data-hscroll>/g)).toBe(4);
-		expect(count(html, /<astro-island/g)).toBe(4);
+		// Un riel y un "ver el resto" por categoria.
+		expect(count(html, /<astro-island/g)).toBe(8);
 		expect(html).toContain(es.PROJECTS.PROJECTS_TITLE);
 		expect(apiGet).not.toHaveBeenCalled();
 	});
@@ -301,11 +302,45 @@ describe("Project detail page", () => {
 			"data-detail-back",
 			"data-detail-title",
 			"data-detail-figure",
-			"data-detail-img",
 		]) {
 			expect(html).toContain(hook);
 		}
 		expect(html).toContain('href="/es/home#projects"');
+	});
+
+	it("shows the card image first and then the gallery, whole and without repeats", async () => {
+		apiGet.mockResolvedValue({
+			data: {
+				data: {
+					rows: [
+						row({
+							card_image: "projects/portada.webp",
+							gallery: [
+								"projects/a.webp",
+								"projects/portada.webp",
+								"projects/b.webp",
+							],
+						}),
+					],
+				},
+			},
+		});
+		const html = await renderDetail("mi-proyecto");
+		expect(html).toContain('aria-roledescription="carrusel"');
+		const sources = [
+			...html.matchAll(
+				/<img[^>]+src="([^"]+projects\/[^"]+)"[^>]*alt="[^"]+"/g,
+			),
+		].map((m) => m[1]);
+		const slides = [...new Set(sources)];
+		expect(slides.map((src) => src.split("/").pop())).toEqual([
+			"portada.webp",
+			"a.webp",
+			"b.webp",
+		]);
+		// Sin zoom ni recorte: la imagen se ve completa.
+		expect(html).toContain("object-contain");
+		expect(html).not.toContain("data-detail-img");
 	});
 
 	it("finds a project by numeric id too", async () => {
