@@ -7,7 +7,8 @@
 	"COMMON": {
 		"SKIP_TO_CONTENT": "Skip to content",
 		"LOADING": "Loading",
-		"CLOSE_NOTICE": "Close notice"
+		"CLOSE_NOTICE": "Close notice",
+		"VERIFY_WAIT": "Checking that you are human…"
 	},
 	"NAVBAR": {
 		"NAVBAR_SELECT_LANGUAGE": "Select language",

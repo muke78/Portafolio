@@ -16,6 +16,7 @@ vi.mock("@/lib/api", () => ({
 const SECRET = "tok-9f3a-super-secreto";
 vi.mock("astro:env/server", () => ({
 	API_SECRET_TOKEN: "tok-9f3a-super-secreto",
+	TURNSTILE_SECRET_KEY: undefined,
 }));
 
 const resource = await import("@/pages/api/[resource]");

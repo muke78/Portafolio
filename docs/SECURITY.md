@@ -51,9 +51,18 @@ cada build:
   mismo texto). No hay `unsafe-inline` en scripts ni en etiquetas `<style>`.
 - Los atributos `style=""` (Astro, React y GSAP los ponen) no se pueden hashear:
   solo ellos llevan `style-src-attr 'unsafe-inline'`. No ejecutan código.
-- `img-src` permite el bucket de R2 (`PUBLIC_MEDIA_URL`), `go-skill-icons.vercel.app`
-  (tecnologías) y `cdn.jsdelivr.net` (banderas); `connect-src 'self'`,
-  `frame-src 'none'`, `base-uri`, `object-src`, `frame-ancestors` y `form-action`.
+- `img-src` permite el bucket de R2 (`PUBLIC_MEDIA_URL`) y `cdn.jsdelivr.net`
+  (banderas). Los iconos de tecnologías salen de `/api/icons/<nombre>` (el Worker
+  los pide a go-skill-icons, licencia MIT, y Cloudflare los guarda 30 días).
+  `challenges.cloudflare.com` (Turnstile) está en `script-src`, `frame-src` y
+  `connect-src`; además `base-uri`, `object-src`, `frame-ancestors` y `form-action`.
+- **Turnstile + límite.** Los dos POST públicos exigen el token de Turnstile
+  (`src/lib/turnstile.ts`, falla cerrado en producción sin `TURNSTILE_SECRET_KEY`) y
+  pasan por el binding `RL_PUBLIC_WRITE` con clave `<ruta>:<IP del visitante>`. La IP
+  también viaja al backend en `X-Visitor-IP` para su propio límite.
+- **Al comprar el dominio (khelde.dev):** actualizar `SITE_URL`, `PUBLIC_MEDIA_URL`
+  (`media.khelde.dev`), `ALLOWED_ORIGINS` del backend, el widget de Turnstile y la
+  aplicación de Access del admin (`admin.khelde.dev`); después, `workers_dev: false`.
 - **Avisos:** `react-hot-toast` inyectaba su CSS en una etiqueta `<style>` en tiempo
   de ejecución, algo que un CSP con hashes no admite; se reemplazó por
   `src/components/Toaster.tsx`, que solo usa clases de Tailwind.

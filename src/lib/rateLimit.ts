@@ -1,4 +1,40 @@
 /**
+ * Limite de peticiones de las rutas publicas de escritura.
+ *
+ * En Cloudflare lo decide el binding `RL_PUBLIC_WRITE` (Rate Limiting de Workers), que
+ * comparte el contador entre todos los isolates. Sin el binding (`pnpm dev`, pruebas)
+ * cae al contador en memoria de abajo: sirve para un solo proceso, pero en Workers cada
+ * isolate tiene el suyo, asi que ahi NO es una garantia.
+ */
+interface SharedLimiter {
+	limit(options: { key: string }): Promise<{ success: boolean }>;
+}
+
+const sharedLimiter = async (): Promise<SharedLimiter | null> => {
+	if (import.meta.env.DEV) return null;
+	try {
+		const { env } = await import("cloudflare:workers");
+		const candidate = (env as { RL_PUBLIC_WRITE?: Partial<SharedLimiter> })
+			.RL_PUBLIC_WRITE;
+		return typeof candidate?.limit === "function"
+			? (candidate as SharedLimiter)
+			: null;
+	} catch {
+		return null;
+	}
+};
+
+/** `true` si la clave ya agoto su cupo. Con el binding manda su limite; sin el, `options`. */
+export const checkRateLimit = async (
+	key: string,
+	options: { limit: number; windowMs: number },
+): Promise<boolean> => {
+	const shared = await sharedLimiter();
+	if (shared) return !(await shared.limit({ key })).success;
+	return isRateLimited(key, options);
+};
+
+/**
  * Minimal in-memory sliding-window rate limiter. Doesn't survive a cold
  * start of the runtime, but raises the bar against naive flooding of the
  * public write endpoints within a warm instance, with zero extra infra.

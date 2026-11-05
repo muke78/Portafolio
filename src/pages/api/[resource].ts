@@ -1,7 +1,12 @@
 import type { APIRoute } from "astro";
 import { api } from "@/lib/api";
-import { isRateLimited } from "@/lib/rateLimit";
+import { checkRateLimit } from "@/lib/rateLimit";
 import { isSameOrigin, readJsonBody } from "@/lib/requestGuards";
+import {
+	splitTurnstileToken,
+	turnstileFailure,
+	verifyTurnstile,
+} from "@/lib/turnstile";
 import { opinionsSchema } from "@/schemas/opinionsSchema";
 
 const READABLE = new Set([
@@ -66,7 +71,7 @@ export const POST: APIRoute = async (ctx) => {
 		// clientAddress throws en algunos adapters/entornos (ej. preview
 		// estatico) - cae a un bucket compartido en vez de fallar.
 	}
-	if (isRateLimited(`${resource}:${ip}`, WRITE_RATE_LIMIT)) {
+	if (await checkRateLimit(`${resource}:${ip}`, WRITE_RATE_LIMIT)) {
 		return json({ message: "Too many requests, try again later" }, 429);
 	}
 
@@ -76,11 +81,17 @@ export const POST: APIRoute = async (ctx) => {
 	// Se valida aqui con el mismo esquema del formulario (el idioma solo afecta
 	// a los textos de error) y SOLO se reenvian los campos conocidos: lo demas
 	// que mande el cliente no llega al backend.
-	const parsed = opinionsSchema({ currentLocale: "es" }).safeParse(body.value);
+	const { token, rest } = splitTurnstileToken(body.value);
+	const parsed = opinionsSchema({ currentLocale: "es" }).safeParse(rest);
 	if (!parsed.success) return json({ message: "Invalid data" }, 400);
 
+	const human = await verifyTurnstile(token, ip);
+	if (human !== "ok") return turnstileFailure(human);
+
 	try {
-		const { data } = await api.post(`/${resource}`, parsed.data);
+		const { data } = await api.post(`/${resource}`, parsed.data, {
+			visitorIp: ip,
+		});
 		return json(data, 201);
 	} catch {
 		return json({ message: `No se pudo crear ${resource}` }, 503);

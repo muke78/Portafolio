@@ -13,7 +13,9 @@ describe("isRateLimited", () => {
 	});
 
 	it("does not limit the first request for a new key", () => {
-		expect(isRateLimited(freshKey(), { limit: 5, windowMs: 60_000 })).toBe(false);
+		expect(isRateLimited(freshKey(), { limit: 5, windowMs: 60_000 })).toBe(
+			false,
+		);
 	});
 
 	it("allows exactly `limit` requests, then blocks the next one", () => {
@@ -57,5 +59,16 @@ describe("isRateLimited", () => {
 		// 61s later: window has elapsed, counter starts over.
 		vi.setSystemTime(new Date("2026-01-01T00:01:01.000Z"));
 		expect(isRateLimited(key, opts)).toBe(false);
+	});
+});
+
+describe("checkRateLimit", () => {
+	it("sin el binding de Cloudflare usa el contador en memoria", async () => {
+		const { checkRateLimit } = await import("@/lib/rateLimit");
+		const key = freshKey();
+		const opts = { limit: 2, windowMs: 60_000 };
+		expect(await checkRateLimit(key, opts)).toBe(false);
+		expect(await checkRateLimit(key, opts)).toBe(false);
+		expect(await checkRateLimit(key, opts)).toBe(true);
 	});
 });

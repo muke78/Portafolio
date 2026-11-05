@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getI18N } from "@/i18n";
 import { mediaUrl } from "@/lib/media";
+import { techIconUrl } from "@/lib/techIcon";
 import type { PropsLangWithData } from "@/types/currentLang.interface";
 
 /**
@@ -131,7 +132,7 @@ export const ItemDataProjects = ({
 												className={`h-full w-full transition-opacity duration-500 ${
 													loadedImages[topic] ? "opacity-100" : "opacity-0"
 												}`}
-												src={`https://go-skill-icons.vercel.app/api/icons?i=${topic}`}
+												src={techIconUrl(topic)}
 												alt={topic}
 												ref={(el) => markIfLoaded(el, topic)}
 												onLoad={() => handleImageLoad(topic)}

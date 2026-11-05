@@ -1,7 +1,12 @@
 import type { APIRoute } from "astro";
 import { api } from "@/lib/api";
-import { isRateLimited } from "@/lib/rateLimit";
+import { checkRateLimit } from "@/lib/rateLimit";
 import { isSameOrigin, readJsonBody } from "@/lib/requestGuards";
+import {
+	splitTurnstileToken,
+	turnstileFailure,
+	verifyTurnstile,
+} from "@/lib/turnstile";
 import { contactSchema } from "@/schemas/contactSchema";
 
 // Reemplaza a /api/tlgrm (Telegram eliminado por completo del lado del
@@ -32,7 +37,7 @@ export const POST: APIRoute = async (ctx) => {
 		// clientAddress throws en algunos adapters/entornos (ej. preview
 		// estatico) - cae a un bucket compartido en vez de fallar.
 	}
-	if (isRateLimited(`contact-messages:${ip}`, RATE_LIMIT)) {
+	if (await checkRateLimit(`contact-messages:${ip}`, RATE_LIMIT)) {
 		return json({ message: "Too many requests, try again later" }, 429);
 	}
 
@@ -41,21 +46,29 @@ export const POST: APIRoute = async (ctx) => {
 
 	// Mismo esquema del formulario: lo que no cumple se corta aqui con 400 y
 	// no llega al backend (antes un cuerpo `null` rompia el handler con 503).
-	const parsed = contactSchema({ currentLocale: "es" }).safeParse(raw.value);
+	const { token, rest } = splitTurnstileToken(raw.value);
+	const parsed = contactSchema({ currentLocale: "es" }).safeParse(rest);
 	if (!parsed.success) return json({ message: "Invalid data" }, 400);
 	const body = parsed.data;
+
+	const human = await verifyTurnstile(token, ip);
+	if (human !== "ok") return turnstileFailure(human);
 
 	try {
 		// Hono espera snake_case (more_information) - el form del cliente
 		// sigue mandando camelCase (moreInformation), sin tocarlo, este
 		// endpoint es el limite de traduccion (mismo rol que ya cumplia
 		// tlgrm.ts).
-		await api.post("/contact-messages", {
-			name: body.name,
-			email: body.email,
-			phone: body.phone,
-			more_information: body.moreInformation || undefined,
-		});
+		await api.post(
+			"/contact-messages",
+			{
+				name: body.name,
+				email: body.email,
+				phone: body.phone,
+				more_information: body.moreInformation || undefined,
+			},
+			{ visitorIp: ip },
+		);
 
 		return json(
 			{

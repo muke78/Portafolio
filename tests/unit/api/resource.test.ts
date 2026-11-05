@@ -8,7 +8,10 @@ vi.mock("@/lib/api", () => ({
 		post: (...a: unknown[]) => post(...a),
 	},
 }));
-vi.mock("astro:env/server", () => ({ API_SECRET_TOKEN: "secret-token" }));
+vi.mock("astro:env/server", () => ({
+	API_SECRET_TOKEN: "secret-token",
+	TURNSTILE_SECRET_KEY: undefined,
+}));
 
 const { GET, POST } = await import("@/pages/api/[resource]");
 
@@ -93,7 +96,9 @@ describe("POST /api/[resource]", () => {
 		)) as Response;
 		expect(res.status).toBe(201);
 		expect(await res.json()).toEqual({ id: 7 });
-		expect(post).toHaveBeenCalledWith("/comments", comment);
+		expect(post).toHaveBeenCalledWith("/comments", comment, {
+			visitorIp: expect.any(String),
+		});
 	});
 
 	it("is read-only for every other resource (405)", async () => {

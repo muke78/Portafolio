@@ -119,12 +119,16 @@ describe("el token del backend es solo de servidor", () => {
 		);
 	});
 
-	it("las unicas variables publicas son URLs (backend y medios)", () => {
+	it("las unicas variables publicas son URLs y la clave publica de Turnstile", () => {
 		const config = read(join(ROOT, "astro.config.mjs"));
 		const clientVars = [
 			...config.matchAll(/(\w+):\s*envField\.\w+\(\{\s*context:\s*"client"/g),
 		].map((m) => m[1]);
-		expect(clientVars.sort()).toEqual(["PUBLIC_MEDIA_URL", "VITE_API_URL"]);
+		expect(clientVars.sort()).toEqual([
+			"PUBLIC_MEDIA_URL",
+			"PUBLIC_TURNSTILE_SITE_KEY",
+			"VITE_API_URL",
+		]);
 	});
 
 	it("ningun componente usa import.meta.env con secretos", () => {
@@ -164,7 +168,7 @@ describe("superficie de XSS", () => {
 		// Los dos scripts son constantes de src/lib/inlineScripts.ts (texto del repo, no
 		// datos de nadie) y su hash esta en el CSP (astro.config.mjs).
 		expect(uses).toEqual([
-			"src/layouts/Layout.astro -> JSON.stringify(personSchema)",
+			'src/layouts/Layout.astro -> JSON.stringify(personSchema).replaceAll("<", "\\\\u003c")',
 			"src/layouts/Layout.astro -> MOTION_GATE_SCRIPT",
 			"src/layouts/Layout.astro -> THEME_SCRIPT",
 		]);
