@@ -876,8 +876,9 @@ página y se compone a escala de cartel; todo lo demás es silencio.
   brazos asomando por el borde del arco, nunca bajo el texto.
 - **Fusión orgánica**: `mask-image` radial (opaco al centro, transparente
   hacia el borde) disuelve el canvas en el color base; nunca se ve un
-  rectángulo. Bajo el texto hay además un degradado radial del color de
-  fondo (scrim) que garantiza el contraste.
+  rectángulo. Bajo el texto **no** hay scrim ni recuadro de fondo: las
+  partículas se ven por detrás del nombre, y el contraste lo da el propio
+  color del texto (tokens `foreground` y `muted-foreground`).
 - En móvil la galaxia es más pequeña (0.72), más abajo y atenuada al 55 %;
   el retrato queda debajo del texto. Al hacer scroll la galaxia viaja a la
   esquina, y al llegar al wordmark del footer sube como un atardecer.
