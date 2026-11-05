@@ -92,6 +92,34 @@ describe("el hero con los textos del CMS", () => {
 		expect(html).toContain("/_image");
 	});
 
+	it("el boton Ver CV abre el PDF del CMS, desde el bucket y en pestana nueva", async () => {
+		backend({ ...COPY, cv_pdf: "cv/CV-Erick-Gonzalez-ab12cd34.pdf" });
+		const html = await render(Header);
+		expect(html).toMatch(
+			/<a href="https:\/\/[^"]+\/cv\/CV-Erick-Gonzalez-ab12cd34\.pdf"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/,
+		);
+		expect(html).toContain(es.ABOUTME.ABOUT_DOWNLOAD_CV);
+		expect(html).not.toContain("vercel-storage");
+	});
+
+	it("sin PDF cargado (o con un valor raro) no hay boton de CV", async () => {
+		for (const cv_pdf of [null, undefined, "https://evil.example/cv.pdf"]) {
+			apiGet.mockReset();
+			resetSiteCopyCache();
+			backend({ ...COPY, cv_pdf });
+			const html = await render(Header);
+			expect(html).not.toContain(es.ABOUTME.ABOUT_DOWNLOAD_CV);
+			expect(html).not.toContain("evil.example");
+		}
+	});
+
+	it("sin backend tampoco hay boton de CV (nunca se enlaza a una URL fija)", async () => {
+		apiGet.mockRejectedValue(new Error("sin backend"));
+		const html = await render(Header);
+		expect(html).not.toContain(es.ABOUTME.ABOUT_DOWNLOAD_CV);
+		expect(html).not.toContain("vercel-storage");
+	});
+
 	it("el manifiesto y la descripcion del sitio tambien vienen del CMS", async () => {
 		backend(COPY);
 		expect(await render(Manifiesto)).toContain("Frase del CMS");

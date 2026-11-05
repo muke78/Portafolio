@@ -97,6 +97,34 @@ describe("getSiteCopy", () => {
 	});
 });
 
+describe("siteCopySchema: curriculum", () => {
+	it("acepta la clave de un PDF dentro de cv/, o ninguna", () => {
+		for (const cv_pdf of [
+			"cv/CV-Erick-Gonzalez-ab12cd34.pdf",
+			null,
+			undefined,
+		]) {
+			expect(siteCopySchema.safeParse({ ...COPY, cv_pdf }).success).toBe(true);
+		}
+	});
+
+	it("rechaza lo que no sea un PDF de cv/ (URL, ruta con .., otra carpeta, otro tipo)", () => {
+		for (const cv_pdf of [
+			"https://malo.example/cv.pdf",
+			"//malo.example/cv.pdf",
+			"cv/../secreto.pdf",
+			"cv\\x.pdf",
+			"projects/foto.webp",
+			"site/cv.pdf",
+			"cv/archivo.exe",
+			"cv/sub/otro.pdf",
+			"",
+		]) {
+			expect(siteCopySchema.safeParse({ ...COPY, cv_pdf }).success).toBe(false);
+		}
+	});
+});
+
 describe("siteCopySchema", () => {
 	it("acepta las claves heredadas con y sin / inicial, y las de carpeta", () => {
 		for (const hero_image of ["Aboutme.webp", "/Aboutme.webp", "site/a.webp"]) {
