@@ -13,6 +13,7 @@ servirlo desde el admin en lugar de una URL fija en `Header.astro`.
   Vercel Blob. Cambiar el CV obliga a editar código y redesplegar.
 - El CV se mantiene en Canva y se exporta a PDF.
 - Solo hay CV en español. Por ahora **no habrá versión por idioma**.
+- Se pasa de Canva a Google Docs o Word (ver Paso 1).
 
 ## Paso 1: rehacer el CV
 
@@ -54,15 +55,13 @@ de proyectos que faltan en el portafolio: una lectura sirve para las dos tareas.
 - PDF final.
 - Lista de verificación ATS completada (abajo).
 
-### Decisión pendiente: dónde maquetarlo
+### Decisión tomada: dónde maquetarlo
 
-Canva suele exportar texto fragmentado y en columnas, que es lo que peor leen los ATS. Dos
-caminos:
+Se **abandona Canva**. El CV se maqueta en **Google Docs o Word** con una sola columna y se
+exporta a PDF; el texto sale limpio y los ATS lo leen bien. Se entregan **dos archivos**:
 
-- **A (recomendado):** maquetarlo en Google Docs o Word con una sola columna y exportar a
-  PDF. Se edita igual de fácil y el texto sale limpio.
-- **B:** seguir en Canva con una plantilla de una columna, y comprobar el PDF con la
-  prueba de abajo.
+- **PDF**: el que ve el público al pulsar "Ver CV".
+- **DOCX**: la plantilla editable, para descargarla y ajustarla cuando haga falta.
 
 ### Lista de verificación ATS
 
@@ -86,29 +85,53 @@ mezcla con el CV.
 
 Solo se empieza cuando el CV nuevo esté revisado y aprobado.
 
+### Dos archivos, dos destinos
+
+| Archivo | Quién lo ve | Cómo se sirve |
+|---|---|---|
+| **PDF** | Cualquier visitante | Desde R2 (`PUBLIC_MEDIA_URL`), con `Content-Disposition: inline; filename="CV-Erick-Gonzalez.pdf"`: el navegador **lo abre y lo muestra** en una pestaña nueva y, si se guarda, conserva un nombre legible |
+| **DOCX** | Solo Erick, desde el admin | **No es público.** Se descarga por un endpoint protegido (bearer + Access) que lo lee de R2 y lo entrega como adjunto |
+
+El bucket `portfolio` es público completo (`r2.dev`): un DOCX guardado ahí sería
+descargable por quien adivine la URL. **Decisión pendiente** para el DOCX:
+
+- **A (recomendada):** un bucket privado aparte (por ejemplo `portfolio-private`) con su
+  propio binding en el backend. Es un bucket y una línea en `wrangler.jsonc`.
+- **B:** no subir el DOCX; si el CV se edita en Google Docs, el documento de Google ya es la
+  plantilla editable y el admin solo guarda el PDF.
+- **C:** guardarlo en el bucket público con clave impredecible. Es la más simple y la menos
+  segura; no se recomienda.
+
 ### Backend (`Backend_Portafolio`)
 
-- Endpoint `POST /api/cv` (bearer + Cloudflare Access), **aparte** de `/api/media`, que
-  solo acepta WebP. Mezclarlos haría que la pantalla Medios mostrara el PDF como imagen
-  huérfana y se pudiera borrar sin querer.
-- Validación: `Content-Type: application/pdf`, el archivo empieza con `%PDF-`, máximo
-  5 MB. La clave la genera el servidor.
-- Se guarda en R2 con el prefijo `cv/` (por ejemplo `cv/CV-Erick-Gonzalez-2026-11.pdf`) y
-  con `Content-Disposition` para que se descargue con un nombre legible.
-- La clave se guarda en la fila de `site_copy` (columna nueva, **migración de D1**: se
-  aplica en remoto antes de mergear a `main`).
-- `GET /api/site-copy` devuelve la URL pública del CV; `DELETE` lo quita.
-- Se declara en `tests/security/routeInventory.test.ts`.
+- Endpoint `POST /api/cv?kind=pdf|docx` (bearer + Cloudflare Access), **aparte** de
+  `/api/media`, que solo acepta WebP. Mezclarlos haría que la pantalla Medios mostrara estos
+  archivos como imágenes huérfanas y se pudieran borrar sin querer.
+- Validación por tipo:
+  - PDF: `Content-Type: application/pdf` y el archivo empieza con `%PDF-`.
+  - DOCX: `Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+    y el archivo empieza con la firma ZIP `PK`; se rechaza `.docm` y cualquier
+    contenido con macros.
+  - Máximo 5 MB cada uno. La clave la genera el servidor.
+- Claves en R2 con el prefijo `cv/` (por ejemplo `cv/CV-Erick-Gonzalez-2026-11.pdf`).
+- Las claves se guardan en la fila de `site_copy` (columnas nuevas `cv_pdf_key` y
+  `cv_docx_key`; **migración de D1**, que se aplica en remoto antes de mergear a `main`).
+- `GET /api/site-copy` devuelve solo la URL pública del PDF. El DOCX nunca aparece en una
+  ruta pública.
+- `GET /api/cv/docx` (Access) entrega el DOCX como adjunto; `DELETE /api/cv?kind=…` quita
+  cualquiera de los dos.
+- Se declaran en `tests/security/routeInventory.test.ts`.
 
 ### Admin (`Portafolio_admin`)
 
-- Sección **Currículum** en el módulo Textos: ver el archivo actual, subir uno nuevo,
-  reemplazar y quitar. Validación de tipo y tamaño en el cliente y en el proxy.
+- Sección **Currículum** en el módulo Textos con dos tarjetas, **PDF** y **DOCX**: ver el
+  archivo actual, subir uno nuevo, reemplazar, quitar y descargar el DOCX. Validación de
+  tipo y tamaño en el cliente y en el proxy.
 
 ### Sitio (`Portafolio`)
 
-- `Header.astro` lee la URL del CV desde `getSiteCopy` (con respaldo y caché como el resto
-  de los textos). Si no hay CV cargado, el botón no se muestra.
+- `Header.astro` lee la URL del PDF desde `getSiteCopy` (con respaldo y caché como el
+  resto de los textos). Si no hay PDF cargado, el botón no se muestra.
 - Se quita la URL fija de Vercel Blob.
 
 ### Migración
@@ -122,7 +145,8 @@ R2 no tiene carpetas reales. Una "carpeta" es solo el prefijo de la clave del ob
 subir `cv/CV-Erick-Gonzalez.pdf`, el panel de Cloudflare muestra `cv/` como carpeta
 automáticamente. **No hay nada que configurar**; se crea sola con el primer archivo, igual
 que hoy pasa con `projects/…` o `about/…` en las imágenes. El PDF se sirve desde el mismo
-bucket (`PUBLIC_MEDIA_URL`), igual que las imágenes.
+bucket público (`PUBLIC_MEDIA_URL`), igual que las imágenes. El DOCX, en cambio, no debe
+vivir ahí (ver la decisión pendiente del Paso 2).
 
 ## Orden de trabajo
 
