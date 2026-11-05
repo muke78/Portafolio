@@ -459,7 +459,7 @@ describe("projectDetail", () => {
 			<a data-detail-back>Volver</a>
 			<p data-detail-meta>Web</p>
 			<h1 data-detail-title>Nombre del proyecto</h1>
-			<figure data-detail-figure><img data-detail-img alt="" src="x.png" /></figure>
+			<figure data-detail-figure></figure>
 		</main>`;
 
 	it("does nothing outside the detail page", () => {
@@ -484,10 +484,10 @@ describe("projectDetail", () => {
 		expect($("[data-detail-figure]").style.clipPath).toBe("");
 	});
 
-	it("adds scroll-linked depth to the figure and its picture", () => {
+	it("adds scroll-linked depth to the figure only: the pictures never zoom or drift", () => {
 		html(detail);
 		run(projectDetail);
-		expect(ScrollTrigger.getAll()).toHaveLength(2);
+		expect(ScrollTrigger.getAll()).toHaveLength(1);
 	});
 });
 

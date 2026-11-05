@@ -59,7 +59,7 @@ export const MOTION = {
 	hscroll: { maxScreens: 2.5, smooth: 0.7 },
 	stack: { scale: 0.95, floor: 0.88 },
 	// Project detail page: intro timeline and scroll-linked depth.
-	detail: { total: 2, figureScale: 0.92, imgDrift: 7 },
+	detail: { total: 2, figureScale: 0.92 },
 } as const;
 
 export interface MotionTools {
