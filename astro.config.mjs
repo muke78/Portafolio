@@ -22,6 +22,9 @@ const MEDIA_ORIGIN = new URL(
 		"https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev",
 ).origin;
 
+// Cloudflare Turnstile: el widget carga su script y su marco desde este origen.
+const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
+
 // sha256 de los <script is:inline> del Layout (Astro no hashea los `is:inline`).
 const hashOf = (source) =>
 	`sha256-${createHash("sha256").update(source).digest("base64")}`;
@@ -69,14 +72,16 @@ export default defineConfig({
 		csp: {
 			directives: [
 				"default-src 'self'",
-				// R2 (fotos), go-skill-icons (tecnologias) y jsDelivr (banderas de react-country-flag).
-				`img-src 'self' data: blob: ${MEDIA_ORIGIN} https://go-skill-icons.vercel.app https://cdn.jsdelivr.net`,
+				// R2 (fotos) y jsDelivr (banderas de react-country-flag). Los iconos de
+				// tecnologias salen del propio sitio (/api/icons), no de un tercero.
+				`img-src 'self' data: blob: ${MEDIA_ORIGIN} https://cdn.jsdelivr.net`,
 				"font-src 'self' data:",
-				"connect-src 'self'",
+				// Turnstile (casilla anti-bots de los formularios): script, marco y conexion.
+				`connect-src 'self' ${TURNSTILE_ORIGIN}`,
 				"worker-src 'self' blob:",
 				"media-src 'self'",
 				"manifest-src 'self'",
-				"frame-src 'none'",
+				`frame-src ${TURNSTILE_ORIGIN}`,
 				// Las que antes mandaba el middleware; con CSP de Astro la cabecera la
 				// pone Astro y el middleware respeta la de la ruta, asi que van aqui.
 				"base-uri 'self'",
@@ -85,6 +90,7 @@ export default defineConfig({
 				"form-action 'self'",
 			],
 			scriptDirective: {
+				resources: ["'self'", TURNSTILE_ORIGIN],
 				hashes: [hashOf(MOTION_GATE_SCRIPT), hashOf(THEME_SCRIPT)],
 			},
 			// Los atributos style="" (Astro, React y GSAP los ponen) no se pueden
@@ -174,6 +180,18 @@ export default defineConfig({
 			API_SECRET_TOKEN: envField.string({
 				context: "server",
 				access: "secret",
+			}),
+			// Turnstile: clave publica del widget (build) y clave secreta de verificacion
+			// (runtime). Sin la secreta, el servidor rechaza los POST publicos en produccion.
+			PUBLIC_TURNSTILE_SITE_KEY: envField.string({
+				context: "client",
+				access: "public",
+				optional: true,
+			}),
+			TURNSTILE_SECRET_KEY: envField.string({
+				context: "server",
+				access: "secret",
+				optional: true,
 			}),
 		},
 	},

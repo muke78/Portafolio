@@ -79,7 +79,7 @@ const personSchema = {
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
     <!-- Structured data (SEO) -->
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema).replaceAll("<", "\\u003c")} />
     <!-- Corren antes del primer pintado; su hash esta en el CSP (src/lib/inlineScripts.ts). -->
     <script is:inline set:html={MOTION_GATE_SCRIPT}></script>
     <script is:inline set:html={THEME_SCRIPT}></script>

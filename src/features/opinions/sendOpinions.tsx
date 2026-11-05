@@ -3,6 +3,10 @@ import { Briefcase, Globe, MessageSquare, Send, User } from "lucide-react";
 import { useId, useMemo, useState } from "react";
 import { ReactCountryFlag } from "react-country-flag";
 import { type FieldError, useForm } from "react-hook-form";
+import {
+	TurnstileWidget,
+	turnstileEnabled,
+} from "@/components/TurnstileWidget";
 import { Input } from "@/components/ui/input";
 import {
 	Select,
@@ -25,6 +29,9 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 	const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [submitError, setSubmitError] = useState<string | null>(null);
+	const [token, setToken] = useState<string | null>(null);
+	const [resetKey, setResetKey] = useState(0);
+	const waitingForToken = turnstileEnabled && !token;
 
 	const [selected, setSelected] = useState<string>("");
 
@@ -66,7 +73,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(save),
+				body: JSON.stringify({ ...save, turnstileToken: token }),
 			});
 			if (!res.ok) throw new Error(`HTTP ${res.status}`);
 			setIsSubmitted(true);
@@ -75,6 +82,8 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 			setSubmitError(i18n.FORM.FORM_SEND_INFORMATION_INCORRECT);
 		} finally {
 			setIsLoading(false);
+			// Cada token sirve una sola vez: se pide otro para el siguiente envio.
+			setResetKey((key) => key + 1);
 		}
 	};
 
@@ -259,10 +268,23 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 						</div>
 					)}
 
+					<div data-dialog-item>
+						<TurnstileWidget
+							locale={currentLocale}
+							onToken={setToken}
+							resetKey={resetKey}
+						/>
+						{waitingForToken && (
+							<output className="block text-xs text-muted-foreground">
+								{i18n.COMMON.VERIFY_WAIT}
+							</output>
+						)}
+					</div>
+
 					<button
 						type="submit"
 						data-dialog-item
-						disabled={isLoading}
+						disabled={isLoading || waitingForToken}
 						className="inline-flex items-center justify-center gap-2 rounded-lg h-10 w-full bg-primary text-primary-foreground font-medium text-sm hover-press active:translate-y-px disabled:opacity-50 disabled:pointer-events-none"
 					>
 						{isLoading ? (

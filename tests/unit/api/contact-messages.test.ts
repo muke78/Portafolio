@@ -4,7 +4,10 @@ const post = vi.fn();
 vi.mock("@/lib/api", () => ({
 	api: { post: (...a: unknown[]) => post(...a) },
 }));
-vi.mock("astro:env/server", () => ({ API_SECRET_TOKEN: "secret-token" }));
+vi.mock("astro:env/server", () => ({
+	API_SECRET_TOKEN: "secret-token",
+	TURNSTILE_SECRET_KEY: undefined,
+}));
 
 const { POST } = await import("@/pages/api/contact-messages");
 
@@ -36,12 +39,16 @@ describe("POST /api/contact-messages", () => {
 		const res = await call(form, "10.0.0.2");
 
 		expect(res.status).toBe(200);
-		expect(post).toHaveBeenCalledWith("/contact-messages", {
-			name: "Erick",
-			email: "e@example.com",
-			phone: "+52 55 1234 5678",
-			more_information: "Hola que tal",
-		});
+		expect(post).toHaveBeenCalledWith(
+			"/contact-messages",
+			{
+				name: "Erick",
+				email: "e@example.com",
+				phone: "+52 55 1234 5678",
+				more_information: "Hola que tal",
+			},
+			{ visitorIp: "10.0.0.2" },
+		);
 		expect((await res.json()).message.moreInformation).toBe("Hola que tal");
 	});
 
