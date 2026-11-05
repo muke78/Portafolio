@@ -67,7 +67,8 @@ describe("Proyectos", () => {
 	it("renders one pinned rail wrapper per category and fetches nothing on the server", async () => {
 		const html = await render(Proyectos);
 		expect(count(html, /<div data-hscroll>/g)).toBe(4);
-		expect(count(html, /<astro-island/g)).toBe(4);
+		// Un riel y un "ver el resto" por categoria.
+		expect(count(html, /<astro-island/g)).toBe(8);
 		expect(html).toContain(es.PROJECTS.PROJECTS_TITLE);
 		expect(apiGet).not.toHaveBeenCalled();
 	});

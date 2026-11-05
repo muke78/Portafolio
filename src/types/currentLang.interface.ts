@@ -93,6 +93,8 @@ export interface Testimonial extends FormOpinions {
 
 export interface PropsLangWithData extends PropsLang {
 	data: Projects[] | null;
+	/** `rail`: tarjetas en una fila fijada; `grid`: cuadricula normal (el resto de una categoria). */
+	layout?: "rail" | "grid";
 }
 
 export interface PropsLangWithOpinions extends PropsLang {

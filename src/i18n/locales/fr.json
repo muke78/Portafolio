@@ -51,7 +51,11 @@
 		"PROJECTS_TITLE_BUTTON_D": "Analyse des données",
 		"PROJECTS_BADGE_FORK": "Collaboration",
 		"PROJECTS_COUNT_LABEL": "projets",
-		"PROJECTS_EMPTY": "Des projets arrivent bientôt dans cette catégorie."
+		"PROJECTS_EMPTY": "Des projets arrivent bientôt dans cette catégorie.",
+		"PROJECTS_BADGE_FEATURED": "À la une",
+		"PROJECTS_SHOW_MORE": "Voir {n} de plus : {category}",
+		"PROJECTS_SHOW_LESS": "Afficher moins",
+		"PROJECTS_LOAD_MORE": "Afficher {n} de plus"
 	},
 	"MANIFESTO": {
 		"LABEL": "Ce que je fais",
