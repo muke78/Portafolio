@@ -9,6 +9,8 @@
 | [`GSAP.md`](./GSAP.md) | Referencia de GSAP y cómo se usa en el motor de movimiento |
 | [`SECURITY.md`](./SECURITY.md) | Cabeceras, CSP, pruebas de seguridad y pendientes |
 | [`05-estrategia-testing.md`](./05-estrategia-testing.md) | Estrategia de pruebas con Vitest y Playwright |
+| [`PLAN-CV.md`](./PLAN-CV.md) | Plan para rehacer el currículum y servirlo desde el admin |
+| [`PLAN-DOMINIO.md`](./PLAN-DOMINIO.md) | Qué cambiar y dónde cuando se compre `khelde.dev` (sitio, backend, admin, R2, Turnstile y Access) |
 | [`DocsCommiter.md`](./DocsCommiter.md) | Formato de commits (Conventional Commits) |
 | [`legacy-v2/`](./legacy-v2/README.md) | Documentación del stack anterior (Vercel + Turso), conservada como historial |
 
