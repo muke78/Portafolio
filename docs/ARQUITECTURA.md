@@ -66,8 +66,9 @@ Dos bloques se editan desde el admin y el sitio los trae del backend al
 renderizar:
 
 - **Textos del sitio** (`src/lib/siteCopy.ts`): foto y presentación del hero,
-  frase del manifiesto, descripción para buscadores. Se guardan 60 s en memoria
-  y la petición espera como máximo 2 s.
+  frase del manifiesto, descripción para buscadores y el **PDF del currículum**
+  (clave `cv_pdf`; el botón «Ver CV» de `Header.astro` lo abre desde R2 y se oculta si no
+  hay PDF). Se guardan 60 s en memoria y la petición espera como máximo 2 s.
 - **Datos de contacto** (`src/lib/siteContact.ts`): GitHub, LinkedIn, teléfono y
   correo.
 

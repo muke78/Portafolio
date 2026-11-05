@@ -18,6 +18,12 @@ const r2Key = z
 		"clave de imagen no valida",
 	);
 
+/** El curriculum es siempre `cv/<nombre>.pdf`: cualquier otra cosa no se enlaza. */
+const cvKey = r2Key.refine(
+	(key) => /^cv\/[A-Za-z0-9._-]+\.pdf$/.test(key),
+	"clave de curriculum no valida",
+);
+
 export const siteCopySchema = z.object({
 	hero_image: r2Key,
 	hero_image_alt: z.string().trim().min(1).max(160),
@@ -25,6 +31,8 @@ export const siteCopySchema = z.object({
 	hero_lead: z.string().trim().min(1).max(500),
 	manifesto_text: z.string().trim().min(1).max(500),
 	meta_description: z.string().trim().min(1).max(300),
+	/** Clave del PDF del curriculum (se sube desde el CMS); null o ausente si no hay. */
+	cv_pdf: cvKey.nullish(),
 });
 
 export type SiteCopy = z.infer<typeof siteCopySchema>;
