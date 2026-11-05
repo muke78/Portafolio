@@ -29,8 +29,11 @@ const project = (over: Partial<Projects> = {}): Projects => ({
 	link_repo: "https://github.com/x/y",
 	link_web: "https://x.dev",
 	title: "Mi proyecto",
+	summary: "Un resumen corto",
 	description: "Una descripción",
+	gallery: [],
 	fork: false,
+	featured: false,
 	...over,
 });
 
@@ -209,6 +212,40 @@ describe("ItemDataProjects", () => {
 		).toBeInTheDocument();
 	});
 
+	it("reads the short summary on the card, not the long description", () => {
+		render(
+			<ItemDataProjects
+				currentLocale="es"
+				data={[project({ summary: "Resumen", description: "Texto largo" })]}
+			/>,
+		);
+		expect(screen.getByText("Resumen")).toBeInTheDocument();
+		expect(screen.queryByText("Texto largo")).not.toBeInTheDocument();
+	});
+
+	it("marks featured projects with a badge", () => {
+		render(
+			<ItemDataProjects
+				currentLocale="es"
+				data={[project({ featured: true })]}
+			/>,
+		);
+		expect(
+			screen.getByText(es.PROJECTS.PROJECTS_BADGE_FEATURED),
+		).toBeInTheDocument();
+	});
+
+	it("as a grid it is a plain list: no rail track, lazy images, full width", () => {
+		const { container } = render(
+			<ItemDataProjects currentLocale="es" data={[project()]} layout="grid" />,
+		);
+		expect(container.querySelector("[data-hscroll-track]")).toBeNull();
+		expect(container.querySelector("article")).toHaveClass("w-full");
+		for (const img of container.querySelectorAll("img")) {
+			expect(img).toHaveAttribute("loading", "lazy");
+		}
+	});
+
 	it("lists the stack as an accessible list of icons", () => {
 		render(
 			<ItemDataProjects
@@ -297,6 +334,34 @@ describe("ProjectRail", () => {
 				level: 3,
 				name: es.PROJECTS.PROJECTS_TITLE_BUTTON_F,
 			}),
+		).toBeInTheDocument();
+	});
+
+	it("caps the pinned rail at six cards, featured first, and still counts them all", async () => {
+		const many = Array.from({ length: 9 }, (_, i) =>
+			project({
+				project_id: i + 1,
+				slug: `p${i + 1}`,
+				title: `Proyecto ${i + 1}`,
+				featured: i === 8,
+			}),
+		);
+		mockFetch({ data: { rows: many } });
+		const { ProjectRail: Rail } = await import(
+			"@/features/projects/ProjectRail"
+		);
+		const { container } = render(
+			<Rail currentLocale="es" category="frontend" />,
+		);
+		await screen.findByText("Proyecto 9");
+		const titles = [...container.querySelectorAll("article h3")].map(
+			(h) => h.textContent,
+		);
+		expect(titles).toHaveLength(6);
+		expect(titles[0]).toBe("Proyecto 9");
+		expect(screen.queryByText("Proyecto 8")).not.toBeInTheDocument();
+		expect(
+			screen.getByText(`9 ${es.PROJECTS.PROJECTS_COUNT_LABEL}`),
 		).toBeInTheDocument();
 	});
 

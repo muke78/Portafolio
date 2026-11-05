@@ -1,4 +1,5 @@
 ---
+import { ProjectMore } from "@/features/projects/ProjectMore";
 import { ProjectRail } from "@/features/projects/ProjectRail";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
@@ -6,9 +7,10 @@ import { DEFAULT_LOCALE } from "@/i18n/locales";
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
 
-// No tabs: one rail per category. No data is fetched here: each rail asks for
-// the projects from the browser once it is close to the viewport, so the
-// first render (the hero) costs the backend nothing.
+// No tabs: one rail per category (6 cards at most, featured first) and, below
+// it, a button that opens the rest of that category as a plain grid. No data is
+// fetched here: each island asks for the projects from the browser once it is
+// close to the viewport, so the first render (the hero) costs the backend nothing.
 const categories = ["frontend", "backend", "companies", "dataAnalyst"] as const;
 ---
 
@@ -20,8 +22,15 @@ const categories = ["frontend", "backend", "companies", "dataAnalyst"] as const;
 	<div class="mt-16 flex flex-col gap-24 lg:gap-32">
 		{
 			categories.map((category) => (
-				<div data-hscroll>
-					<ProjectRail
+				<div>
+					<div data-hscroll>
+						<ProjectRail
+							client:visible={{ rootMargin: "500px" }}
+							currentLocale={currentLocale}
+							category={category}
+						/>
+					</div>
+					<ProjectMore
 						client:visible={{ rootMargin: "500px" }}
 						currentLocale={currentLocale}
 						category={category}
