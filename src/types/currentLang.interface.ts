@@ -1,5 +1,4 @@
 import type { z } from "zod";
-import type { Locale } from "@/i18n/locales";
 import type { contactSchema } from "@/schemas/contactSchema";
 import type { opinionsSchema } from "@/schemas/opinionsSchema";
 
@@ -77,14 +76,6 @@ export interface Skill {
 	images_topics: string[];
 }
 
-export interface ProjectsTranslations {
-	translate_project_id: number;
-	project_id: number;
-	locale: Locale;
-	title: string;
-	description: string;
-}
-
 export interface Testimonial extends FormOpinions {
 	comment_id: number;
 	direction: "left" | "bottom";
@@ -99,10 +90,6 @@ export interface PropsLangWithData extends PropsLang {
 
 export interface PropsLangWithOpinions extends PropsLang {
 	initialData?: Testimonial[];
-}
-
-export interface PropsLangWithProjects extends PropsLang {
-	initialData?: Projects[];
 }
 
 export interface CountryFlagProps {

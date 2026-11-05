@@ -18,7 +18,6 @@
 		"NAVBAR_MENU": "Menu"
 	},
 	"HEADER": {
-		"HEADER_TITLE": "Bonjour",
 		"HEADER_SUBTITLE": "Développeur full-stack",
 		"HEADER_NAME": "Érick González",
 		"HEADER_ABOUT": "Ingénieur diplômé en technologies de l'information, spécialisé dans le développement FullStack et l'analyse de données. Avec plus de deux ans d'expérience dans la création d'applications efficaces, évolutives et bien structurées.",
@@ -119,7 +118,6 @@
 	},
 	"FORM": {
 		"FORM_TITLE": "Contact",
-		"FORM_DESCRIPTION": "Je suis disponible pour des missions freelance. Contactez-moi via Telegram, cela sera envoyé via un ChatBot.",
 		"INPUT_NAME": "Nom",
 		"INPUT_EMAIL": "Email",
 		"INPUT_PHONE": "Téléphone",
@@ -140,15 +138,12 @@
 		"FORM_OPTIONS_CONTACT_PHONE": "Téléphone",
 
 		"FORM_VALID_NAME": "Le nom doit contenir plus de 4 lettres",
-		"FORM_VALID_LASTNAME": "Le prénom doit contenir plus de 4 lettres",
 		"FORM_VALID_EMAIL": "Format d'email invalide",
 		"FORM_VALID_PHONE_MIN": "Le numéro doit comporter au moins 7 chiffres",
 		"FORM_VALID_PHONE_MAX": "Le numéro est trop long",
-		"FORM_VALID_INFORMATION": "Ce champ est obligatoire",
 		"FORM_VALID_PHONE_REGEX": "Le numéro doit contenir uniquement des chiffres et des symboles valides (+, -, espaces, parenthèses)",
 		"FORM_VALID_MORE_INFORMATION_MIN": "La description doit comporter plus de 7 caractères",
 		"FORM_VALID_MORE_INFORMATION_MAX": "Limite de caractères atteinte, seulement 260 caractères autorisés",
-		"FORM_INVALID_EMAIL": "Format d'email invalide",
 
 		"FORM_SEND_INFORMATION_CORRECT": "Informations envoyées avec succès !",
 		"FORM_SEND_INFORMATION_INCORRECT": "Une erreur est survenue lors de l'envoi du message"

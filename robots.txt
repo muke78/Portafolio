@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://khelde.vercel.app/sitemap-index.xml
