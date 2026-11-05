@@ -4,6 +4,7 @@ import { GithubIcon } from "@/components/icons/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
 import { LangDrop } from "@/features/navbar/LangDrop";
 import { ThemeDrop } from "@/features/navbar/ThemeSwitch";
+import { ProjectGallery } from "@/features/projects/ProjectGallery";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
 import Layout from "@/layouts/Layout.astro";
@@ -71,6 +72,29 @@ const pageTitle = project
 	: undefined;
 const imageUrl = project ? mediaUrl(project.card_image) : undefined;
 
+// El carrusel: la imagen de la tarjeta y despues la galeria del CMS, sin repetir.
+const galleryKeys = project
+	? [...new Set([project.card_image, ...(project.gallery ?? [])])]
+	: [];
+const galleryImages = project
+	? galleryKeys.map((key, i) => ({
+			src: mediaUrl(key),
+			alt:
+				i === 0
+					? project.title
+					: `${project.title} (${i + 1}/${galleryKeys.length})`,
+		}))
+	: [];
+const galleryLabels = {
+	gallery: t.GALLERY,
+	previous: t.GALLERY_PREV,
+	next: t.GALLERY_NEXT,
+	count: t.GALLERY_COUNT,
+	goTo: t.GALLERY_GOTO,
+	open: t.GALLERY_OPEN,
+	close: t.GALLERY_CLOSE,
+};
+
 // Long names get the smaller display size so they never overflow.
 const titleSize =
 	project && project.title.length > 18 ? "text-title" : "text-display";
@@ -118,22 +142,8 @@ const pill = "h-auto min-h-11 gap-2 rounded-full px-5 py-3";
             </h1>
           </div>
 
-          <figure
-            data-detail-figure
-            class="relative mt-10 aspect-[2/1] overflow-hidden rounded-2xl border border-border bg-muted shadow-[var(--glow)] md:mt-14"
-          >
-            <img
-              data-detail-img
-              src={imageUrl}
-              alt={project.title}
-              width={1240}
-              height={620}
-              class="absolute inset-x-0 -top-[10%] h-[120%] w-full object-cover"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-              draggable="false"
-            />
+          <figure data-detail-figure class="relative mt-10 md:mt-14">
+            <ProjectGallery client:idle images={galleryImages} labels={galleryLabels} />
           </figure>
 
           <div class="mt-12 grid grid-cols-1 items-start gap-10 md:mt-16 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">

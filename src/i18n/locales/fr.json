@@ -71,7 +71,14 @@
 		"NOT_AVAILABLE": "Indisponible",
 		"NEXT": "Projet suivant",
 		"ERROR_TITLE": "Impossible de charger le projet",
-		"ERROR_BODY": "Retournez à l'accueil et réessayez dans quelques minutes."
+		"ERROR_BODY": "Retournez à l'accueil et réessayez dans quelques minutes.",
+		"GALLERY": "Galerie du projet",
+		"GALLERY_PREV": "Image précédente",
+		"GALLERY_NEXT": "Image suivante",
+		"GALLERY_COUNT": "Image {n} sur {total}",
+		"GALLERY_GOTO": "Aller à l'image {n}",
+		"GALLERY_OPEN": "Voir l'image en grand",
+		"GALLERY_CLOSE": "Fermer l'image"
 	},
 	"404": {
 		"404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard.",

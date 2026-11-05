@@ -71,7 +71,14 @@
 		"NOT_AVAILABLE": "Not available",
 		"NEXT": "Next project",
 		"ERROR_TITLE": "We couldn't load the project",
-		"ERROR_BODY": "Go back home and try again in a few minutes."
+		"ERROR_BODY": "Go back home and try again in a few minutes.",
+		"GALLERY": "Project gallery",
+		"GALLERY_PREV": "Previous image",
+		"GALLERY_NEXT": "Next image",
+		"GALLERY_COUNT": "Image {n} of {total}",
+		"GALLERY_GOTO": "Go to image {n}",
+		"GALLERY_OPEN": "View image full size",
+		"GALLERY_CLOSE": "Close image"
 	},
 	"404": {
 		"404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later.",

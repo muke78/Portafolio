@@ -52,6 +52,7 @@ export const ItemDataProjects = ({
 					card_image,
 					images_topics,
 					title,
+					summary,
 					description,
 					fork,
 				}) => {
@@ -114,7 +115,7 @@ export const ItemDataProjects = ({
 
 								{/* 3 - description */}
 								<p className="mt-3 line-clamp-3 text-base leading-relaxed text-muted-foreground">
-									{description}
+									{summary || description}
 								</p>
 
 								{/* 4 - stack: round icons, overlapped */}

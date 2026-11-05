@@ -34,8 +34,15 @@ export interface Projects {
 	link_repo: string;
 	link_web: string;
 	title: string;
+	/** Resumen corto: lo que se lee en la tarjeta. */
+	summary: string;
+	/** Texto largo de "Sobre el proyecto". */
 	description: string;
+	/** Fotos extra del proyecto, en el orden del CMS. */
+	gallery: string[];
 	fork: boolean;
+	/** Se muestra en la franja de destacados y primero en su categoria. */
+	featured: boolean;
 }
 
 export interface Experiences {
