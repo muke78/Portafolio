@@ -65,6 +65,26 @@ describe("api", () => {
 		expect(data).toEqual({ id: 7 });
 	});
 
+	it("POST manda la IP del visitante solo si tiene forma de IP", async () => {
+		const fetchMock = vi.fn().mockImplementation(async () => Response.json({}));
+		vi.stubGlobal("fetch", fetchMock);
+		await api.post("/comments", {}, { visitorIp: "203.0.113.9" });
+		await api.post("/comments", {}, { visitorIp: "2001:db8::1" });
+		await api.post("/comments", {}, { visitorIp: "unknown" });
+		await api.post("/comments", {}, { visitorIp: "1.2.3.4\r\nX-Evil: 1" });
+		await api.post("/comments", {});
+		const sent = fetchMock.mock.calls.map(
+			(c) => c[1].headers["X-Visitor-IP"] as string | undefined,
+		);
+		expect(sent).toEqual([
+			"203.0.113.9",
+			"2001:db8::1",
+			undefined,
+			undefined,
+			undefined,
+		]);
+	});
+
 	it("una respuesta sin cuerpo no es un fallo", async () => {
 		stubFetch(new Response(null, { status: 204 }));
 		await expect(api.post("/contact-messages", {})).resolves.toEqual({

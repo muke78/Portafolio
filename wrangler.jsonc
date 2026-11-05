@@ -10,5 +10,16 @@
 		"binding": "ASSETS",
 		"directory": "./dist"
 	},
-	"observability": { "enabled": true }
+	"observability": { "enabled": true },
+
+	// Limite de peticiones por visitante en los POST publicos (comentarios y contacto).
+	// Cada isolate tiene su propia memoria, asi que un contador en codigo no sirve:
+	// este binding lo comparte Cloudflare. La clave es `<ruta>:<IP del visitante>`.
+	"ratelimits": [
+		{
+			"name": "RL_PUBLIC_WRITE",
+			"namespace_id": "1002",
+			"simple": { "limit": 5, "period": 60 }
+		}
+	]
 }

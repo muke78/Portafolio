@@ -102,3 +102,9 @@ ehthumbs.db
 
 # Heredado de Vercel (el sitio ya no se despliega ahi)
 .vercel/
+
+# El curriculum se sube desde el admin (R2); nunca se versiona en este repo publico.
+/CV*.pdf
+/CV*.docx
+/cv*.pdf
+/cv*.docx

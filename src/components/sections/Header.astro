@@ -28,6 +28,8 @@ const heroLabel = copy?.hero_label ?? i18n.HEADER.HEADER_SUBTITLE;
 const heroLead = copy?.hero_lead ?? i18n.HEADER.HEADER_ABOUT;
 const heroAlt = copy?.hero_image_alt ?? "muke78";
 const heroSrc = copy ? mediaUrl(copy.hero_image) : null;
+// El PDF del curriculum se sube desde el admin; sin PDF cargado no hay boton.
+const cvHref = copy?.cv_pdf ? mediaUrl(copy.cv_pdf) : null;
 
 // Hero CTAs reuse the shadcn Button styles (buttonVariants) on a real <a>:
 // .astro files can't pass the JSX element Base UI's `render` prop needs.
@@ -116,16 +118,20 @@ const social =
 				>
 					{i18n.HEADER.HEADER_TALK}
 				</a>
-				<a
-					href="https://q8mthsih9ooiwevt.public.blob.vercel-storage.com/CV_Erick_Miguel_Gonzalez_Rivera.pdf"
-					target="_blank"
-					rel="noopener noreferrer"
-					class={cn(buttonVariants({ variant: "ghost" }), heroCta)}
-					aria-label={i18n.HEADER.HEADER_CV_ARIA_LABEL}
-				>
-					{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
-					<SquareArrowOutUpRight size={15} />
-				</a>
+				{
+					cvHref && (
+						<a
+							href={cvHref}
+							target="_blank"
+							rel="noopener noreferrer"
+							class={cn(buttonVariants({ variant: "ghost" }), heroCta)}
+							aria-label={i18n.HEADER.HEADER_CV_ARIA_LABEL}
+						>
+							{i18n.ABOUTME.ABOUT_DOWNLOAD_CV}
+							<SquareArrowOutUpRight size={15} />
+						</a>
+					)
+				}
 			</div>
 		</div>
 

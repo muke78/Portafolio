@@ -7,7 +7,8 @@
 	"COMMON": {
 		"SKIP_TO_CONTENT": "Skip to content",
 		"LOADING": "Loading",
-		"CLOSE_NOTICE": "Close notice"
+		"CLOSE_NOTICE": "Close notice",
+		"VERIFY_WAIT": "Checking that you are human…"
 	},
 	"NAVBAR": {
 		"NAVBAR_SELECT_LANGUAGE": "Select language",
@@ -18,7 +19,6 @@
 		"NAVBAR_MENU": "Menu"
 	},
 	"HEADER": {
-		"HEADER_TITLE": "Hello there",
 		"HEADER_SUBTITLE": "Full-stack Developer",
 		"HEADER_NAME": "Erick Gonzalez",
 		"HEADER_ABOUT": "Information Technology Engineer, specialized in FullStack development and data analysis. With more than two years of experience creating efficient, scalable and well-structured applications.",
@@ -119,7 +119,6 @@
 	},
 	"FORM": {
 		"FORM_TITLE": "Contact",
-		"FORM_DESCRIPTION": "I am available for freelance work. Connect with me via Telegram, it will be sent through a ChatBot.",
 		"INPUT_NAME": "Name",
 		"INPUT_EMAIL": "Email",
 		"INPUT_PHONE": "Phone",
@@ -140,15 +139,12 @@
 		"FORM_OPTIONS_CONTACT_PHONE": "Phone",
 
 		"FORM_VALID_NAME": "The name must be longer than 4 letters",
-		"FORM_VALID_LASTNAME": "The last name must be longer than 4 letters",
 		"FORM_VALID_EMAIL": "Invalid email format",
 		"FORM_VALID_PHONE_MIN": "The number must have at least 7 digits",
 		"FORM_VALID_PHONE_MAX": "The number is too long",
-		"FORM_VALID_INFORMATION": "This field is required",
 		"FORM_VALID_PHONE_REGEX": "The number must contain only digits and valid symbols (+, -, spaces, parentheses)",
 		"FORM_VALID_MORE_INFORMATION_MIN": "Description must be longer than 7 characters",
 		"FORM_VALID_MORE_INFORMATION_MAX": "Character limit reached, only 260 characters allowed",
-		"FORM_INVALID_EMAIL": "Invalid email format",
 
 		"FORM_SEND_INFORMATION_CORRECT": "Information sent successfully!",
 		"FORM_SEND_INFORMATION_INCORRECT": "There was an error sending the message"

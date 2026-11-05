@@ -18,7 +18,7 @@ describe("CSP con hashes (security.csp de Astro)", () => {
 			"frame-ancestors 'none'",
 			"base-uri 'self'",
 			"form-action 'self'",
-			"frame-src 'none'",
+			`frame-src ${"$"}{TURNSTILE_ORIGIN}`,
 		]) {
 			expect(config).toContain(directive);
 		}

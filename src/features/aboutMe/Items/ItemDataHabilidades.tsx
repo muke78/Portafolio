@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { techIconUrl } from "@/lib/techIcon";
 import type { PropsLang, Skill } from "@/types/currentLang.interface";
 
 // Skills are no longer hidden behind a "see all" click: every technology is on
@@ -99,7 +100,7 @@ export const ItemDataHabilidades = ({ currentLocale }: PropsLang) => {
 												className={`h-7 w-7 rounded-full object-contain transition-opacity duration-200 ${
 													loadedImages[tech] ? "opacity-100" : "opacity-0"
 												}`}
-												src={`https://go-skill-icons.vercel.app/api/icons?i=${tech}`}
+												src={techIconUrl(tech)}
 												alt=""
 												ref={(el) => {
 													if (el?.complete && el.naturalWidth > 0)

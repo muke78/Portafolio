@@ -35,17 +35,25 @@ export const buildApiUrl = (path: string, base = VITE_API_URL): string => {
 	return `${base.replace(/\/+$/, "")}${path}`;
 };
 
+/** Direcciones IPv4 o IPv6 en texto; cualquier otra cosa no se manda al backend. */
+const IP_FORMAT = /^[0-9a-fA-F:.]{3,45}$/;
+
 const request = async <T>(
 	path: string,
 	method: "GET" | "POST",
 	body?: unknown,
 	timeoutMs = TIMEOUT_MS,
+	visitorIp?: string,
 ): Promise<{ data: T }> => {
 	const headers: Record<string, string> = {
 		Authorization: `Bearer ${API_SECRET_TOKEN}`,
 		Accept: "application/json",
 	};
 	if (body !== undefined) headers["Content-Type"] = "application/json";
+	// El backend limita por visitante, no por este Worker: sin esta cabecera todos
+	// los visitantes compartirian el mismo cupo.
+	if (visitorIp && IP_FORMAT.test(visitorIp))
+		headers["X-Visitor-IP"] = visitorIp;
 
 	const response = await fetch(buildApiUrl(path), {
 		method,
@@ -63,6 +71,10 @@ export const api = {
 	/** `timeoutMs` es para lo que no debe frenar una pagina (datos con respaldo). */
 	get: <T = unknown>(path: string, options: { timeoutMs?: number } = {}) =>
 		request<T>(path, "GET", undefined, options.timeoutMs),
-	post: <T = unknown>(path: string, body: unknown) =>
-		request<T>(path, "POST", body),
+	/** `visitorIp` es la IP real de quien envia el formulario (para el limite del backend). */
+	post: <T = unknown>(
+		path: string,
+		body: unknown,
+		options: { visitorIp?: string } = {},
+	) => request<T>(path, "POST", body, TIMEOUT_MS, options.visitorIp),
 };

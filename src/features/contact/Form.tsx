@@ -1,9 +1,13 @@
 ﻿import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, MessageCircle, Send } from "lucide-react";
-import { useId } from "react";
+import { useId, useState } from "react";
 import { type FieldError, useForm } from "react-hook-form";
 import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { Toaster, toast } from "@/components/Toaster";
+import {
+	TurnstileWidget,
+	turnstileEnabled,
+} from "@/components/TurnstileWidget";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getI18N } from "@/i18n";
@@ -42,6 +46,10 @@ export const Form = ({
 		},
 	});
 
+	const [token, setToken] = useState<string | null>(null);
+	const [resetKey, setResetKey] = useState(0);
+	const waitingForToken = turnstileEnabled && !token;
+
 	const onSubmit = async (data: FormData) => {
 		try {
 			const res = await fetch("/api/contact-messages", {
@@ -49,7 +57,7 @@ export const Form = ({
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify({ ...data, turnstileToken: token }),
 			});
 
 			if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -59,6 +67,9 @@ export const Form = ({
 		} catch (error) {
 			toast.error(`${errorSendInformation}, ${error}`);
 			console.error("Error:", error);
+		} finally {
+			// Cada token sirve una sola vez: se pide otro para el siguiente envio.
+			setResetKey((key) => key + 1);
 		}
 	};
 
@@ -257,10 +268,23 @@ export const Form = ({
 								</div>
 							)}
 						</div>
+						<div data-stagger-item>
+							<TurnstileWidget
+								locale={currentLocale}
+								onToken={setToken}
+								resetKey={resetKey}
+							/>
+							{waitingForToken && (
+								<output className="block text-sm text-muted-foreground">
+									{i18n.COMMON.VERIFY_WAIT}
+								</output>
+							)}
+						</div>
 						<button
 							type="submit"
 							data-stagger-item
-							className="inline-flex items-center justify-center gap-2 rounded-full h-11 w-full max-w-full mt-2 bg-primary text-primary-foreground font-medium hover-press active:translate-y-px"
+							disabled={waitingForToken}
+							className="inline-flex items-center justify-center gap-2 rounded-full h-11 w-full max-w-full mt-2 bg-primary text-primary-foreground font-medium hover-press active:translate-y-px disabled:opacity-50 disabled:pointer-events-none"
 						>
 							<Send className="w-5 h-5" />
 							{i18n.FORM.BUTTON_LABEL}
