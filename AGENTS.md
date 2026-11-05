@@ -196,7 +196,7 @@ src/
 ├── pages/         # /[lang]/home, /[lang]/project/[id], /api/*
 ├── schemas/       # esquemas Zod
 └── styles/        # app.css (tokens + Tailwind v4), styles.css
-docs/              # arquitectura, plan (TODO.md), UI_STANDARDS.md
+docs/              # ARQUITECTURA.md, UI_STANDARDS.md, SECURITY.md; legacy-v2/ = historial
 ```
 
 ## Antes de entregar

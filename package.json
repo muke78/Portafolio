@@ -12,7 +12,6 @@
 		"check": "astro check",
 		"preview": "astro preview",
 		"astro": "astro",
-		"prettier": "prettier --write .",
 		"prepare": "husky",
 		"format": "pnpm exec biome format --write ./src",
 		"lint": "pnpm exec biome lint --write ./src",
