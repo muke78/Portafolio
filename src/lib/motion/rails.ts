@@ -61,18 +61,6 @@ export const horizontalRails = ({
 				return Math.max(0, t.scrollWidth - v.clientWidth);
 			};
 
-			// Per-card geometry, cached (no layout reads while scrolling).
-			let lefts: number[] = [];
-			let widths: number[] = [];
-			const measure = () => {
-				const t = track();
-				const cards = t
-					? [...t.querySelectorAll<HTMLElement>("[data-rail-card]")]
-					: [];
-				lefts = cards.map((c) => c.offsetLeft);
-				widths = cards.map((c) => c.offsetWidth);
-			};
-
 			// Inside a clipped, translated track the browser only loads a lazy
 			// picture once it is truly on screen, so cards would open on a grey frame.
 			// Load the rail's pictures when the rail is near instead (not on page load).
@@ -94,26 +82,20 @@ export const horizontalRails = ({
 				"600px 0px 600px 0px",
 			);
 
+			// "N / total": 1 at the start of the strip, total at its end, always in
+			// step with the progress bar (the card nearest the middle would read 2 on
+			// arrival, because the first card sits left of centre).
 			let shown = -1;
 			const paint = (x: number) => {
-				const v = viewport();
-				if (!v || lefts.length === 0) return;
-				const half = v.clientWidth / 2;
-				let nearest = 0;
-				let best = Number.POSITIVE_INFINITY;
-				for (let i = 0; i < lefts.length; i++) {
-					const centre = lefts[i] + widths[i] / 2 + x;
-					const off = centre - half;
-					if (Math.abs(off) < best) {
-						best = Math.abs(off);
-						nearest = i;
-					}
-				}
-				if (nearest !== shown) {
-					shown = nearest;
-					const label = current()?.firstChild;
-					if (label) label.nodeValue = String(nearest + 1);
-				}
+				const total = track()?.querySelectorAll("[data-rail-card]").length ?? 0;
+				const max = distance();
+				if (total === 0) return;
+				const progress = max > 0 ? Math.min(1, Math.max(0, -x / max)) : 0;
+				const index = Math.round(progress * (total - 1));
+				if (index === shown) return;
+				shown = index;
+				const label = current()?.firstChild;
+				if (label) label.nodeValue = String(index + 1);
 			};
 
 			const trigger = ScrollTrigger.create({
@@ -134,7 +116,6 @@ export const horizontalRails = ({
 				pinSpacing: true,
 				anticipatePin: 1,
 				invalidateOnRefresh: true,
-				onRefresh: measure,
 				onUpdate: (self) => {
 					const t = track();
 					if (t && !isHydrating(t)) {
@@ -204,7 +185,6 @@ export const horizontalRails = ({
 				}, 120);
 			});
 			mo.observe(root, { childList: true, subtree: true });
-			measure();
 			warm();
 
 			return () => {

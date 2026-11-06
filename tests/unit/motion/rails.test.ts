@@ -139,28 +139,25 @@ describe("horizontalRails", () => {
 		).toBeLessThanOrEqual(MOTION.hscroll.skew);
 	});
 
-	it("shows which card is in the middle", async () => {
-		html(rail(4));
+	it("counts from 1 at the start to the last card at the end, in step with the progress", async () => {
+		html(rail(6));
 		size(1000, 3000);
-		const cards = [
-			...document.querySelectorAll<HTMLElement>("[data-rail-card]"),
-		];
-		cards.forEach((card, i) => {
-			Object.defineProperty(card, "offsetLeft", { value: i * 700 });
-			Object.defineProperty(card, "offsetWidth", { value: 300 });
-		});
 		run();
 		await flush();
 		const trigger = ScrollTrigger.getAll()[0];
-		// Refresh caches each card's geometry.
-		trigger.vars.onRefresh?.(trigger);
-		trigger.vars.onUpdate?.({
-			progress: 1,
-			getVelocity: () => 0,
-		} as unknown as ScrollTrigger);
-		gsap.globalTimeline.progress(1);
-		// x = -(3000-1000) = -2000: card 3 (left 2100) is now nearest the centre.
-		expect($("[data-hscroll-current]").textContent).toBe("4");
+		const at = (progress: number) => {
+			trigger.vars.onUpdate?.({
+				progress,
+				getVelocity: () => 0,
+			} as unknown as ScrollTrigger);
+			gsap.globalTimeline.progress(1);
+			return $("[data-hscroll-current]").textContent;
+		};
+		// Arriving at the rail it reads 1 (not 2: the first card sits left of centre).
+		expect(at(0)).toBe("1");
+		expect(at(0.5)).toBe("4");
+		expect(at(1)).toBe("6");
+		expect(at(0)).toBe("1");
 	});
 
 	it("loads the rail's pictures only once the rail is near, and also the late ones", async () => {
