@@ -148,8 +148,8 @@ beforeEach(() => {
 afterEach(() => {
 	vi.restoreAllMocks();
 	vi.unstubAllGlobals();
-	galaxyState.burst = 0;
-	galaxyState.settle = 0;
+	galaxyState.story = 0;
+	galaxyState.bang = 1;
 });
 
 describe("ParticleGalaxy", () => {
@@ -196,38 +196,39 @@ describe("ParticleGalaxy", () => {
 		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
 			.mock.calls[0][0] as FrameRequestCallback;
 
-		galaxyState.burst = 0.6;
-		galaxyState.settle = 0.2;
+		galaxyState.story = 0.6;
+		galaxyState.bang = 0.5;
 		loop(performance.now() + 100);
 
 		const u = created.materials[0].uniforms;
-		expect(u.uBurst.value).toBe(0.6);
+		expect(u.uStory.value).toBe(0.6);
+		expect(u.uBang.value).toBe(0.5);
 		expect(created.renderers[0].render).toHaveBeenCalled();
 		expect(created.groups[0].scale.setScalar).toHaveBeenCalled();
 	});
 
-	it("fades the galaxy a little once it has settled to the corner", () => {
+	it("fades the galaxy a little as it dies in the corner (end of the story)", () => {
 		render(<ParticleGalaxy />);
 		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
 			.mock.calls[0][0] as FrameRequestCallback;
-		galaxyState.settle = 0;
+		galaxyState.story = 0.3;
 		loop(performance.now() + 5000);
 		const full = created.materials[0].uniforms.uOpacity.value as number;
-		galaxyState.settle = 1;
+		galaxyState.story = 1;
 		loop(performance.now() + 5100);
 		const dim = created.materials[0].uniforms.uOpacity.value as number;
 		expect(dim).toBeLessThan(full);
 	});
 
-	it("shows the finished galaxy if the scroll engine never starts", () => {
+	it("shows the galaxy at its healthy peak if the scroll engine never starts", () => {
 		window.__motionReady = false;
 		const now = vi.spyOn(performance, "now").mockReturnValue(0);
 		render(<ParticleGalaxy />);
 		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
 			.mock.calls[0][0] as FrameRequestCallback;
-		galaxyState.burst = 0;
+		galaxyState.story = 0;
 		loop(6000);
-		expect(created.materials[0].uniforms.uBurst.value).toBe(1);
+		expect(created.materials[0].uniforms.uStory.value).toBe(0.72);
 		now.mockRestore();
 	});
 
@@ -236,7 +237,7 @@ describe("ParticleGalaxy", () => {
 		render(<ParticleGalaxy />);
 		expect(requestAnimationFrame).not.toHaveBeenCalled();
 		expect(created.renderers[0].render).toHaveBeenCalledTimes(1);
-		expect(created.materials[0].uniforms.uBurst.value).toBe(1);
+		expect(created.materials[0].uniforms.uStory.value).toBe(0.72);
 	});
 
 	it("pauses while the tab is hidden and resumes when it is back", () => {

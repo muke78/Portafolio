@@ -157,6 +157,8 @@
 	--galaxy-arm: oklch(48% 0.21 292);
 	--galaxy-hot: oklch(40% 0.18 300);
 	--galaxy-star: oklch(45% 0.12 292);
+	/* The end of a galaxy: dying stars glow like embers (decorative, no text on it). */
+	--galaxy-ember: oklch(45% 0.11 40);
 }
 
 .dark {
@@ -210,6 +212,7 @@
 	--galaxy-arm: oklch(62% 0.2 292);
 	--galaxy-hot: oklch(94.5% 0.03 300);
 	--galaxy-star: oklch(88% 0.05 295);
+	--galaxy-ember: oklch(68% 0.16 40);
 }
 
 @layer base {

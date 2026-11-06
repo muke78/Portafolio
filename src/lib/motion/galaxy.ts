@@ -2,49 +2,33 @@ import { galaxyState } from "@/lib/galaxyState";
 import { type Cleanup, MOTION, type MotionTools } from "./core";
 
 /**
- * The particle galaxy follows the scroll (components/three/ParticleGalaxy.tsx
- * only reads galaxyState):
+ * The particle galaxy follows the scroll of the WHOLE page (components/three/
+ * ParticleGalaxy.tsx only reads galaxyState): `story` goes 0 -> 1 from the top of the
+ * page to the very bottom, so the viewer sees a galaxy being born (header) and, as they
+ * go down, the stars gather into clouds, the gas falls in, the disc spins up, the first
+ * stars ignite, the spiral arms and a black hole appear, a smaller galaxy is absorbed,
+ * and by the footer it has gone out. See the header of ParticleGalaxy.tsx for the ranges.
  *
- *   0 .. burstScreens                  burst 0 -> 1: the stardust gathers and
- *                                      explodes into the spiral
- *   burstScreens .. + settleScreens    settle 0 -> 1: the finished galaxy
- *                                      drifts to the corner, smaller
- *
- * Distances are viewport-relative (function values re-read on refresh), never
- * pixel constants. Without this scene (reduced motion) the canvas draws the
- * finished galaxy still.
+ * The distance is the real scroll length (re-read on every refresh, so it follows the
+ * lazy islands and images growing the page), never a pixel constant. Without this scene
+ * (reduced motion) the canvas draws the galaxy still, at its healthy peak.
  */
-export const galaxyScene = ({ gsap }: MotionTools): Cleanup => {
-	const { burstScreens, settleScreens, scrub } = MOTION.galaxy;
-	const vh = () => window.innerHeight;
-
-	const burst = gsap.to(galaxyState, {
-		burst: 1,
+export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
+	const story = gsap.to(galaxyState, {
+		story: 1,
 		ease: "none",
 		scrollTrigger: {
 			start: 0,
-			end: () => vh() * burstScreens,
-			scrub,
-			invalidateOnRefresh: true,
-		},
-	});
-	const settle = gsap.to(galaxyState, {
-		settle: 1,
-		ease: "none",
-		scrollTrigger: {
-			start: () => vh() * burstScreens,
-			end: () => vh() * (burstScreens + settleScreens),
-			scrub,
+			end: () => ScrollTrigger.maxScroll(window),
+			scrub: MOTION.galaxy.scrub,
 			invalidateOnRefresh: true,
 		},
 	});
 
 	return () => {
-		for (const t of [burst, settle]) {
-			t.scrollTrigger?.kill();
-			t.kill();
-		}
-		galaxyState.burst = 1;
-		galaxyState.settle = 1;
+		story.scrollTrigger?.kill();
+		story.kill();
+		// Reduced motion mid-session: show the galaxy at its peak, still.
+		galaxyState.story = 0.72;
 	};
 };
