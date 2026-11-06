@@ -401,7 +401,8 @@ Formularios:
   display (`font-heading`).
 - **Ley de Hick aplicada a cards:**
   - Un solo mensaje por card: título + una línea de descripción. El detalle
-    va detrás de un clic.
+    va detrás de un clic. En una escena horizontal, una card grande a la vez:
+    más de 6 por categoría se esconden tras «Ver N más».
   - **Una acción primaria por card** (como mucho una secundaria). Toda la
     card clicable → el enlace va en el título y se extiende con
     `after:absolute after:inset-0`, no se anidan varios enlaces.
@@ -658,12 +659,15 @@ sitio usa las mismas piezas, cada una en su módulo:
 | **Manifiesto fijado** | `scenes.ts` | La sección se **fija 2 pantallas** (1.4 en móvil): las palabras de la frase se encienden una a una (`SplitText`, escrubado), dos pistas gigantes de tecnologías se deslizan en sentidos opuestos, una línea de progreso se llena y unas etiquetas aparecen con rebote | `[data-manifesto]` |
 | Títulos | `split.ts` | Cada título se parte en líneas con máscara y sube al entrar (una vez) | `[data-split]` |
 | Revelados | `reveals.ts` | Fade-up con *stagger* por lotes (las cards que entran juntas se encadenan en orden de lectura) | `[data-reveal]` |
-| Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla | `[data-parallax-img]` |
+| Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla (un trigger por imagen: solo para pocas cards, no para listas largas) | `[data-parallax-img]` |
+| **Riel de proyectos** | `rails.ts` | Una escena fijada **por categoría** con sus 6 mejores proyectos (destacados primero) en una sola fila de tarjetas grandes. Un solo `ScrollTrigger` por riel: la tira se desliza (`x`) y se inclina con la velocidad del scroll (`skewX`, ≤ 3°), se llena una línea de progreso y un contador dice qué card está al centro. El largo del scroll sigue al contenido pero se acota a 2.5 pantallas. Bajo 768 px de ancho (o menos de 700 px de alto) no se fija: es una fila nativa con snap | `[data-hscroll]` + `-viewport` / `-track` / `-progress` / `-current`, `[data-rail-card]` |
+| **Índice «Ver N más»** | `peek.ts` | El resto de la categoría, tras un botón, como filas de titular grande. Con ratón, la imagen grande de la fila se abre como cortina (`clip-path`) junto al cursor y **lo sigue** (un par de `quickTo`, sin tweens por evento) inclinándose unos grados con la velocidad; con teclado aparece al enfocar la fila; en táctil cada fila lleva su miniatura. La imagen entra entera: nunca se escala | `[data-peek]` + `[data-peek-row]` + `[data-peek-img]` |
+| **Puerta de la introducción (el punto cero)** | `intro.ts` + `snowglobe.ts` | Primera visita (o «verla desde el principio»): una capa oscura con UNA esfera de cristal y copos morados dentro. Casi inmóvil y en calma; con el cursor cerca (y más encima) respira más rápido, el calor del centro y el brillo suben y los copos se arremolinan; el cursor es de mano. Una historia en dos frases, cada una el tiempo de leerse, una pausa sin nada y a los 8 s «¿Comenzamos?». Al hacer clic: la esfera gira lenta en una órbita elíptica, se encoge y vuelve al mismo punto; ahí estalla (núcleo blanco, rayos, neblina roja, fragmentos de estrella) y el portafolio aparece de golpe, sin girar. Durante 7 s todo se ve caliente (amarillo, rojo) y se enfría a violeta (`heatUp`). «Saltar» (o Esc) abre al instante sin explosión. Lo de abajo queda en el DOM y con `inert`; no hay scroll mientras dura | `[data-intro]` + `data-intro-*`, `[data-bang-cosmos]`, `[data-nav]` |
 | Marquee de opiniones | `media.ts` | Un solo tween `xPercent` en bucle; **su velocidad y dirección siguen la del scroll** (un único callback del ticker suaviza `timeScale`) y vuelve a la calma; se detiene fuera de pantalla y con hover o foco; la pista es su propia capa (`will-change`) y el desvanecido de bordes son overlays estáticos, no una máscara | `[data-marquee]` + `[data-marquee-track]` |
 | Parallax decorativo | `media.ts` | Anillos de órbita, ±6 % | `[data-parallax="N"]` |
 | **Pila de cards** | `layers.ts` | Las cards de experiencia son `sticky` y se apilan (cada una un poco más abajo); la que queda debajo retrocede (`scale`) al llegar la siguiente | `[data-stack]` + `[data-stack-card]` |
 | **Habilidades en vuelo** | `skills.ts` | Cada chip entra desde fuera de pantalla siguiendo una curva en S (`MotionPathPlugin`, `type: "thru"`), girando, y se aplasta un poco al aterrizar; todo escrubado con el scroll. Detrás, una línea "serpiente" se dibuja y un punto la recorre (`align`). En móvil: fade-up escalonado | `[data-fly-group]` + `[data-fly-chip]`, `[data-snake]` + `-trace` / `-dot` |
-| **Galaxia de partículas** | `galaxy.ts` + `ParticleGalaxy.tsx` | Polvo estelar a la deriva al entrar; con el scroll se arremolina hacia el centro, colapsa y **estalla** en una galaxia espiral de 3 brazos (destello en el instante de la explosión); el epicentro está en el **espacio libre a la derecha** del texto "Qué hago" (más pequeña, para que los brazos no lleguen a las palabras) y el texto lleva detrás un velo suave del color de fondo; luego se desplaza a la esquina, más pequeña. Original: una sola llamada de dibujo, shaders propios, colores de los tokens `--galaxy-*`. Con `prefers-reduced-motion` se dibuja la galaxia final quieta | scroll (sin atributo) |
+| **Galaxia de partículas: nace, vive y muere con el scroll** | `galaxy.ts` + `ParticleGalaxy.tsx` | Un solo valor, `galaxyState.story` (0 → 1), recorre **toda la página** y el canvas dibuja la vida de una galaxia: estrellas esparcidas por el cielo (header) → **se agrupan en nubes enormes por la gravedad** → **el gas cae al centro del halo** (caliente, y se enfría al hundirse) → el momento angular lo **aplana en un disco que gira** (más rápido cerca del centro) → **nacen las primeras estrellas** (cada una destella al encenderse) → **brazos espirales y agujero negro** (centro oscuro dentro de un anillo brillante) → **crece por fusiones** (una galaxia menor entra en espiral y es absorbida, con una marea que la levanta) → **el final**: sin gas, la luz vira a brasas (`--galaxy-ember`), las estrellas se apagan una a una, los bordes se alejan y solo queda el anillo del agujero negro en la esquina. Una sola llamada de dibujo, shaders propios, colores de los tokens `--galaxy-*`; un solo `ScrollTrigger` sin pin. Con `prefers-reduced-motion` se dibuja quieta en su punto más sano (0.72) | scroll (sin atributo) |
 | Anclas con pins | `anchors.ts` | Los enlaces `#…` se resuelven con GSAP tras recalcular los pins y se corrigen mientras la página crece | `a[href*="#"]` |
 | Diálogo de comentarios | `dialogs.ts` | Panel compacto que crece desde el lanzador (escala desde su esquina inferior derecha), campos en stagger; **no cubre ni oscurece la página**; el lanzador entra con un pop | `[data-dialog]`, `-item`, `[data-fab]` |
 | Marcos con máscara | `masks.ts` | Un marco se abre como cortina (`clip-path`) mientras la foto asienta desde un zoom; también hacia el lado (`data-mask="left"`) | `[data-mask]` |
@@ -677,16 +681,17 @@ Reglas de las escenas:
 - **El Home no esconde contenido detrás de clics.** Nada de pestañas,
   acordeones ni paneles ocultos para las secciones narrativas: Acerca de mí,
   Educación, Experiencia y Habilidades son secciones/escenas que se recorren
-  con el scroll (`StoryBlock`). **Única excepción: el resto del catálogo de
-  proyectos.** Cada categoría (`ProjectCategory`, dentro de `ProjectsCatalog`)
-  muestra sus primeras 6 tarjetas (los destacados primero) y, solo si hay más,
-  un botón «Ver N más de …» abre **todas** las demás de una vez, sin páginas
-  ni tope. Es un `<button>` con `aria-expanded`/`aria-controls`; al abrir, el
-  foco pasa a la primera tarjeta nueva y al cerrar vuelve al botón, y una
-  región `status` anuncia cuántas se ven. El catálogo vive en el flujo normal
-  de la página: nada fijado, trasladado ni con parallax por tarjeta (decenas de
-  triggers hacían lenta la sección en el móvil). Un índice de categorías con su
-  conteo (`nav`, anclas `#proyectos-<categoría>`) permite saltar a cada una.
+  con el scroll (`StoryBlock`). **Única excepción: el resto de cada categoría
+  de proyectos.** Cada categoría (`ProjectRail`) muestra sus 6 mejores
+  (destacados primero) como tarjetas grandes en una escena horizontal; solo si
+  hay más, un botón «Ver N más de …» (`ProjectMore`) abre **todas** las demás
+  de una vez, sin páginas ni tope, como un índice de filas (`ProjectRow`). Es un
+  `<button>` con `aria-expanded`/`aria-controls`; al abrir, el foco pasa a la
+  primera fila y al cerrar vuelve al botón, y una región `status` anuncia
+  cuántas se ven. Motivo (Ley de Hick): nadie debe recibir 15 proyectos de
+  golpe. El nodo que se fija es el contenedor `[data-hscroll]` que pinta Astro,
+  nunca uno de React, y el botón y el índice van **fuera** del pin para que lo
+  que crece no cambie la altura de una escena fijada.
 - **El lector nunca queda atrapado**: una escena fijada dura como máximo
   **2.5 pantallas** (lo verifica un test) y siempre tiene contenido que
   cambia mientras dura (si no cambia nada, no se fija).
@@ -845,13 +850,14 @@ bloque de media está listo para admitirlos cuando el backend los exponga.
   izquierda (4 col) el título, `sticky` (`lg:top-28`); a la derecha (8 col)
   el contenido, que es el punto focal. Habilidades usa el bloque apilado
   (título arriba, contenido a todo el ancho) porque necesita escenario. Los
-  proyectos son un catálogo a todo el ancho: una sección por categoría con
-  una cuadrícula de 1, 2 o 3 columnas.
+  proyectos son una escena por categoría: un riel horizontal a todo el ancho
+  (12.4) con sus 6 mejores y, tras un botón, el resto como índice.
 - **5 / 7** en Contacto (texto y enlaces / formulario) y **8 / 4** en el
   encabezado de Opiniones (título / llamada a la acción). Nada centrado
   "por defecto".
-- Las cards de proyecto viven en una cuadrícula de 1, 2 o 3 columnas; las
-  de experiencia se apilan (`sticky`) en una sola columna.
+- Las cards de proyecto viven en el riel de su categoría (una sola fila, una
+  card grande a la vez); las de experiencia se apilan (`sticky`) en una sola
+  columna.
 
 ### 12.2 Hero y galaxia
 
@@ -907,6 +913,10 @@ vive en `src/lib/motion/` (7.7).
 | `data-reveal` | Cada bloque o card que debe entrar | Fade-up con stagger por lotes |
 | `data-parallax="N"` | Elemento decorativo (anillos) | Parallax de ±N % |
 | `data-parallax-img` | Imagen de una card (marco `overflow-hidden`) | Deriva ±6 % |
+| `data-hscroll` + `-viewport` / `-track` / `-progress` / `-current`, `data-rail-card` | `Proyectos.astro` (contenedor) y `ProjectRail.tsx` | Riel de proyectos fijado: tira, progreso y contador |
+| `data-peek` + `data-peek-row` + `data-peek-img` | `ProjectMore.tsx` / `ProjectRow.tsx` | Índice cuya imagen grande sigue al cursor |
+| `data-intro` + `-sky` / `-drift` / `-point` / `-globe` / `-flakes` / `-heat` / `-shine` / `-halo` / `-ripple` / `-line` / `-skip` | `IntroGate.astro` | Puerta de la introducción (solo existe con `html.intro-on`) |
+| `data-bang-cosmos`, `data-nav` | `Cosmos.tsx`, `Nav.tsx` | Qué se expande / sale disparado desde el centro tras el Big Bang |
 | `data-marquee` / `data-marquee-track` | Cinta de opiniones | Velocidad ligada al scroll y leve inclinación |
 | `data-mask` (`="left"`, `data-mask-delay`) | Marco de foto, formulario, cinta | Se abre como cortina al entrar |
 | `data-stagger` (`="pop"`, `data-stagger-delay`) + `data-stagger-item` | Contenedor y sus hijos | Entrada uno a uno |

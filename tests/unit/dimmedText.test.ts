@@ -19,21 +19,24 @@ const readBlock = (selector: RegExp): Record<string, string> => {
 };
 
 const themes = {
-	light: readBlock(/:root\s*\{([\s\S]*?)\n\}/),
+	light: readBlock(/:root[^{]*\{([\s\S]*?)\n\}/),
 	dark: readBlock(/\.dark\s*\{([\s\S]*?)\n\}/),
 } as const;
 
-describe.each(["light", "dark"] as const)("dimmed scroll text — %s", (theme) => {
-	const bg = flatten(parseOklch(themes[theme].background), [0, 0, 0]);
-	const fg = parseOklch(themes[theme].foreground);
-	const dimmed = (alpha: number) =>
-		contrast(flatten({ ...fg, a: alpha }, bg), bg);
+describe.each(["light", "dark"] as const)(
+	"dimmed scroll text — %s",
+	(theme) => {
+		const bg = flatten(parseOklch(themes[theme].background), [0, 0, 0]);
+		const fg = parseOklch(themes[theme].foreground);
+		const dimmed = (alpha: number) =>
+			contrast(flatten({ ...fg, a: alpha }, bg), bg);
 
-	it("keeps large text at 3:1 or better", () => {
-		expect(dimmed(MOTION.dim.large[theme])).toBeGreaterThanOrEqual(3);
-	});
+		it("keeps large text at 3:1 or better", () => {
+			expect(dimmed(MOTION.dim.large[theme])).toBeGreaterThanOrEqual(3);
+		});
 
-	it("keeps body text at 4.5:1 or better", () => {
-		expect(dimmed(MOTION.dim.body[theme])).toBeGreaterThanOrEqual(4.5);
-	});
-});
+		it("keeps body text at 4.5:1 or better", () => {
+			expect(dimmed(MOTION.dim.body[theme])).toBeGreaterThanOrEqual(4.5);
+		});
+	},
+);

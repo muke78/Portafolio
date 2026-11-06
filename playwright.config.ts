@@ -15,6 +15,10 @@ export default defineConfig({
 
 	use: {
 		baseURL,
+		// Every spec starts as a visitor who chose "go straight to the site": the intro gate
+		// (the origin-of-the-universe particle) would cover the page otherwise. intro.spec.ts
+		// overrides this to test the gate itself.
+		storageState: "tests/e2e/fixtures/intro-skip.json",
 		trace: "on-first-retry",
 		// Headless Chromium renders WebGL in software: the particle galaxy would eat
 		// the CPU the page and the dev server need, and nothing here tests it

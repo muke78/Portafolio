@@ -64,14 +64,17 @@ describe("Acerca", () => {
 });
 
 describe("Proyectos", () => {
-	it("renders the title and ONE catalog island, with a skeleton, and fetches nothing on the server", async () => {
+	it("renders the title and one pinned rail per category, each with a skeleton, and fetches nothing on the server", async () => {
 		const html = await render(Proyectos);
 		expect(html).toContain(es.PROJECTS.PROJECTS_TITLE);
-		expect(count(html, /<astro-island/g)).toBe(1);
+		// Two islands per category: the rail (pinned, Astro's wrapper) and the
+		// "Ver N mas" button + index (outside the pin).
+		expect(count(html, /<astro-island/g)).toBe(8);
+		// The pinned node is Astro's wrapper, never the React island.
+		expect(count(html, /data-hscroll(?![-\w])/g)).toBe(4);
 		// An island with no children is never hydrated by client:visible.
-		expect(html).toContain('aria-busy="true"');
-		// No pinned sideways rail any more: the catalog flows with the page.
-		expect(html).not.toContain("data-hscroll");
+		expect(count(html, /aria-busy="true"/g)).toBe(4);
+		expect(html).toContain("ProjectMore");
 		expect(apiGet).not.toHaveBeenCalled();
 	});
 

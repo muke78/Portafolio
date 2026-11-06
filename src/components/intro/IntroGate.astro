@@ -1,0 +1,97 @@
+---
+import { Button } from "@/components/ui/button";
+import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
+
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+const t = getI18N({ currentLocale }).INTRO;
+---
+
+<!--
+	La puerta de la introduccion: el punto cero, antes del Big Bang. Es una capa fija que SOLO se
+	ve mientras <html> lleva la clase `intro-on` (la pone el script en linea del <head>: JS activo,
+	movimiento permitido, primera visita o "ver desde el principio"). Sin esa clase es `display:
+	none`, y el portafolio completo sigue en el DOM debajo, asi que rastreadores, lectores de
+	pantalla sin JS y Lighthouse ven el sitio completo.
+
+	El movimiento lo pone el motor (src/lib/motion/intro.ts) desde estos atributos:
+	  data-intro            la capa; data-intro-sky su fondo (el vacio, siempre oscuro en los dos temas)
+	  data-intro-drift      deriva suave del punto (en tactil, que no tiene raton)
+	  data-intro-point      el boton: lo perturba el puntero y al activarlo estalla
+	  data-intro-flakes     el canvas de la particula: cristal, plasma caliente y borde que se deforma
+	  data-intro-halo/ripple   su resplandor y la onda al acercarse
+	  data-intro-line       las frases de la historia, una tras otra
+	  data-intro-skip       saltar la introduccion
+-->
+<div
+	data-intro
+	role="dialog"
+	aria-modal="true"
+	aria-labelledby="intro-title"
+	class="fixed inset-0 z-200 hidden overflow-hidden text-night-foreground"
+>
+	<div data-intro-sky class="absolute inset-0 bg-night"></div>
+
+	<p id="intro-title" class="sr-only">{t.TITLE}. {t.SR}</p>
+
+	<div class="absolute inset-0 grid place-items-center">
+		<div data-intro-drift class="relative grid size-40 place-items-center">
+			<span
+				data-intro-ripple
+				aria-hidden="true"
+				class="pointer-events-none absolute size-6 rounded-full border border-primary opacity-0"
+			></span>
+			<span
+				data-intro-halo
+				aria-hidden="true"
+				class="pointer-events-none absolute size-28 rounded-full bg-primary opacity-30 blur-2xl"
+			></span>
+			<button
+				type="button"
+				data-intro-point
+				aria-label={t.START}
+				class="relative grid size-24 cursor-pointer place-items-center rounded-full outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:size-28"
+			>
+				<!-- La particula: una esfera de cristal con un plasma caliente dentro, todo dibujado
+				     en un canvas (snowglobe.ts). Es mas grande que la esfera para dejar sitio a
+				     las ondas, las puntas y la burbuja. Decorativa: el boton ya tiene nombre. -->
+				<canvas
+					data-intro-flakes
+					aria-hidden="true"
+					class="pointer-events-none absolute top-1/2 left-1/2 size-[168px] -translate-x-1/2 -translate-y-1/2 cursor-pointer sm:size-56"
+				></canvas>
+			</button>
+		</div>
+	</div>
+
+	<!-- La historia: frases apiladas en la misma celda; el motor las enciende una a una. -->
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-x-0 bottom-[16vh] grid px-6 text-center"
+	>
+		<p
+			data-intro-line
+			class="font-serif-display text-subtitle col-start-1 row-start-1 mx-auto max-w-[28ch] opacity-0"
+		>
+			{t.LINE_1}
+		</p>
+		<p
+			data-intro-line
+			class="font-serif-display text-subtitle col-start-1 row-start-1 mx-auto max-w-[28ch] opacity-0"
+		>
+			{t.LINE_2}
+		</p>
+		<div data-intro-line class="col-start-1 row-start-1 opacity-0">
+			<p class="font-serif-display text-title">{t.LINE_3}</p>
+			<p class="eyebrow mt-3">{t.HINT}</p>
+		</div>
+	</div>
+
+	<Button
+		variant="ghost"
+		data-intro-skip
+		className="absolute right-4 bottom-4 text-night-foreground/80 hover:text-night-foreground sm:right-6 sm:bottom-6"
+	>
+		{t.SKIP}
+	</Button>
+</div>

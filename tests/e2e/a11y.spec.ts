@@ -152,7 +152,7 @@ test.describe("structure and keyboard", () => {
 test.describe("keyboard with the motion layer on", () => {
 	test.use({ reducedMotion: "no-preference" });
 
-	test("the project catalog is reachable by keyboard and 'Ver N más' keeps the focus", async ({
+	test("the project rails and the show-more index are reachable by keyboard", async ({
 		page,
 	}) => {
 		await page.goto("/es/home#projects");
@@ -163,16 +163,26 @@ test.describe("keyboard with the motion layer on", () => {
 		const href = await links.first().getAttribute("href");
 		expect(href).toMatch(/^\/es\/project\/.+/);
 
-		// A category with more than six projects has the button; opening it shows ALL
-		// the rest and moves the focus to the first new card.
+		// A category with more than 6 projects has the button; opening it lists ALL the
+		// rest as rows and moves the focus to the first one.
 		const toggle = page.locator("#projects button[aria-expanded]").first();
-		if ((await toggle.count()) === 0) return;
-		const section = page.locator("#projects section", { has: toggle });
-		const before = await section.locator("article").count();
-		await toggle.focus();
-		await toggle.press("Enter");
-		await expect(toggle).toHaveAttribute("aria-expanded", "true");
-		expect(await section.locator("article").count()).toBeGreaterThan(before);
-		await expect(section.locator("article h4 a").nth(before)).toBeFocused();
+		if ((await toggle.count()) > 0) {
+			await toggle.focus();
+			await toggle.press("Enter");
+			await expect(toggle).toHaveAttribute("aria-expanded", "true");
+			await expect(
+				page.locator("#projects [data-peek-row] a").first(),
+			).toBeFocused();
+		}
+
+		// Tabbing to a card that is out of view moves the page scroll (the row is
+		// clipped), so the focused card ends up on screen.
+		const rail = page.locator("#projects [data-hscroll]").first();
+		const cards = rail.locator("article h4 a");
+		const last = cards.last();
+		await last.focus();
+		await page.keyboard.press("Shift+Tab");
+		await page.keyboard.press("Tab");
+		await expect(last).toBeInViewport();
 	});
 });

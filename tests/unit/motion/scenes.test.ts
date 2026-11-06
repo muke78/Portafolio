@@ -405,19 +405,66 @@ describe("scrollProgress", () => {
 });
 
 describe("galaxyScene", () => {
-	it("scrubs the shared galaxy state with two triggers", () => {
+	it("scrubs the story over the WHOLE page with a single trigger (no pin)", () => {
 		run(galaxyScene);
-		expect(ScrollTrigger.getAll()).toHaveLength(2);
+		const triggers = ScrollTrigger.getAll();
+		expect(triggers).toHaveLength(1);
+		expect(triggers[0].vars.start).toBe(0);
+		expect(typeof triggers[0].vars.end).toBe("function");
+		expect(triggers[0].vars.pin).toBeUndefined();
 	});
 
-	it("leaves the finished galaxy when stopped (reduced motion)", () => {
+	it("with an epilogue it scrubs the story and the closing, each phrase after its scene", () => {
+		html(
+			`<section data-epilogue>${[1, 2, 3, 4, 5, 6, 7, 8].map(() => "<p data-epilogue-line></p>").join("")}</section>`,
+		);
+		run(galaxyScene);
+		// the walk to the epilogue, the story + closing timeline and the phrases
+		expect(ScrollTrigger.getAll()).toHaveLength(3);
+		const lines = Array.from(
+			document.querySelectorAll<HTMLElement>("[data-epilogue-line]"),
+		);
+		const tl = gsap.globalTimeline
+			.getChildren(false, false, true)
+			.filter(
+				(t) => (t as gsap.core.Timeline).getChildren?.().length > 2,
+			) as gsap.core.Timeline[];
+		const phrases = tl.find((t) =>
+			t
+				.getChildren(false)
+				.some((c) => (c as gsap.core.Tween).targets?.()[0] === lines[0]),
+		);
+		expect(phrases).toBeDefined();
+		const startOf = (el: HTMLElement) =>
+			(phrases as gsap.core.Timeline)
+				.getChildren(false)
+				.filter((c) => (c as gsap.core.Tween).targets?.()[0] === el)
+				.map(
+					(c) => c.startTime() / (phrases as gsap.core.Timeline).duration(),
+				)[0];
+		const starts = lines.map(startOf);
+		// in order, with no two phrases on screen together (each ends before the next begins)
+		// and the merge (over by .14) finished before its phrase comes in
+		expect(starts[0]).toBeGreaterThan(0.14);
+		for (let i = 1; i < starts.length; i++)
+			expect(starts[i]).toBeGreaterThan(starts[i - 1] + 0.01);
+		// the black hole alone waits for the stars to be gone (.30); crossing the horizon
+		// comes after the hole has swelled (.47); the interior scenes live in .62-.93
+		expect(starts[3]).toBeGreaterThan(0.3);
+		expect(starts[4]).toBeGreaterThan(0.47);
+		expect(starts[5]).toBeGreaterThan(0.62);
+		expect(starts[7]).toBeGreaterThan(0.8);
+		expect(starts[7]).toBeLessThan(0.93);
+		galaxyState.hole = 1;
+	});
+
+	it("leaves the galaxy at its healthy peak when stopped (reduced motion)", () => {
 		const stopScene = run(galaxyScene);
-		galaxyState.burst = 0;
-		galaxyState.settle = 0;
+		galaxyState.story = 0;
 		stopScene();
-		expect([galaxyState.burst, galaxyState.settle]).toEqual([1, 1]);
-		galaxyState.burst = 0;
-		galaxyState.settle = 0;
+		expect(galaxyState.story).toBe(0.72);
+		expect(galaxyState.hole).toBe(0);
+		galaxyState.story = 0;
 	});
 });
 

@@ -28,11 +28,15 @@ atributos de datos y el motor los anima.
 | `scenes.ts` | Escena fijada del manifiesto (`pin` + `scrub` + `SplitText`) |
 | `split.ts` | `[data-split]`: títulos con máscara de líneas |
 | `media.ts` | Parallax decorativo, deriva de imágenes, marquee ligado a la velocidad (con inclinación `skewX`) |
+| `rails.ts` | `[data-hscroll]`: riel de proyectos fijado con las 6 mejores tarjetas de una categoría (un trigger por riel: deslizamiento e inclinación por velocidad) |
+| `peek.ts` | `[data-peek]`: índice del resto de una categoría; la imagen grande de cada fila sigue al cursor (`quickTo`, cortina `clip-path`, inclinación por velocidad) |
+| `intro.ts` | `[data-intro]`: la puerta del Home (el punto cero): una esfera de cristal con copos morados que respira casi inmóvil y se acelera con el cursor (energía: un `ticker` con `quickSetter`), una historia en frases con pausa y, al click la esfera gira varias veces en una órbita elíptica lenta, se encoge y vuelve al mismo punto, y ahí estalla (`bigbang.ts`: núcleo blanco, rayos de radiación, neblina roja, fragmentos con forma de estrella; `galaxyState.bang` lanza las estrellas). El portafolio aparece de golpe (sin girar) y `heatUp` lo tiñe de amarillo/rojo con un blend `color` durante 7 s hasta enfriarlo a violeta. Con el cursor encima la esfera pasa por estados: picos de caricatura → borde ferrofluido → escalofríos → burbuja de un lado → violeta a rojo. El botón «Saltar» (`corrupt.ts`) flota y usa `ScrambleTextPlugin` solo al cargar y al hover. Emite `intro:open` |
+| `snowglobe.ts` | Los copos de la esfera: un canvas 2D con física propia (`stepFlakes`, pura y probada) movido por el `ticker` de GSAP |
 | `masks.ts` | `[data-mask]` (marcos que se abren con `clip-path`) y `[data-stagger]` (hijos que entran uno a uno) |
 | `text.ts` | `[data-scrub-text]`: palabras que se encienden con el scroll (sin fijar) |
 | `layers.ts` | `[data-stack]`: pila de cards `sticky` con profundidad |
 | `skills.ts` | Habilidades en vuelo (`MotionPathPlugin`): chips que entran por curvas en S, escrubadas, y una línea "serpiente" que se dibuja con un punto que la recorre |
-| `galaxy.ts` | La galaxia de partículas sigue el scroll: `galaxyState.burst` (polvo → colapso → explosión) y `settle` (a la esquina); el canvas (`components/three/ParticleGalaxy.tsx`) solo lee ese estado |
+| `galaxy.ts` | La galaxia de partículas cuenta su vida con el scroll de TODA la página: un solo `ScrollTrigger` sin pin escruba `galaxyState.story` (0 → 1; nubes → el gas cae → disco → primeras estrellas → brazos y agujero negro → fusiones → final) y `galaxyState.bang` (el Big Bang de la introducción); el canvas (`components/three/ParticleGalaxy.tsx`) solo lee ese estado. Los rangos de cada fase están en la cabecera de `ParticleGalaxy.tsx`. El epílogo (`[data-epilogue]`, 1100–1300vh) da su propia distancia a cada escena y ninguna pisa a otra (porcentaje del tramo): fusión 0–.14, calma .14–.17, fin de las estrellas .17–.30, silencio .30–.32, el agujero negro se levanta hacia ti como una taza (`galaxyState.hole`, .32–.47), caída (`fall`, .47–.62: el agujero crece hasta llenar la pantalla, salen estrellas naranjas, se drenan los colores y el tiempo se hace lento con `timeScale`), el INTERIOR en 3D (`worm`, .62–.93) y el agujero blanco que inunda la luz (`exit`, .93–1). El interior es el diagrama de Penrose hecho sólido: cada rombo girado alrededor de su eje de tiempo es un bicono; la cámara solo avanza con el scroll por `flightZ` (se detiene un momento en cada escena: cono del agujero negro, horizonte interior donde se juntan cuatro celdas con los agujeros de gusano y antiuniversos a los lados, cono del agujero blanco) y sale por su punta. `INTERIOR_LABELS` y `projectInterior` (en `galaxyState.ts`) ponen las etiquetas (`[data-interior-label]`) con la misma cámara que el lienzo. Cada frase entra DESPUÉS de lo que dice. Pasado el agujero blanco, «Khelde.» y el footer usan la paleta clara (`.hole-exit`, solo con el motor activo) |
 | `anchors.ts` | Enlaces `#sección` con pins: `ScrollTrigger.refresh()` antes de medir, `ScrollToPlugin`, hasta 10 correcciones mientras la página crece |
 | `dialogs.ts` | Diálogo de comentarios (`[data-dialog]`, items en stagger; sin overlay a pantalla completa) y lanzador `[data-fab]` |
 | `detail.ts` | Ruta `/[lang]/project/[id]`: timeline de entrada + profundidad al hacer scroll |
@@ -193,13 +197,30 @@ Registrar un plugin nuevo: importarlo en `src/lib/motion/core.ts` y añadirlo a
   `data-reveal`; usa clases estáticas.
 - **No fijar nodos que React posee**: `pin` mete un `pin-spacer` alrededor y
   React fallaría al quitar/insertar ese nodo. Se fija siempre un contenedor
-  que renderiza Astro (hoy, la escena del manifiesto) y solo se anima su
-  interior. Una sección que crece con datos (el catálogo de proyectos) **no se
-  fija**: va en el flujo normal de la página.
-- **Nada de parallax ni máscara por tarjeta en listas largas**: cada
-  `[data-parallax-img]` crea un `ScrollTrigger`; con decenas de tarjetas la
-  sección se vuelve lenta en el móvil. Solo `[data-reveal]` en las primeras de
-  cada grupo; las que se abren después salen ya visibles.
+  que renderiza Astro (la escena del manifiesto, cada `[data-hscroll]` de
+  Proyectos) y solo se anima su interior.
+- **Una escena fijada no crece**: el riel muestra como máximo 6 tarjetas
+  (`RAIL_LIMIT`) y mide su recorrido en el DOM con el tope de
+  `MOTION.hscroll.maxScreens` (2.5 pantallas). Lo que crece con los datos (el
+  índice de «Ver N más») va FUERA del contenedor fijado.
+- **Un trigger por escena, no por card**: el riel mueve toda la tira desde UN
+  `onUpdate` y lee la geometría de las cards al refrescar, no por frame.
+  `[data-parallax-img]` (un `ScrollTrigger` por imagen) queda para pocas cards;
+  la cortina `[data-mask]` es barata (un `IntersectionObserver`) y sí va en
+  cada card. Las imágenes de una card entran enteras: sin `scale` ni deriva.
+- **Seguir al cursor con `quickTo`**, nunca un `gsap.to` por `pointermove`:
+  `peek.ts` crea tres `quickTo` por fila (x, y, rotación) y la caja de la fila se
+  mide una vez al entrar. Solo con `(hover: hover) and (pointer: fine)`; en
+  táctil la fila lleva miniatura.
+- **La puerta de la introducción no puede esconder el sitio**: es una capa fija sobre el DOM completo (que queda debajo, con `inert`), la pone una clase de `<html>` (`intro-on`) que añade un script en línea ANTES del primer pintado (`INTRO_GATE_SCRIPT`, con hash en el CSP) y solo existe con JS, movimiento permitido, sin ancla en la URL y sin la preferencia «ir directo». Si el motor no arranca en 5 s la clase se quita sola. El hero espera al evento `intro:open` (`hero.ts`); tras el Big Bang aparece de golpe y tras «saltar» entra como siempre.
+- **`quickSetter` en un solo callback del `ticker`, no tweens por evento**: el estado de ánimo de la partícula (`energy`) se suaviza en `intro.ts` y escribe escala, brillo y calor cada frame; el cursor solo cambia el objetivo.
+- **Imágenes `lazy` dentro de una tira recortada y trasladada**: el navegador
+  solo las pide cuando de verdad se ven y la card se abriría sobre un marco
+  gris. El riel las pasa a `eager` cuando él mismo está cerca (no al cargar la
+  página).
+- **Bajo 768 px (o con menos de 700 px de alto) el riel no se fija**: es una
+  fila nativa con `snap`. La media query vive en `rails.ts` (`RAIL_QUERY`) y en
+  `app.css`: mantenerlas iguales.
 - **Una isla `client:visible` nunca puede pintar `null` en el servidor**: Astro
   observa los *hijos* de la isla (es `display: contents`) y una isla sin hijos
   nunca se hidrata. Siempre se pinta algo (un esqueleto).

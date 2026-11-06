@@ -50,12 +50,11 @@
 		"PROJECTS_TITLE_BUTTON_C": "Empresas",
 		"PROJECTS_TITLE_BUTTON_D": "Análisis de datos",
 		"PROJECTS_BADGE_FORK": "Colaboración",
-		"PROJECTS_EMPTY": "Pronto habrá proyectos en esta categoría.",
 		"PROJECTS_BADGE_FEATURED": "Destacado",
 		"PROJECTS_SHOW_MORE": "Ver {n} más de {category}",
 		"PROJECTS_SHOW_LESS": "Mostrar menos",
-		"PROJECTS_NAV_LABEL": "Categorías de proyectos",
-		"PROJECTS_SHOWING": "{shown} de {total} proyectos"
+		"PROJECTS_SHOWING": "{shown} de {total} proyectos",
+		"PROJECTS_EMPTY": "Pronto habrá proyectos en esta categoría."
 	},
 	"MANIFESTO": {
 		"LABEL": "Qué hago",
@@ -88,6 +87,44 @@
 		"404_BODY": "¡Ups! La página que estás buscando aún no está en órbita, regresa después",
 		"404_IMG_ALT": "No se encontró la página",
 		"404_IMG_ARIA_LABEL": "No se encontró la ruta especificada"
+	},
+	"INTRO": {
+		"TITLE": "El origen del universo",
+		"SR": "Al principio no había nada, solo una partícula en la oscuridad. Activa el botón para dar origen al universo, o salta la introducción.",
+		"LINE_1": "Antes de todo, no había nada. Solo un punto en la oscuridad.",
+		"LINE_2": "Todo lo que existe empezó en una partícula como esta.",
+		"LINE_3": "¿Comenzamos?",
+		"HINT": "Haz clic en la partícula",
+		"START": "Comenzar: dar origen al universo",
+		"SKIP": "Saltar la introducción",
+		"REPLAY_TITLE": "¿Volver a ver el origen?",
+		"REPLAY_TEXT": "La próxima vez que entres, ¿quieres ver la historia desde la partícula del principio?",
+		"REPLAY_YES": "Sí, desde el principio",
+		"REPLAY_NO": "No, ir directo al sitio",
+		"REPLAY_SAVED_YES": "Listo: la próxima vez empezarás en la partícula.",
+		"REPLAY_SAVED_NO": "Listo: la próxima vez entrarás directo.",
+		"REPLAY_LINK": "Volver a ver el origen del universo"
+	},
+	"EPILOGUE": {
+		"LABEL": "El final de la historia del universo",
+		"LINE_1": "Una galaxia menor cae en su órbita y se funde con ella.",
+		"LINE_2": "Sin gas no nacen más estrellas: la luz se vuelve brasa.",
+		"LINE_3": "Las estrellas se apagan una a una.",
+		"LINE_4": "Solo queda el agujero negro, en silencio.",
+		"LINE_5": "Cruzas el horizonte de sucesos: ya no hay vuelta atrás.",
+		"LINE_6": "Al otro lado, un agujero blanco y un universo nuevo.",
+		"LINE_7": "El tiempo se vuelve lento: tu pasado se queda atrás y solo hay futuro delante.",
+		"LINE_8": "Cruzas el horizonte interior: a los lados, un agujero de gusano y universos paralelos."
+	},
+	"INTERIOR": {
+		"BLACK_HOLE": "Agujero negro",
+		"INNER_HORIZON": "Horizonte interior",
+		"WORMHOLE": "Agujero de gusano",
+		"PARALLEL_WORMHOLE": "Agujero de gusano paralelo",
+		"ANTIVERSE": "Antiuniverso",
+		"PARALLEL_ANTIVERSE": "Universo paralelo",
+		"WHITE_HOLE": "Agujero blanco",
+		"ANTIHORIZON": "Antihorizonte interior"
 	},
 	"FOOTER": {
 		"SITE": "Sitio",

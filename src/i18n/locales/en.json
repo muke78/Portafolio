@@ -50,12 +50,11 @@
 		"PROJECTS_TITLE_BUTTON_C": "Companies",
 		"PROJECTS_TITLE_BUTTON_D": "Data analysis",
 		"PROJECTS_BADGE_FORK": "Collaboration",
-		"PROJECTS_EMPTY": "Projects for this category are coming soon.",
 		"PROJECTS_BADGE_FEATURED": "Featured",
 		"PROJECTS_SHOW_MORE": "See {n} more in {category}",
 		"PROJECTS_SHOW_LESS": "Show less",
-		"PROJECTS_NAV_LABEL": "Project categories",
-		"PROJECTS_SHOWING": "{shown} of {total} projects"
+		"PROJECTS_SHOWING": "{shown} of {total} projects",
+		"PROJECTS_EMPTY": "Projects for this category are coming soon."
 	},
 	"MANIFESTO": {
 		"LABEL": "What I do",
@@ -88,6 +87,44 @@
 		"404_BODY": "Oops! The page you're looking for isn't in orbit yet. Please come back later.",
 		"404_IMG_ALT": "Page not found",
 		"404_IMG_ARIA_LABEL": "The requested route was not found"
+	},
+	"INTRO": {
+		"TITLE": "The origin of the universe",
+		"SR": "In the beginning there was nothing, just a particle in the dark. Activate the button to give birth to the universe, or skip the introduction.",
+		"LINE_1": "Before everything, there was nothing. Only a point in the dark.",
+		"LINE_2": "Everything that exists began in a particle like this one.",
+		"LINE_3": "Shall we begin?",
+		"HINT": "Click the particle",
+		"START": "Begin: give birth to the universe",
+		"SKIP": "Skip the introduction",
+		"REPLAY_TITLE": "Watch the origin again?",
+		"REPLAY_TEXT": "Next time you visit, do you want to see the story from the first particle?",
+		"REPLAY_YES": "Yes, from the beginning",
+		"REPLAY_NO": "No, take me to the site",
+		"REPLAY_SAVED_YES": "Done: next time you will start at the particle.",
+		"REPLAY_SAVED_NO": "Done: next time you will go straight in.",
+		"REPLAY_LINK": "Watch the origin of the universe again"
+	},
+	"EPILOGUE": {
+		"LABEL": "The end of the story of the universe",
+		"LINE_1": "A smaller galaxy falls into its orbit and merges with it.",
+		"LINE_2": "With no gas, no more stars are born: the light turns to embers.",
+		"LINE_3": "The stars go out one by one.",
+		"LINE_4": "Only the black hole is left, in silence.",
+		"LINE_5": "You cross the event horizon: there is no way back.",
+		"LINE_6": "On the other side, a white hole and a new universe.",
+		"LINE_7": "Time slows down: your past stays behind and only the future lies ahead.",
+		"LINE_8": "You cross the inner horizon: on either side, a wormhole and parallel universes."
+	},
+	"INTERIOR": {
+		"BLACK_HOLE": "Black hole",
+		"INNER_HORIZON": "Inner horizon",
+		"WORMHOLE": "Wormhole",
+		"PARALLEL_WORMHOLE": "Parallel wormhole",
+		"ANTIVERSE": "Antiverse",
+		"PARALLEL_ANTIVERSE": "Parallel universe",
+		"WHITE_HOLE": "White hole",
+		"ANTIHORIZON": "Inner antihorizon"
 	},
 	"FOOTER": {
 		"SITE": "Site",

@@ -6,7 +6,11 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 import compress from "astro-compress";
 import { DEFAULT_LOCALE, LOCALE_META, LOCALES } from "./src/i18n/locales.ts";
-import { MOTION_GATE_SCRIPT, THEME_SCRIPT } from "./src/lib/inlineScripts.ts";
+import {
+	INTRO_GATE_SCRIPT,
+	MOTION_GATE_SCRIPT,
+	THEME_SCRIPT,
+} from "./src/lib/inlineScripts.ts";
 
 // Unica fuente de la URL del sitio: canonicos, sitemap y robots.txt salen de
 // aqui. Con dominio propio: define SITE_URL en las variables de build.
@@ -91,7 +95,11 @@ export default defineConfig({
 			],
 			scriptDirective: {
 				resources: ["'self'", TURNSTILE_ORIGIN],
-				hashes: [hashOf(MOTION_GATE_SCRIPT), hashOf(THEME_SCRIPT)],
+				hashes: [
+					hashOf(MOTION_GATE_SCRIPT),
+					hashOf(THEME_SCRIPT),
+					hashOf(INTRO_GATE_SCRIPT),
+				],
 			},
 			// Los atributos style="" (Astro, React y GSAP los ponen) no se pueden
 			// hashear; no ejecutan codigo, asi que solo ellos quedan en `unsafe-inline`.

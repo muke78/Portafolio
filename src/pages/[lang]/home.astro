@@ -1,4 +1,6 @@
 ---
+import IntroGate from "@/components/intro/IntroGate.astro";
+import UniverseEpilogue from "@/components/intro/UniverseEpilogue.astro";
 import Acerca from "@/components/sections/Acerca.astro";
 import Contactos from "@/components/sections/Contacto.astro";
 import Footer from "@/components/sections/Footer.astro";
@@ -14,7 +16,8 @@ import Layout from "@/layouts/Layout.astro";
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 ---
 
-<Layout>
+<Layout intro>
+  <IntroGate />
   <Nav client:idle currentLocale={currentLocale} />
   <main id="main-content" role="main" class="pt-18">
     <div class="mx-auto max-w-310 px-6 scroll-mt-22" id="home">
@@ -35,6 +38,7 @@ const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
     <div id="contact" class="scroll-mt-22">
       <Contactos />
     </div>
+    <UniverseEpilogue />
   </main>
   <Footer />
   <CommentWidget client:idle currentLocale={currentLocale} />

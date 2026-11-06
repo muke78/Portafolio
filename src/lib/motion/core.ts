@@ -8,6 +8,7 @@
  */
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -48,14 +49,35 @@ export const MOTION = {
 		large: { light: 0.5, dark: 0.4 },
 		body: { light: 0.65, dark: 0.52 },
 	},
-	// Particle galaxy (galaxy.ts): scroll length of the collapse+blast and of
-	// the move to the corner, in viewport heights; scrub lag.
-	galaxy: { burstScreens: 1.2, settleScreens: 1.4, scrub: 1.2 },
+	// Particle galaxy (galaxy.ts): scrub lag of the story that follows the whole page.
+	galaxy: { scrub: 1.2 },
 	// Skills adrift (skills.ts): seconds between chips inside the scrubbed
 	// timeline, the largest tilt (degrees) a chip starts with, how far (px) it
 	// drifts in from, and the scrub lag (higher = floatier).
 	fly: { stagger: 0.09, tilt: 14, near: 240, far: 460, scrub: 1.8 },
-	// Pinned sideways showcase and layered stack (layers.ts).
+	// Projects rail (rails.ts): scroll length cap (screens), glide smoothing (s)
+	// and the largest lean with the scroll speed (deg).
+	hscroll: { maxScreens: 2.5, smooth: 0.7, skew: 3 },
+	// Intro (intro.ts): how far (px) the particle leans toward the cursor, the slow
+	// orbit before the blast (s), how long the stars take to fly out (s), how long the
+	// header takes to cool after it (s) and the story
+	// clock (s after the gate opens): each line comes in and goes out, then a pause with
+	// nothing on screen, then the invitation "Shall we begin?" at `invite`.
+	intro: {
+		lean: 56,
+		bang: 3,
+		orbit: 5,
+		heat: 7,
+		first: 0.3,
+		firstOut: 3.3,
+		second: 3.9,
+		secondOut: 6.3,
+		invite: 8,
+	},
+	// Project index preview (peek.ts): how far (px) the picture trails the
+	// cursor, how long it takes to catch up (s) and its largest tilt (deg).
+	peek: { gap: 28, follow: 0.55, tilt: 7 },
+	// Layered stack (layers.ts).
 	stack: { scale: 0.95, floor: 0.88 },
 	// Project detail page: intro timeline and scroll-linked depth.
 	detail: { total: 2, figureScale: 0.92 },
@@ -87,6 +109,7 @@ const register = () => {
 		SplitText,
 		MotionPathPlugin,
 		ScrollToPlugin,
+		ScrambleTextPlugin,
 	);
 	// Phones: the URL bar showing/hiding resizes the window while scrolling;
 	// that must not recompute every pin.

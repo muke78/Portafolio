@@ -50,12 +50,11 @@
 		"PROJECTS_TITLE_BUTTON_C": "Entreprises",
 		"PROJECTS_TITLE_BUTTON_D": "Analyse des données",
 		"PROJECTS_BADGE_FORK": "Collaboration",
-		"PROJECTS_EMPTY": "Des projets arrivent bientôt dans cette catégorie.",
 		"PROJECTS_BADGE_FEATURED": "À la une",
 		"PROJECTS_SHOW_MORE": "Voir {n} de plus : {category}",
 		"PROJECTS_SHOW_LESS": "Afficher moins",
-		"PROJECTS_NAV_LABEL": "Catégories de projets",
-		"PROJECTS_SHOWING": "{shown} sur {total} projets"
+		"PROJECTS_SHOWING": "{shown} sur {total} projets",
+		"PROJECTS_EMPTY": "Des projets arrivent bientôt dans cette catégorie."
 	},
 	"MANIFESTO": {
 		"LABEL": "Ce que je fais",
@@ -88,6 +87,44 @@
 		"404_BODY": "Oups ! La page que vous cherchez n'est pas encore en orbite. Veuillez revenir plus tard.",
 		"404_IMG_ALT": "Page introuvable",
 		"404_IMG_ARIA_LABEL": "L'itinéraire demandé est introuvable"
+	},
+	"INTRO": {
+		"TITLE": "L'origine de l'univers",
+		"SR": "Au début, il n'y avait rien, seulement une particule dans le noir. Active le bouton pour donner naissance à l'univers, ou passe l'introduction.",
+		"LINE_1": "Avant tout, il n'y avait rien. Seulement un point dans l'obscurité.",
+		"LINE_2": "Tout ce qui existe a commencé dans une particule comme celle-ci.",
+		"LINE_3": "On commence ?",
+		"HINT": "Clique sur la particule",
+		"START": "Commencer : donner naissance à l'univers",
+		"SKIP": "Passer l'introduction",
+		"REPLAY_TITLE": "Revoir l'origine ?",
+		"REPLAY_TEXT": "La prochaine fois, veux-tu voir l'histoire depuis la première particule ?",
+		"REPLAY_YES": "Oui, depuis le début",
+		"REPLAY_NO": "Non, aller directement au site",
+		"REPLAY_SAVED_YES": "C'est noté : la prochaine fois tu commenceras à la particule.",
+		"REPLAY_SAVED_NO": "C'est noté : la prochaine fois tu entreras directement.",
+		"REPLAY_LINK": "Revoir l'origine de l'univers"
+	},
+	"EPILOGUE": {
+		"LABEL": "La fin de l'histoire de l'univers",
+		"LINE_1": "Une galaxie plus petite tombe dans son orbite et fusionne avec elle.",
+		"LINE_2": "Sans gaz, plus aucune étoile ne naît : la lumière devient braise.",
+		"LINE_3": "Les étoiles s'éteignent une à une.",
+		"LINE_4": "Il ne reste que le trou noir, en silence.",
+		"LINE_5": "Tu franchis l'horizon des événements : il n'y a plus de retour.",
+		"LINE_6": "De l'autre côté, un trou blanc et un nouvel univers.",
+		"LINE_7": "Le temps ralentit : ton passé reste derrière toi et il n'y a plus que l'avenir devant.",
+		"LINE_8": "Tu franchis l'horizon intérieur : de chaque côté, un trou de ver et des univers parallèles."
+	},
+	"INTERIOR": {
+		"BLACK_HOLE": "Trou noir",
+		"INNER_HORIZON": "Horizon intérieur",
+		"WORMHOLE": "Trou de ver",
+		"PARALLEL_WORMHOLE": "Trou de ver parallèle",
+		"ANTIVERSE": "Antivers",
+		"PARALLEL_ANTIVERSE": "Univers parallèle",
+		"WHITE_HOLE": "Trou blanc",
+		"ANTIHORIZON": "Antihorizon intérieur"
 	},
 	"FOOTER": {
 		"SITE": "Site",

@@ -3,6 +3,7 @@
  *
  * How the page talks to the engine - data attributes, nothing else:
  *
+ *   [data-intro] + data-intro-*  the gate: a particle you perturb, then the Big Bang (intro.ts)
  *   [data-hero] + data-hero-*  orchestrated load + scrubbed exit (hero.ts)
  *   [data-reveal]              fade-up with batch stagger on entering (reveals.ts)
  *   [data-manifesto] + parts   pinned, scrubbed reading scene (scenes.ts)
@@ -13,6 +14,10 @@
  *   [data-mask]                frame that opens like a curtain (masks.ts)
  *   [data-stagger] + items     children entering one by one (masks.ts)
  *   [data-scrub-text]          words lighting up with the scroll (text.ts)
+ *   [data-hscroll] + track     pinned sideways rail of ALL a category's projects:
+ *                              glide + lean with the scroll speed, one trigger (rails.ts)
+ *   [data-peek] + rows/img     index whose rows show a big picture that trails the
+ *                              cursor (peek.ts)
  *   [data-stack] + cards       layered sticky stack with depth (layers.ts)
  *   [data-fly-group] + chips   skills flying along curves, MotionPath (skills.ts)
  *   [data-snake] + trace/dot   snake line drawn with the scroll (skills.ts)
@@ -43,10 +48,13 @@ import { projectDetail } from "./detail";
 import { dialogs } from "./dialogs";
 import { galaxyScene } from "./galaxy";
 import { playHero } from "./hero";
+import { introGate } from "./intro";
 import { stackScenes } from "./layers";
 import { maskReveals, staggerGroups } from "./masks";
 import { cardImageParallax, marquees, setupParallax } from "./media";
 import { scrollProgress } from "./page";
+import { peekScenes } from "./peek";
+import { railScenes } from "./rails";
 import { observeReveals } from "./reveals";
 import { manifestoScene } from "./scenes";
 import { skillFlights, snakeLine } from "./skills";
@@ -81,6 +89,7 @@ export const initMotion = (): Cleanup => {
 
 		const stops: (Cleanup | undefined)[] = [
 			trackIslands(),
+			introGate(tools),
 			playHero(tools),
 			observeReveals(tools),
 			manifestoScene(tools),
@@ -92,6 +101,8 @@ export const initMotion = (): Cleanup => {
 			staggerGroups(tools),
 			scrubText(tools),
 			stackScenes(tools),
+			railScenes(tools),
+			peekScenes(tools),
 			skillFlights(tools),
 			snakeLine(tools),
 			projectDetail(tools),
