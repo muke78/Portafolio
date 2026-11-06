@@ -153,7 +153,7 @@ reglas que no se negocian:
    lógica pasa por el motor de `src/lib/motion/` (no uses `gsap.*` suelto
    en componentes): el HTML solo lleva atributos de datos (`data-reveal`,
    `data-split`, `data-manifesto`, `data-parallax-img`, `data-marquee`,
-   `data-mask`, `data-stagger`, `data-scrub-text`, `data-hscroll`,
+   `data-mask`, `data-stagger`, `data-scrub-text`, `data-hscroll`, `data-peek`,
    `data-stack`, `data-fly-*`, `data-snake`, `data-dialog-*`, `data-fab`,
    `data-detail-*`,
    `data-hero-*`; ver 7.7 y 12.4 de `docs/UI_STANDARDS.md`). **Antes de

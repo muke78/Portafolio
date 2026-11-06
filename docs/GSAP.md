@@ -28,6 +28,8 @@ atributos de datos y el motor los anima.
 | `scenes.ts` | Escena fijada del manifiesto (`pin` + `scrub` + `SplitText`) |
 | `split.ts` | `[data-split]`: títulos con máscara de líneas |
 | `media.ts` | Parallax decorativo, deriva de imágenes, marquee ligado a la velocidad (con inclinación `skewX`) |
+| `rails.ts` | `[data-hscroll]`: riel de proyectos fijado con las 6 mejores tarjetas de una categoría (un trigger por riel: deslizamiento e inclinación por velocidad) |
+| `peek.ts` | `[data-peek]`: índice del resto de una categoría; la imagen grande de cada fila sigue al cursor (`quickTo`, cortina `clip-path`, inclinación por velocidad) |
 | `masks.ts` | `[data-mask]` (marcos que se abren con `clip-path`) y `[data-stagger]` (hijos que entran uno a uno) |
 | `text.ts` | `[data-scrub-text]`: palabras que se encienden con el scroll (sin fijar) |
 | `layers.ts` | `[data-stack]`: pila de cards `sticky` con profundidad |
@@ -193,13 +195,28 @@ Registrar un plugin nuevo: importarlo en `src/lib/motion/core.ts` y añadirlo a
   `data-reveal`; usa clases estáticas.
 - **No fijar nodos que React posee**: `pin` mete un `pin-spacer` alrededor y
   React fallaría al quitar/insertar ese nodo. Se fija siempre un contenedor
-  que renderiza Astro (hoy, la escena del manifiesto) y solo se anima su
-  interior. Una sección que crece con datos (el catálogo de proyectos) **no se
-  fija**: va en el flujo normal de la página.
-- **Nada de parallax ni máscara por tarjeta en listas largas**: cada
-  `[data-parallax-img]` crea un `ScrollTrigger`; con decenas de tarjetas la
-  sección se vuelve lenta en el móvil. Solo `[data-reveal]` en las primeras de
-  cada grupo; las que se abren después salen ya visibles.
+  que renderiza Astro (la escena del manifiesto, cada `[data-hscroll]` de
+  Proyectos) y solo se anima su interior.
+- **Una escena fijada no crece**: el riel muestra como máximo 6 tarjetas
+  (`RAIL_LIMIT`) y mide su recorrido en el DOM con el tope de
+  `MOTION.hscroll.maxScreens` (2.5 pantallas). Lo que crece con los datos (el
+  índice de «Ver N más») va FUERA del contenedor fijado.
+- **Un trigger por escena, no por card**: el riel mueve toda la tira desde UN
+  `onUpdate` y lee la geometría de las cards al refrescar, no por frame.
+  `[data-parallax-img]` (un `ScrollTrigger` por imagen) queda para pocas cards;
+  la cortina `[data-mask]` es barata (un `IntersectionObserver`) y sí va en
+  cada card. Las imágenes de una card entran enteras: sin `scale` ni deriva.
+- **Seguir al cursor con `quickTo`**, nunca un `gsap.to` por `pointermove`:
+  `peek.ts` crea tres `quickTo` por fila (x, y, rotación) y la caja de la fila se
+  mide una vez al entrar. Solo con `(hover: hover) and (pointer: fine)`; en
+  táctil la fila lleva miniatura.
+- **Imágenes `lazy` dentro de una tira recortada y trasladada**: el navegador
+  solo las pide cuando de verdad se ven y la card se abriría sobre un marco
+  gris. El riel las pasa a `eager` cuando él mismo está cerca (no al cargar la
+  página).
+- **Bajo 768 px (o con menos de 700 px de alto) el riel no se fija**: es una
+  fila nativa con `snap`. La media query vive en `rails.ts` (`RAIL_QUERY`) y en
+  `app.css`: mantenerlas iguales.
 - **Una isla `client:visible` nunca puede pintar `null` en el servidor**: Astro
   observa los *hijos* de la isla (es `display: contents`) y una isla sin hijos
   nunca se hidrata. Siempre se pinta algo (un esqueleto).

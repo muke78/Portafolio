@@ -184,7 +184,7 @@ test.describe("navigation across the pinned sections", () => {
 test.describe("on a phone", () => {
 	test.use({ viewport: { width: 375, height: 812 } });
 
-	test("the projects flow with the page: nothing pinned and no sideways overflow", async ({
+	test("the projects are a native swipeable row: nothing pinned and no sideways overflow", async ({
 		page,
 	}) => {
 		await page.goto("/es/home#projects");
@@ -194,9 +194,13 @@ test.describe("on a phone", () => {
 		await expect(page.locator("#projects article").first()).toBeVisible({
 			timeout: 15_000,
 		});
-		// The catalog is plain flow: no pinned wrapper around it, no horizontal rail.
+		// Below 768 px the rail is not pinned: no pin-spacer, the row scrolls by hand.
 		await expect(page.locator("#projects .pin-spacer")).toHaveCount(0);
-		await expect(page.locator("#projects [data-hscroll-track]")).toHaveCount(0);
+		const swipe = await page
+			.locator("#projects [data-hscroll-viewport]")
+			.first()
+			.evaluate((el) => getComputedStyle(el).overflowX);
+		expect(swipe).toBe("auto");
 		const overflow = await page.evaluate(
 			() => document.documentElement.scrollWidth - window.innerWidth,
 		);

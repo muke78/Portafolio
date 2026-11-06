@@ -1,7 +1,9 @@
 ---
-import { ProjectsCatalog } from "@/features/projects/ProjectsCatalog";
+import { ProjectMore } from "@/features/projects/ProjectMore";
+import { ProjectRail } from "@/features/projects/ProjectRail";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
+import { CATEGORIES } from "@/types/currentLang.interface";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
@@ -13,15 +15,34 @@ const i18n = getI18N({ currentLocale });
 	</h2>
 
 	<!--
-		One island, one request: the catalog asks for the projects from the browser
-		once it is close to the viewport, so the first render (the hero) costs the
-		backend nothing. It always renders a skeleton on the server (an empty island
-		is never hydrated by client:visible, which observes the island's children).
+		One pinned scene per category: its best projects (6, featured first) as big cards
+		in a sideways strip, then a button that opens the rest as an index. The pinned
+		wrapper is Astro's (React never owns the pinned node) and the button and index sit
+		OUTSIDE it, so what grows never changes the height of a pinned scene. See
+		src/lib/motion/rails.ts and peek.ts. No data is fetched here: each island asks for
+		the projects from the browser once it is close to the viewport (one shared
+		request), so the first render (the hero) costs the backend nothing. Each island
+		always renders something on the server (an empty island is never hydrated by
+		client:visible, which observes the island's children).
 	-->
-	<div class="mt-16">
-		<ProjectsCatalog
-			client:visible={{ rootMargin: "500px" }}
-			currentLocale={currentLocale}
-		/>
+	<div class="mt-16 flex flex-col gap-24 lg:gap-32">
+		{
+			CATEGORIES.map((category) => (
+				<div>
+					<div data-hscroll>
+						<ProjectRail
+							client:visible={{ rootMargin: "500px" }}
+							currentLocale={currentLocale}
+							category={category}
+						/>
+					</div>
+					<ProjectMore
+						client:visible={{ rootMargin: "500px" }}
+						currentLocale={currentLocale}
+						category={category}
+					/>
+				</div>
+			))
+		}
 	</div>
 </div>

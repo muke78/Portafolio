@@ -1,14 +1,9 @@
 import { describe, expect, it } from "vitest";
-import {
-	fill,
-	groupByCategory,
-	INITIAL_VISIBLE,
-	orderProjects,
-} from "@/lib/projectsOrder";
+import { orderProjects } from "@/lib/projectsOrder";
 import type { Projects } from "@/types/currentLang.interface";
 
-const p = (id: number, featured = false, category = "frontend") =>
-	({ project_id: id, featured, category }) as Projects;
+const p = (id: number, featured = false) =>
+	({ project_id: id, featured }) as Projects;
 
 describe("orderProjects", () => {
 	it("pone los destacados primero y respeta el orden del CMS dentro de cada grupo", () => {
@@ -30,54 +25,9 @@ describe("orderProjects", () => {
 			3, 1, 2,
 		]);
 	});
-});
 
-describe("groupByCategory", () => {
-	it("agrupa en el orden fijo del sitio, omite las vacias y ordena cada una", () => {
-		const rows = [
-			p(1, false, "companies"),
-			p(2, false, "frontend"),
-			p(3, true, "companies"),
-			p(4, false, "dataAnalyst"),
-		];
-		const sections = groupByCategory(rows);
-		expect(sections.map((s) => s.category)).toEqual([
-			"frontend",
-			"companies",
-			"dataAnalyst",
-		]);
-		expect(sections[1].projects.map((r) => r.project_id)).toEqual([3, 1]);
-	});
-
-	it("sin proyectos no hay secciones", () => {
-		expect(groupByCategory([])).toEqual([]);
-	});
-
-	it("no pierde ninguno: todos los proyectos salen en alguna seccion", () => {
-		const rows = Array.from({ length: 40 }, (_, i) =>
-			p(
-				i + 1,
-				i % 7 === 0,
-				["frontend", "backend", "companies", "dataAnalyst"][i % 4],
-			),
-		);
-		const total = groupByCategory(rows).reduce(
-			(n, s) => n + s.projects.length,
-			0,
-		);
-		expect(total).toBe(40);
-	});
-});
-
-describe("limites y fill", () => {
-	it("la primera pantalla de una categoria es corta", () => {
-		expect(INITIAL_VISIBLE).toBe(6);
-	});
-
-	it("fill rellena los huecos y deja vacio el que no existe", () => {
-		expect(
-			fill("Ver {n} más de {category}", { n: 8, category: "Frontend" }),
-		).toBe("Ver 8 más de Frontend");
-		expect(fill("{x}!", {})).toBe("!");
+	it("no pierde ninguno, por muchos que sean", () => {
+		const rows = Array.from({ length: 40 }, (_, i) => p(i + 1, i % 7 === 0));
+		expect(orderProjects(rows)).toHaveLength(40);
 	});
 });
