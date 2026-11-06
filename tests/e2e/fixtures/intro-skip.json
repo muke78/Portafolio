@@ -1,0 +1,9 @@
+{
+	"cookies": [],
+	"origins": [
+		{
+			"origin": "http://localhost:4321",
+			"localStorage": [{ "name": "intro", "value": "skip" }]
+		}
+	]
+}

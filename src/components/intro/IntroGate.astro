@@ -1,0 +1,117 @@
+---
+import { Button } from "@/components/ui/button";
+import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
+
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+const t = getI18N({ currentLocale }).INTRO;
+---
+
+<!--
+	La puerta de la introduccion: el punto cero, antes del Big Bang. Es una capa fija que SOLO se
+	ve mientras <html> lleva la clase `intro-on` (la pone el script en linea del <head>: JS activo,
+	movimiento permitido, primera visita o "ver desde el principio"). Sin esa clase es `display:
+	none`, y el portafolio completo sigue en el DOM debajo, asi que rastreadores, lectores de
+	pantalla sin JS y Lighthouse ven el sitio completo.
+
+	El movimiento lo pone el motor (src/lib/motion/intro.ts) desde estos atributos:
+	  data-intro            la capa; data-intro-sky su fondo (el vacio, siempre oscuro en los dos temas)
+	  data-intro-drift      deriva suave del punto (en tactil, que no tiene raton)
+	  data-intro-point      el boton: lo perturba el puntero y al activarlo estalla
+	  data-intro-globe/-flakes/-heat/-shine   la esfera de cristal, los copos morados de dentro,
+	                        el calor de su centro (la singularidad) y el brillo del cristal
+	  data-intro-halo/ripple   su resplandor y la onda al acercarse
+	  data-intro-line       las frases de la historia, una tras otra
+	  data-intro-wave/flash la onda expansiva y el destello del Big Bang
+	  data-intro-skip       saltar la introduccion
+-->
+<div
+	data-intro
+	role="dialog"
+	aria-modal="true"
+	aria-labelledby="intro-title"
+	class="fixed inset-0 z-200 hidden overflow-hidden text-night-foreground"
+>
+	<div data-intro-sky class="absolute inset-0 bg-night"></div>
+
+	<p id="intro-title" class="sr-only">{t.TITLE}. {t.SR}</p>
+
+	<div class="absolute inset-0 grid place-items-center">
+		<div data-intro-drift class="relative grid size-40 place-items-center">
+			<span
+				data-intro-ripple
+				aria-hidden="true"
+				class="pointer-events-none absolute size-6 rounded-full border border-primary opacity-0"
+			></span>
+			<span
+				data-intro-halo
+				aria-hidden="true"
+				class="pointer-events-none absolute size-28 rounded-full bg-primary opacity-30 blur-2xl"
+			></span>
+			<button
+				type="button"
+				data-intro-point
+				aria-label={t.START}
+				class="relative grid size-24 cursor-pointer place-items-center rounded-full sm:size-28 outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+			>
+				<!-- La particula: una esfera de cristal con copos morados dentro (un canvas
+				     2D que dibuja el motor). Decorativa: el boton ya tiene nombre. -->
+				<span
+					data-intro-globe
+					aria-hidden="true"
+					class="intro-globe relative block size-[72px] cursor-pointer overflow-hidden rounded-full sm:size-24"
+				>
+					<!-- El calor del centro: la singularidad. Brilla mas con la energia. -->
+					<span data-intro-heat class="intro-globe-heat absolute inset-0"></span>
+					<canvas
+						data-intro-flakes
+						class="absolute inset-0 size-full cursor-pointer"
+					></canvas>
+					<span data-intro-shine class="intro-globe-shine absolute inset-0 cursor-pointer"></span>
+				</span>
+			</button>
+		</div>
+	</div>
+
+	<!-- La historia: frases apiladas en la misma celda; el motor las enciende una a una. -->
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-x-0 bottom-[16vh] grid px-6 text-center"
+	>
+		<p
+			data-intro-line
+			class="font-serif-display text-subtitle col-start-1 row-start-1 mx-auto max-w-[28ch] opacity-0"
+		>
+			{t.LINE_1}
+		</p>
+		<p
+			data-intro-line
+			class="font-serif-display text-subtitle col-start-1 row-start-1 mx-auto max-w-[28ch] opacity-0"
+		>
+			{t.LINE_2}
+		</p>
+		<div data-intro-line class="col-start-1 row-start-1 opacity-0">
+			<p class="font-serif-display text-title">{t.LINE_3}</p>
+			<p class="eyebrow mt-3">{t.HINT}</p>
+		</div>
+	</div>
+
+	<span
+		data-intro-wave
+		aria-hidden="true"
+		class="pointer-events-none absolute top-1/2 left-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary opacity-0"
+	></span>
+	<span
+		data-intro-flash
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-0 bg-night-foreground opacity-0"
+	></span>
+
+	<Button
+		variant="ghost"
+		data-intro-skip
+		className="absolute right-4 bottom-4 text-night-foreground/80 hover:text-night-foreground sm:right-6 sm:bottom-6"
+	>
+		{t.SKIP}
+	</Button>
+</div>

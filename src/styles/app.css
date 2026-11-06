@@ -444,6 +444,65 @@
 .motion-ok [data-detail-meta]:not([data-revealed]) {
 	opacity: 0;
 }
+/* Intro gate (src/lib/motion/intro.ts): only exists while <html> has .intro-on (set before
+   the first paint by INTRO_GATE_SCRIPT). The page does not scroll under it; the gutter is
+   reserved so the scrollbar appearing afterwards does not shift the layout. */
+html.intro-on [data-intro] {
+	display: block;
+}
+html.intro-on {
+	overflow: hidden;
+	scrollbar-gutter: stable;
+}
+/* The intro particle: a glass sphere (a snow globe with violet flakes, drawn by
+   src/lib/motion/snowglobe.ts). Built only from tokens. */
+.intro-globe {
+	background:
+		radial-gradient(
+			circle at 50% 62%,
+			color-mix(in oklch, var(--primary) 34%, transparent) 0%,
+			color-mix(in oklch, var(--primary) 10%, transparent) 55%,
+			transparent 75%
+		),
+		radial-gradient(
+			circle at 50% 50%,
+			color-mix(in oklch, var(--night) 55%, transparent),
+			color-mix(in oklch, var(--night) 25%, transparent)
+		);
+	border: 1px solid
+		color-mix(in oklch, var(--night-foreground) 24%, transparent);
+	box-shadow:
+		inset 0 0 14px 1px color-mix(in oklch, var(--primary) 55%, transparent),
+		inset 0 -12px 18px color-mix(in oklch, var(--primary) 30%, transparent),
+		0 0 26px 2px color-mix(in oklch, var(--primary) 40%, transparent);
+}
+.intro-globe-heat {
+	pointer-events: none;
+	border-radius: 9999px;
+	opacity: 0.16;
+	background: radial-gradient(
+		circle at 50% 52%,
+		color-mix(in oklch, var(--night-foreground) 85%, transparent) 0%,
+		color-mix(in oklch, var(--galaxy-hot) 55%, transparent) 14%,
+		color-mix(in oklch, var(--primary) 45%, transparent) 38%,
+		transparent 68%
+	);
+}
+.intro-globe-shine {
+	pointer-events: none;
+	border-radius: 9999px;
+	background:
+		radial-gradient(
+			ellipse 46% 30% at 31% 21%,
+			color-mix(in oklch, var(--night-foreground) 62%, transparent),
+			transparent 72%
+		),
+		radial-gradient(
+			ellipse 38% 18% at 72% 86%,
+			color-mix(in oklch, var(--primary) 55%, transparent),
+			transparent 78%
+		);
+}
 /* Projects rail: the track is clipped (and moved by GSAP) only where the
    engine pins it; below that (and without the engine or with reduced motion)
    it stays a hand-scrollable, snapping row. Keep the query equal to RAIL_QUERY

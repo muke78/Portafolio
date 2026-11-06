@@ -88,6 +88,23 @@
 		"404_IMG_ALT": "Page not found",
 		"404_IMG_ARIA_LABEL": "The requested route was not found"
 	},
+	"INTRO": {
+		"TITLE": "The origin of the universe",
+		"SR": "In the beginning there was nothing, just a particle in the dark. Activate the button to give birth to the universe, or skip the introduction.",
+		"LINE_1": "Before everything, there was nothing. Only a point in the dark.",
+		"LINE_2": "Everything that exists began in a particle like this one.",
+		"LINE_3": "Shall we begin?",
+		"HINT": "Click the particle",
+		"START": "Begin: give birth to the universe",
+		"SKIP": "Skip the introduction",
+		"REPLAY_TITLE": "Watch the origin again?",
+		"REPLAY_TEXT": "Next time you visit, do you want to see the story from the first particle?",
+		"REPLAY_YES": "Yes, from the beginning",
+		"REPLAY_NO": "No, take me to the site",
+		"REPLAY_SAVED_YES": "Done: next time you will start at the particle.",
+		"REPLAY_SAVED_NO": "Done: next time you will go straight in.",
+		"REPLAY_LINK": "Watch the origin of the universe again"
+	},
 	"FOOTER": {
 		"SITE": "Site",
 		"ELSEWHERE": "Elsewhere"

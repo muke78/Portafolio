@@ -112,7 +112,7 @@ export function Cosmos() {
 	}, []);
 
 	return (
-		<div className="cosmos" ref={ref} aria-hidden="true">
+		<div className="cosmos" ref={ref} aria-hidden="true" data-bang-cosmos>
 			<div className="cosmos-vignette" />
 
 			<div
