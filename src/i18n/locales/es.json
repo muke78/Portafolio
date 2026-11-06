@@ -105,6 +105,13 @@
 		"REPLAY_SAVED_NO": "Listo: la próxima vez entrarás directo.",
 		"REPLAY_LINK": "Volver a ver el origen del universo"
 	},
+	"EPILOGUE": {
+		"LABEL": "El final de la historia del universo",
+		"LINE_1": "Una galaxia menor cae en su órbita y se funde con ella.",
+		"LINE_2": "Sin gas no nacen más estrellas: la luz se vuelve brasa.",
+		"LINE_3": "Las estrellas se apagan una a una.",
+		"LINE_4": "Solo queda el agujero negro, en silencio."
+	},
 	"FOOTER": {
 		"SITE": "Sitio",
 		"ELSEWHERE": "En otros sitios"

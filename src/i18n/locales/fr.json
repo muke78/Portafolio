@@ -105,6 +105,13 @@
 		"REPLAY_SAVED_NO": "C'est noté : la prochaine fois tu entreras directement.",
 		"REPLAY_LINK": "Revoir l'origine de l'univers"
 	},
+	"EPILOGUE": {
+		"LABEL": "La fin de l'histoire de l'univers",
+		"LINE_1": "Une galaxie plus petite tombe dans son orbite et fusionne avec elle.",
+		"LINE_2": "Sans gaz, plus aucune étoile ne naît : la lumière devient braise.",
+		"LINE_3": "Les étoiles s'éteignent une à une.",
+		"LINE_4": "Il ne reste que le trou noir, en silence."
+	},
 	"FOOTER": {
 		"SITE": "Site",
 		"ELSEWHERE": "Ailleurs"

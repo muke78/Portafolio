@@ -18,11 +18,9 @@ const t = getI18N({ currentLocale }).INTRO;
 	  data-intro            la capa; data-intro-sky su fondo (el vacio, siempre oscuro en los dos temas)
 	  data-intro-drift      deriva suave del punto (en tactil, que no tiene raton)
 	  data-intro-point      el boton: lo perturba el puntero y al activarlo estalla
-	  data-intro-globe/-flakes/-heat/-shine   la esfera de cristal, los copos morados de dentro,
-	                        el calor de su centro (la singularidad) y el brillo del cristal
+	  data-intro-flakes     el canvas de la particula: cristal, plasma caliente y borde que se deforma
 	  data-intro-halo/ripple   su resplandor y la onda al acercarse
 	  data-intro-line       las frases de la historia, una tras otra
-	  data-intro-wave/flash la onda expansiva y el destello del Big Bang
 	  data-intro-skip       saltar la introduccion
 -->
 <div
@@ -52,23 +50,16 @@ const t = getI18N({ currentLocale }).INTRO;
 				type="button"
 				data-intro-point
 				aria-label={t.START}
-				class="relative grid size-24 cursor-pointer place-items-center rounded-full sm:size-28 outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+				class="relative grid size-24 cursor-pointer place-items-center rounded-full outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:size-28"
 			>
-				<!-- La particula: una esfera de cristal con copos morados dentro (un canvas
-				     2D que dibuja el motor). Decorativa: el boton ya tiene nombre. -->
-				<span
-					data-intro-globe
+				<!-- La particula: una esfera de cristal con un plasma caliente dentro, todo dibujado
+				     en un canvas (snowglobe.ts). Es mas grande que la esfera para dejar sitio a
+				     las ondas, las puntas y la burbuja. Decorativa: el boton ya tiene nombre. -->
+				<canvas
+					data-intro-flakes
 					aria-hidden="true"
-					class="intro-globe relative block size-[72px] cursor-pointer overflow-hidden rounded-full sm:size-24"
-				>
-					<!-- El calor del centro: la singularidad. Brilla mas con la energia. -->
-					<span data-intro-heat class="intro-globe-heat absolute inset-0"></span>
-					<canvas
-						data-intro-flakes
-						class="absolute inset-0 size-full cursor-pointer"
-					></canvas>
-					<span data-intro-shine class="intro-globe-shine absolute inset-0 cursor-pointer"></span>
-				</span>
+					class="pointer-events-none absolute top-1/2 left-1/2 size-[168px] -translate-x-1/2 -translate-y-1/2 cursor-pointer sm:size-56"
+				></canvas>
 			</button>
 		</div>
 	</div>
@@ -95,17 +86,6 @@ const t = getI18N({ currentLocale }).INTRO;
 			<p class="eyebrow mt-3">{t.HINT}</p>
 		</div>
 	</div>
-
-	<span
-		data-intro-wave
-		aria-hidden="true"
-		class="pointer-events-none absolute top-1/2 left-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary opacity-0"
-	></span>
-	<span
-		data-intro-flash
-		aria-hidden="true"
-		class="pointer-events-none absolute inset-0 bg-night-foreground opacity-0"
-	></span>
 
 	<Button
 		variant="ghost"

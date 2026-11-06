@@ -15,3 +15,13 @@
  *                  the header of ParticleGalaxy.tsx.
  */
 export const galaxyState = { bang: 1, story: 0 };
+
+/**
+ * Story value where the epilogue begins: the galaxy has formed (disc, first stars, arms
+ * winding) and is about to merge with another and die in the open. It is where the canvas
+ * moves the galaxy to the middle of the stage (ParticleGalaxy.tsx) and where the scroll
+ * scene switches from "the whole page" to "the epilogue" (src/lib/motion/galaxy.ts).
+ */
+export const EPILOGUE_FROM = 0.54;
+/** Story value of a healthy galaxy: the still frame under reduced motion. */
+export const PEAK = 0.72;

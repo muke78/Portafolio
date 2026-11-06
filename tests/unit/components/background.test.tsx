@@ -167,13 +167,17 @@ describe("ParticleGalaxy", () => {
 
 		preference({ "(max-width: 767px)": true });
 		render(<ParticleGalaxy />);
-		expect(created.geometries[1].attributes.aGal.array.length).toBe(4500 * 3);
+		// Each mount builds the stars, then a smaller set for the gas clouds.
+		expect(created.geometries[2].attributes.aGal.array.length).toBe(4500 * 3);
+		expect(created.geometries[1].attributes.aGal.array.length).toBe(280 * 3);
+		expect(created.geometries[3].attributes.aGal.array.length).toBe(140 * 3);
 	});
 
 	it("generates the same galaxy every time (seeded, original)", () => {
 		render(<ParticleGalaxy />).unmount();
 		render(<ParticleGalaxy />).unmount();
-		const [a, b] = created.geometries;
+		const a = created.geometries[0];
+		const b = created.geometries[2];
 		expect(Array.from(a.attributes.aGal.array.slice(0, 30))).toEqual(
 			Array.from(b.attributes.aGal.array.slice(0, 30)),
 		);
@@ -207,17 +211,27 @@ describe("ParticleGalaxy", () => {
 		expect(created.groups[0].scale.setScalar).toHaveBeenCalled();
 	});
 
-	it("fades the galaxy a little as it dies in the corner (end of the story)", () => {
+	it("in the epilogue the galaxy goes to the middle of the empty stage (nothing covers it)", () => {
 		render(<ParticleGalaxy />);
 		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
 			.mock.calls[0][0] as FrameRequestCallback;
+		const group = created.groups[0];
 		galaxyState.story = 0.3;
 		loop(performance.now() + 5000);
-		const full = created.materials[0].uniforms.uOpacity.value as number;
+		const before = group.position.x;
 		galaxyState.story = 1;
 		loop(performance.now() + 5100);
-		const dim = created.materials[0].uniforms.uOpacity.value as number;
-		expect(dim).toBeLessThan(full);
+		const after = group.position.x;
+		// While it forms it sits to the right of the text; in the epilogue it is centred.
+		expect(before).toBeGreaterThan(0.5);
+		expect(Math.abs(after)).toBeLessThan(1e-6);
+	});
+
+	it("draws the gas clouds under the stars: a second, additive layer", () => {
+		render(<ParticleGalaxy />);
+		expect(created.materials).toHaveLength(2);
+		expect(created.materials[0].uniforms.uGas.value).toBe(0);
+		expect(created.materials[1].uniforms.uGas.value).toBe(1);
 	});
 
 	it("shows the galaxy at its healthy peak if the scroll engine never starts", () => {

@@ -14,9 +14,8 @@ const HERO_PARTS =
  * ring being drawn, the bar. Part 2 (heroScrollExit) takes over once it ends.
  *
  * While the intro gate is up (html.intro-on) nothing plays: the sequence waits for
- * INTRO_OPEN_EVENT. After the Big Bang the label, lead, actions, portrait, rings and
- * bar are thrown out of the centre of the screen (the name keeps rising out of its
- * mask); after "skip" the normal load sequence runs.
+ * INTRO_OPEN_EVENT. After the Big Bang everything is simply there at once (the blast
+ * already happened in front of the visitor); after "skip" the normal load sequence runs.
  */
 export const playHero = (tools: MotionTools): Cleanup | undefined => {
 	const { gsap } = tools;
@@ -30,6 +29,7 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 	const lead = all("[data-hero-lead]");
 	const actions = all("[data-hero-cta] > *");
 	const cover = all("[data-hero-cover]");
+	const portrait = all("[data-hero-portrait]");
 	const portraitImg = all("[data-hero-portrait] img");
 	const rings = all("[data-hero-rings]");
 	const solidRing = all("[data-hero-ring-solid]");
@@ -41,32 +41,6 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 
 	let stopExit: Cleanup | undefined;
 	let tl: gsap.core.Timeline | undefined;
-
-	// Where each part flies in from: the middle of the screen, shrunk and spinning.
-	const fromCenter = {
-		x: (_i: number, el: HTMLElement) => {
-			const r = el.getBoundingClientRect();
-			return window.innerWidth / 2 - (r.left + r.width / 2);
-		},
-		y: (_i: number, el: HTMLElement) => {
-			const r = el.getBoundingClientRect();
-			return window.innerHeight / 2 - (r.top + r.height / 2);
-		},
-		scale: 0,
-		rotation: () => gsap.utils.random(-140, 140),
-		autoAlpha: 0,
-	};
-	const toPlace = {
-		x: 0,
-		y: 0,
-		scale: 1,
-		rotation: 0,
-		autoAlpha: 1,
-		duration: 1.7,
-		ease: "power4.out",
-		stagger: { amount: 0.5, from: "center" as const },
-	};
-	const portrait = all("[data-hero-portrait]");
 
 	const run = (bang: boolean) => {
 		tl = gsap.timeline({
@@ -83,20 +57,34 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 		});
 
 		if (bang) {
-			tl.fromTo(portrait, fromCenter, toPlace, 0).fromTo(
-				label,
-				fromCenter,
-				toPlace,
-				0.1,
-			);
-		} else {
-			tl.fromTo(
-				label,
-				{ autoAlpha: 0, y: 12 },
-				{ autoAlpha: 1, y: 0, duration: 0.6 },
-				0.1,
-			);
+			// The blast already happened in front of the visitor: everything is simply there,
+			// no flying in, no spinning. The timeline only hands the parts to the engine.
+			tl.set(
+				[
+					...label,
+					...lead,
+					...actions,
+					...portrait,
+					...rings,
+					...ringAccents,
+					...bar,
+				],
+				{ autoAlpha: 1, x: 0, y: 0, scale: 1, rotation: 0 },
+				0,
+			)
+				.set(lines, { yPercent: 0, autoAlpha: 1 }, 0)
+				.set(cover, { scaleY: 0 }, 0)
+				.set(solidRing, { strokeDashoffset: 0 }, 0)
+				.set(portraitImg, { scale: 1 }, 0)
+				.add(() => {}, 0.05);
+			return;
 		}
+		tl.fromTo(
+			label,
+			{ autoAlpha: 0, y: 12 },
+			{ autoAlpha: 1, y: 0, duration: 0.6 },
+			0.1,
+		);
 		tl.fromTo(
 			lines,
 			// autoAlpha: CSS keeps the line at opacity 0 until the engine runs;
@@ -113,14 +101,14 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 		)
 			.fromTo(
 				lead,
-				bang ? fromCenter : { autoAlpha: 0, y: 24 },
-				bang ? toPlace : { autoAlpha: 1, y: 0, duration: 0.9 },
+				{ autoAlpha: 0, y: 24 },
+				{ autoAlpha: 1, y: 0, duration: 0.9 },
 				0.55,
 			)
 			.fromTo(
 				actions,
-				bang ? fromCenter : { autoAlpha: 0, y: 18 },
-				bang ? toPlace : { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.08 },
+				{ autoAlpha: 0, y: 18 },
+				{ autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.08 },
 				0.7,
 			)
 			// The arch opens bottom-up: the cover shrinks toward the top edge.
@@ -150,8 +138,8 @@ export const playHero = (tools: MotionTools): Cleanup | undefined => {
 			)
 			.fromTo(
 				bar,
-				bang ? fromCenter : { autoAlpha: 0, y: 12 },
-				bang ? toPlace : { autoAlpha: 1, y: 0, duration: 0.8 },
+				{ autoAlpha: 0, y: 12 },
+				{ autoAlpha: 1, y: 0, duration: 0.8 },
 				1.0,
 			);
 	};

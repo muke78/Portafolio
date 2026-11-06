@@ -12,7 +12,7 @@ import {
 	Vector3,
 	WebGLRenderer,
 } from "three";
-import { galaxyState } from "@/lib/galaxyState";
+import { EPILOGUE_FROM, galaxyState, PEAK } from "@/lib/galaxyState";
 
 /**
  * PARTICLE GALAXY - an original particle system (no third-party model,
@@ -51,9 +51,6 @@ const CAMERA_Z = 7;
 const FOV = 50;
 const GALAXY_RADIUS = 3.3;
 const ARMS = 3;
-/** The galaxy at its healthiest (spiral arms wound, merger done): the still frame. */
-const PEAK = 0.72;
-
 const smooth = (a: number, b: number, x: number) => {
 	const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
 	return t * t * (3 - 2 * t);
@@ -119,8 +116,8 @@ const CLOUDS: [number, number, number][] = [
 	[0.2, -0.1, 1.4],
 ];
 
-const buildGeometry = (count: number) => {
-	const rnd = seeded(20251101);
+const buildGeometry = (count: number, seed = 20251101) => {
+	const rnd = seeded(seed);
 	const dust = new Float32Array(count * 3);
 	const gal = new Float32Array(count * 3);
 	const clump = new Float32Array(count * 3);
@@ -206,6 +203,7 @@ attribute vec4 aRand;
 uniform float uTime;
 uniform float uStory;
 uniform float uBang;
+uniform float uGas;
 uniform float uPixel;
 uniform vec3 uOrigin;
 uniform float uInvScale;
@@ -213,9 +211,11 @@ varying float vMix;
 varying float vFlash;
 varying float vAlpha;
 varying float vRing;
+varying float vGiant;
+varying float vSat;
 
 // The smaller galaxy that will be swallowed (in the big one's space).
-const vec3 SAT = vec3(2.3, 0.3, -0.5);
+const vec3 SAT = vec3(3.9, 0.4, -0.9);
 
 mat2 rot(float a) {
 	float s = sin(a), c = cos(a);
@@ -288,20 +288,31 @@ void main() {
 	float igFlash = exp(-pow((s - igAt - 0.015) * 55.0, 2.0));
 	float gas = mix(1.0, mix(0.42, 1.0, ig), wFall);
 
-	// the stars go out one by one at the end (the ring stays)
+	// the end: each star swells into a red giant, goes off as a supernova (a flash) and
+	// is gone; a few faint remnants (white dwarfs) stay; the ring stays
 	float dieAt = 0.87 + 0.11 * aRand.w;
-	float alive = max(1.0 - smoothstep(dieAt, dieAt + 0.04, s), ring);
+	float giant = smoothstep(dieAt - 0.07, dieAt, s) * (1.0 - smoothstep(dieAt, dieAt + 0.015, s));
+	float nova = exp(-pow((s - dieAt) * 85.0, 2.0));
+	float remnant = step(0.955, fract(aRand.x * 7.31)) * 0.22;
+	float alive = max(max(1.0 - smoothstep(dieAt, dieAt + 0.03, s), ring), remnant);
 
 	vMix = aRand.z;
 	vRing = ring;
-	vFlash = clamp(bangFlash + igFlash * 0.9 + ring * 0.55, 0.0, 1.4);
-	vAlpha = (0.55 + 0.45 * sin(uTime * 1.6 + aRand.w * 6.2832))
+	vGiant = giant;
+	vSat = isSat * (1.0 - smoothstep(0.7, 0.9, wMerge));
+	vFlash = clamp(bangFlash + igFlash * 0.9 + ring * 0.55 + nova * 1.1, 0.0, 1.6);
+	float starAlpha = (0.55 + 0.45 * sin(uTime * 1.6 + aRand.w * 6.2832))
 		* (0.4 + 0.6 * min(aRand.y / 2.0, 1.0))
 		* gas * hole * alive * smoothstep(0.0, 0.02, uBang);
+	// the gas: huge soft clouds that gather, fall in and are used up as stars are born
+	float gasAlpha = smoothstep(0.1, 0.24, s) * (1.0 - smoothstep(0.46, 0.66, s))
+		* (0.55 + 0.45 * aRand.z) * smoothstep(0.0, 0.02, uBang);
+	vAlpha = mix(starAlpha, gasAlpha * 0.11, uGas);
 
 	vec4 mv = modelViewMatrix * vec4(p, 1.0);
 	gl_Position = projectionMatrix * mv;
-	gl_PointSize = clamp(aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + vFlash * 1.6) * (1.0 + ring * 0.8), 1.0, 22.0);
+	float size = aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + vFlash * 1.6) * (1.0 + ring * 0.8) * (1.0 + giant * 1.5 + nova * 2.0);
+	gl_PointSize = mix(clamp(size, 1.0, 26.0), clamp(size * 11.0, 24.0, 150.0), uGas);
 }
 `;
 
@@ -312,16 +323,19 @@ uniform vec3 uHot;
 uniform vec3 uStar;
 uniform vec3 uEmber;
 uniform float uStory;
+uniform float uGas;
 uniform float uOpacity;
 varying float vMix;
 varying float vFlash;
 varying float vAlpha;
 varying float vRing;
+varying float vGiant;
+varying float vSat;
 
 void main() {
 	float d = length(gl_PointCoord - 0.5);
 	if (d > 0.5) discard;
-	float a = pow(1.0 - d * 2.0, 2.2);
+	float a = pow(1.0 - d * 2.0, mix(2.2, 1.3, uGas));
 	vec3 col = mix(uCore, uArm, smoothstep(0.0, 0.6, vMix));
 	col = mix(col, uStar, smoothstep(0.78, 1.0, vMix));
 	// the gas that falls in is hot, and cools as it sinks
@@ -329,9 +343,14 @@ void main() {
 	col = mix(col, uHot, heat * 0.8);
 	col = mix(col, uHot, clamp(vFlash, 0.0, 1.0) * 0.7);
 	col = mix(col, uHot, vRing * 0.8);
-	// the end: embers (the black hole's ring keeps its glow)
+	// the smaller galaxy is a paler, cooler white-violet until it is absorbed
+	col = mix(col, uStar, vSat * 0.75);
+	// the end: embers, red giants before they go off (the black hole's ring keeps its glow)
 	float death = smoothstep(0.86, 1.0, uStory);
-	col = mix(col, uEmber, death * (1.0 - vRing));
+	col = mix(col, uEmber, max(death * (1.0 - vRing), vGiant));
+	// the gas: hot white-orange while it falls, cooling to the violet of the arms
+	vec3 gasCol = mix(mix(uHot, uEmber, 0.35), uArm, smoothstep(0.26, 0.5, uStory));
+	col = mix(col, gasCol, uGas);
 	gl_FragColor = vec4(col, a * vAlpha * uOpacity * (1.0 + vFlash));
 }
 `;
@@ -351,34 +370,46 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 	const camera = new PerspectiveCamera(FOV, 1, 0.1, 60);
 	camera.position.set(0, 0, CAMERA_Z);
 
-	const material = new ShaderMaterial({
-		vertexShader: VERTEX,
-		fragmentShader: FRAGMENT,
-		transparent: true,
-		depthWrite: false,
-		blending: AdditiveBlending,
-		uniforms: {
-			uTime: { value: 0 },
-			uStory: { value: 0 },
-			uBang: { value: 1 },
-			uPixel: { value: renderer.getPixelRatio() * 2.4 },
-			uOrigin: { value: new Vector3() },
-			uInvScale: { value: 1 },
-			uOpacity: { value: 0 },
-			uCore: { value: new Color() },
-			uArm: { value: new Color() },
-			uHot: { value: new Color() },
-			uStar: { value: new Color() },
-			uEmber: { value: new Color() },
-		},
-	});
+	const makeMaterial = (gas: number) =>
+		new ShaderMaterial({
+			vertexShader: VERTEX,
+			fragmentShader: FRAGMENT,
+			transparent: true,
+			depthWrite: false,
+			blending: AdditiveBlending,
+			uniforms: {
+				uGas: { value: gas },
+				uTime: { value: 0 },
+				uStory: { value: 0 },
+				uBang: { value: 1 },
+				uPixel: { value: renderer.getPixelRatio() * 2.4 },
+				uOrigin: { value: new Vector3() },
+				uInvScale: { value: 1 },
+				uOpacity: { value: 0 },
+				uCore: { value: new Color() },
+				uArm: { value: new Color() },
+				uHot: { value: new Color() },
+				uStar: { value: new Color() },
+				uEmber: { value: new Color() },
+			},
+		});
+	const material = makeMaterial(0);
+	const gasMaterial = makeMaterial(1);
 	applyPalette(material);
+	applyPalette(gasMaterial);
 
 	const geometry = buildGeometry(count);
 	const points = new Points(geometry, material);
 	points.frustumCulled = false;
+	// The gas: a few hundred huge, soft points under the stars (drawn first).
+	const gasGeometry = buildGeometry(small ? 140 : 280, 20260607);
+	const gasPoints = new Points(gasGeometry, gasMaterial);
+	gasPoints.frustumCulled = false;
+	gasPoints.renderOrder = 0;
+	points.renderOrder = 1;
 	const group = new Group();
 	group.rotation.x = 0.95;
+	group.add(gasPoints);
 	group.add(points);
 	scene.add(group);
 
@@ -420,14 +451,15 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		const story = reduce || engineDown ? PEAK : galaxyState.story;
 
 		const intro = reduce ? 1 : Math.min((now - start) / 1800, 1);
+		const bang = reduce ? 1 : galaxyState.bang;
+		for (const m of [material, gasMaterial]) {
+			const mu = m.uniforms;
+			mu.uTime.value = time;
+			mu.uStory.value = story;
+			mu.uBang.value = bang;
+			mu.uOpacity.value = intro;
+		}
 		const u = material.uniforms;
-		u.uTime.value = time;
-		u.uStory.value = story;
-		u.uBang.value = reduce ? 1 : galaxyState.bang;
-		// The galaxy drifts to the lower-right corner, smaller and dimmer, as it dies:
-		// by then the content has the stage.
-		const settle = smooth(0.8, 0.97, story);
-		u.uOpacity.value = intro * (1 - 0.42 * settle);
 
 		// Where the galaxy sits. While the clouds gather and the galaxy forms, the
 		// epicentre is the empty space to the right of the statement ("Que hago"
@@ -435,19 +467,20 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		// on phones there is no free side, so it sits low and small.
 		const visH = 2 * Math.tan((FOV * Math.PI) / 360) * CAMERA_Z;
 		const visW = visH * camera.aspect;
-		const rest = small
-			? { x: 0.16, y: -0.2, s: 0.7 }
-			: { x: 0.3, y: -0.24, s: 0.62 };
-		const blast = small
+		const side = small
 			? { x: 0.14, y: -0.3, s: 0.55 }
 			: { x: 0.31, y: -0.06, s: 0.78 };
-		const e = settle;
+		// The epilogue: the galaxy goes to the middle of an empty stage and, in the open,
+		// merges with a smaller one and dies (the page content is not there). On a phone
+		// the stage is narrow: it shrinks to fit.
+		const stage = { x: 0, y: 0.04, s: Math.min(0.92, visW / 8.2) };
+		const e = smooth(EPILOGUE_FROM - 0.06, EPILOGUE_FROM + 0.08, story);
 		group.position.set(
-			(blast.x + (rest.x - blast.x) * e) * visW,
-			(blast.y + (rest.y - blast.y) * e) * visH,
+			(side.x + (stage.x - side.x) * e) * visW,
+			(side.y + (stage.y - side.y) * e) * visH,
 			0,
 		);
-		const base = blast.s + (rest.s - blast.s) * e;
+		const base = side.s + (stage.s - side.s) * e;
 		group.scale.setScalar(base);
 
 		pointer.sx += (pointer.x - pointer.sx) * 0.04;
@@ -482,6 +515,7 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 	// Theme switch: re-read the tokens.
 	const mo = new MutationObserver(() => {
 		applyPalette(material);
+		applyPalette(gasMaterial);
 		if (reduce) draw(performance.now());
 	});
 	mo.observe(document.documentElement, {
@@ -499,7 +533,9 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		document.removeEventListener("visibilitychange", onVisibility);
 		window.removeEventListener("pointermove", onPointer);
 		geometry.dispose();
+		gasGeometry.dispose();
 		material.dispose();
+		gasMaterial.dispose();
 		renderer.dispose();
 		renderer.domElement.remove();
 	};

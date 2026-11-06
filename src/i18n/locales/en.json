@@ -105,6 +105,13 @@
 		"REPLAY_SAVED_NO": "Done: next time you will go straight in.",
 		"REPLAY_LINK": "Watch the origin of the universe again"
 	},
+	"EPILOGUE": {
+		"LABEL": "The end of the story of the universe",
+		"LINE_1": "A smaller galaxy falls into its orbit and merges with it.",
+		"LINE_2": "With no gas, no more stars are born: the light turns to embers.",
+		"LINE_3": "The stars go out one by one.",
+		"LINE_4": "Only the black hole is left, in silence."
+	},
 	"FOOTER": {
 		"SITE": "Site",
 		"ELSEWHERE": "Elsewhere"
