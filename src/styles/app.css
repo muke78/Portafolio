@@ -444,6 +444,15 @@
 .motion-ok [data-detail-meta]:not([data-revealed]) {
 	opacity: 0;
 }
+/* Projects rail: the track is clipped (and moved by GSAP) only where the
+   engine pins it; below that (and without the engine or with reduced motion)
+   it stays a hand-scrollable, snapping row. Keep the query equal to RAIL_QUERY
+   in src/lib/motion/rails.ts. */
+@media (min-width: 768px) and (min-height: 700px) {
+	.motion-ok [data-hscroll-viewport] {
+		overflow: hidden;
+	}
+}
 /* Smooth native anchor scrolling only where the motion engine does not own
    it: with .motion-ok, anchors.ts scrolls with GSAP. (ScrollTrigger rewrites
    html's inline scroll-behavior on every refresh, so a native smooth scroll

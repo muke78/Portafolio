@@ -10,13 +10,15 @@ interface ProjectCardProps extends PropsLang {
 }
 
 /**
- * Tarjeta de proyecto (UI_STANDARDS 5.3): 1 titulo en serif, 2 categoria y etiquetas,
- * 3 resumen (3 lineas), 4 stack en iconos redondos tras un filete. El espacio dentro de
- * un grupo es menor que entre grupos. Toda la tarjeta es el area de clic (el enlace del
- * titulo la cubre con `after:`).
+ * Tarjeta de proyecto (UI_STANDARDS 5.3): la imagen GRANDE y sin zoom, 1 titulo en serif,
+ * 2 categoria y etiquetas, 3 resumen (3 lineas), 4 stack en iconos redondos tras un
+ * filete. El espacio dentro de un grupo es menor que entre grupos. Toda la tarjeta es el
+ * area de clic (el enlace del titulo la cubre con `after:`).
  *
- * Sin estado ni animacion propia: la imagen se carga diferida y el fondo `bg-muted` ocupa
- * su lugar, asi una pagina con decenas de tarjetas no paga nada hasta que se acercan.
+ * Sin estado ni GSAP propio, solo un atributo para el motor (`lib/motion/masks.ts`): el
+ * marco de la imagen se abre como cortina (`clip-path`) al llegar a la pantalla
+ * (`data-mask`, un IntersectionObserver, no un ScrollTrigger por tarjeta). La imagen
+ * entra entera, tal cual: sin escala ni desplazamiento.
  */
 export const ProjectCard = ({
 	currentLocale,
@@ -29,12 +31,15 @@ export const ProjectCard = ({
 
 	return (
 		<article className="relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card hover-lift">
-			<figure className="aspect-[2/1] overflow-hidden bg-muted">
+			<figure
+				data-mask
+				className="relative aspect-[16/9] overflow-hidden bg-muted"
+			>
 				<img
 					src={mediaUrl(card_image)}
 					alt=""
 					width={800}
-					height={400}
+					height={450}
 					loading="lazy"
 					decoding="async"
 					draggable="false"
@@ -76,7 +81,7 @@ export const ProjectCard = ({
 				</p>
 
 				<ul
-					className="mt-auto flex -space-x-2 border-t border-border pt-5"
+					className="mt-auto flex flex-wrap -space-x-2 border-t border-border pt-5"
 					aria-label={i18n.PROJECT_DETAIL.STACK}
 				>
 					{images_topics.map((topic) => (

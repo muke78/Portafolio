@@ -401,7 +401,8 @@ Formularios:
   display (`font-heading`).
 - **Ley de Hick aplicada a cards:**
   - Un solo mensaje por card: título + una línea de descripción. El detalle
-    va detrás de un clic.
+    va detrás de un clic. En una escena horizontal, una card grande a la vez:
+    más de 6 por categoría se esconden tras «Ver N más».
   - **Una acción primaria por card** (como mucho una secundaria). Toda la
     card clicable → el enlace va en el título y se extiende con
     `after:absolute after:inset-0`, no se anidan varios enlaces.
@@ -658,7 +659,9 @@ sitio usa las mismas piezas, cada una en su módulo:
 | **Manifiesto fijado** | `scenes.ts` | La sección se **fija 2 pantallas** (1.4 en móvil): las palabras de la frase se encienden una a una (`SplitText`, escrubado), dos pistas gigantes de tecnologías se deslizan en sentidos opuestos, una línea de progreso se llena y unas etiquetas aparecen con rebote | `[data-manifesto]` |
 | Títulos | `split.ts` | Cada título se parte en líneas con máscara y sube al entrar (una vez) | `[data-split]` |
 | Revelados | `reveals.ts` | Fade-up con *stagger* por lotes (las cards que entran juntas se encadenan en orden de lectura) | `[data-reveal]` |
-| Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla | `[data-parallax-img]` |
+| Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla (un trigger por imagen: solo para pocas cards, no para listas largas) | `[data-parallax-img]` |
+| **Riel de proyectos** | `rails.ts` | Una escena fijada **por categoría** con sus 6 mejores proyectos (destacados primero) en una sola fila de tarjetas grandes. Un solo `ScrollTrigger` por riel: la tira se desliza (`x`) y se inclina con la velocidad del scroll (`skewX`, ≤ 3°), se llena una línea de progreso y un contador dice qué card está al centro. El largo del scroll sigue al contenido pero se acota a 2.5 pantallas. Bajo 768 px de ancho (o menos de 700 px de alto) no se fija: es una fila nativa con snap | `[data-hscroll]` + `-viewport` / `-track` / `-progress` / `-current`, `[data-rail-card]` |
+| **Índice «Ver N más»** | `peek.ts` | El resto de la categoría, tras un botón, como filas de titular grande. Con ratón, la imagen grande de la fila se abre como cortina (`clip-path`) junto al cursor y **lo sigue** (un par de `quickTo`, sin tweens por evento) inclinándose unos grados con la velocidad; con teclado aparece al enfocar la fila; en táctil cada fila lleva su miniatura. La imagen entra entera: nunca se escala | `[data-peek]` + `[data-peek-row]` + `[data-peek-img]` |
 | Marquee de opiniones | `media.ts` | Un solo tween `xPercent` en bucle; **su velocidad y dirección siguen la del scroll** (un único callback del ticker suaviza `timeScale`) y vuelve a la calma; se detiene fuera de pantalla y con hover o foco; la pista es su propia capa (`will-change`) y el desvanecido de bordes son overlays estáticos, no una máscara | `[data-marquee]` + `[data-marquee-track]` |
 | Parallax decorativo | `media.ts` | Anillos de órbita, ±6 % | `[data-parallax="N"]` |
 | **Pila de cards** | `layers.ts` | Las cards de experiencia son `sticky` y se apilan (cada una un poco más abajo); la que queda debajo retrocede (`scale`) al llegar la siguiente | `[data-stack]` + `[data-stack-card]` |
@@ -677,16 +680,17 @@ Reglas de las escenas:
 - **El Home no esconde contenido detrás de clics.** Nada de pestañas,
   acordeones ni paneles ocultos para las secciones narrativas: Acerca de mí,
   Educación, Experiencia y Habilidades son secciones/escenas que se recorren
-  con el scroll (`StoryBlock`). **Única excepción: el resto del catálogo de
-  proyectos.** Cada categoría (`ProjectCategory`, dentro de `ProjectsCatalog`)
-  muestra sus primeras 6 tarjetas (los destacados primero) y, solo si hay más,
-  un botón «Ver N más de …» abre **todas** las demás de una vez, sin páginas
-  ni tope. Es un `<button>` con `aria-expanded`/`aria-controls`; al abrir, el
-  foco pasa a la primera tarjeta nueva y al cerrar vuelve al botón, y una
-  región `status` anuncia cuántas se ven. El catálogo vive en el flujo normal
-  de la página: nada fijado, trasladado ni con parallax por tarjeta (decenas de
-  triggers hacían lenta la sección en el móvil). Un índice de categorías con su
-  conteo (`nav`, anclas `#proyectos-<categoría>`) permite saltar a cada una.
+  con el scroll (`StoryBlock`). **Única excepción: el resto de cada categoría
+  de proyectos.** Cada categoría (`ProjectRail`) muestra sus 6 mejores
+  (destacados primero) como tarjetas grandes en una escena horizontal; solo si
+  hay más, un botón «Ver N más de …» (`ProjectMore`) abre **todas** las demás
+  de una vez, sin páginas ni tope, como un índice de filas (`ProjectRow`). Es un
+  `<button>` con `aria-expanded`/`aria-controls`; al abrir, el foco pasa a la
+  primera fila y al cerrar vuelve al botón, y una región `status` anuncia
+  cuántas se ven. Motivo (Ley de Hick): nadie debe recibir 15 proyectos de
+  golpe. El nodo que se fija es el contenedor `[data-hscroll]` que pinta Astro,
+  nunca uno de React, y el botón y el índice van **fuera** del pin para que lo
+  que crece no cambie la altura de una escena fijada.
 - **El lector nunca queda atrapado**: una escena fijada dura como máximo
   **2.5 pantallas** (lo verifica un test) y siempre tiene contenido que
   cambia mientras dura (si no cambia nada, no se fija).
@@ -845,13 +849,14 @@ bloque de media está listo para admitirlos cuando el backend los exponga.
   izquierda (4 col) el título, `sticky` (`lg:top-28`); a la derecha (8 col)
   el contenido, que es el punto focal. Habilidades usa el bloque apilado
   (título arriba, contenido a todo el ancho) porque necesita escenario. Los
-  proyectos son un catálogo a todo el ancho: una sección por categoría con
-  una cuadrícula de 1, 2 o 3 columnas.
+  proyectos son una escena por categoría: un riel horizontal a todo el ancho
+  (12.4) con sus 6 mejores y, tras un botón, el resto como índice.
 - **5 / 7** en Contacto (texto y enlaces / formulario) y **8 / 4** en el
   encabezado de Opiniones (título / llamada a la acción). Nada centrado
   "por defecto".
-- Las cards de proyecto viven en una cuadrícula de 1, 2 o 3 columnas; las
-  de experiencia se apilan (`sticky`) en una sola columna.
+- Las cards de proyecto viven en el riel de su categoría (una sola fila, una
+  card grande a la vez); las de experiencia se apilan (`sticky`) en una sola
+  columna.
 
 ### 12.2 Hero y galaxia
 
@@ -907,6 +912,8 @@ vive en `src/lib/motion/` (7.7).
 | `data-reveal` | Cada bloque o card que debe entrar | Fade-up con stagger por lotes |
 | `data-parallax="N"` | Elemento decorativo (anillos) | Parallax de ±N % |
 | `data-parallax-img` | Imagen de una card (marco `overflow-hidden`) | Deriva ±6 % |
+| `data-hscroll` + `-viewport` / `-track` / `-progress` / `-current`, `data-rail-card` | `Proyectos.astro` (contenedor) y `ProjectRail.tsx` | Riel de proyectos fijado: tira, progreso y contador |
+| `data-peek` + `data-peek-row` + `data-peek-img` | `ProjectMore.tsx` / `ProjectRow.tsx` | Índice cuya imagen grande sigue al cursor |
 | `data-marquee` / `data-marquee-track` | Cinta de opiniones | Velocidad ligada al scroll y leve inclinación |
 | `data-mask` (`="left"`, `data-mask-delay`) | Marco de foto, formulario, cinta | Se abre como cortina al entrar |
 | `data-stagger` (`="pop"`, `data-stagger-delay`) + `data-stagger-item` | Contenedor y sus hijos | Entrada uno a uno |
