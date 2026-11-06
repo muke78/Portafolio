@@ -414,11 +414,50 @@ describe("galaxyScene", () => {
 		expect(triggers[0].vars.pin).toBeUndefined();
 	});
 
+	it("with an epilogue it scrubs the story and the closing, each phrase after its scene", () => {
+		html(
+			`<section data-epilogue>${[1, 2, 3, 4].map(() => "<p data-epilogue-line></p>").join("")}</section>`,
+		);
+		run(galaxyScene);
+		// the walk to the epilogue, the story + closing timeline and the phrases
+		expect(ScrollTrigger.getAll()).toHaveLength(3);
+		const lines = Array.from(
+			document.querySelectorAll<HTMLElement>("[data-epilogue-line]"),
+		);
+		const tl = gsap.globalTimeline
+			.getChildren(false, false, true)
+			.filter(
+				(t) => (t as gsap.core.Timeline).getChildren?.().length > 2,
+			) as gsap.core.Timeline[];
+		const phrases = tl.find((t) =>
+			t
+				.getChildren(false)
+				.some((c) => (c as gsap.core.Tween).targets?.()[0] === lines[0]),
+		);
+		expect(phrases).toBeDefined();
+		const startOf = (el: HTMLElement) =>
+			(phrases as gsap.core.Timeline)
+				.getChildren(false)
+				.filter((c) => (c as gsap.core.Tween).targets?.()[0] === el)
+				.map(
+					(c) => c.startTime() / (phrases as gsap.core.Timeline).duration(),
+				)[0];
+		const starts = lines.map(startOf);
+		// in order, and the merge (over by .30) is finished before its phrase comes in
+		expect(starts[0]).toBeGreaterThan(0.3);
+		for (let i = 1; i < starts.length; i++)
+			expect(starts[i]).toBeGreaterThan(starts[i - 1] + 0.08);
+		// the last one (the black hole alone) waits for the stars to be gone
+		expect(starts[3]).toBeGreaterThan(0.64);
+		galaxyState.hole = 1;
+	});
+
 	it("leaves the galaxy at its healthy peak when stopped (reduced motion)", () => {
 		const stopScene = run(galaxyScene);
 		galaxyState.story = 0;
 		stopScene();
 		expect(galaxyState.story).toBe(0.72);
+		expect(galaxyState.hole).toBe(0);
 		galaxyState.story = 0;
 	});
 });

@@ -63,23 +63,32 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	);
 
 	if (stage) {
-		tweens.push(
-			gsap.fromTo(
+		// The epilogue, scene by scene, each with its own distance (share of the stretch):
+		//   0    - .30   the smaller galaxy falls in and is absorbed (story -> .86)
+		//   .30  - .36   calm: the merged galaxy just turns, nothing changes
+		//   .36  - .64   the gas runs out, the light turns to embers, the stars go out (-> 1)
+		//   .64  - .66   silence: only the black hole is left
+		//   .66  - 1     the black hole comes toward you and bends the new stars (hole 0 -> 1)
+		const tl0 = gsap.timeline({
+			defaults: { ease: "none" },
+			scrollTrigger: {
+				start: top,
+				end: bottom,
+				scrub,
+				invalidateOnRefresh: true,
+			},
+		});
+		tl0
+			.fromTo(
 				galaxyState,
-				{ story: EPILOGUE_FROM },
-				{
-					story: 1,
-					ease: "none",
-					immediateRender: false,
-					scrollTrigger: {
-						start: top,
-						end: bottom,
-						scrub,
-						invalidateOnRefresh: true,
-					},
-				},
-			),
-		);
+				{ story: EPILOGUE_FROM, hole: 0 },
+				{ story: 0.86, duration: 0.3, immediateRender: false },
+				0,
+			)
+			.to(galaxyState, { story: 1, duration: 0.28 }, 0.36)
+			.to(galaxyState, { hole: 1, duration: 0.34 }, 0.66)
+			.set({}, {}, 1);
+		tweens.push(tl0);
 
 		// One phrase per beat, scrubbed with the same stretch: the merger, the embers, the
 		// stars going out, the silence.
@@ -93,12 +102,14 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 					invalidateOnRefresh: true,
 				},
 			});
-			// [in, out] as a share of the epilogue; the last phrase stays.
+			// [in, out] as a share of the epilogue; the last phrase stays. Each phrase comes
+			// AFTER what it says has happened (the merge is over by .30, the stars go out
+			// between .36 and .64, the black hole is alone from .66) and has its own stretch.
 			const beats: [number, number][] = [
-				[0.1, 0.5],
-				[0.58, 0.74],
-				[0.76, 0.88],
-				[0.9, 2],
+				[0.31, 0.4],
+				[0.42, 0.52],
+				[0.54, 0.63],
+				[0.67, 2],
 			];
 			lines.forEach((line, i) => {
 				const [from, to] = beats[i] ?? [0.9, 2];
@@ -123,6 +134,7 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		}
 		// Reduced motion mid-session: show the galaxy at its peak, still.
 		galaxyState.story = PEAK;
+		galaxyState.hole = 0;
 		for (const line of lines) gsap.set(line, { clearProps: "all" });
 	};
 };

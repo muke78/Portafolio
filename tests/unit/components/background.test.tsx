@@ -36,6 +36,12 @@ vi.mock("three", () => {
 			this.z = z;
 			return this;
 		}
+		clone() {
+			return new Vec().set(this.x, this.y, this.z);
+		}
+		project() {
+			return this;
+		}
 	}
 	class Color {
 		constructor(
@@ -110,6 +116,7 @@ vi.mock("three", () => {
 			add = vi.fn();
 		},
 		ShaderMaterial,
+		Vector2: Vec,
 		Vector3: Vec,
 		WebGLRenderer,
 	};
@@ -225,6 +232,40 @@ describe("ParticleGalaxy", () => {
 		// While it forms it sits to the right of the text; in the epilogue it is centred.
 		expect(before).toBeGreaterThan(0.5);
 		expect(Math.abs(after)).toBeLessThan(1e-6);
+	});
+
+	it("the closing: the black hole lies flat, then tilts up toward you and grows", () => {
+		render(<ParticleGalaxy />);
+		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
+			.mock.calls[0][0] as FrameRequestCallback;
+		const group = created.groups[0];
+		const scale = group.scale.setScalar as ReturnType<typeof vi.fn>;
+		galaxyState.story = 1;
+		galaxyState.hole = 0;
+		loop(performance.now() + 5000);
+		const start = { tilt: group.rotation.x, scale: scale.mock.lastCall?.[0] };
+		galaxyState.hole = 0.22;
+		loop(performance.now() + 5100);
+		const lying = group.rotation.x;
+		galaxyState.hole = 1;
+		loop(performance.now() + 5200);
+		const end = { tilt: group.rotation.x, scale: scale.mock.lastCall?.[0] };
+		// rotation.x: 0 = the disc seen edge-on, PI/2 = seen straight on.
+		expect(lying).toBeLessThan(start.tilt);
+		expect(end.tilt).toBeGreaterThan(1.2);
+		expect(end.scale).toBeGreaterThan(start.scale * 2.5);
+		// The shader hears about it (lensing + new stars) on both layers.
+		for (const m of created.materials) expect(m.uniforms.uBH.value).toBe(1);
+		galaxyState.hole = 0;
+	});
+
+	it("without the closing the black hole is not drawn at all", () => {
+		render(<ParticleGalaxy />);
+		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
+			.mock.calls[0][0] as FrameRequestCallback;
+		galaxyState.story = 0.4;
+		loop(performance.now() + 5000);
+		for (const m of created.materials) expect(m.uniforms.uBH.value).toBe(0);
 	});
 
 	it("draws the gas clouds under the stars: a second, additive layer", () => {

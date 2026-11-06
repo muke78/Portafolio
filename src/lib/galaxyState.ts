@@ -13,8 +13,11 @@
  *                  spinning disc -> the first stars -> spiral arms and a black hole
  *                  -> mergers -> the end (1). The phases and their ranges live in
  *                  the header of ParticleGalaxy.tsx.
+ *   hole   0 -> 1  the closing, after every star is gone: the black hole alone comes
+ *                  toward you (it tilts up like a cup lifted off a table), hundreds of
+ *                  new stars fill the sky and are bent around it (lensing)
  */
-export const galaxyState = { bang: 1, story: 0 };
+export const galaxyState = { bang: 1, story: 0, hole: 0 };
 
 /**
  * Story value where the epilogue begins: the galaxy has formed (disc, first stars, arms

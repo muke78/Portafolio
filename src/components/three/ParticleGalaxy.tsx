@@ -9,6 +9,7 @@ import {
 	Points,
 	Scene,
 	ShaderMaterial,
+	Vector2,
 	Vector3,
 	WebGLRenderer,
 } from "three";
@@ -204,6 +205,10 @@ uniform float uTime;
 uniform float uStory;
 uniform float uBang;
 uniform float uGas;
+uniform float uBH;
+uniform vec2 uHoleNdc;
+uniform float uEin;
+uniform float uAspect;
 uniform float uPixel;
 uniform vec3 uOrigin;
 uniform float uInvScale;
@@ -259,7 +264,8 @@ void main() {
 	float rad = length(aGal.xz);
 	vec3 disc = aGal;
 	disc.xz = rot(-(1.0 - wArms) * rad * 1.9) * disc.xz;
-	disc.xz = rot(uTime * 0.12 / (0.6 + rad)) * disc.xz;
+	// it never stops turning, even with the scroll still: a nearly flat rotation curve
+	disc.xz = rot(uTime * (0.16 + 0.05 / (0.5 + rad))) * disc.xz;
 	vec3 satDisc = SAT + aGal * 0.3;
 	satDisc.xz = SAT.xz + rot(uTime * 0.35) * (aGal.xz * 0.3);
 	// 4. the smaller galaxy spirals in and is absorbed (a tidal lift on the way)
@@ -271,6 +277,20 @@ void main() {
 	// 5. the end: the outskirts drift away as the galaxy comes apart
 	p = mix(p, p * (1.0 + 0.5 * aRand.z), wDeath * step(0.32, rad));
 
+	// 5b. the closing: once every star is gone, hundreds of new ones fill the sky behind the
+	// black hole and a third of them fall into a disc around it, turning faster the closer
+	// they are. (uBH: 0 -> 1 over the last stretch of the scroll.)
+	float wBHf = smoothstep(0.0, 0.3, uBH);
+	float discSel = step(fract(aRand.x * 13.7), 0.3);
+	float dr = 0.27 + 0.27 * pow(fract(aRand.x * 91.3), 1.6);
+	float da = aRand.w * 6.2832 + uTime * 0.4 / pow(dr, 1.5);
+	vec3 discPos = vec3(cos(da) * dr, (aRand.z - 0.5) * 0.03, sin(da) * dr);
+	vec3 fieldPos = aDust * uInvScale + uOrigin;
+	// the gas becomes a soft halo around the ring
+	float ga = aRand.w * 6.2832 + uTime * 0.3;
+	vec3 haloPos = vec3(cos(ga), (aRand.z - 0.5) * 0.08, sin(ga)) * (0.3 + 0.4 * fract(aRand.x * 53.1));
+	p = mix(p, mix(mix(fieldPos, discPos, discSel), haloPos, uGas), wBHf);
+
 	// 6. the Big Bang of the intro: out of one point, thrown out, then settling
 	float eb = 1.0 - pow(1.0 - uBang, 5.0);
 	p = uOrigin + (p - uOrigin) * eb;
@@ -279,7 +299,7 @@ void main() {
 	// the black hole: a dark centre inside a bright, fast ring (only once the
 	// smaller galaxy has been absorbed does it count for the satellite's stars)
 	float atHome = 1.0 - isSat * (1.0 - smoothstep(0.7, 0.9, wMerge));
-	float hole = mix(1.0, smoothstep(0.10, 0.24, rad), wBH * atHome);
+	float hole = mix(mix(1.0, smoothstep(0.10, 0.24, rad), wBH * atHome), 1.0, wBHf);
 	float ring = exp(-pow((rad - 0.30) / 0.07, 2.0)) * wBH * atHome;
 
 	// the first stars: dim gas until each one ignites, with a flash as it does
@@ -294,24 +314,45 @@ void main() {
 	float giant = smoothstep(dieAt - 0.07, dieAt, s) * (1.0 - smoothstep(dieAt, dieAt + 0.015, s));
 	float nova = exp(-pow((s - dieAt) * 85.0, 2.0));
 	float remnant = step(0.955, fract(aRand.x * 7.31)) * 0.22;
-	float alive = max(max(1.0 - smoothstep(dieAt, dieAt + 0.03, s), ring), remnant);
+	float alive = max(max(max(1.0 - smoothstep(dieAt, dieAt + 0.03, s), ring), remnant), wBHf);
 
 	vMix = aRand.z;
-	vRing = ring;
+	vRing = max(ring, discSel * wBHf);
 	vGiant = giant;
 	vSat = isSat * (1.0 - smoothstep(0.7, 0.9, wMerge));
 	vFlash = clamp(bangFlash + igFlash * 0.9 + ring * 0.55 + nova * 1.1, 0.0, 1.6);
 	float starAlpha = (0.55 + 0.45 * sin(uTime * 1.6 + aRand.w * 6.2832))
 		* (0.4 + 0.6 * min(aRand.y / 2.0, 1.0))
-		* gas * hole * alive * smoothstep(0.0, 0.02, uBang);
+		* gas * hole * alive * smoothstep(0.0, 0.02, uBang)
+		// the side of the disc that turns toward us is brighter (relativistic beaming)
+		* mix(1.0, 0.45 + 0.9 * (0.5 + 0.5 * sin(da)), discSel * wBHf);
 	// the gas: huge soft clouds that gather, fall in and are used up as stars are born
 	float gasAlpha = smoothstep(0.1, 0.24, s) * (1.0 - smoothstep(0.46, 0.66, s))
-		* (0.55 + 0.45 * aRand.z) * smoothstep(0.0, 0.02, uBang);
+		* (0.55 + 0.45 * aRand.z) * smoothstep(0.0, 0.02, uBang)
+		+ wBHf * 1.2 * smoothstep(0.0, 0.02, uBang);
 	vAlpha = mix(starAlpha, gasAlpha * 0.11, uGas);
 
 	vec4 mv = modelViewMatrix * vec4(p, 1.0);
 	gl_Position = projectionMatrix * mv;
-	float size = aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + vFlash * 1.6) * (1.0 + ring * 0.8) * (1.0 + giant * 1.5 + nova * 2.0);
+
+	// Gravitational lensing: the stars behind the black hole are bent around it. A point
+	// mass sends a source at angle b to the image at (b + sqrt(b^2 + 4 e^2)) / 2, so nothing
+	// shows inside the Einstein radius e (the shadow) and the stars lined up with the hole
+	// pile into a bright ring around it.
+	float lensMag = 1.0;
+	float lens = wBHf * (1.0 - discSel) * (1.0 - uGas);
+	if (lens > 0.0) {
+		vec2 aspect = vec2(uAspect, 1.0);
+		vec2 ndc = gl_Position.xy / gl_Position.w;
+		vec2 rel = (ndc - uHoleNdc) * aspect;
+		float b = max(length(rel), 0.0005);
+		float th = 0.5 * (b + sqrt(b * b + 4.0 * uEin * uEin));
+		lensMag = 1.0 + 1.8 * exp(-pow((th - uEin) / (uEin * 0.6), 2.0));
+		ndc = uHoleNdc + (rel * (th / b)) / aspect;
+		gl_Position.xy = mix(gl_Position.xy, ndc * gl_Position.w, lens);
+		lensMag = mix(1.0, lensMag, lens);
+	}
+	float size = lensMag * (1.0 + discSel * wBHf * 1.4) * aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + vFlash * 1.6) * (1.0 + ring * 0.8) * (1.0 + giant * 1.5 + nova * 2.0);
 	gl_PointSize = mix(clamp(size, 1.0, 26.0), clamp(size * 11.0, 24.0, 150.0), uGas);
 }
 `;
@@ -324,6 +365,7 @@ uniform vec3 uStar;
 uniform vec3 uEmber;
 uniform float uStory;
 uniform float uGas;
+uniform float uBH;
 uniform float uOpacity;
 varying float vMix;
 varying float vFlash;
@@ -350,6 +392,8 @@ void main() {
 	col = mix(col, uEmber, max(death * (1.0 - vRing), vGiant));
 	// the gas: hot white-orange while it falls, cooling to the violet of the arms
 	vec3 gasCol = mix(mix(uHot, uEmber, 0.35), uArm, smoothstep(0.26, 0.5, uStory));
+	// around the black hole the halo glows hot, like the disc
+	gasCol = mix(gasCol, mix(uHot, uEmber, 0.45), uBH);
 	col = mix(col, gasCol, uGas);
 	gl_FragColor = vec4(col, a * vAlpha * uOpacity * (1.0 + vFlash));
 }
@@ -379,6 +423,10 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 			blending: AdditiveBlending,
 			uniforms: {
 				uGas: { value: gas },
+				uBH: { value: 0 },
+				uHoleNdc: { value: new Vector2() },
+				uEin: { value: 0.2 },
+				uAspect: { value: 1 },
 				uTime: { value: 0 },
 				uStory: { value: 0 },
 				uBang: { value: 1 },
@@ -452,12 +500,15 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 
 		const intro = reduce ? 1 : Math.min((now - start) / 1800, 1);
 		const bang = reduce ? 1 : galaxyState.bang;
+		// The closing: the black hole alone, lifted toward the viewer (0 -> 1).
+		const hole = reduce || engineDown ? 0 : galaxyState.hole;
 		for (const m of [material, gasMaterial]) {
 			const mu = m.uniforms;
 			mu.uTime.value = time;
 			mu.uStory.value = story;
 			mu.uBang.value = bang;
 			mu.uOpacity.value = intro;
+			mu.uBH.value = hole;
 		}
 		const u = material.uniforms;
 
@@ -474,24 +525,39 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		// merges with a smaller one and dies (the page content is not there). On a phone
 		// the stage is narrow: it shrinks to fit.
 		const stage = { x: 0, y: 0.04, s: Math.min(0.92, visW / 8.2) };
-		const e = smooth(EPILOGUE_FROM - 0.06, EPILOGUE_FROM + 0.08, story);
+		// Slowly: it takes the whole stretch up to the epilogue to settle in the middle.
+		const e = smooth(EPILOGUE_FROM - 0.24, EPILOGUE_FROM, story);
 		group.position.set(
 			(side.x + (stage.x - side.x) * e) * visW,
 			(side.y + (stage.y - side.y) * e) * visH,
 			0,
 		);
-		const base = side.s + (stage.s - side.s) * e;
+		// The black hole comes toward you, like a cup lifted off the table: first it lies
+		// flat (almost edge-on), then it tilts up until you look straight into it.
+		const lay = smooth(0, 0.22, hole);
+		const lift = smooth(0.22, 0.85, hole);
+		const base =
+			(side.s + (stage.s - side.s) * e) * (1 + 2.1 * smooth(0.05, 1, hole));
 		group.scale.setScalar(base);
+		// rotation.x: 0 = the disc seen edge-on, PI/2 = seen straight on.
+		const tilt = 0.95 - 0.83 * lay + 1.33 * lift;
 
 		pointer.sx += (pointer.x - pointer.sx) * 0.04;
 		pointer.sy += (pointer.y - pointer.sy) * 0.04;
-		group.rotation.x = 0.95 + pointer.sy * 0.12;
+		group.rotation.x = tilt + pointer.sy * 0.12;
 		group.rotation.z = pointer.sx * 0.1;
 
 		// Where the screen centre lies in the galaxy's own space (for the dust).
 		group.updateMatrixWorld(true);
 		group.worldToLocal(u.uOrigin.value.set(0, 0, 0));
 		u.uInvScale.value = 1 / base;
+		// Where the hole is on the screen and how big its shadow is (for the lensing).
+		const ndc = group.position.clone().project(camera);
+		for (const m of [material, gasMaterial]) {
+			m.uniforms.uHoleNdc.value.set(ndc.x, ndc.y);
+			m.uniforms.uEin.value = (2 * 0.25 * base) / visH;
+			m.uniforms.uAspect.value = camera.aspect;
+		}
 
 		renderer.render(scene, camera);
 	};
