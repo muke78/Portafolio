@@ -1,17 +1,10 @@
 ---
-import { ProjectMore } from "@/features/projects/ProjectMore";
-import { ProjectRail } from "@/features/projects/ProjectRail";
+import { ProjectsCatalog } from "@/features/projects/ProjectsCatalog";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
 
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
 const i18n = getI18N({ currentLocale });
-
-// No tabs: one rail per category (6 cards at most, featured first) and, below
-// it, a button that opens the rest of that category as a plain grid. No data is
-// fetched here: each island asks for the projects from the browser once it is
-// close to the viewport, so the first render (the hero) costs the backend nothing.
-const categories = ["frontend", "backend", "companies", "dataAnalyst"] as const;
 ---
 
 <div class="mx-auto w-full max-w-[1240px] px-6 py-24 md:py-32">
@@ -19,24 +12,16 @@ const categories = ["frontend", "backend", "companies", "dataAnalyst"] as const;
 		{i18n.PROJECTS.PROJECTS_TITLE}
 	</h2>
 
-	<div class="mt-16 flex flex-col gap-24 lg:gap-32">
-		{
-			categories.map((category) => (
-				<div>
-					<div data-hscroll>
-						<ProjectRail
-							client:visible={{ rootMargin: "500px" }}
-							currentLocale={currentLocale}
-							category={category}
-						/>
-					</div>
-					<ProjectMore
-						client:visible={{ rootMargin: "500px" }}
-						currentLocale={currentLocale}
-						category={category}
-					/>
-				</div>
-			))
-		}
+	<!--
+		One island, one request: the catalog asks for the projects from the browser
+		once it is close to the viewport, so the first render (the hero) costs the
+		backend nothing. It always renders a skeleton on the server (an empty island
+		is never hydrated by client:visible, which observes the island's children).
+	-->
+	<div class="mt-16">
+		<ProjectsCatalog
+			client:visible={{ rootMargin: "500px" }}
+			currentLocale={currentLocale}
+		/>
 	</div>
 </div>

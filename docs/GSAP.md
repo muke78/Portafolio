@@ -30,7 +30,7 @@ atributos de datos y el motor los anima.
 | `media.ts` | Parallax decorativo, deriva de imágenes, marquee ligado a la velocidad (con inclinación `skewX`) |
 | `masks.ts` | `[data-mask]` (marcos que se abren con `clip-path`) y `[data-stagger]` (hijos que entran uno a uno) |
 | `text.ts` | `[data-scrub-text]`: palabras que se encienden con el scroll (sin fijar) |
-| `layers.ts` | `[data-hscroll]`: showcase horizontal fijado; `[data-stack]`: pila de cards `sticky` con profundidad |
+| `layers.ts` | `[data-stack]`: pila de cards `sticky` con profundidad |
 | `skills.ts` | Habilidades en vuelo (`MotionPathPlugin`): chips que entran por curvas en S, escrubadas, y una línea "serpiente" que se dibuja con un punto que la recorre |
 | `galaxy.ts` | La galaxia de partículas sigue el scroll: `galaxyState.burst` (polvo → colapso → explosión) y `settle` (a la esquina); el canvas (`components/three/ParticleGalaxy.tsx`) solo lee ese estado |
 | `anchors.ts` | Enlaces `#sección` con pins: `ScrollTrigger.refresh()` antes de medir, `ScrollToPlugin`, hasta 10 correcciones mientras la página crece |
@@ -192,9 +192,17 @@ Registrar un plugin nuevo: importarlo en `src/lib/motion/core.ts` y añadirlo a
   `--x`). No pongas valores de layout en `style={{...}}` de un elemento con
   `data-reveal`; usa clases estáticas.
 - **No fijar nodos que React posee**: `pin` mete un `pin-spacer` alrededor y
-  React fallaría al quitar/insertar ese nodo. Se fija el contenedor Astro
-  (`[data-hscroll]`) y solo se traslada el interior (`x`). Si el contenido
-  cambia (tabs), el `MutationObserver` de `layers.ts` recalcula.
+  React fallaría al quitar/insertar ese nodo. Se fija siempre un contenedor
+  que renderiza Astro (hoy, la escena del manifiesto) y solo se anima su
+  interior. Una sección que crece con datos (el catálogo de proyectos) **no se
+  fija**: va en el flujo normal de la página.
+- **Nada de parallax ni máscara por tarjeta en listas largas**: cada
+  `[data-parallax-img]` crea un `ScrollTrigger`; con decenas de tarjetas la
+  sección se vuelve lenta en el móvil. Solo `[data-reveal]` en las primeras de
+  cada grupo; las que se abren después salen ya visibles.
+- **Una isla `client:visible` nunca puede pintar `null` en el servidor**: Astro
+  observa los *hijos* de la isla (es `display: contents`) y una isla sin hijos
+  nunca se hidrata. Siempre se pinta algo (un esqueleto).
 - **Cuidado con `clearProps` sobre transformaciones compartidas**: limpiar
   `scale` borra todo el `transform` (también el parallax `yPercent`). En
   marcos con máscara solo se limpia `clipPath`.
@@ -208,7 +216,7 @@ Registrar un plugin nuevo: importarlo en `src/lib/motion/core.ts` y añadirlo a
 - **Nada de `fetch` en el primer render**: las secciones de abajo piden sus
   datos desde el navegador cuando su isla (`client:visible`, con
   `rootMargin`) está cerca (`lib/projectsStore.ts` comparte la petición).
-- **Medidas del DOM, no constantes**: carril, pila, vuelo de habilidades y
+- **Medidas del DOM, no constantes**: pila, vuelo de habilidades y
   anclas calculan distancias de los nodos reales (`scrollWidth`, rects); los
   topes (2.5 pantallas) son los únicos números fijos.
 - **Después de cambiar la altura de la página** (islas, imágenes lazy,

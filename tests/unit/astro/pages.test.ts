@@ -64,16 +64,18 @@ describe("Acerca", () => {
 });
 
 describe("Proyectos", () => {
-	it("renders one pinned rail wrapper per category and fetches nothing on the server", async () => {
+	it("renders the title and ONE catalog island, with a skeleton, and fetches nothing on the server", async () => {
 		const html = await render(Proyectos);
-		expect(count(html, /<div data-hscroll>/g)).toBe(4);
-		// Un riel y un "ver el resto" por categoria.
-		expect(count(html, /<astro-island/g)).toBe(8);
 		expect(html).toContain(es.PROJECTS.PROJECTS_TITLE);
+		expect(count(html, /<astro-island/g)).toBe(1);
+		// An island with no children is never hydrated by client:visible.
+		expect(html).toContain('aria-busy="true"');
+		// No pinned sideways rail any more: the catalog flows with the page.
+		expect(html).not.toContain("data-hscroll");
 		expect(apiGet).not.toHaveBeenCalled();
 	});
 
-	it("loads each rail a screen early (rootMargin 500px)", async () => {
+	it("loads the catalog a screen early (rootMargin 500px)", async () => {
 		const html = await render(Proyectos);
 		expect(html).toContain("500px");
 	});

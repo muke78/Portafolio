@@ -8,7 +8,7 @@ import { projectDetail } from "@/lib/motion/detail";
 import { dialogs } from "@/lib/motion/dialogs";
 import { galaxyScene } from "@/lib/motion/galaxy";
 import { playHero } from "@/lib/motion/hero";
-import { horizontalScenes, stackScenes } from "@/lib/motion/layers";
+import { stackScenes } from "@/lib/motion/layers";
 import { maskReveals, staggerGroups } from "@/lib/motion/masks";
 import { cardImageParallax, marquees, setupParallax } from "@/lib/motion/media";
 import { scrollProgress } from "@/lib/motion/page";
@@ -488,48 +488,6 @@ describe("projectDetail", () => {
 		html(detail);
 		run(projectDetail);
 		expect(ScrollTrigger.getAll()).toHaveLength(1);
-	});
-});
-
-describe("horizontalScenes", () => {
-	const rail = `
-		<div data-hscroll>
-			<div data-hscroll-viewport>
-				<div data-hscroll-track><article><a href="#">a</a></article></div>
-			</div>
-			<div data-hscroll-progress></div>
-		</div>`;
-
-	it("pins the stable wrapper, never the React-owned track", () => {
-		html(rail);
-		run(horizontalScenes);
-		const [trigger] = ScrollTrigger.getAll();
-		expect(trigger.pin).toBe($("[data-hscroll]"));
-	});
-
-	it("does not pin on a screen shorter than 560px", () => {
-		installMotionEnv("no-preference", []);
-		html(rail);
-		run(horizontalScenes);
-		expect(ScrollTrigger.getAll()).toHaveLength(0);
-	});
-
-	it("keeps the viewport from scrolling sideways on focus", () => {
-		html(rail);
-		run(horizontalScenes);
-		const viewport = $("[data-hscroll-viewport]");
-		viewport.scrollLeft = 50;
-		$("[data-hscroll] a").dispatchEvent(
-			new FocusEvent("focusin", { bubbles: true }),
-		);
-		expect(viewport.scrollLeft).toBe(0);
-	});
-
-	it("unpins when stopped", () => {
-		html(rail);
-		const stopScene = run(horizontalScenes);
-		stopScene();
-		expect(ScrollTrigger.getAll()).toHaveLength(0);
 	});
 });
 

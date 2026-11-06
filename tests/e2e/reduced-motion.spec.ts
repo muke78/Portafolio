@@ -32,7 +32,9 @@ const HIDDEN_BY_ENGINE = [
 
 /** Walks the page so every client:visible island hydrates and fetches. */
 const scrollThrough = async (page: Page) => {
-	const height = await page.evaluate(() => document.documentElement.scrollHeight);
+	const height = await page.evaluate(
+		() => document.documentElement.scrollHeight,
+	);
 	for (let y = 0; y < height; y += 700) {
 		await page.evaluate((top) => window.scrollTo(0, top), y);
 		await page.waitForTimeout(120);
@@ -53,7 +55,8 @@ const stillHidden = (page: Page) =>
 				Number(style.opacity) < 1 ||
 				style.visibility === "hidden" ||
 				(style.clipPath !== "none" && style.clipPath !== "");
-			if (hidden) bad.push(`${el.tagName}.${String(el.className).slice(0, 40)}`);
+			if (hidden)
+				bad.push(`${el.tagName}.${String(el.className).slice(0, 40)}`);
 		}
 		return bad;
 	}, HIDDEN_BY_ENGINE);
@@ -73,7 +76,7 @@ test.describe("home with reduced motion", () => {
 		await scrollThrough(page);
 		await expect(page.locator(".pin-spacer")).toHaveCount(0);
 		const positions = await page
-			.locator("[data-manifesto], [data-hscroll]")
+			.locator("[data-manifesto]")
 			.evaluateAll((els) => els.map((el) => getComputedStyle(el).position));
 		expect(positions.length).toBeGreaterThan(0);
 		expect(positions).not.toContain("fixed");
@@ -86,9 +89,7 @@ test.describe("home with reduced motion", () => {
 
 	test("the hero and every section are fully visible", async ({ page }) => {
 		await page.goto("/es/home");
-		await expect(
-			page.getByRole("heading", { level: 1 }),
-		).toBeVisible();
+		await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 		await scrollThrough(page);
 		expect(await stillHidden(page)).toEqual([]);
 	});
