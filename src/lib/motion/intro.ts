@@ -1,7 +1,9 @@
 import { galaxyState } from "@/lib/galaxyState";
 import { markIntroSeen } from "@/lib/introPrefs";
+import { createBigBang, heatUp } from "./bigbang";
 import { type Cleanup, MOTION, type MotionTools, safeRefresh } from "./core";
-import { createSnowglobe } from "./snowglobe";
+import { corruptLabel } from "./corrupt";
+import { createSnowglobe, smooth } from "./snowglobe";
 
 /**
  * Event the intro fires when the gate opens. The hero listens to it (hero.ts) to play
@@ -10,6 +12,7 @@ import { createSnowglobe } from "./snowglobe";
  */
 export const INTRO_OPEN_EVENT = "intro:open";
 
+const ORBITS = 3;
 const GATE = "intro-on";
 
 /**
@@ -22,10 +25,12 @@ const GATE = "intro-on";
  *     faster the closer the cursor gets and sends out a ripple. Without a mouse it
  *     drifts on its own.
  *  2. A story appears line by line, ending in the invitation to click it.
- *  3. Click: the particle draws in its breath, a shock wave and a flash cover the
- *     screen, and everything explodes - the starfield (galaxyState.bang) and the cosmos
- *     layer fly out of the centre and the portfolio itself is thrown out of it (the
- *     hero listens to INTRO_OPEN_EVENT). Then the gate is removed.
+ *  3. Click: the particle does not blow up at once. It circles a few times in a slow
+ *     ellipse that returns to where it started, shrinking, and the explosion happens right
+ *     there (bigbang.ts: white-hot core, rays of radiation, red haze, fragments). The page
+ *     is simply THERE in that instant (no spinning in from the centre): the starfield
+ *     (galaxyState.bang) flies out and everything is hot - red and yellow - for about 7
+ *     seconds, then cools to violet (heatUp). The hero listens to INTRO_OPEN_EVENT.
  *
  * Skip (button or Escape) opens the gate at once with no explosion. Everything behind
  * the gate is `inert` while it is up, the page does not scroll, and the page is still in
@@ -38,14 +43,9 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	const sky = root?.querySelector<HTMLElement>("[data-intro-sky]");
 	const drift = root?.querySelector<HTMLElement>("[data-intro-drift]");
 	const point = root?.querySelector<HTMLButtonElement>("[data-intro-point]");
-	const globeEl = root?.querySelector<HTMLElement>("[data-intro-globe]");
 	const flakes = root?.querySelector<HTMLCanvasElement>("[data-intro-flakes]");
-	const heat = root?.querySelector<HTMLElement>("[data-intro-heat]");
-	const shine = root?.querySelector<HTMLElement>("[data-intro-shine]");
 	const halo = root?.querySelector<HTMLElement>("[data-intro-halo]");
 	const ripple = root?.querySelector<HTMLElement>("[data-intro-ripple]");
-	const wave = root?.querySelector<HTMLElement>("[data-intro-wave]");
-	const flash = root?.querySelector<HTMLElement>("[data-intro-flash]");
 	const skip = root?.querySelector<HTMLElement>("[data-intro-skip]");
 	const lines = root
 		? Array.from(root.querySelectorAll<HTMLElement>("[data-intro-line]"))
@@ -59,13 +59,9 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		!sky ||
 		!drift ||
 		!point ||
-		!globeEl ||
 		!flakes ||
-		!shine ||
 		!halo ||
 		!ripple ||
-		!wave ||
-		!flash ||
 		!skip ||
 		!html.classList.contains(GATE)
 	) {
@@ -78,9 +74,24 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	window.scrollTo(0, 0);
 
 	// Everything behind the gate is out of reach of the keyboard and of screen readers.
-	const behind = Array.from(document.body.children).filter(
-		(el) => el !== root && el.tagName !== "SCRIPT",
-	);
+	// The gate is NOT a child of <body> (the Layout wraps the page in a div), so walk up from
+	// it and mark the siblings at every level: marking a wrapper that CONTAINS the gate
+	// would make the gate itself inert and no real mouse or finger could reach it.
+	const behind: Element[] = [];
+	for (let node: Element = root; node !== document.body; ) {
+		const parent: Element | null = node.parentElement;
+		if (!parent) break;
+		for (const sibling of Array.from(parent.children)) {
+			if (
+				sibling !== node &&
+				sibling.tagName !== "SCRIPT" &&
+				sibling.tagName !== "STYLE"
+			) {
+				behind.push(sibling);
+			}
+		}
+		node = parent;
+	}
 	for (const el of behind) el.setAttribute("inert", "");
 	point.focus({ preventScroll: true });
 
@@ -93,32 +104,35 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 
 	/* ---------- 1. the particle: heartbeat, drift, perturbation ---------- */
 
-	// The primordial particle: almost still, with a slow breath and a faint shimmer of
-	// heat at its core. It does not beat on its own. ENERGY is what quickens it: the cursor
-	// coming close, and most of all the cursor over the sphere, speed up the breath, heat
-	// the core, brighten the glow and stir the flakes (snowglobe.ts). Every frame, one
-	// ticker callback with quickSetters: no tween per event.
+	// The primordial particle (snowglobe.ts draws it all on one canvas): a hot, dense
+	// plasma in a glass sphere. A cursor NEAR it only lifts the temperature a little (it
+	// stays calm); the cursor ON it takes it through the states (liquid edge, shivers, a
+	// bubble blown on one side, heat from violet to red). Here: a smoothed "energy" and a
+	// slow breath, written every frame by ONE ticker callback (no tween per event).
 	const globe = createSnowglobe(flakes, gsap.ticker);
 	const energy = { target: 0, value: 0 };
 	let phase = 0;
-	const setScale = gsap.quickSetter(globeEl, "scale") as (v: number) => void;
+	let lastRim = "";
 	const setGlow = gsap.quickSetter(halo, "opacity") as (v: number) => void;
 	const setGlowSize = gsap.quickSetter(halo, "scale") as (v: number) => void;
-	const setHeat = heat
-		? (gsap.quickSetter(heat, "opacity") as (v: number) => void)
-		: () => {};
 	const breathe = (_time: number, deltaTime: number) => {
 		const dt = Math.min(deltaTime / 1000, 0.05);
 		energy.value += (energy.target - energy.value) * (1 - Math.exp(-3.5 * dt));
 		const e = energy.value;
-		// 0.2 Hz at rest (one breath every five seconds) up to about 2.8 Hz excited.
-		phase += dt * Math.PI * 2 * (0.2 + 2.6 * e);
-		const wave = Math.sin(phase);
-		setScale(1 + (0.016 + 0.05 * e) * wave + 0.05 * e);
-		setGlow(0.24 + 0.04 * wave + 0.5 * e * (0.65 + 0.35 * wave));
-		setGlowSize(1 + 0.6 * e + 0.05 * wave);
-		setHeat(0.16 + 0.1 * wave + 0.74 * e);
-		globe.hold(e * 0.95);
+		// One slow breath every five seconds; the cursor quickens it, never to a flutter.
+		phase += dt * Math.PI * 2 * (0.2 + 0.9 * e);
+		const pulse = Math.sin(phase);
+		globe.setBreath(1 + (0.014 + 0.02 * e) * pulse);
+		globe.setEnergy(e);
+		setGlow(0.22 + 0.04 * pulse + 0.4 * e);
+		setGlowSize(1 + 0.5 * e);
+		// The glow behind the sphere follows its colour as it heats up.
+		const rim = globe.rim();
+		if (rim && rim !== lastRim) {
+			lastRim = rim;
+			halo.style.backgroundColor = rim;
+			ripple.style.borderColor = rim;
+		}
 	};
 	gsap.ticker.add(breathe);
 	killables.push({ kill: () => gsap.ticker.remove(breathe) });
@@ -146,9 +160,6 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	const spring = { duration: 1.2, ease: "elastic.out(1, 0.35)" } as const;
 	const leanX = gsap.quickTo(point, "x", spring);
 	const leanY = gsap.quickTo(point, "y", spring);
-	// The highlight on the glass slides a little against the lean: it reads as a surface.
-	const shineX = gsap.quickTo(shine, "x", spring);
-	const shineY = gsap.quickTo(shine, "y", spring);
 
 	let center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 	const measure = () => {
@@ -165,10 +176,12 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	point.addEventListener("pointerenter", () => {
 		hovering = true;
 		energy.target = 1;
+		globe.setHover(true);
 	});
 	point.addEventListener("pointerleave", () => {
 		hovering = false;
 		energy.target = 0;
+		globe.setHover(false);
 	});
 
 	let near = false;
@@ -177,8 +190,7 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		gsap.delayedCall(1.8, () => {
 			leanX(0);
 			leanY(0);
-			shineX(0);
-			shineY(0);
+			globe.setLean(0, 0);
 			energy.target = hovering ? 1 : 0;
 			near = false;
 		}),
@@ -196,11 +208,10 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			Math.min(dist * 0.18, MOTION.intro.lean) * (0.35 + 0.65 * pull);
 		leanX((dx / dist) * lean);
 		leanY((dy / dist) * lean);
-		shineX((-dx / dist) * lean * 0.12);
-		shineY((-dy / dist) * lean * 0.12);
+		globe.setLean(dx / dist, dy / dist);
 		// The closer the cursor, the more energy (over the sphere: all of it); a fast
 		// cursor also shakes the flakes.
-		energy.target = hovering ? 1 : pull * 0.85;
+		energy.target = hovering ? 1 : pull * 0.6;
 		globe.kick(Math.min(Math.hypot(e.movementX, e.movementY) / 60, 1) * pull);
 
 		// A ripple each time the cursor comes close (not while it stays there).
@@ -218,6 +229,9 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		calm.restart(true);
 	};
 	window.addEventListener("pointermove", onMove, { passive: true });
+
+	/* ---------- the skip button: it floats and, when touched, corrupts ---------- */
+	killables.push({ kill: corruptLabel(gsap, skip) });
 
 	/* ---------- 2. the story ---------- */
 
@@ -250,20 +264,30 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 
 	/* ---------- 3. opening the gate ---------- */
 
-	const finish = () => {
+	// The page behind the gate comes back: it does so in the instant of the blast.
+	const reveal = () => {
 		markIntroSeen();
-		globe.destroy();
 		galaxyState.bang = 1;
-		if (cosmos) gsap.set(cosmos, { clearProps: "all" });
 		html.classList.remove(GATE);
 		for (const el of behind) el.removeAttribute("inert");
-		root.remove();
 		const main = document.getElementById("main-content");
 		if (main) {
 			main.setAttribute("tabindex", "-1");
 			main.focus({ preventScroll: true });
 		}
 		safeRefresh(ScrollTrigger);
+	};
+
+	// What is left of the gate once everything has been shown.
+	const cleanup = () => {
+		globe.destroy();
+		if (cosmos) gsap.set(cosmos, { clearProps: "all" });
+		root.remove();
+	};
+
+	const finish = () => {
+		reveal();
+		cleanup();
 	};
 
 	const stopListening = () => {
@@ -278,42 +302,8 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			new CustomEvent(INTRO_OPEN_EVENT, { detail: { bang } }),
 		);
 
-	// The nav links are thrown out of the centre too (skipped while React hydrates them).
-	const burstNav = () => {
-		const items = Array.from(
-			document.querySelectorAll<HTMLElement>("[data-nav] a, [data-nav] button"),
-		).filter((el) => !el.closest("astro-island[ssr]"));
-		if (items.length === 0) return;
-		const vx = window.innerWidth / 2;
-		const vy = window.innerHeight / 2;
-		gsap.fromTo(
-			items,
-			{
-				x: (_i: number, el: HTMLElement) => {
-					const r = el.getBoundingClientRect();
-					return vx - (r.left + r.width / 2);
-				},
-				y: (_i: number, el: HTMLElement) => {
-					const r = el.getBoundingClientRect();
-					return vy - (r.top + r.height / 2);
-				},
-				scale: 0,
-				rotation: () => gsap.utils.random(-120, 120),
-				autoAlpha: 0,
-			},
-			{
-				x: 0,
-				y: 0,
-				scale: 1,
-				rotation: 0,
-				autoAlpha: 1,
-				duration: 1.5,
-				ease: "power4.out",
-				stagger: { amount: 0.4, from: "center" },
-				clearProps: "all",
-			},
-		);
-	};
+	// Effects that outlive the gate (the explosion, the cooling): stopped if the engine is.
+	const effects: Cleanup[] = [];
 
 	const open = (mode: "bang" | "skip") => {
 		if (opened) return;
@@ -326,55 +316,72 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			return;
 		}
 
-		const cover =
-			(2 * Math.hypot(window.innerWidth, window.innerHeight)) / 16 + 8;
-		// The flakes are drawn into the centre while the sphere draws in its breath.
-		globe.setMode("collapse");
-		const tl = gsap.timeline({ onComplete: finish });
+		// The click: the sphere does NOT blow up at once. It circles a few times in an
+		// ellipse that comes back to where it started, getting smaller and smaller, and the
+		// explosion happens right there. `t` is 0..1 along the whole approach.
+		const { orbit, heat, bang: stars } = MOTION.intro;
+		gsap.killTweensOf(point);
+		const reach = Math.min(window.innerWidth * 0.26, 300);
+		const tilt = -0.35;
+		const course = { t: 0 };
+		const place = () => {
+			const t = course.t;
+			// Swing out gently, then tighten; the envelope is 0 at both ends so it leaves
+			// from the centre and returns to exactly the same point.
+			const swing = smooth(0, 0.14, t) * (1 - t) ** 0.7;
+			const turn = Math.PI * 2 * ORBITS * t;
+			const lx = reach * swing * Math.sin(turn);
+			const ly = reach * 0.42 * swing * (Math.cos(turn) - 1) * 0.5;
+			const x = lx * Math.cos(tilt) - ly * Math.sin(tilt);
+			const y = lx * Math.sin(tilt) + ly * Math.cos(tilt);
+			const scale = 1 - 0.78 * smooth(0.08, 1, t);
+			gsap.set(point, { x, y, scale });
+			gsap.set(halo, { x, y });
+		};
+
+		const boom = () => {
+			const r = point.getBoundingClientRect();
+			const origin = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+			// Behind the flash: the void goes away and the page is simply THERE.
+			gsap.set([sky, point, halo, drift, ripple], { autoAlpha: 0 });
+			const cooling = heatUp(gsap, heat);
+			effects.push(() => cooling.kill());
+			gsap.fromTo(
+				galaxyState,
+				{ bang: 0 },
+				{ bang: 1, duration: stars, ease: "none" },
+			);
+			if (cosmos) {
+				// No spinning, no growing from the middle: it was there all along.
+				gsap.set(cosmos, { autoAlpha: 1, scale: 1 });
+			}
+			const blast = createBigBang(gsap.ticker);
+			effects.push(blast.destroy);
+			blast.play(origin, () => {
+				blast.destroy();
+				cleanup();
+			});
+			announce(true);
+			reveal();
+		};
+
+		const tl = gsap.timeline({ onComplete: boom });
 		killables.push(tl);
-		tl.to(lines, { autoAlpha: 0, duration: 0.3 }, 0)
-			.to(skip, { autoAlpha: 0, duration: 0.3 }, 0)
-			// It draws in its breath...
+		tl.to(lines, { autoAlpha: 0, duration: 0.4 }, 0)
+			.to(skip, { autoAlpha: 0, duration: 0.4 }, 0)
 			.to(
-				point,
-				{ scale: 0.3, x: 0, y: 0, duration: 0.5, ease: "power3.in" },
+				course,
+				{ t: 1, duration: orbit, ease: "power1.inOut", onUpdate: place },
 				0,
 			)
-			.to(halo, { opacity: 1, scale: 2.4, duration: 0.5, ease: "power2.in" }, 0)
-			// ...and the shock wave expands until it covers the screen.
-			.set(wave, { autoAlpha: 1 }, 0.5)
+			// The plasma is drawn into the centre while it keeps circling...
+			.add(() => globe.setMode("collapse"), orbit * 0.5)
+			// ...and the glow around it swells with the pressure.
 			.to(
-				wave,
-				{ scale: cover, duration: MOTION.intro.wave, ease: "power4.in" },
-				0.5,
-			)
-			.to(flash, { autoAlpha: 0.8, duration: 0.12, ease: "none" }, 1.0)
-			.add(() => {
-				// Behind the flash: the void goes away and the universe is thrown out.
-				gsap.set([sky, point, halo, drift, ripple], { autoAlpha: 0 });
-				gsap.fromTo(
-					galaxyState,
-					{ bang: 0 },
-					{ bang: 1, duration: MOTION.intro.bang, ease: "none" },
-				);
-				if (cosmos) {
-					gsap.fromTo(
-						cosmos,
-						{ scale: 0.25, autoAlpha: 0, transformOrigin: "50% 50%" },
-						{
-							scale: 1,
-							autoAlpha: 1,
-							duration: 2.6,
-							ease: "expo.out",
-							clearProps: "all",
-						},
-					);
-				}
-				announce(true);
-				burstNav();
-			}, 1.05)
-			.to(flash, { autoAlpha: 0, duration: 0.9, ease: "power2.out" }, 1.12)
-			.to(wave, { autoAlpha: 0, duration: 1, ease: "power2.out" }, 1.12);
+				halo,
+				{ opacity: 1, scale: 1.8, duration: orbit, ease: "power2.in" },
+				0,
+			);
 	};
 
 	const onKey = (e: KeyboardEvent) => {
@@ -392,5 +399,6 @@ export const introGate = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			announce(false);
 			finish();
 		}
+		for (const stop of effects.splice(0)) stop();
 	};
 };

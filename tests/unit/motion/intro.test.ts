@@ -2,6 +2,7 @@
 import gsap from "gsap";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { galaxyState } from "@/lib/galaxyState";
+import { MOTION } from "@/lib/motion/core";
 import { playHero } from "@/lib/motion/hero";
 import { INTRO_OPEN_EVENT, introGate } from "@/lib/motion/intro";
 import { flush, installMotionEnv, runScene } from "../helpers/motionEnv";
@@ -14,23 +15,24 @@ const $ = <T extends Element = HTMLElement>(selector: string) =>
 	document.querySelector(selector) as T;
 
 const GATE = `
-<main id="main-content"><a href="#x" id="behind">Contenido</a></main>
 <div data-bang-cosmos></div>
+<div class="relative z-2" id="wrapper">
 <div data-intro>
   <div data-intro-sky></div>
   <div data-intro-drift>
     <span data-intro-ripple></span>
     <span data-intro-halo></span>
     <button data-intro-point type="button">
-      <span data-intro-globe><span data-intro-heat></span><canvas data-intro-flakes></canvas><span data-intro-shine></span></span>
+      <canvas data-intro-flakes></canvas>
     </button>
   </div>
   <p data-intro-line>uno</p>
   <p data-intro-line>dos</p>
   <div data-intro-line>tres</div>
-  <span data-intro-wave></span>
-  <span data-intro-flash></span>
   <button data-intro-skip type="button">Saltar</button>
+</div>
+<main id="main-content"><a href="#x" id="behind">Contenido</a></main>
+<footer id="footer"></footer>
 </div>`;
 
 /** Every `intro:open` the page hears, in order. */
@@ -116,8 +118,14 @@ describe("introGate: the gate", () => {
 		start();
 		expect(galaxyState.bang).toBe(0);
 		expect($("#main-content")).toHaveAttribute("inert");
+		expect($("#footer")).toHaveAttribute("inert");
 		expect($("[data-bang-cosmos]")).toHaveAttribute("inert");
+		// The gate itself, and every ancestor of it, must stay reachable: the Layout wraps the
+		// page in a div, and marking THAT as inert made the gate unclickable for a real mouse.
 		expect($("[data-intro]")).not.toHaveAttribute("inert");
+		expect($("#wrapper")).not.toHaveAttribute("inert");
+		expect($("[data-intro-point]").closest("[inert]")).toBeNull();
+		expect($("[data-intro-skip]").closest("[inert]")).toBeNull();
 		expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
 		// The page is still in the DOM underneath (crawlers, Lighthouse).
 		expect($("#behind")).toBeInTheDocument();
@@ -146,21 +154,15 @@ describe("introGate: the gate", () => {
 		expect(m.invite - (m.secondOut + 0.5)).toBeGreaterThanOrEqual(1);
 	});
 
-	it("at rest the particle is calm; with the cursor over the sphere its heat and glow rise", async () => {
+	it("at rest the particle is calm; with the cursor over the sphere its glow rises", async () => {
 		start();
-		const heat = () =>
-			Number(gsap.getProperty($("[data-intro-heat]"), "opacity"));
 		const glow = () =>
 			Number(gsap.getProperty($("[data-intro-halo]"), "opacity"));
 		await wait(80);
-		expect(heat()).toBeLessThan(0.45);
 		expect(glow()).toBeLessThan(0.34);
 
 		$("[data-intro-point]").dispatchEvent(new MouseEvent("pointerenter"));
 		// Under load the ticker may run slower: wait for it instead of a fixed time.
-		await vi.waitFor(() => expect(heat()).toBeGreaterThan(0.7), {
-			timeout: 4000,
-		});
 		await vi.waitFor(() => expect(glow()).toBeGreaterThan(0.4), {
 			timeout: 4000,
 		});
@@ -172,10 +174,37 @@ describe("introGate: the gate", () => {
 		point.dispatchEvent(new MouseEvent("pointerenter"));
 		await wait(500);
 		point.dispatchEvent(new MouseEvent("pointerleave"));
-		await wait(1800);
-		expect(
-			Number(gsap.getProperty($("[data-intro-heat]"), "opacity")),
-		).toBeLessThan(0.45);
+		await vi.waitFor(
+			() =>
+				expect(
+					Number(gsap.getProperty($("[data-intro-halo]"), "opacity")),
+				).toBeLessThan(0.34),
+			{ timeout: 5000 },
+		);
+	});
+
+	it("the skip button keeps its real name for assistive tech while its letters scramble", async () => {
+		start();
+		const skip = $("[data-intro-skip]");
+		expect(skip).toHaveAttribute("aria-label", "Saltar");
+		const letters = skip.querySelector("span");
+		expect(letters).toHaveAttribute("aria-hidden", "true");
+		// It scrambles on load and ends reading the real words.
+		gsap.globalTimeline.progress(1);
+		expect(skip.textContent).toBe("Saltar");
+	});
+
+	it("it scrambles again when the cursor arrives, and settles back on the real text", async () => {
+		start();
+		const skip = $("[data-intro-skip]");
+		gsap.globalTimeline.progress(1);
+		skip.dispatchEvent(new MouseEvent("pointerenter"));
+		// It restarts: there is a running tween on the text again.
+		expect(gsap.getTweensOf(skip.querySelector("span")).length).toBeGreaterThan(
+			0,
+		);
+		gsap.globalTimeline.progress(1);
+		expect(skip.textContent).toBe("Saltar");
 	});
 
 	it("the pointer perturbs the particle: it leans toward the cursor", () => {
@@ -230,10 +259,29 @@ describe("introGate: opening", () => {
 		expect(document.querySelector("[data-intro]")).toBeNull();
 	});
 
-	it("clicking the particle is the Big Bang: the portfolio is thrown out of the centre", () => {
+	it("the sphere circles in a slow orbit, gets smaller and ends exactly where it began", () => {
 		start();
 		$("[data-intro-point]").click();
-		// Nothing is announced until the flash covers the screen.
+		const tl = gsap.globalTimeline
+			.getChildren(false, false, true)
+			.find(
+				(t) => (t.vars as { onComplete?: unknown }).onComplete,
+			) as gsap.core.Timeline;
+		const point = $("[data-intro-point]");
+		expect(tl.duration()).toBeGreaterThanOrEqual(MOTION.intro.orbit);
+		tl.progress(0.3);
+		expect(Number(gsap.getProperty(point, "x"))).not.toBe(0);
+		tl.progress(0.999);
+		expect(Math.abs(Number(gsap.getProperty(point, "x")))).toBeLessThan(2);
+		expect(Math.abs(Number(gsap.getProperty(point, "y")))).toBeLessThan(2);
+		// Nothing exploded yet: the page is still behind the gate.
+		expect(opened).toEqual([]);
+	});
+
+	it("clicking the particle is the Big Bang: the portfolio is simply there", () => {
+		start();
+		$("[data-intro-point]").click();
+		// Nothing is announced until the sphere has circled back and exploded.
 		expect(opened).toEqual([]);
 		expect($("[data-intro]")).not.toBeNull();
 		playBang();
@@ -290,17 +338,18 @@ describe("hero: waits for the gate", () => {
 		expect(gsap.getTweensOf(label).length).toBeGreaterThan(0);
 	});
 
-	it("after the Big Bang the parts start shrunk and spinning, not just faded", () => {
+	it("after the Big Bang everything is simply there at once: no flying in, no spinning", () => {
 		document.documentElement.classList.add("intro-on");
 		html(hero);
 		stop = runScene(playHero);
 		window.dispatchEvent(
 			new CustomEvent(INTRO_OPEN_EVENT, { detail: { bang: true } }),
 		);
-		gsap.globalTimeline.time(0.11);
-		expect(
-			Number(gsap.getProperty($("[data-hero-label]"), "scale")),
-		).toBeLessThan(1);
+		gsap.globalTimeline.time(0.01);
+		const label = $("[data-hero-label]");
+		expect(Number(gsap.getProperty(label, "opacity"))).toBe(1);
+		expect(Number(gsap.getProperty(label, "rotation"))).toBe(0);
+		expect(Number(gsap.getProperty(label, "x"))).toBe(0);
 	});
 
 	it("after a skip it plays the normal entrance (no flying parts)", () => {

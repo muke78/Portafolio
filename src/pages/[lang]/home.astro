@@ -1,5 +1,6 @@
 ---
 import IntroGate from "@/components/intro/IntroGate.astro";
+import UniverseEpilogue from "@/components/intro/UniverseEpilogue.astro";
 import Acerca from "@/components/sections/Acerca.astro";
 import Contactos from "@/components/sections/Contacto.astro";
 import Footer from "@/components/sections/Footer.astro";
@@ -37,6 +38,7 @@ const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
     <div id="contact" class="scroll-mt-22">
       <Contactos />
     </div>
+    <UniverseEpilogue />
   </main>
   <Footer />
   <CommentWidget client:idle currentLocale={currentLocale} />

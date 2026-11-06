@@ -36,6 +36,12 @@ vi.mock("three", () => {
 			this.z = z;
 			return this;
 		}
+		clone() {
+			return new Vec().set(this.x, this.y, this.z);
+		}
+		project() {
+			return this;
+		}
 	}
 	class Color {
 		constructor(
@@ -43,6 +49,12 @@ vi.mock("three", () => {
 			public g = 0,
 			public b = 0,
 		) {}
+		copy(c: Color) {
+			this.r = c.r;
+			this.g = c.g;
+			this.b = c.b;
+			return this;
+		}
 	}
 	class WebGLRenderer {
 		domElement = document.createElement("canvas");
@@ -110,6 +122,16 @@ vi.mock("three", () => {
 			add = vi.fn();
 		},
 		ShaderMaterial,
+		LineSegments: class {
+			visible = true;
+			frustumCulled = true;
+			renderOrder = 0;
+			constructor(
+				public geometry: unknown,
+				public material: unknown,
+			) {}
+		},
+		Vector2: Vec,
 		Vector3: Vec,
 		WebGLRenderer,
 	};
@@ -118,6 +140,11 @@ vi.mock("three", () => {
 import { Cosmos } from "@/components/cosmos/Cosmos";
 import { GithubIcon, LinkedinIcon } from "@/components/icons/BrandIcons";
 import { BackgroundEffects } from "@/components/three/BackgroundEffects";
+
+/** The star and gas layers (the wormhole and the Penrose diagram have no aDust). */
+const dustLayers = () =>
+	created.geometries.filter((g) => "aDust" in g.attributes);
+
 import { ParticleGalaxy } from "@/components/three/ParticleGalaxy";
 import { galaxyState } from "@/lib/galaxyState";
 
@@ -162,18 +189,22 @@ describe("ParticleGalaxy", () => {
 
 	it("draws 9500 particles on desktop and 4500 on a phone", () => {
 		render(<ParticleGalaxy />).unmount();
-		expect(created.geometries[0].attributes.aDust.array.length).toBe(9500 * 3);
-		expect(created.geometries[0].attributes.aRand.array.length).toBe(9500 * 4);
+		expect(dustLayers()[0].attributes.aDust.array.length).toBe(9500 * 3);
+		expect(dustLayers()[0].attributes.aRand.array.length).toBe(9500 * 4);
 
 		preference({ "(max-width: 767px)": true });
 		render(<ParticleGalaxy />);
-		expect(created.geometries[1].attributes.aGal.array.length).toBe(4500 * 3);
+		// Each mount builds the stars, then a smaller set for the gas clouds.
+		expect(dustLayers()[2].attributes.aGal.array.length).toBe(4500 * 3);
+		expect(dustLayers()[1].attributes.aGal.array.length).toBe(280 * 3);
+		expect(dustLayers()[3].attributes.aGal.array.length).toBe(140 * 3);
 	});
 
 	it("generates the same galaxy every time (seeded, original)", () => {
 		render(<ParticleGalaxy />).unmount();
 		render(<ParticleGalaxy />).unmount();
-		const [a, b] = created.geometries;
+		const a = dustLayers()[0];
+		const b = dustLayers()[2];
 		expect(Array.from(a.attributes.aGal.array.slice(0, 30))).toEqual(
 			Array.from(b.attributes.aGal.array.slice(0, 30)),
 		);
@@ -207,17 +238,64 @@ describe("ParticleGalaxy", () => {
 		expect(created.groups[0].scale.setScalar).toHaveBeenCalled();
 	});
 
-	it("fades the galaxy a little as it dies in the corner (end of the story)", () => {
+	it("in the epilogue the galaxy goes to the middle of the empty stage (nothing covers it)", () => {
 		render(<ParticleGalaxy />);
 		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
 			.mock.calls[0][0] as FrameRequestCallback;
+		const group = created.groups[0];
 		galaxyState.story = 0.3;
 		loop(performance.now() + 5000);
-		const full = created.materials[0].uniforms.uOpacity.value as number;
+		const before = group.position.x;
 		galaxyState.story = 1;
 		loop(performance.now() + 5100);
-		const dim = created.materials[0].uniforms.uOpacity.value as number;
-		expect(dim).toBeLessThan(full);
+		const after = group.position.x;
+		// While it forms it sits to the right of the text; in the epilogue it is centred.
+		expect(before).toBeGreaterThan(0.5);
+		expect(Math.abs(after)).toBeLessThan(1e-6);
+	});
+
+	it("the closing: the black hole lies flat, then tilts up toward you and grows", () => {
+		render(<ParticleGalaxy />);
+		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
+			.mock.calls[0][0] as FrameRequestCallback;
+		const group = created.groups[0];
+		const scale = group.scale.setScalar as ReturnType<typeof vi.fn>;
+		galaxyState.story = 1;
+		galaxyState.hole = 0;
+		loop(performance.now() + 5000);
+		const start = { tilt: group.rotation.x, scale: scale.mock.lastCall?.[0] };
+		galaxyState.hole = 0.22;
+		loop(performance.now() + 5100);
+		const lying = group.rotation.x;
+		galaxyState.hole = 1;
+		loop(performance.now() + 5200);
+		const end = { tilt: group.rotation.x, scale: scale.mock.lastCall?.[0] };
+		// rotation.x: 0 = the disc seen edge-on, PI/2 = seen straight on.
+		expect(lying).toBeLessThan(start.tilt);
+		expect(end.tilt).toBeGreaterThan(1.2);
+		expect(end.scale).toBeGreaterThan(start.scale * 2.5);
+		// The shader hears about it (lensing + new stars) on both layers.
+		for (const m of created.materials.filter((m) => m.uniforms.uBH))
+			expect(m.uniforms.uBH.value).toBe(1);
+		galaxyState.hole = 0;
+	});
+
+	it("without the closing the black hole is not drawn at all", () => {
+		render(<ParticleGalaxy />);
+		const loop = (requestAnimationFrame as unknown as ReturnType<typeof vi.fn>)
+			.mock.calls[0][0] as FrameRequestCallback;
+		galaxyState.story = 0.4;
+		loop(performance.now() + 5000);
+		for (const m of created.materials.filter((m) => m.uniforms.uBH))
+			expect(m.uniforms.uBH.value).toBe(0);
+	});
+
+	it("draws the gas clouds under the stars: a second, additive layer", () => {
+		render(<ParticleGalaxy />);
+		// stars + gas, then the inside of the Penrose diamond
+		expect(created.materials).toHaveLength(3);
+		expect(created.materials[0].uniforms.uGas.value).toBe(0);
+		expect(created.materials[1].uniforms.uGas.value).toBe(1);
 	});
 
 	it("shows the galaxy at its healthy peak if the scroll engine never starts", () => {
@@ -271,7 +349,7 @@ describe("ParticleGalaxy", () => {
 	it("releases the GPU resources and the canvas on unmount", () => {
 		const { unmount, container } = render(<ParticleGalaxy />);
 		unmount();
-		expect(created.geometries[0].dispose).toHaveBeenCalled();
+		expect(dustLayers()[0].dispose).toHaveBeenCalled();
 		expect(created.materials[0].dispose).toHaveBeenCalled();
 		expect(created.renderers[0].dispose).toHaveBeenCalled();
 		expect(container.querySelector("canvas")).toBeNull();

@@ -1,0 +1,77 @@
+---
+import { getI18N } from "@/i18n";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
+import { INTERIOR_LABELS } from "@/lib/galaxyState";
+
+const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
+const i18n = getI18N({ currentLocale });
+const t = i18n.EPILOGUE;
+const t_i = i18n.INTERIOR;
+const labels = INTERIOR_LABELS.map((l) => ({ ...l, text: t_i[l.key] }));
+const lines = [
+	t.LINE_1,
+	t.LINE_2,
+	t.LINE_3,
+	t.LINE_4,
+	t.LINE_5,
+	t.LINE_7,
+	t.LINE_8,
+	t.LINE_6,
+];
+---
+
+<!--
+	El epilogo: un tramo TRANSPARENTE entre el contacto y el pie. Es donde la galaxia (el lienzo
+	fijo de detras) se fusiona con otra y muere, a la vista: ni el contenido ni el pie ni el
+	nombre ("Khelde.") quedan encima de ella, y ella tampoco los tapa. El escenario es
+	`position: sticky` (no hay pin de GSAP); el motor (src/lib/motion/galaxy.ts) avanza la
+	historia con el scroll de este tramo y enciende las frases, una a una.
+
+	Sin movimiento (reduced motion) o sin JS no hay galaxia que cuente nada: el tramo se oculta
+	(app.css), asi que nadie scrollea por un espacio vacio.
+-->
+<section
+	data-epilogue
+	aria-label={t.LABEL}
+	class="relative h-[1100vh] sm:h-[1300vh]"
+>
+	<div class="sticky top-0 flex h-svh items-end">
+		<!-- Un velo suave abajo para que la frase se lea sobre el brillo de la galaxia. -->
+		<div
+			data-epilogue-veil
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-x-0 bottom-0 h-[48vh] bg-linear-to-t from-background/85 to-transparent"
+		>
+		</div>
+		<!-- Las etiquetas del interior (el diagrama de Penrose hecho 3D): el motor las coloca con la camara. -->
+		<div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+			{
+				labels.map((l) => (
+					<span
+						data-interior-label
+						data-x={l.x}
+						data-y={l.y}
+						data-z={l.z}
+						class="font-serif-display text-heading absolute top-0 left-0 whitespace-nowrap text-foreground opacity-0"
+					>
+						{l.text}
+					</span>
+				))
+			}
+		</div>
+		<div class="relative mx-auto w-full max-w-[1240px] px-6 pb-[12vh]">
+			<div class="grid">
+				{
+					lines.map((line) => (
+						<p
+							data-epilogue-line
+							class="font-serif-display text-title col-start-1 row-start-1 max-w-[24ch] opacity-0"
+						>
+							{line}
+						</p>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>

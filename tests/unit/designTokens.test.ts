@@ -25,7 +25,8 @@ const readBlock = (selector: RegExp): Record<string, string> => {
 };
 
 const themes = {
-	light: readBlock(/:root\s*\{([\s\S]*?)\n\}/),
+	// the light palette is also the `.light` scope (:root, .light, ... { ... })
+	light: readBlock(/:root[^{]*\{([\s\S]*?)\n\}/),
 	dark: readBlock(/\.dark\s*\{([\s\S]*?)\n\}/),
 } as const;
 

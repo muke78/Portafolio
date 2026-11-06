@@ -8,6 +8,7 @@
  */
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -57,14 +58,16 @@ export const MOTION = {
 	// Projects rail (rails.ts): scroll length cap (screens), glide smoothing (s)
 	// and the largest lean with the scroll speed (deg).
 	hscroll: { maxScreens: 2.5, smooth: 0.7, skew: 3 },
-	// Intro (intro.ts): how far (px) the particle leans toward the cursor, the shock
-	// wave (s), how long the stars take to fly out after the flash (s) and the story
+	// Intro (intro.ts): how far (px) the particle leans toward the cursor, the slow
+	// orbit before the blast (s), how long the stars take to fly out (s), how long the
+	// header takes to cool after it (s) and the story
 	// clock (s after the gate opens): each line comes in and goes out, then a pause with
 	// nothing on screen, then the invitation "Shall we begin?" at `invite`.
 	intro: {
 		lean: 56,
-		wave: 0.55,
 		bang: 3,
+		orbit: 5,
+		heat: 7,
 		first: 0.3,
 		firstOut: 3.3,
 		second: 3.9,
@@ -106,6 +109,7 @@ const register = () => {
 		SplitText,
 		MotionPathPlugin,
 		ScrollToPlugin,
+		ScrambleTextPlugin,
 	);
 	// Phones: the URL bar showing/hiding resizes the window while scrolling;
 	// that must not recompute every pin.

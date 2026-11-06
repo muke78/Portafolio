@@ -121,7 +121,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 					<h2 className="text-base font-semibold text-primary-foreground leading-tight">
 						{i18n.OPINIONS.OPINIONS_FORM_TITLE}
 					</h2>
-					<p className="text-xs text-primary-foreground/80 leading-snug">
+					<p className="text-xs text-primary-foreground leading-snug">
 						{i18n.OPINIONS.OPINIONS_FORM_SUBTITLE}
 					</p>
 				</div>
