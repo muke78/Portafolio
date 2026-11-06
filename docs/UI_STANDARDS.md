@@ -661,7 +661,6 @@ sitio usa las mismas piezas, cada una en su módulo:
 | Imagen de card | `media.ts` | La foto, más alta que su marco, se desplaza ±6 % al cruzar la pantalla | `[data-parallax-img]` |
 | Marquee de opiniones | `media.ts` | Un solo tween `xPercent` en bucle; **su velocidad y dirección siguen la del scroll** (un único callback del ticker suaviza `timeScale`) y vuelve a la calma; se detiene fuera de pantalla y con hover o foco; la pista es su propia capa (`will-change`) y el desvanecido de bordes son overlays estáticos, no una máscara | `[data-marquee]` + `[data-marquee-track]` |
 | Parallax decorativo | `media.ts` | Anillos de órbita, ±6 % | `[data-parallax="N"]` |
-| **Showcase horizontal fijado** | `layers.ts` | En escritorio (≥ 1024×760) la sección de proyectos se **fija** y el scroll vertical desliza las cards en horizontal (máx. 2.5 pantallas); barra de progreso; se recalcula al cambiar de categoría. En móvil es una grilla | `[data-hscroll]` + `[data-hscroll-track]` / `-viewport` / `-progress` |
 | **Pila de cards** | `layers.ts` | Las cards de experiencia son `sticky` y se apilan (cada una un poco más abajo); la que queda debajo retrocede (`scale`) al llegar la siguiente | `[data-stack]` + `[data-stack-card]` |
 | **Habilidades en vuelo** | `skills.ts` | Cada chip entra desde fuera de pantalla siguiendo una curva en S (`MotionPathPlugin`, `type: "thru"`), girando, y se aplasta un poco al aterrizar; todo escrubado con el scroll. Detrás, una línea "serpiente" se dibuja y un punto la recorre (`align`). En móvil: fade-up escalonado | `[data-fly-group]` + `[data-fly-chip]`, `[data-snake]` + `-trace` / `-dot` |
 | **Galaxia de partículas** | `galaxy.ts` + `ParticleGalaxy.tsx` | Polvo estelar a la deriva al entrar; con el scroll se arremolina hacia el centro, colapsa y **estalla** en una galaxia espiral de 3 brazos (destello en el instante de la explosión); el epicentro está en el **espacio libre a la derecha** del texto "Qué hago" (más pequeña, para que los brazos no lleguen a las palabras) y el texto lleva detrás un velo suave del color de fondo; luego se desplaza a la esquina, más pequeña. Original: una sola llamada de dibujo, shaders propios, colores de los tokens `--galaxy-*`. Con `prefers-reduced-motion` se dibuja la galaxia final quieta | scroll (sin atributo) |
@@ -677,15 +676,17 @@ Reglas de las escenas:
 
 - **El Home no esconde contenido detrás de clics.** Nada de pestañas,
   acordeones ni paneles ocultos para las secciones narrativas: Acerca de mí,
-  Educación, Experiencia, Habilidades y cada categoría de proyectos son
-  secciones/escenas que se recorren con el scroll (`StoryBlock`,
-  `ProjectRail`). En móvil se simplifican (filas con swipe, fade-up), pero el
-  contenido sigue ahí. **Única excepción: el resto del catálogo de proyectos.**
-  Cada categoría muestra en su riel fijado hasta 6 tarjetas (los destacados
-  primero) y, solo si hay más, un botón «Ver N más de …» (`ProjectMore`) abre
-  el resto en una cuadricula normal, de a 9. Un riel con decenas de tarjetas
-  obligaba a recorrer demasiado scroll; el botón es un `<button>` con
-  `aria-expanded`/`aria-controls`, sin fijar nada y sin mover la página.
+  Educación, Experiencia y Habilidades son secciones/escenas que se recorren
+  con el scroll (`StoryBlock`). **Única excepción: el resto del catálogo de
+  proyectos.** Cada categoría (`ProjectCategory`, dentro de `ProjectsCatalog`)
+  muestra sus primeras 6 tarjetas (los destacados primero) y, solo si hay más,
+  un botón «Ver N más de …» abre **todas** las demás de una vez, sin páginas
+  ni tope. Es un `<button>` con `aria-expanded`/`aria-controls`; al abrir, el
+  foco pasa a la primera tarjeta nueva y al cerrar vuelve al botón, y una
+  región `status` anuncia cuántas se ven. El catálogo vive en el flujo normal
+  de la página: nada fijado, trasladado ni con parallax por tarjeta (decenas de
+  triggers hacían lenta la sección en el móvil). Un índice de categorías con su
+  conteo (`nav`, anclas `#proyectos-<categoría>`) permite saltar a cada una.
 - **El lector nunca queda atrapado**: una escena fijada dura como máximo
   **2.5 pantallas** (lo verifica un test) y siempre tiene contenido que
   cambia mientras dura (si no cambia nada, no se fija).
@@ -844,11 +845,12 @@ bloque de media está listo para admitirlos cuando el backend los exponga.
   izquierda (4 col) el título, `sticky` (`lg:top-28`); a la derecha (8 col)
   el contenido, que es el punto focal. Habilidades usa el bloque apilado
   (título arriba, contenido a todo el ancho) porque necesita escenario. Los
-  proyectos son carriles horizontales a todo el ancho, uno por categoría.
+  proyectos son un catálogo a todo el ancho: una sección por categoría con
+  una cuadrícula de 1, 2 o 3 columnas.
 - **5 / 7** en Contacto (texto y enlaces / formulario) y **8 / 4** en el
   encabezado de Opiniones (título / llamada a la acción). Nada centrado
   "por defecto".
-- Las cards de proyecto viven en un carril horizontal (400 px por card); las
+- Las cards de proyecto viven en una cuadrícula de 1, 2 o 3 columnas; las
   de experiencia se apilan (`sticky`) en una sola columna.
 
 ### 12.2 Hero y galaxia
@@ -909,7 +911,6 @@ vive en `src/lib/motion/` (7.7).
 | `data-mask` (`="left"`, `data-mask-delay`) | Marco de foto, formulario, cinta | Se abre como cortina al entrar |
 | `data-stagger` (`="pop"`, `data-stagger-delay`) + `data-stagger-item` | Contenedor y sus hijos | Entrada uno a uno |
 | `data-scrub-text` | Párrafo de lectura | Palabras que se encienden con el scroll |
-| `data-hscroll` + `-track` / `-viewport` / `-progress` | `Proyectos.astro` y `ProjectRail` | Showcase horizontal fijado (un carril por categoría, máx. 6 tarjetas; el resto, en `ProjectMore`, fuera del contenedor fijado) |
 | `data-stack` + `data-stack-card` | Lista de experiencia | Pila sticky con profundidad |
 | `data-fly-group` + `data-fly-chip`, `data-snake` + `-trace` / `-dot` | Habilidades | Vuelo por curvas + serpiente |
 | `data-detail` + `-back` / `-meta` / `-title` / `-figure` / `-img` | Ruta de detalle | Entrada y profundidad |

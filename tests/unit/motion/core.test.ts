@@ -37,7 +37,6 @@ describe("MOTION constants", () => {
 	});
 
 	it("bounds the pinned scenes", () => {
-		expect(MOTION.hscroll.maxScreens).toBeLessThanOrEqual(2.5);
 		expect(MOTION.manifesto.screens).toBeLessThanOrEqual(2.5);
 	});
 });

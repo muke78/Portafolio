@@ -6,7 +6,8 @@ import { openCommentDialog } from "./helpers";
  * render stays light, the pinned scenes pin, anchors cross them and land,
  * and the menu highlights the section you are in.
  */
-const DATA_API = /\/api\/(projects|comments|skills|experiences|education|about)/;
+const DATA_API =
+	/\/api\/(projects|comments|skills|experiences|education|about)/;
 
 const NAV_LINKS = [
 	["#about", "Acerca de mí"],
@@ -146,10 +147,10 @@ test.describe("navigation across the pinned sections", () => {
 				)
 				.toBeGreaterThan(70);
 			await expect
-				.poll(
-					async () => (await page.locator(hash).boundingBox())?.y ?? 9999,
-					{ timeout: 20_000, intervals: [250, 500, 1000] },
-				)
+				.poll(async () => (await page.locator(hash).boundingBox())?.y ?? 9999, {
+					timeout: 20_000,
+					intervals: [250, 500, 1000],
+				})
 				.toBeLessThan(110);
 
 			await expect.poll(() => activeLinks(page)).toEqual([hash]);
@@ -160,8 +161,7 @@ test.describe("navigation across the pinned sections", () => {
 		await page.goto("/es/home#projects");
 		await expect
 			.poll(
-				async () =>
-					(await page.locator("#projects").boundingBox())?.y ?? -9999,
+				async () => (await page.locator("#projects").boundingBox())?.y ?? -9999,
 				{ timeout: 20_000, intervals: [250, 500, 1000] },
 			)
 			.toBeGreaterThan(70);
@@ -184,7 +184,7 @@ test.describe("navigation across the pinned sections", () => {
 test.describe("on a phone", () => {
 	test.use({ viewport: { width: 375, height: 812 } });
 
-	test("the vertical scroll slides the projects rail (no sideways swipe needed)", async ({
+	test("the projects flow with the page: nothing pinned and no sideways overflow", async ({
 		page,
 	}) => {
 		await page.goto("/es/home#projects");
@@ -194,20 +194,12 @@ test.describe("on a phone", () => {
 		await expect(page.locator("#projects article").first()).toBeVisible({
 			timeout: 15_000,
 		});
-		// Every category rail is pinned, like on desktop.
-		await expect
-			.poll(() => page.locator("#projects .pin-spacer").count(), {
-				timeout: 15_000,
-			})
-			.toBeGreaterThanOrEqual(1);
-
-		const track = page.locator("#projects [data-hscroll-track]").first();
-		const before = await track.evaluate((el) => getComputedStyle(el).transform);
-		await page.mouse.wheel(0, 600);
-		await expect
-			.poll(() => track.evaluate((el) => getComputedStyle(el).transform), {
-				timeout: 10_000,
-			})
-			.not.toBe(before);
+		// The catalog is plain flow: no pinned wrapper around it, no horizontal rail.
+		await expect(page.locator("#projects .pin-spacer")).toHaveCount(0);
+		await expect(page.locator("#projects [data-hscroll-track]")).toHaveCount(0);
+		const overflow = await page.evaluate(
+			() => document.documentElement.scrollWidth - window.innerWidth,
+		);
+		expect(overflow).toBeLessThanOrEqual(1);
 	});
 });

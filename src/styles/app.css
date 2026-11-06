@@ -444,14 +444,6 @@
 .motion-ok [data-detail-meta]:not([data-revealed]) {
 	opacity: 0;
 }
-/* Pinned sideways showcase: the track is clipped (and moved by GSAP) only when
-   the engine will pin it; otherwise it stays a hand-scrollable row. Keep the
-   query equal to the one in src/lib/motion/layers.ts. */
-@media (min-height: 560px) {
-	.motion-ok [data-hscroll-viewport] {
-		overflow: hidden;
-	}
-}
 /* Smooth native anchor scrolling only where the motion engine does not own
    it: with .motion-ok, anchors.ts scrolls with GSAP. (ScrollTrigger rewrites
    html's inline scroll-behavior on every refresh, so a native smooth scroll

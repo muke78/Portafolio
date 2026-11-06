@@ -50,12 +50,12 @@
 		"PROJECTS_TITLE_BUTTON_C": "Empresas",
 		"PROJECTS_TITLE_BUTTON_D": "Análisis de datos",
 		"PROJECTS_BADGE_FORK": "Colaboración",
-		"PROJECTS_COUNT_LABEL": "proyectos",
 		"PROJECTS_EMPTY": "Pronto habrá proyectos en esta categoría.",
 		"PROJECTS_BADGE_FEATURED": "Destacado",
 		"PROJECTS_SHOW_MORE": "Ver {n} más de {category}",
 		"PROJECTS_SHOW_LESS": "Mostrar menos",
-		"PROJECTS_LOAD_MORE": "Mostrar {n} más"
+		"PROJECTS_NAV_LABEL": "Categorías de proyectos",
+		"PROJECTS_SHOWING": "{shown} de {total} proyectos"
 	},
 	"MANIFESTO": {
 		"LABEL": "Qué hago",

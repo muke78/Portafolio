@@ -13,7 +13,6 @@
  *   [data-mask]                frame that opens like a curtain (masks.ts)
  *   [data-stagger] + items     children entering one by one (masks.ts)
  *   [data-scrub-text]          words lighting up with the scroll (text.ts)
- *   [data-hscroll] + track     pinned sideways showcase (layers.ts)
  *   [data-stack] + cards       layered sticky stack with depth (layers.ts)
  *   [data-fly-group] + chips   skills flying along curves, MotionPath (skills.ts)
  *   [data-snake] + trace/dot   snake line drawn with the scroll (skills.ts)
@@ -44,7 +43,7 @@ import { projectDetail } from "./detail";
 import { dialogs } from "./dialogs";
 import { galaxyScene } from "./galaxy";
 import { playHero } from "./hero";
-import { horizontalScenes, stackScenes } from "./layers";
+import { stackScenes } from "./layers";
 import { maskReveals, staggerGroups } from "./masks";
 import { cardImageParallax, marquees, setupParallax } from "./media";
 import { scrollProgress } from "./page";
@@ -92,7 +91,6 @@ export const initMotion = (): Cleanup => {
 			maskReveals(tools),
 			staggerGroups(tools),
 			scrubText(tools),
-			horizontalScenes(tools),
 			stackScenes(tools),
 			skillFlights(tools),
 			snakeLine(tools),
