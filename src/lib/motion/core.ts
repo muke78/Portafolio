@@ -56,7 +56,6 @@ export const MOTION = {
 	// drifts in from, and the scrub lag (higher = floatier).
 	fly: { stagger: 0.09, tilt: 14, near: 240, far: 460, scrub: 1.8 },
 	// Pinned sideways showcase and layered stack (layers.ts).
-	hscroll: { maxScreens: 2.5, smooth: 0.7 },
 	stack: { scale: 0.95, floor: 0.88 },
 	// Project detail page: intro timeline and scroll-linked depth.
 	detail: { total: 2, figureScale: 0.92 },

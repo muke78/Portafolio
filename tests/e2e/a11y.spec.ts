@@ -17,7 +17,9 @@ const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
 /** Walks the page so every client:visible island hydrates and loads data. */
 const loadEverything = async (page: Page) => {
-	const height = await page.evaluate(() => document.documentElement.scrollHeight);
+	const height = await page.evaluate(
+		() => document.documentElement.scrollHeight,
+	);
 	for (let y = 0; y < height; y += 600) {
 		await page.evaluate((top) => window.scrollTo(0, top), y);
 		await page.waitForTimeout(150);
@@ -108,7 +110,9 @@ test.describe("structure and keyboard", () => {
 		await expect(page.locator("#main-content")).toHaveCount(1);
 	});
 
-	test("every interactive element shows a focus indicator", async ({ page }) => {
+	test("every interactive element shows a focus indicator", async ({
+		page,
+	}) => {
 		await page.goto("/es/home");
 		const missing: string[] = [];
 		for (let i = 0; i < 14; i++) {
@@ -118,9 +122,13 @@ test.describe("structure and keyboard", () => {
 				if (!el || el === document.body) return null;
 				const s = getComputedStyle(el);
 				const visible =
-					(s.outlineStyle !== "none" && Number.parseFloat(s.outlineWidth) > 0) ||
+					(s.outlineStyle !== "none" &&
+						Number.parseFloat(s.outlineWidth) > 0) ||
 					s.boxShadow !== "none";
-				return { visible, label: `${el.tagName} ${el.textContent?.trim().slice(0, 30)}` };
+				return {
+					visible,
+					label: `${el.tagName} ${el.textContent?.trim().slice(0, 30)}`,
+				};
 			});
 			if (info && !info.visible) missing.push(info.label);
 		}
@@ -144,32 +152,27 @@ test.describe("structure and keyboard", () => {
 test.describe("keyboard with the motion layer on", () => {
 	test.use({ reducedMotion: "no-preference" });
 
-	test("tabbing to a project card in the pinned rail brings it into view", async ({
+	test("the project catalog is reachable by keyboard and 'Ver N más' keeps the focus", async ({
 		page,
 	}) => {
 		await page.goto("/es/home#projects");
-		await expect
-			.poll(() => page.evaluate(() => window.__motionReady))
-			.toBe(true);
-		const links = page.locator("#projects [data-hscroll]").first().locator("article h3 a");
+		const links = page.locator("#projects article h4 a");
 		await expect(links.first()).toBeVisible({ timeout: 15_000 });
-		const count = await links.count();
-		expect(count).toBeGreaterThan(3);
 
-		// The hash jump keeps correcting its position while islands hydrate;
-		// let it finish before moving with the keyboard.
-		await page.waitForTimeout(3000);
-		const last = links.nth(count - 1);
-		await last.focus();
-		const viewportWidth = page.viewportSize()?.width ?? 0;
-		await expect
-			.poll(
-				async () => {
-					const box = await last.boundingBox();
-					return box ? box.x >= -1 && box.x + box.width <= viewportWidth + 1 : false;
-				},
-				{ timeout: 10_000 },
-			)
-			.toBe(true);
+		// Every card title is a real link to the project detail route.
+		const href = await links.first().getAttribute("href");
+		expect(href).toMatch(/^\/es\/project\/.+/);
+
+		// A category with more than six projects has the button; opening it shows ALL
+		// the rest and moves the focus to the first new card.
+		const toggle = page.locator("#projects button[aria-expanded]").first();
+		if ((await toggle.count()) === 0) return;
+		const section = page.locator("#projects section", { has: toggle });
+		const before = await section.locator("article").count();
+		await toggle.focus();
+		await toggle.press("Enter");
+		await expect(toggle).toHaveAttribute("aria-expanded", "true");
+		expect(await section.locator("article").count()).toBeGreaterThan(before);
+		await expect(section.locator("article h4 a").nth(before)).toBeFocused();
 	});
 });
