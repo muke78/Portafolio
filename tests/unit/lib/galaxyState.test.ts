@@ -4,15 +4,15 @@ import * as motionBarrel from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 describe("galaxyState", () => {
-	it("starts as dust: the sky is already spread (no intro), nothing burst, nothing settled", () => {
-		expect(galaxyState).toEqual({ bang: 1, burst: 0, settle: 0 });
+	it("starts as the sky already spread (no intro) at the very beginning of the story", () => {
+		expect(galaxyState).toEqual({ bang: 1, story: 0 });
 	});
 
 	it("is one shared mutable object (the engine writes, the canvas reads)", async () => {
 		const again = (await import("@/lib/galaxyState")).galaxyState;
-		again.burst = 0.5;
-		expect(galaxyState.burst).toBe(0.5);
-		again.burst = 0;
+		again.story = 0.5;
+		expect(galaxyState.story).toBe(0.5);
+		again.story = 0;
 	});
 });
 

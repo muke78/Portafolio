@@ -405,19 +405,21 @@ describe("scrollProgress", () => {
 });
 
 describe("galaxyScene", () => {
-	it("scrubs the shared galaxy state with two triggers", () => {
+	it("scrubs the story over the WHOLE page with a single trigger (no pin)", () => {
 		run(galaxyScene);
-		expect(ScrollTrigger.getAll()).toHaveLength(2);
+		const triggers = ScrollTrigger.getAll();
+		expect(triggers).toHaveLength(1);
+		expect(triggers[0].vars.start).toBe(0);
+		expect(typeof triggers[0].vars.end).toBe("function");
+		expect(triggers[0].vars.pin).toBeUndefined();
 	});
 
-	it("leaves the finished galaxy when stopped (reduced motion)", () => {
+	it("leaves the galaxy at its healthy peak when stopped (reduced motion)", () => {
 		const stopScene = run(galaxyScene);
-		galaxyState.burst = 0;
-		galaxyState.settle = 0;
+		galaxyState.story = 0;
 		stopScene();
-		expect([galaxyState.burst, galaxyState.settle]).toEqual([1, 1]);
-		galaxyState.burst = 0;
-		galaxyState.settle = 0;
+		expect(galaxyState.story).toBe(0.72);
+		galaxyState.story = 0;
 	});
 });
 

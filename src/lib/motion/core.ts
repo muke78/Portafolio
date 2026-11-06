@@ -48,9 +48,8 @@ export const MOTION = {
 		large: { light: 0.5, dark: 0.4 },
 		body: { light: 0.65, dark: 0.52 },
 	},
-	// Particle galaxy (galaxy.ts): scroll length of the collapse+blast and of
-	// the move to the corner, in viewport heights; scrub lag.
-	galaxy: { burstScreens: 1.2, settleScreens: 1.4, scrub: 1.2 },
+	// Particle galaxy (galaxy.ts): scrub lag of the story that follows the whole page.
+	galaxy: { scrub: 1.2 },
 	// Skills adrift (skills.ts): seconds between chips inside the scrubbed
 	// timeline, the largest tilt (degrees) a chip starts with, how far (px) it
 	// drifts in from, and the scrub lag (higher = floatier).

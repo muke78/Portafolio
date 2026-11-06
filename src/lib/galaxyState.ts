@@ -8,9 +8,10 @@
  *   bang   0 -> 1  the Big Bang: every particle starts as one point at the centre
  *                  of the screen and is thrown outward (1 = already spread across
  *                  the sky; it is 1 whenever there is no intro to play)
- *   burst  0 -> 1  stardust gathers toward the centre (0 -> .58), then
- *                  explodes into the spiral galaxy (.58 -> 1)
- *   settle 0 -> 1  the finished galaxy drifts to the lower-right corner,
- *                  smaller and dimmer, so the content keeps the stage
+ *   story  0 -> 1  the life of the galaxy over the WHOLE page: stars spread across
+ *                  the sky (0) -> gathered into clouds -> the gas falls in -> a
+ *                  spinning disc -> the first stars -> spiral arms and a black hole
+ *                  -> mergers -> the end (1). The phases and their ranges live in
+ *                  the header of ParticleGalaxy.tsx.
  */
-export const galaxyState = { bang: 1, burst: 0, settle: 0 };
+export const galaxyState = { bang: 1, story: 0 };
