@@ -88,6 +88,23 @@
 		"404_IMG_ALT": "No se encontró la página",
 		"404_IMG_ARIA_LABEL": "No se encontró la ruta especificada"
 	},
+	"INTRO": {
+		"TITLE": "El origen del universo",
+		"SR": "Al principio no había nada, solo una partícula en la oscuridad. Activa el botón para dar origen al universo, o salta la introducción.",
+		"LINE_1": "Antes de todo, no había nada. Solo un punto en la oscuridad.",
+		"LINE_2": "Todo lo que existe empezó en una partícula como esta.",
+		"LINE_3": "¿Comenzamos?",
+		"HINT": "Haz clic en la partícula",
+		"START": "Comenzar: dar origen al universo",
+		"SKIP": "Saltar la introducción",
+		"REPLAY_TITLE": "¿Volver a ver el origen?",
+		"REPLAY_TEXT": "La próxima vez que entres, ¿quieres ver la historia desde la partícula del principio?",
+		"REPLAY_YES": "Sí, desde el principio",
+		"REPLAY_NO": "No, ir directo al sitio",
+		"REPLAY_SAVED_YES": "Listo: la próxima vez empezarás en la partícula.",
+		"REPLAY_SAVED_NO": "Listo: la próxima vez entrarás directo.",
+		"REPLAY_LINK": "Volver a ver el origen del universo"
+	},
 	"FOOTER": {
 		"SITE": "Sitio",
 		"ELSEWHERE": "En otros sitios"

@@ -3,6 +3,7 @@
  *
  * How the page talks to the engine - data attributes, nothing else:
  *
+ *   [data-intro] + data-intro-*  the gate: a particle you perturb, then the Big Bang (intro.ts)
  *   [data-hero] + data-hero-*  orchestrated load + scrubbed exit (hero.ts)
  *   [data-reveal]              fade-up with batch stagger on entering (reveals.ts)
  *   [data-manifesto] + parts   pinned, scrubbed reading scene (scenes.ts)
@@ -47,6 +48,7 @@ import { projectDetail } from "./detail";
 import { dialogs } from "./dialogs";
 import { galaxyScene } from "./galaxy";
 import { playHero } from "./hero";
+import { introGate } from "./intro";
 import { stackScenes } from "./layers";
 import { maskReveals, staggerGroups } from "./masks";
 import { cardImageParallax, marquees, setupParallax } from "./media";
@@ -87,6 +89,7 @@ export const initMotion = (): Cleanup => {
 
 		const stops: (Cleanup | undefined)[] = [
 			trackIslands(),
+			introGate(tools),
 			playHero(tools),
 			observeReveals(tools),
 			manifestoScene(tools),

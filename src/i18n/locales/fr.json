@@ -88,6 +88,23 @@
 		"404_IMG_ALT": "Page introuvable",
 		"404_IMG_ARIA_LABEL": "L'itinéraire demandé est introuvable"
 	},
+	"INTRO": {
+		"TITLE": "L'origine de l'univers",
+		"SR": "Au début, il n'y avait rien, seulement une particule dans le noir. Active le bouton pour donner naissance à l'univers, ou passe l'introduction.",
+		"LINE_1": "Avant tout, il n'y avait rien. Seulement un point dans l'obscurité.",
+		"LINE_2": "Tout ce qui existe a commencé dans une particule comme celle-ci.",
+		"LINE_3": "On commence ?",
+		"HINT": "Clique sur la particule",
+		"START": "Commencer : donner naissance à l'univers",
+		"SKIP": "Passer l'introduction",
+		"REPLAY_TITLE": "Revoir l'origine ?",
+		"REPLAY_TEXT": "La prochaine fois, veux-tu voir l'histoire depuis la première particule ?",
+		"REPLAY_YES": "Oui, depuis le début",
+		"REPLAY_NO": "Non, aller directement au site",
+		"REPLAY_SAVED_YES": "C'est noté : la prochaine fois tu commenceras à la particule.",
+		"REPLAY_SAVED_NO": "C'est noté : la prochaine fois tu entreras directement.",
+		"REPLAY_LINK": "Revoir l'origine de l'univers"
+	},
 	"FOOTER": {
 		"SITE": "Site",
 		"ELSEWHERE": "Ailleurs"

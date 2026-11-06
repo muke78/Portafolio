@@ -1,7 +1,11 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { MOTION_GATE_SCRIPT, THEME_SCRIPT } from "@/lib/inlineScripts";
+import {
+	INTRO_GATE_SCRIPT,
+	MOTION_GATE_SCRIPT,
+	THEME_SCRIPT,
+} from "@/lib/inlineScripts";
 
 const ROOT = join(import.meta.dirname, "../../..");
 const read = (path: string) => readFileSync(join(ROOT, path), "utf8");
@@ -33,19 +37,25 @@ describe("CSP con hashes (security.csp de Astro)", () => {
 		expect(config).not.toContain("unsafe-eval");
 	});
 
-	it("los dos <script is:inline> del Layout salen de las constantes que se hashean", () => {
+	it("los <script is:inline> del Layout salen de las constantes que se hashean", () => {
 		expect(layout).toContain("set:html={MOTION_GATE_SCRIPT}");
 		expect(layout).toContain("set:html={THEME_SCRIPT}");
+		expect(layout).toContain("set:html={INTRO_GATE_SCRIPT}");
 		// Un <script is:inline> escrito a mano no tendria hash y el navegador lo bloquearia.
 		expect([
 			...layout.matchAll(/<script is:inline>([\s\S]*?)<\/script>/g),
 		]).toEqual([]);
 		expect(config).toContain("hashOf(MOTION_GATE_SCRIPT)");
 		expect(config).toContain("hashOf(THEME_SCRIPT)");
+		expect(config).toContain("hashOf(INTRO_GATE_SCRIPT)");
 	});
 
 	it("los scripts en linea no usan eval ni crean otros scripts", () => {
-		for (const script of [MOTION_GATE_SCRIPT, THEME_SCRIPT]) {
+		for (const script of [
+			MOTION_GATE_SCRIPT,
+			THEME_SCRIPT,
+			INTRO_GATE_SCRIPT,
+		]) {
 			expect(script).not.toMatch(
 				/eval\(|new Function|document\.write|innerHTML/,
 			);

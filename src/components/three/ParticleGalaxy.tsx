@@ -28,7 +28,9 @@ import { galaxyState } from "@/lib/galaxyState";
  * The scroll (galaxyState, scrubbed by src/lib/motion/galaxy.ts) blends them:
  * the dust drifts on its own, is then pulled inward along a swirl, collapses
  * to a point and explodes outward into the spiral (a flash of the "hot"
- * colour at the instant of the blast). Once formed, the galaxy rotates
+ * colour at the instant of the blast). Before all of that, on the intro's Big
+ * Bang (galaxyState.bang, src/lib/motion/intro.ts), every particle starts as a
+ * single point at the centre of the screen and flies out to the sky. Once formed, the galaxy rotates
  * differentially (the inside turns faster than the rim) and leans a little
  * toward the pointer.
  *
@@ -164,6 +166,7 @@ attribute vec3 aGal;
 attribute vec4 aRand;
 uniform float uTime;
 uniform float uBurst;
+uniform float uBang;
 uniform float uPixel;
 uniform vec3 uOrigin;
 uniform float uInvScale;
@@ -204,14 +207,20 @@ void main() {
 	float over = sin(boom * 3.14159) * 0.35 * aRand.x;
 	vec3 pos = mix(c, g * (1.0 + over), e);
 
+	// 5. the Big Bang (intro): every particle starts as ONE point at the centre of
+	// the screen and is thrown outward, fast at first and then settling.
+	float eb = 1.0 - pow(1.0 - uBang, 5.0);
+	pos = uOrigin + (pos - uOrigin) * eb;
+	float bangFlash = exp(-pow((uBang - 0.04) * 16.0, 2.0));
+
 	float flash = exp(-pow((uBurst - 0.62) * 9.0, 2.0));
 	vMix = aRand.z;
-	vFlash = flash;
-	vAlpha = (0.55 + 0.45 * sin(uTime * 1.6 + aRand.w * 6.2832)) * (0.4 + 0.6 * min(aRand.y / 2.0, 1.0));
+	vFlash = max(flash, bangFlash);
+	vAlpha = (0.55 + 0.45 * sin(uTime * 1.6 + aRand.w * 6.2832)) * (0.4 + 0.6 * min(aRand.y / 2.0, 1.0)) * smoothstep(0.0, 0.02, uBang);
 
 	vec4 mv = modelViewMatrix * vec4(pos, 1.0);
 	gl_Position = projectionMatrix * mv;
-	gl_PointSize = clamp(aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + flash * 1.6), 1.0, 22.0);
+	gl_PointSize = clamp(aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + vFlash * 1.6), 1.0, 22.0);
 }
 `;
 
@@ -260,6 +269,7 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		uniforms: {
 			uTime: { value: 0 },
 			uBurst: { value: 0 },
+			uBang: { value: 1 },
 			uPixel: { value: renderer.getPixelRatio() * 2.4 },
 			uOrigin: { value: new Vector3() },
 			uInvScale: { value: 1 },
@@ -322,6 +332,7 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		const u = material.uniforms;
 		u.uTime.value = time;
 		u.uBurst.value = burst;
+		u.uBang.value = reduce ? 1 : galaxyState.bang;
 		u.uOpacity.value = intro * (1 - 0.42 * settle);
 
 		// Where the galaxy sits. While the dust gathers and blasts, the epicentre

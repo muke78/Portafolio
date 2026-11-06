@@ -4,8 +4,8 @@ import * as motionBarrel from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 describe("galaxyState", () => {
-	it("starts as dust: nothing burst, nothing settled", () => {
-		expect(galaxyState).toEqual({ burst: 0, settle: 0 });
+	it("starts as dust: the sky is already spread (no intro), nothing burst, nothing settled", () => {
+		expect(galaxyState).toEqual({ bang: 1, burst: 0, settle: 0 });
 	});
 
 	it("is one shared mutable object (the engine writes, the canvas reads)", async () => {

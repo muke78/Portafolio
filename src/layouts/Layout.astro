@@ -4,7 +4,11 @@ import "@/styles/app.css";
 import { BackgroundEffects } from "@/components/three/BackgroundEffects";
 import { getI18N } from "@/i18n";
 import { DEFAULT_LOCALE } from "@/i18n/locales";
-import { MOTION_GATE_SCRIPT, THEME_SCRIPT } from "@/lib/inlineScripts";
+import {
+	INTRO_GATE_SCRIPT,
+	MOTION_GATE_SCRIPT,
+	THEME_SCRIPT,
+} from "@/lib/inlineScripts";
 import { getContact } from "@/lib/siteContact";
 import { getSiteCopy } from "@/lib/siteCopy";
 
@@ -15,11 +19,13 @@ interface Props {
 	description?: string;
 	/** Absolute URL of the social preview image. Defaults to /kdl.webp. */
 	image?: string;
+	/** Solo el Home tiene la puerta de la introduccion (el punto cero). */
+	intro?: boolean;
 }
 
 const { url, site } = Astro;
 const currentLocale = Astro.currentLocale ?? DEFAULT_LOCALE;
-const { title, description, image } = Astro.props;
+const { title, description, image, intro = false } = Astro.props;
 const i18n = getI18N({ currentLocale });
 const contact = await getContact();
 const copy = await getSiteCopy(currentLocale);
@@ -83,6 +89,7 @@ const personSchema = {
     <!-- Corren antes del primer pintado; su hash esta en el CSP (src/lib/inlineScripts.ts). -->
     <script is:inline set:html={MOTION_GATE_SCRIPT}></script>
     <script is:inline set:html={THEME_SCRIPT}></script>
+    {intro && <script is:inline set:html={INTRO_GATE_SCRIPT}></script>}
   </head>
   <body class="bg-background text-foreground overflow-x-hidden">
     <a

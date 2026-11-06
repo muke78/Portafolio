@@ -30,6 +30,8 @@ atributos de datos y el motor los anima.
 | `media.ts` | Parallax decorativo, deriva de imágenes, marquee ligado a la velocidad (con inclinación `skewX`) |
 | `rails.ts` | `[data-hscroll]`: riel de proyectos fijado con las 6 mejores tarjetas de una categoría (un trigger por riel: deslizamiento e inclinación por velocidad) |
 | `peek.ts` | `[data-peek]`: índice del resto de una categoría; la imagen grande de cada fila sigue al cursor (`quickTo`, cortina `clip-path`, inclinación por velocidad) |
+| `intro.ts` | `[data-intro]`: la puerta del Home (el punto cero): una esfera de cristal con copos morados que respira casi inmóvil y se acelera con el cursor (energía: un `ticker` con `quickSetter`), una historia en frases con pausa y, al click, el Big Bang (onda + destello; `galaxyState.bang` lanza las estrellas desde el centro y el hero sale disparado desde el centro). Emite `intro:open` |
+| `snowglobe.ts` | Los copos de la esfera: un canvas 2D con física propia (`stepFlakes`, pura y probada) movido por el `ticker` de GSAP |
 | `masks.ts` | `[data-mask]` (marcos que se abren con `clip-path`) y `[data-stagger]` (hijos que entran uno a uno) |
 | `text.ts` | `[data-scrub-text]`: palabras que se encienden con el scroll (sin fijar) |
 | `layers.ts` | `[data-stack]`: pila de cards `sticky` con profundidad |
@@ -210,6 +212,8 @@ Registrar un plugin nuevo: importarlo en `src/lib/motion/core.ts` y añadirlo a
   `peek.ts` crea tres `quickTo` por fila (x, y, rotación) y la caja de la fila se
   mide una vez al entrar. Solo con `(hover: hover) and (pointer: fine)`; en
   táctil la fila lleva miniatura.
+- **La puerta de la introducción no puede esconder el sitio**: es una capa fija sobre el DOM completo (que queda debajo, con `inert`), la pone una clase de `<html>` (`intro-on`) que añade un script en línea ANTES del primer pintado (`INTRO_GATE_SCRIPT`, con hash en el CSP) y solo existe con JS, movimiento permitido, sin ancla en la URL y sin la preferencia «ir directo». Si el motor no arranca en 5 s la clase se quita sola. El hero espera al evento `intro:open` (`hero.ts`); tras el Big Bang sale disparado desde el centro y tras «saltar» entra como siempre.
+- **`quickSetter` en un solo callback del `ticker`, no tweens por evento**: el estado de ánimo de la partícula (`energy`) se suaviza en `intro.ts` y escribe escala, brillo y calor cada frame; el cursor solo cambia el objetivo.
 - **Imágenes `lazy` dentro de una tira recortada y trasladada**: el navegador
   solo las pide cuando de verdad se ven y la card se abriría sobre un marco
   gris. El riel las pasa a `eager` cuando él mismo está cerca (no al cargar la
