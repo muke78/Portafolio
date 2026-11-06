@@ -112,17 +112,19 @@
 		"LINE_3": "The stars go out one by one.",
 		"LINE_4": "Only the black hole is left, in silence.",
 		"LINE_5": "You cross the event horizon: there is no way back.",
-		"LINE_6": "On the other side, a white hole and a new universe."
+		"LINE_6": "On the other side, a white hole and a new universe.",
+		"LINE_7": "Time slows down: your past stays behind and only the future lies ahead.",
+		"LINE_8": "You cross the inner horizon: on either side, a wormhole and parallel universes."
 	},
-	"PENROSE": {
+	"INTERIOR": {
 		"BLACK_HOLE": "Black hole",
+		"INNER_HORIZON": "Inner horizon",
+		"WORMHOLE": "Wormhole",
+		"PARALLEL_WORMHOLE": "Parallel wormhole",
+		"ANTIVERSE": "Antiverse",
+		"PARALLEL_ANTIVERSE": "Parallel universe",
 		"WHITE_HOLE": "White hole",
-		"UNIVERSE": "Universe",
-		"PARALLEL": "Parallel universe",
-		"NEW": "New universe",
-		"ANTI": "Antiverse",
-		"HORIZON": "Horizon",
-		"WORMHOLE": "Wormhole"
+		"ANTIHORIZON": "Inner antihorizon"
 	},
 	"FOOTER": {
 		"SITE": "Site",

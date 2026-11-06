@@ -17,8 +17,9 @@ import {
 import {
 	EPILOGUE_FROM,
 	galaxyState,
+	interiorView,
 	PEAK,
-	penroseView,
+	timeScale,
 } from "@/lib/galaxyState";
 
 /**
@@ -204,242 +205,152 @@ const buildGeometry = (count: number, seed = 20251101) => {
 	return geometry;
 };
 
-/* ---------- the wormhole (embedding diagram) ---------- */
+/* ---------- the inside of the diamond (Penrose, in 3D) ---------- */
 /**
- * The throat of an Einstein-Rosen bridge as a wireframe, like the embedding diagrams that
- * explain it: rings and meridians of a surface whose radius flares from a narrow throat toward
- * both mouths along the tube coordinate l. One end (l < 0) is the black hole's mouth (warm), the other (l > 0)
- * the white hole's (cold). `position` is (x, y, l); the vertex shader places it in front
- * of the camera so that flying through it is just moving the camera coordinate uLc.
+ * What the camera sees once it has crossed the event horizon: the Penrose diagram of a
+ * charged black hole made solid. Each diamond of the diagram is turned around its axis into
+ * a double cone (a bicone: two cones tip to tip, stretched along the axis). Light travels at
+ * 45 degrees, so the cone walls are the horizons; between them run the lens-shaped lines of
+ * constant radius and constant time of the SVG diagram, turned into barrels and rings.
+ * Four cells meet at the inner horizon, one point: the black hole below, the white hole
+ * above and, with their axes sideways, the two antiverses with their saw-tooth singular
+ * rings (the wormhole and the parallel wormhole). Coordinates are "interior" ones: z is the
+ * future; the camera flies along z (flightZ in galaxyState.ts).
+ *
+ * `aTint`: 0 black hole, 1 wormhole, 2 antiverse, 3 white hole, 4 new universe.
+ * `aKind`: 0 lens grid, 1 horizon (cone), 2 singularity (saw-tooth ring).
  */
-const WORM_L = 10;
-const buildWormhole = (rings: number, spokes: number) => {
-	const ls: number[] = [];
-	for (let i = 0; i <= rings; i++) {
-		const u = (i / rings) * 2 - 1;
-		// denser near the throat, where the surface bends the most
-		ls.push(WORM_L * Math.sign(u) * Math.abs(u) ** 1.6);
-	}
-	// A throat that flares gently at both mouths (a real sqrt(b^2 + l^2) would open faster
-	// than the camera's view cone and leave nothing to see from inside).
-	const radius = (l: number) => 0.8 + 1.4 * Math.tanh((l * l) / 18);
-	const verts: number[] = [];
-	const seg = (a: number[], b: number[]) => verts.push(...a, ...b);
-	const at = (l: number, k: number): number[] => {
-		const a = (k / spokes) * Math.PI * 2;
-		return [Math.cos(a) * radius(l), Math.sin(a) * radius(l), l];
-	};
-	// rings
-	for (let i = 0; i <= rings; i++)
-		for (let k = 0; k < spokes; k++) seg(at(ls[i], k), at(ls[i], k + 1));
-	// meridians
-	for (let k = 0; k < spokes; k++)
-		for (let i = 0; i < rings; i++) seg(at(ls[i], k), at(ls[i + 1], k));
-	const geometry = new BufferGeometry();
-	geometry.setAttribute(
-		"position",
-		new BufferAttribute(new Float32Array(verts), 3),
-	);
-	return geometry;
-};
-
-const WORM_VERTEX = /* glsl */ `
-uniform float uWorm;
-uniform float uLc;
-varying float vL;
-varying float vFade;
-void main() {
-	vL = position.z;
-	// the camera is at z = 7 (CAMERA_Z) and looks down -z: what is ahead has l > uLc
-	vec3 p = vec3(position.xy, 7.0 - (position.z - uLc));
-	vec4 mv = modelViewMatrix * vec4(p, 1.0);
-	gl_Position = projectionMatrix * mv;
-	float ahead = position.z - uLc;
-	// near the camera it dissolves, far ahead it fades into the dark
-	vFade = smoothstep(0.05, 0.8, ahead) * exp(-ahead * 0.06) * (1.0 + 1.8 * exp(-position.z * position.z * 0.35));
+interface Cell {
+	c: [number, number, number];
+	axis: "x" | "z";
+	h: number;
+	R: number;
+	tint: number;
+	zig?: [number, number];
 }
-`;
 
-const WORM_FRAGMENT = /* glsl */ `
-uniform vec3 uWarm;
-uniform vec3 uCold;
-uniform vec3 uHot;
-uniform float uWorm;
-varying float vL;
-varying float vFade;
-void main() {
-	vec3 col = mix(uWarm, uCold, smoothstep(-1.6, 1.6, vL));
-	col = mix(col, uHot, exp(-vL * vL * 0.5) * 0.6);
-	float fadeIn = smoothstep(0.0, 0.12, uWorm) * (1.0 - smoothstep(0.93, 1.0, uWorm));
-	gl_FragColor = vec4(col, vFade * fadeIn * 1.1);
-}
-`;
+const INTERIOR_CELLS: Cell[] = [
+	{ c: [0, 0, 0], axis: "z", h: 6, R: 3, tint: 0 },
+	{ c: [0, 0, 12], axis: "z", h: 6, R: 3, tint: 3 },
+	{ c: [0, 0, 24], axis: "z", h: 6, R: 3, tint: 4 },
+	{ c: [-6, 0, 6], axis: "x", h: 6, R: 3, tint: 2, zig: [-0.55, 0.55] },
+	{ c: [6, 0, 6], axis: "x", h: 6, R: 3, tint: 1, zig: [-0.55, 0.55] },
+];
 
-/* ---------- the Penrose diagram ---------- */
-/**
- * The conformal diagram of a charged black hole, drawn the way Penrose draws it: diamonds
- * that touch at their corners (every light ray is a 45 degree line, so every diamond edge
- * is a horizon), each with its lens-shaped grid of constant time and radius, a fan of light
- * from its left and right tips (teal in the upper rows, violet in the lower ones, as in the
- * classic print), the saw-tooth line of the singularity, and the wavy path of whoever falls
- * through it all. The diamond at the centre is the black hole's interior; the ones around
- * it are universes. Units are diamonds (half-diagonal 1); the vertex shader scales them to
- * the screen. `aKind`: 0 grid, 1 edge or singularity, 2 the path, 3 fan of light.
- * `aTone` (-1 below .. 1 above) picks the colour and `aT` (0 at the tip .. 1) fades a fan.
- */
-const PENROSE_RINGS = 4;
-const buildPenrose = () => {
+const buildInterior = (azimuths: number) => {
 	const pos: number[] = [];
+	const tint: number[] = [];
 	const kind: number[] = [];
-	const tone: number[] = [];
-	const along: number[] = [];
-	const seg = (
-		x1: number,
-		y1: number,
-		x2: number,
-		y2: number,
-		k: number,
-		tn: number,
-		t1 = 0,
-		t2 = 0,
-	) => {
-		// edges and the path are drawn five times, nudged a hair, so they read as thick lines
-		const nudges =
-			k === 0 || k === 3
-				? [[0, 0]]
-				: [
-						[0, 0],
-						[0.007, 0],
-						[-0.007, 0],
-						[0, 0.007],
-						[0, -0.007],
-					];
-		for (const [dx, dy] of nudges) {
-			pos.push(x1 + dx, y1 + dy, x2 + dx, y2 + dy);
+	const TAU2 = Math.PI * 2;
+	for (const cell of INTERIOR_CELLS) {
+		const { c, axis, h, R } = cell;
+		const at = (u: number, rho: number, phi: number): number[] =>
+			axis === "z"
+				? [c[0] + rho * Math.cos(phi), c[1] + rho * Math.sin(phi), c[2] + u]
+				: [c[0] + u, c[1] + rho * Math.cos(phi), c[2] + rho * Math.sin(phi)];
+		const seg = (a: number[], b: number[], k: number) => {
+			pos.push(...a, ...b);
+			tint.push(cell.tint, cell.tint);
 			kind.push(k, k);
-			tone.push(tn, tn);
-			along.push(t1, t2);
+		};
+		const ring = (u: number, rho: number, k: number, saw = 0) => {
+			for (let i = 0; i < azimuths; i++) {
+				const f = (n: number) => rho * (1 + (saw && n % 2 ? saw : -saw));
+				seg(
+					at(u, f(i), (i / azimuths) * TAU2),
+					at(u, f(i + 1), ((i + 1) / azimuths) * TAU2),
+					k,
+				);
+			}
+		};
+		// the cone walls (the horizons): rings and straight meridians tip to tip
+		for (let k = -5; k <= 5; k++) {
+			const u = (k * h) / 6;
+			ring(u, R * (1 - Math.abs(u) / h), 1);
 		}
-	};
-	const R = PENROSE_RINGS;
-	const STEPS = 16;
-	for (let i = -R; i <= R; i++) {
-		for (let j = -R; j <= R; j++) {
-			if ((i + j) % 2 !== 0) continue;
-			const tn = Math.max(-1, Math.min(1, j / 2));
-			// the four edges (horizons)
-			seg(i - 1, j, i, j + 1, 1, tn);
-			seg(i, j + 1, i + 1, j, 1, tn);
-			seg(i + 1, j, i, j - 1, 1, tn);
-			seg(i, j - 1, i - 1, j, 1, tn);
-			// the axes
-			seg(i - 1, j, i + 1, j, 0, tn);
-			seg(i, j - 1, i, j + 1, 0, tn);
-			// lens-shaped arcs: constant radius (bulging sideways) and constant time (up/down)
-			for (const s of [-0.7, -0.35, 0.35, 0.7]) {
+		for (let j = 0; j < azimuths; j++) {
+			const phi = (j / azimuths) * TAU2;
+			seg(at(-h, 0, phi), at(0, R, phi), 1);
+			seg(at(0, R, phi), at(h, 0, phi), 1);
+		}
+		// the lens lines of the diagram: barrels of constant radius and rings of constant time
+		const STEPS = 18;
+		for (const s of [0.4, 0.75]) {
+			const rho = (u: number) => R * s * Math.cos((Math.PI * u) / (2 * h));
+			for (let k = -4; k <= 4; k++) ring((k * h) / 5, rho((k * h) / 5), 0);
+			for (let j = 0; j < azimuths; j += 2) {
+				const phi = (j / azimuths) * TAU2;
 				for (let n = 0; n < STEPS; n++) {
-					const a = -1 + (2 * n) / STEPS;
-					const b = -1 + (2 * (n + 1)) / STEPS;
-					const f = (u: number) => s * Math.cos((Math.PI * u) / 2);
-					seg(i + f(a), j + a, i + f(b), j + b, 0, tn);
-					seg(i + a, j + f(a), i + b, j + f(b), 0, tn);
-				}
-			}
-			// fans of light from the left and right tips toward the far edges
-			for (const side of [-1, 1]) {
-				const tipX = i + side;
-				for (const up of [-1, 1]) {
-					for (let m = 1; m <= 6; m++) {
-						const sMid = (m - 0.5) / 6;
-						// the far edge runs from the opposite tip (i - side, j) to the top/bottom vertex (i, j + up)
-						const ex = i - side + side * sMid;
-						const ey = j + up * sMid;
-						seg(tipX, j, ex, ey, 3, tn, 0, 1);
-					}
+					const a = -h + (2 * h * n) / STEPS;
+					const b = -h + (2 * h * (n + 1)) / STEPS;
+					seg(at(a, rho(a), phi), at(b, rho(b), phi), 0);
 				}
 			}
 		}
-	}
-	// the saw-tooth singularity lines (the "wormhole" of the print)
-	for (const x of [-1, 1]) {
-		const TEETH = 12;
-		for (let n = 0; n < TEETH * 2; n++) {
-			const y1 = -1 + (2 * n) / (TEETH * 2);
-			const y2 = -1 + (2 * (n + 1)) / (TEETH * 2);
-			seg(x + (n % 2 ? 0.05 : -0.05), y1, x + (n % 2 ? -0.05 : 0.05), y2, 1, 0);
+		// the singularity: rings with teeth
+		for (const f of cell.zig ?? []) {
+			const u = f * h;
+			ring(u, R * (1 - Math.abs(u) / h), 2, 0.1);
 		}
-	}
-	// the path of the one who falls: a slow wave that climbs the whole diagram
-	const N = 160;
-	for (let n = 0; n < N; n++) {
-		const y1 = -R + (2 * R * n) / N;
-		const y2 = -R + (2 * R * (n + 1)) / N;
-		seg(
-			0.32 * Math.sin(y1 * 1.7),
-			y1,
-			0.32 * Math.sin(y2 * 1.7),
-			y2,
-			2,
-			Math.max(-1, Math.min(1, y1 / R)),
-		);
 	}
 	const geometry = new BufferGeometry();
 	geometry.setAttribute(
 		"position",
-		new BufferAttribute(new Float32Array(pos), 2),
+		new BufferAttribute(new Float32Array(pos), 3),
+	);
+	geometry.setAttribute(
+		"aTint",
+		new BufferAttribute(new Float32Array(tint), 1),
 	);
 	geometry.setAttribute(
 		"aKind",
 		new BufferAttribute(new Float32Array(kind), 1),
 	);
-	geometry.setAttribute(
-		"aTone",
-		new BufferAttribute(new Float32Array(tone), 1),
-	);
-	geometry.setAttribute("aT", new BufferAttribute(new Float32Array(along), 1));
 	return geometry;
 };
 
-const PEN_VERTEX = /* glsl */ `
+const INTERIOR_VERTEX = /* glsl */ `
+attribute float aTint;
 attribute float aKind;
-attribute float aTone;
-attribute float aT;
-uniform float uZoom;
-uniform float uAspect;
+uniform float uCz;
+varying float vTint;
 varying float vKind;
-varying float vTone;
-varying float vT;
-varying float vDist;
+varying float vFade;
 void main() {
+	vTint = aTint;
 	vKind = aKind;
-	vTone = aTone;
-	vT = aT;
-	vec2 p = position.xy * uZoom;
-	vDist = length(p);
-	gl_Position = vec4(p.x / uAspect, p.y, 0.0, 1.0);
+	// the camera sits at z = 7 (CAMERA_Z) looking down -z; the interior's future is -z
+	vec3 p = vec3(position.xy, 7.0 - (position.z - uCz));
+	vec4 mv = modelViewMatrix * vec4(p, 1.0);
+	gl_Position = projectionMatrix * mv;
+	float d = -mv.z;
+	// nothing right at the lens, a long fog into the dark ahead
+	vFade = smoothstep(0.3, 1.6, d) * exp(-d * 0.085);
 }
 `;
 
-const PEN_FRAGMENT = /* glsl */ `
-uniform vec3 uTop;
-uniform vec3 uBottom;
+const INTERIOR_FRAGMENT = /* glsl */ `
+uniform vec3 uWarm;
+uniform vec3 uCold;
+uniform vec3 uViolet;
 uniform vec3 uHot;
-uniform float uPen;
+uniform float uVis;
+varying float vTint;
 varying float vKind;
-varying float vTone;
-varying float vT;
-varying float vDist;
+varying float vFade;
 void main() {
-	// teal above, violet below (greyish blue in the middle row), as in the classic print
-	vec3 side = mix(uBottom, uTop, vTone * 0.5 + 0.5);
-	vec3 col = mix(uHot * 0.75, side, 0.3 + 0.7 * abs(vTone));
-	float edge = step(0.5, vKind) * (1.0 - step(2.5, vKind));
-	float fan = step(2.5, vKind);
-	// edges and the path run white-hot, the fans glow in the colour of their row
-	col = mix(col, uHot, edge * 0.7 + step(1.5, vKind) * (1.0 - fan) * 0.2);
-	float a = mix(0.3, 0.95, edge) * (1.0 - fan) + fan * 0.85 * pow(1.0 - vT, 1.6);
-	a *= exp(-vDist * 0.26);
-	gl_FragColor = vec4(col, a * uPen);
+	// black hole: cold and faint (everything is dark in here); the wormholes burn ember,
+	// the antiverses violet; the white hole and the new universe turn cold and bright
+	vec3 col = uCold * 0.55;
+	col = mix(col, uWarm, step(0.5, vTint) * (1.0 - step(1.5, vTint)));
+	col = mix(col, uViolet, step(1.5, vTint) * (1.0 - step(2.5, vTint)));
+	col = mix(col, mix(uCold, uHot, 0.45), step(2.5, vTint));
+	float horizon = step(0.5, vKind) * (1.0 - step(1.5, vKind));
+	float saw = step(1.5, vKind);
+	float a = 0.3 + 0.55 * horizon + 0.5 * saw;
+	// the white hole and beyond shine brighter than the dark of the black hole
+	a *= mix(0.6, 1.5, step(2.5, vTint));
+	gl_FragColor = vec4(col, a * vFade * uVis);
 }
 `;
 
@@ -620,6 +531,8 @@ void main() {
 		vAlpha *= mix(1.0, smoothstep(0.0, 0.1, tt) * (1.0 - smoothstep(0.9, 1.0, tt)) * 1.6, fallw);
 		lensMag = mix(lensMag, 0.5 + 5.5 * tt * tt, fallw);
 	}
+	// the closer to the horizon the less light is left: by the end only the dark remains
+	vAlpha *= 1.0 - smoothstep(0.5, 0.92, uFall);
 	vTunnel = tt * fallw;
 	float size = lensMag * (1.0 + discSel * wBHf * 1.4) * aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + vFlash * 1.6) * (1.0 + ring * 0.8) * (1.0 + giant * 1.5 + nova * 2.0);
 	gl_PointSize = mix(clamp(size, 1.0, 26.0), clamp(size * 11.0, 24.0, 150.0), uGas);
@@ -635,6 +548,7 @@ uniform vec3 uEmber;
 uniform float uStory;
 uniform float uGas;
 uniform float uBH;
+uniform float uFall;
 uniform float uOpacity;
 varying float vMix;
 varying float vFlash;
@@ -660,6 +574,8 @@ void main() {
 	// the end: embers, red giants before they go off (the black hole's ring keeps its glow)
 	// the tunnel: light from ahead is blue-shifted, light from behind red-shifted
 	col = mix(col, mix(uEmber, uArm, step(0.5, vMix)), vTunnel * 0.75);
+	// falling in, the stars that come out of the hole glow orange
+	col = mix(col, uEmber, smoothstep(0.0, 0.35, uFall) * 0.6);
 	col = mix(col, uHot, vTunnel * vTunnel * 0.55);
 	float death = smoothstep(0.86, 1.0, uStory);
 	col = mix(col, uEmber, max(death * (1.0 - vRing), vGiant));
@@ -722,60 +638,36 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 	applyPalette(material);
 	applyPalette(gasMaterial);
 
-	const wormMaterial = new ShaderMaterial({
-		vertexShader: WORM_VERTEX,
-		fragmentShader: WORM_FRAGMENT,
+	// The inside of the Penrose diamond, in 3D (only drawn while the camera is in it).
+	const interiorMaterial = new ShaderMaterial({
+		vertexShader: INTERIOR_VERTEX,
+		fragmentShader: INTERIOR_FRAGMENT,
 		transparent: true,
 		depthWrite: false,
 		blending: AdditiveBlending,
 		uniforms: {
-			uWorm: { value: 0 },
-			uLc: { value: -WORM_L },
+			uCz: { value: -6 },
+			uVis: { value: 0 },
 			uWarm: { value: new Color() },
 			uCold: { value: new Color() },
+			uViolet: { value: new Color() },
 			uHot: { value: new Color() },
 		},
 	});
-	const wormGeometry = buildWormhole(small ? 56 : 90, small ? 28 : 44);
-	const wormhole = new LineSegments(wormGeometry, wormMaterial);
-	wormhole.frustumCulled = false;
-	wormhole.visible = false;
-	wormhole.renderOrder = 2;
-	scene.add(wormhole);
-	// The Penrose diagram, in screen space (no camera), over the stars and under the wormhole.
-	const penMaterial = new ShaderMaterial({
-		vertexShader: PEN_VERTEX,
-		fragmentShader: PEN_FRAGMENT,
-		transparent: true,
-		depthWrite: false,
-		depthTest: false,
-		blending: AdditiveBlending,
-		uniforms: {
-			uZoom: { value: 1 },
-			uAspect: { value: 1 },
-			uPen: { value: 0 },
-			uTop: { value: new Color() },
-			uBottom: { value: new Color() },
-			uHot: { value: new Color() },
-		},
-	});
-	const penGeometry = buildPenrose();
-	const penrose = new LineSegments(penGeometry, penMaterial);
-	penrose.frustumCulled = false;
-	penrose.visible = false;
-	penrose.renderOrder = 3;
-	scene.add(penrose);
-	const paintWormhole = () => {
-		const w = wormMaterial.uniforms;
+	const interiorGeometry = buildInterior(small ? 28 : 40);
+	const interior = new LineSegments(interiorGeometry, interiorMaterial);
+	interior.frustumCulled = false;
+	interior.visible = false;
+	interior.renderOrder = 2;
+	scene.add(interior);
+	const paintInterior = () => {
+		const w = interiorMaterial.uniforms;
 		w.uWarm.value.copy(material.uniforms.uEmber.value);
 		w.uCold.value.copy(material.uniforms.uPortal.value);
+		w.uViolet.value.copy(material.uniforms.uArm.value);
 		w.uHot.value.copy(material.uniforms.uHot.value);
-		const pen = penMaterial.uniforms;
-		pen.uTop.value.copy(material.uniforms.uPortal.value);
-		pen.uBottom.value.copy(material.uniforms.uArm.value);
-		pen.uHot.value.copy(material.uniforms.uHot.value);
 	};
-	paintWormhole();
+	paintInterior();
 
 	const geometry = buildGeometry(count);
 	const points = new Points(geometry, material);
@@ -822,7 +714,8 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 	const draw = (now: number) => {
 		const dt = Math.min((now - last) / 1000, 0.1);
 		last = now;
-		if (!reduce) time += dt;
+		// Falling in slows time: the closer to the horizon, the slower everything moves.
+		if (!reduce) time += dt * timeScale(galaxyState.fall);
 
 		// If the scroll engine never starts (error, blocked script) do not leave the
 		// viewer with dust forever: show the healthy galaxy, still, like reduced motion.
@@ -904,17 +797,11 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 			m.uniforms.uEin.value = (2 * 0.25 * base) / visH;
 			m.uniforms.uAspect.value = camera.aspect;
 		}
-		// Crossing the wormhole: the camera coordinate runs from the black hole's mouth to the
-		// white hole's.
-		// The Penrose diagram rushes toward you as you fall and gives way to the tunnel.
-		const view = penroseView(fall, worm);
-		penrose.visible = view.alpha > 0;
-		penMaterial.uniforms.uPen.value = view.alpha;
-		penMaterial.uniforms.uAspect.value = camera.aspect;
-		penMaterial.uniforms.uZoom.value = view.zoom;
-		wormhole.visible = worm > 0 && worm < 1;
-		wormMaterial.uniforms.uWorm.value = worm;
-		wormMaterial.uniforms.uLc.value = -WORM_L * 0.85 + worm * WORM_L * 1.7;
+		// Inside the diamond: the camera flies along the interior's axis with the scroll.
+		const inside = interiorView(worm);
+		interior.visible = inside.vis > 0;
+		interiorMaterial.uniforms.uCz.value = inside.cz;
+		interiorMaterial.uniforms.uVis.value = inside.vis;
 
 		renderer.render(scene, camera);
 	};
@@ -939,7 +826,7 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 	const mo = new MutationObserver(() => {
 		applyPalette(material);
 		applyPalette(gasMaterial);
-		paintWormhole();
+		paintInterior();
 		if (reduce) draw(performance.now());
 	});
 	mo.observe(document.documentElement, {
@@ -958,10 +845,8 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		window.removeEventListener("pointermove", onPointer);
 		geometry.dispose();
 		gasGeometry.dispose();
-		wormGeometry.dispose();
-		penGeometry.dispose();
-		penMaterial.dispose();
-		wormMaterial.dispose();
+		interiorGeometry.dispose();
+		interiorMaterial.dispose();
 		material.dispose();
 		gasMaterial.dispose();
 		renderer.dispose();

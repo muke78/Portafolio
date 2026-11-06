@@ -112,17 +112,19 @@
 		"LINE_3": "Las estrellas se apagan una a una.",
 		"LINE_4": "Solo queda el agujero negro, en silencio.",
 		"LINE_5": "Cruzas el horizonte de sucesos: ya no hay vuelta atrás.",
-		"LINE_6": "Al otro lado, un agujero blanco y un universo nuevo."
+		"LINE_6": "Al otro lado, un agujero blanco y un universo nuevo.",
+		"LINE_7": "El tiempo se vuelve lento: tu pasado se queda atrás y solo hay futuro delante.",
+		"LINE_8": "Cruzas el horizonte interior: a los lados, un agujero de gusano y universos paralelos."
 	},
-	"PENROSE": {
+	"INTERIOR": {
 		"BLACK_HOLE": "Agujero negro",
+		"INNER_HORIZON": "Horizonte interior",
+		"WORMHOLE": "Agujero de gusano",
+		"PARALLEL_WORMHOLE": "Agujero de gusano paralelo",
+		"ANTIVERSE": "Antiuniverso",
+		"PARALLEL_ANTIVERSE": "Universo paralelo",
 		"WHITE_HOLE": "Agujero blanco",
-		"UNIVERSE": "Universo",
-		"PARALLEL": "Universo paralelo",
-		"NEW": "Universo nuevo",
-		"ANTI": "Antiuniverso",
-		"HORIZON": "Horizonte",
-		"WORMHOLE": "Agujero de gusano"
+		"ANTIHORIZON": "Antihorizonte interior"
 	},
 	"FOOTER": {
 		"SITE": "Sitio",

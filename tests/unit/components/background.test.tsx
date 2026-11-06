@@ -292,8 +292,8 @@ describe("ParticleGalaxy", () => {
 
 	it("draws the gas clouds under the stars: a second, additive layer", () => {
 		render(<ParticleGalaxy />);
-		// stars + gas, then the wormhole and the Penrose diagram
-		expect(created.materials).toHaveLength(4);
+		// stars + gas, then the inside of the Penrose diamond
+		expect(created.materials).toHaveLength(3);
 		expect(created.materials[0].uniforms.uGas.value).toBe(0);
 		expect(created.materials[1].uniforms.uGas.value).toBe(1);
 	});

@@ -1,8 +1,9 @@
 import {
 	EPILOGUE_FROM,
 	galaxyState,
+	interiorView,
 	PEAK,
-	penroseView,
+	projectInterior,
 } from "@/lib/galaxyState";
 import { type Cleanup, MOTION, type MotionTools } from "./core";
 
@@ -34,23 +35,37 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	);
 	const tweens: gsap.core.Animation[] = [];
 	const labels = Array.from(
-		document.querySelectorAll<HTMLElement>("[data-penrose-label]"),
+		document.querySelectorAll<HTMLElement>("[data-interior-label]"),
 	);
 
-	// The Penrose diagram's labels ride on its diamonds: same maths as the canvas
-	// (penroseView), written once per frame, only while the diagram is visible.
+	// The interior's labels ride on its cones: same camera as the canvas (projectInterior),
+	// written once per frame and only while the camera is inside the diamond.
 	const placeLabels = () => {
-		const { zoom, alpha } = penroseView(galaxyState.fall, galaxyState.worm);
+		const { cz, vis } = interiorView(galaxyState.worm);
 		const w = window.innerWidth;
 		const h = window.innerHeight;
 		for (const el of labels) {
-			const x = Number(el.dataset.x);
-			const y = Number(el.dataset.y);
-			const px = w / 2 + ((x * zoom) / (w / h)) * (w / 2);
-			const py = h / 2 - y * zoom * (h / 2);
-			const inside = px > -80 && px < w + 80 && py > -40 && py < h + 40;
-			el.style.opacity = inside ? String(Math.min(1, alpha * 1.3)) : "0";
-			el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px) translate(-50%, -50%) rotate(${el.dataset.rot ?? 0}deg)`;
+			const p =
+				vis > 0
+					? projectInterior(
+							Number(el.dataset.x),
+							Number(el.dataset.y),
+							Number(el.dataset.z),
+							cz,
+							w / h,
+						)
+					: null;
+			if (!p || Math.abs(p.x) > 1.1 || Math.abs(p.y) > 1.1) {
+				el.style.opacity = "0";
+				continue;
+			}
+			// closer = clearer; far away they fade into the fog, and right in your face they go
+			const near = Math.min(1, (p.d - 0.6) / 2.5);
+			const far = Math.max(0, 1 - (p.d - 7) / 8);
+			el.style.opacity = String(
+				Math.max(0, Math.min(1, vis * near * far * 1.4)),
+			);
+			el.style.transform = `translate(${(w / 2 + p.x * (w / 2)).toFixed(1)}px, ${(h / 2 - p.y * (h / 2)).toFixed(1)}px) translate(-50%, -50%)`;
 		}
 	};
 	if (labels.length > 0) gsap.ticker.add(placeLabels);
@@ -89,15 +104,18 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	);
 
 	if (stage) {
-		// The epilogue, scene by scene, each with its own distance (share of the stretch):
-		//   0    - .20   the smaller galaxy falls in and is absorbed (story -> .86)
-		//   .20  - .24   calm: the merged galaxy just turns, nothing changes
-		//   .24  - .43   the gas runs out, the light turns to embers, the stars go out (-> 1)
-		//   .43  - .45   silence: only the black hole is left
-		//   .45  - .60   the black hole comes toward you and bends the new stars (hole 0 -> 1)
-		//   .60  - .76   you fall in: the stars streak out of the hole (fall 0 -> 1)
-		//   .76  - .93   the wormhole is crossed from end to end (worm 0 -> 1)
-		//   .93  - 1     the white hole floods everything with light (exit 0 -> 1)
+		// The epilogue, scene by scene, each with its own distance and NONE on top of another
+		// (share of the stretch):
+		//   0    - .14   the smaller galaxy falls in and is absorbed (story -> .86)
+		//   .14  - .17   calm: the merged galaxy just turns
+		//   .17  - .30   the gas runs out, the light turns to embers, the stars go out (-> 1)
+		//   .30  - .32   silence: only the black hole is left
+		//   .32  - .47   the black hole tilts up toward you like a cup (hole 0 -> 1)
+		//   .47  - .62   you fall in: the hole swells until it fills the screen, orange stars
+		//                stream out, then the colours drain and only the dark is left (fall)
+		//   .62  - .93   inside the diamond, in 3D: the black hole's cone, the inner horizon
+		//                with the wormholes at the sides, the white hole's cone (worm)
+		//   .93  - 1     the light of the white hole floods everything (exit)
 		const tl0 = gsap.timeline({
 			defaults: { ease: "none" },
 			scrollTrigger: {
@@ -111,13 +129,13 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			.fromTo(
 				galaxyState,
 				{ story: EPILOGUE_FROM, hole: 0, fall: 0, worm: 0, exit: 0 },
-				{ story: 0.86, duration: 0.2, immediateRender: false },
+				{ story: 0.86, duration: 0.14, immediateRender: false },
 				0,
 			)
-			.to(galaxyState, { story: 1, duration: 0.19 }, 0.24)
-			.to(galaxyState, { hole: 1, duration: 0.15 }, 0.45)
-			.to(galaxyState, { fall: 1, duration: 0.16 }, 0.6)
-			.to(galaxyState, { worm: 1, duration: 0.17 }, 0.76)
+			.to(galaxyState, { story: 1, duration: 0.13 }, 0.17)
+			.to(galaxyState, { hole: 1, duration: 0.15 }, 0.32)
+			.to(galaxyState, { fall: 1, duration: 0.15 }, 0.47)
+			.to(galaxyState, { worm: 1, duration: 0.31 }, 0.62)
 			.to(galaxyState, { exit: 1, duration: 0.07 }, 0.93)
 			.set({}, {}, 1);
 		tweens.push(tl0);
@@ -137,22 +155,24 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 			// [in, out] as a share of the epilogue; each phrase comes AFTER what it says has
 			// happened and has its own stretch; the last one leaves before the white hole.
 			const beats: [number, number][] = [
-				[0.21, 0.27],
-				[0.28, 0.35],
-				[0.36, 0.43],
-				[0.46, 0.58],
-				[0.62, 0.74],
-				[0.8, 0.92],
+				[0.145, 0.205],
+				[0.215, 0.265],
+				[0.275, 0.31],
+				[0.325, 0.45],
+				[0.565, 0.625],
+				[0.64, 0.735],
+				[0.75, 0.835],
+				[0.85, 0.915],
 			];
 			lines.forEach((line, i) => {
-				const [from, to] = beats[i] ?? [0.8, 0.92];
+				const [from, to] = beats[i] ?? [0.85, 0.915];
 				tl.fromTo(
 					line,
 					{ autoAlpha: 0, y: 16 },
-					{ autoAlpha: 1, y: 0, duration: 0.06 },
+					{ autoAlpha: 1, y: 0, duration: 0.03 },
 					from,
 				);
-				if (to <= 1) tl.to(line, { autoAlpha: 0, y: -12, duration: 0.05 }, to);
+				if (to <= 1) tl.to(line, { autoAlpha: 0, y: -12, duration: 0.03 }, to);
 			});
 			const veil = document.querySelector<HTMLElement>("[data-epilogue-veil]");
 			if (veil) tl.to(veil, { autoAlpha: 0, duration: 0.05 }, 0.9);
