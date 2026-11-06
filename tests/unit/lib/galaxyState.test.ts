@@ -5,7 +5,14 @@ import { cn } from "@/lib/utils";
 
 describe("galaxyState", () => {
 	it("starts as the sky already spread (no intro) at the very beginning of the story", () => {
-		expect(galaxyState).toEqual({ bang: 1, story: 0, hole: 0 });
+		expect(galaxyState).toEqual({
+			bang: 1,
+			story: 0,
+			hole: 0,
+			fall: 0,
+			worm: 0,
+			exit: 0,
+		});
 	});
 
 	it("is one shared mutable object (the engine writes, the canvas reads)", async () => {

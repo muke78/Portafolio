@@ -110,7 +110,19 @@
 		"LINE_1": "A smaller galaxy falls into its orbit and merges with it.",
 		"LINE_2": "With no gas, no more stars are born: the light turns to embers.",
 		"LINE_3": "The stars go out one by one.",
-		"LINE_4": "Only the black hole is left, in silence."
+		"LINE_4": "Only the black hole is left, in silence.",
+		"LINE_5": "You cross the event horizon: there is no way back.",
+		"LINE_6": "On the other side, a white hole and a new universe."
+	},
+	"PENROSE": {
+		"BLACK_HOLE": "Black hole",
+		"WHITE_HOLE": "White hole",
+		"UNIVERSE": "Universe",
+		"PARALLEL": "Parallel universe",
+		"NEW": "New universe",
+		"ANTI": "Antiverse",
+		"HORIZON": "Horizon",
+		"WORMHOLE": "Wormhole"
 	},
 	"FOOTER": {
 		"SITE": "Site",

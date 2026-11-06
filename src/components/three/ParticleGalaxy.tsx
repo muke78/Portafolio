@@ -5,6 +5,7 @@ import {
 	BufferGeometry,
 	Color,
 	Group,
+	LineSegments,
 	PerspectiveCamera,
 	Points,
 	Scene,
@@ -13,7 +14,12 @@ import {
 	Vector3,
 	WebGLRenderer,
 } from "three";
-import { EPILOGUE_FROM, galaxyState, PEAK } from "@/lib/galaxyState";
+import {
+	EPILOGUE_FROM,
+	galaxyState,
+	PEAK,
+	penroseView,
+} from "@/lib/galaxyState";
 
 /**
  * PARTICLE GALAXY - an original particle system (no third-party model,
@@ -105,6 +111,9 @@ const applyPalette = (material: ShaderMaterial) => {
 	u.uHot.value = new Color(...readToken("--galaxy-hot", [0.94, 0.93, 0.98]));
 	u.uStar.value = new Color(...readToken("--galaxy-star", [0.84, 0.85, 0.98]));
 	u.uEmber.value = new Color(...readToken("--galaxy-ember", [0.9, 0.45, 0.3]));
+	u.uPortal.value = new Color(
+		...readToken("--galaxy-portal", [0.5, 0.8, 0.95]),
+	);
 };
 
 /* ---------- geometry ---------- */
@@ -195,6 +204,245 @@ const buildGeometry = (count: number, seed = 20251101) => {
 	return geometry;
 };
 
+/* ---------- the wormhole (embedding diagram) ---------- */
+/**
+ * The throat of an Einstein-Rosen bridge as a wireframe, like the embedding diagrams that
+ * explain it: rings and meridians of a surface whose radius flares from a narrow throat toward
+ * both mouths along the tube coordinate l. One end (l < 0) is the black hole's mouth (warm), the other (l > 0)
+ * the white hole's (cold). `position` is (x, y, l); the vertex shader places it in front
+ * of the camera so that flying through it is just moving the camera coordinate uLc.
+ */
+const WORM_L = 10;
+const buildWormhole = (rings: number, spokes: number) => {
+	const ls: number[] = [];
+	for (let i = 0; i <= rings; i++) {
+		const u = (i / rings) * 2 - 1;
+		// denser near the throat, where the surface bends the most
+		ls.push(WORM_L * Math.sign(u) * Math.abs(u) ** 1.6);
+	}
+	// A throat that flares gently at both mouths (a real sqrt(b^2 + l^2) would open faster
+	// than the camera's view cone and leave nothing to see from inside).
+	const radius = (l: number) => 0.8 + 1.4 * Math.tanh((l * l) / 18);
+	const verts: number[] = [];
+	const seg = (a: number[], b: number[]) => verts.push(...a, ...b);
+	const at = (l: number, k: number): number[] => {
+		const a = (k / spokes) * Math.PI * 2;
+		return [Math.cos(a) * radius(l), Math.sin(a) * radius(l), l];
+	};
+	// rings
+	for (let i = 0; i <= rings; i++)
+		for (let k = 0; k < spokes; k++) seg(at(ls[i], k), at(ls[i], k + 1));
+	// meridians
+	for (let k = 0; k < spokes; k++)
+		for (let i = 0; i < rings; i++) seg(at(ls[i], k), at(ls[i + 1], k));
+	const geometry = new BufferGeometry();
+	geometry.setAttribute(
+		"position",
+		new BufferAttribute(new Float32Array(verts), 3),
+	);
+	return geometry;
+};
+
+const WORM_VERTEX = /* glsl */ `
+uniform float uWorm;
+uniform float uLc;
+varying float vL;
+varying float vFade;
+void main() {
+	vL = position.z;
+	// the camera is at z = 7 (CAMERA_Z) and looks down -z: what is ahead has l > uLc
+	vec3 p = vec3(position.xy, 7.0 - (position.z - uLc));
+	vec4 mv = modelViewMatrix * vec4(p, 1.0);
+	gl_Position = projectionMatrix * mv;
+	float ahead = position.z - uLc;
+	// near the camera it dissolves, far ahead it fades into the dark
+	vFade = smoothstep(0.05, 0.8, ahead) * exp(-ahead * 0.06) * (1.0 + 1.8 * exp(-position.z * position.z * 0.35));
+}
+`;
+
+const WORM_FRAGMENT = /* glsl */ `
+uniform vec3 uWarm;
+uniform vec3 uCold;
+uniform vec3 uHot;
+uniform float uWorm;
+varying float vL;
+varying float vFade;
+void main() {
+	vec3 col = mix(uWarm, uCold, smoothstep(-1.6, 1.6, vL));
+	col = mix(col, uHot, exp(-vL * vL * 0.5) * 0.6);
+	float fadeIn = smoothstep(0.0, 0.12, uWorm) * (1.0 - smoothstep(0.93, 1.0, uWorm));
+	gl_FragColor = vec4(col, vFade * fadeIn * 1.1);
+}
+`;
+
+/* ---------- the Penrose diagram ---------- */
+/**
+ * The conformal diagram of a charged black hole, drawn the way Penrose draws it: diamonds
+ * that touch at their corners (every light ray is a 45 degree line, so every diamond edge
+ * is a horizon), each with its lens-shaped grid of constant time and radius, a fan of light
+ * from its left and right tips (teal in the upper rows, violet in the lower ones, as in the
+ * classic print), the saw-tooth line of the singularity, and the wavy path of whoever falls
+ * through it all. The diamond at the centre is the black hole's interior; the ones around
+ * it are universes. Units are diamonds (half-diagonal 1); the vertex shader scales them to
+ * the screen. `aKind`: 0 grid, 1 edge or singularity, 2 the path, 3 fan of light.
+ * `aTone` (-1 below .. 1 above) picks the colour and `aT` (0 at the tip .. 1) fades a fan.
+ */
+const PENROSE_RINGS = 4;
+const buildPenrose = () => {
+	const pos: number[] = [];
+	const kind: number[] = [];
+	const tone: number[] = [];
+	const along: number[] = [];
+	const seg = (
+		x1: number,
+		y1: number,
+		x2: number,
+		y2: number,
+		k: number,
+		tn: number,
+		t1 = 0,
+		t2 = 0,
+	) => {
+		// edges and the path are drawn five times, nudged a hair, so they read as thick lines
+		const nudges =
+			k === 0 || k === 3
+				? [[0, 0]]
+				: [
+						[0, 0],
+						[0.007, 0],
+						[-0.007, 0],
+						[0, 0.007],
+						[0, -0.007],
+					];
+		for (const [dx, dy] of nudges) {
+			pos.push(x1 + dx, y1 + dy, x2 + dx, y2 + dy);
+			kind.push(k, k);
+			tone.push(tn, tn);
+			along.push(t1, t2);
+		}
+	};
+	const R = PENROSE_RINGS;
+	const STEPS = 16;
+	for (let i = -R; i <= R; i++) {
+		for (let j = -R; j <= R; j++) {
+			if ((i + j) % 2 !== 0) continue;
+			const tn = Math.max(-1, Math.min(1, j / 2));
+			// the four edges (horizons)
+			seg(i - 1, j, i, j + 1, 1, tn);
+			seg(i, j + 1, i + 1, j, 1, tn);
+			seg(i + 1, j, i, j - 1, 1, tn);
+			seg(i, j - 1, i - 1, j, 1, tn);
+			// the axes
+			seg(i - 1, j, i + 1, j, 0, tn);
+			seg(i, j - 1, i, j + 1, 0, tn);
+			// lens-shaped arcs: constant radius (bulging sideways) and constant time (up/down)
+			for (const s of [-0.7, -0.35, 0.35, 0.7]) {
+				for (let n = 0; n < STEPS; n++) {
+					const a = -1 + (2 * n) / STEPS;
+					const b = -1 + (2 * (n + 1)) / STEPS;
+					const f = (u: number) => s * Math.cos((Math.PI * u) / 2);
+					seg(i + f(a), j + a, i + f(b), j + b, 0, tn);
+					seg(i + a, j + f(a), i + b, j + f(b), 0, tn);
+				}
+			}
+			// fans of light from the left and right tips toward the far edges
+			for (const side of [-1, 1]) {
+				const tipX = i + side;
+				for (const up of [-1, 1]) {
+					for (let m = 1; m <= 6; m++) {
+						const sMid = (m - 0.5) / 6;
+						// the far edge runs from the opposite tip (i - side, j) to the top/bottom vertex (i, j + up)
+						const ex = i - side + side * sMid;
+						const ey = j + up * sMid;
+						seg(tipX, j, ex, ey, 3, tn, 0, 1);
+					}
+				}
+			}
+		}
+	}
+	// the saw-tooth singularity lines (the "wormhole" of the print)
+	for (const x of [-1, 1]) {
+		const TEETH = 12;
+		for (let n = 0; n < TEETH * 2; n++) {
+			const y1 = -1 + (2 * n) / (TEETH * 2);
+			const y2 = -1 + (2 * (n + 1)) / (TEETH * 2);
+			seg(x + (n % 2 ? 0.05 : -0.05), y1, x + (n % 2 ? -0.05 : 0.05), y2, 1, 0);
+		}
+	}
+	// the path of the one who falls: a slow wave that climbs the whole diagram
+	const N = 160;
+	for (let n = 0; n < N; n++) {
+		const y1 = -R + (2 * R * n) / N;
+		const y2 = -R + (2 * R * (n + 1)) / N;
+		seg(
+			0.32 * Math.sin(y1 * 1.7),
+			y1,
+			0.32 * Math.sin(y2 * 1.7),
+			y2,
+			2,
+			Math.max(-1, Math.min(1, y1 / R)),
+		);
+	}
+	const geometry = new BufferGeometry();
+	geometry.setAttribute(
+		"position",
+		new BufferAttribute(new Float32Array(pos), 2),
+	);
+	geometry.setAttribute(
+		"aKind",
+		new BufferAttribute(new Float32Array(kind), 1),
+	);
+	geometry.setAttribute(
+		"aTone",
+		new BufferAttribute(new Float32Array(tone), 1),
+	);
+	geometry.setAttribute("aT", new BufferAttribute(new Float32Array(along), 1));
+	return geometry;
+};
+
+const PEN_VERTEX = /* glsl */ `
+attribute float aKind;
+attribute float aTone;
+attribute float aT;
+uniform float uZoom;
+uniform float uAspect;
+varying float vKind;
+varying float vTone;
+varying float vT;
+varying float vDist;
+void main() {
+	vKind = aKind;
+	vTone = aTone;
+	vT = aT;
+	vec2 p = position.xy * uZoom;
+	vDist = length(p);
+	gl_Position = vec4(p.x / uAspect, p.y, 0.0, 1.0);
+}
+`;
+
+const PEN_FRAGMENT = /* glsl */ `
+uniform vec3 uTop;
+uniform vec3 uBottom;
+uniform vec3 uHot;
+uniform float uPen;
+varying float vKind;
+varying float vTone;
+varying float vT;
+varying float vDist;
+void main() {
+	// teal above, violet below (greyish blue in the middle row), as in the classic print
+	vec3 side = mix(uBottom, uTop, vTone * 0.5 + 0.5);
+	vec3 col = mix(uHot * 0.75, side, 0.3 + 0.7 * abs(vTone));
+	float edge = step(0.5, vKind) * (1.0 - step(2.5, vKind));
+	float fan = step(2.5, vKind);
+	// edges and the path run white-hot, the fans glow in the colour of their row
+	col = mix(col, uHot, edge * 0.7 + step(1.5, vKind) * (1.0 - fan) * 0.2);
+	float a = mix(0.3, 0.95, edge) * (1.0 - fan) + fan * 0.85 * pow(1.0 - vT, 1.6);
+	a *= exp(-vDist * 0.26);
+	gl_FragColor = vec4(col, a * uPen);
+}
+`;
+
 /* ---------- shaders ---------- */
 const VERTEX = /* glsl */ `
 attribute vec3 aDust;
@@ -206,6 +454,8 @@ uniform float uStory;
 uniform float uBang;
 uniform float uGas;
 uniform float uBH;
+uniform float uFall;
+uniform float uWorm;
 uniform vec2 uHoleNdc;
 uniform float uEin;
 uniform float uAspect;
@@ -218,6 +468,7 @@ varying float vAlpha;
 varying float vRing;
 varying float vGiant;
 varying float vSat;
+varying float vTunnel;
 
 // The smaller galaxy that will be swallowed (in the big one's space).
 const vec3 SAT = vec3(3.9, 0.4, -0.9);
@@ -284,6 +535,8 @@ void main() {
 	float discSel = step(fract(aRand.x * 13.7), 0.3);
 	float dr = 0.27 + 0.27 * pow(fract(aRand.x * 91.3), 1.6);
 	float da = aRand.w * 6.2832 + uTime * 0.4 / pow(dr, 1.5);
+	// falling in: the disc is swallowed (it spirals into the centre)
+	dr *= 1.0 - 0.9 * smoothstep(0.0, 0.5, uFall);
 	vec3 discPos = vec3(cos(da) * dr, (aRand.z - 0.5) * 0.03, sin(da) * dr);
 	vec3 fieldPos = aDust * uInvScale + uOrigin;
 	// the gas becomes a soft halo around the ring
@@ -325,11 +578,13 @@ void main() {
 		* (0.4 + 0.6 * min(aRand.y / 2.0, 1.0))
 		* gas * hole * alive * smoothstep(0.0, 0.02, uBang)
 		// the side of the disc that turns toward us is brighter (relativistic beaming)
-		* mix(1.0, 0.45 + 0.9 * (0.5 + 0.5 * sin(da)), discSel * wBHf);
+		* mix(1.0, 0.45 + 0.9 * (0.5 + 0.5 * sin(da)), discSel * wBHf)
+		* mix(1.0, 1.0 - smoothstep(0.1, 0.5, uFall), discSel)
+		* (1.0 - smoothstep(0.0, 0.3, uWorm));
 	// the gas: huge soft clouds that gather, fall in and are used up as stars are born
 	float gasAlpha = smoothstep(0.1, 0.24, s) * (1.0 - smoothstep(0.46, 0.66, s))
 		* (0.55 + 0.45 * aRand.z) * smoothstep(0.0, 0.02, uBang)
-		+ wBHf * 1.2 * smoothstep(0.0, 0.02, uBang);
+		+ wBHf * 1.2 * smoothstep(0.0, 0.02, uBang) * (1.0 - smoothstep(0.0, 0.4, uFall));
 	vAlpha = mix(starAlpha, gasAlpha * 0.11, uGas);
 
 	vec4 mv = modelViewMatrix * vec4(p, 1.0);
@@ -352,6 +607,20 @@ void main() {
 		gl_Position.xy = mix(gl_Position.xy, ndc * gl_Position.w, lens);
 		lensMag = mix(1.0, lensMag, lens);
 	}
+	// Falling in: every field star streams out of the hole along a spiral, small and faint
+	// at first and big and fast as it passes you (hyperspace tunnel). Each one loops.
+	float fallw = smoothstep(0.0, 0.12, uFall) * (1.0 - discSel) * (1.0 - uGas) * (1.0 - smoothstep(0.0, 0.3, uWorm));
+	float tt = fract(aRand.x * 7.31 + uFall * 2.6);
+	if (fallw > 0.0) {
+		float ang = aRand.w * 6.2832 + (1.0 - tt) * 2.4 * uFall;
+		// the stars are born at the rim of the black disc, which swells with the fall
+		float rr = uEin * 0.95 + 1.7 * tt * tt * tt;
+		vec2 nd = uHoleNdc + vec2(cos(ang), sin(ang)) * rr / vec2(uAspect, 1.0);
+		gl_Position.xy = mix(gl_Position.xy, nd * gl_Position.w, fallw);
+		vAlpha *= mix(1.0, smoothstep(0.0, 0.1, tt) * (1.0 - smoothstep(0.9, 1.0, tt)) * 1.6, fallw);
+		lensMag = mix(lensMag, 0.5 + 5.5 * tt * tt, fallw);
+	}
+	vTunnel = tt * fallw;
 	float size = lensMag * (1.0 + discSel * wBHf * 1.4) * aRand.y * uPixel * (6.0 / -mv.z) * (1.0 + vFlash * 1.6) * (1.0 + ring * 0.8) * (1.0 + giant * 1.5 + nova * 2.0);
 	gl_PointSize = mix(clamp(size, 1.0, 26.0), clamp(size * 11.0, 24.0, 150.0), uGas);
 }
@@ -373,6 +642,7 @@ varying float vAlpha;
 varying float vRing;
 varying float vGiant;
 varying float vSat;
+varying float vTunnel;
 
 void main() {
 	float d = length(gl_PointCoord - 0.5);
@@ -388,6 +658,9 @@ void main() {
 	// the smaller galaxy is a paler, cooler white-violet until it is absorbed
 	col = mix(col, uStar, vSat * 0.75);
 	// the end: embers, red giants before they go off (the black hole's ring keeps its glow)
+	// the tunnel: light from ahead is blue-shifted, light from behind red-shifted
+	col = mix(col, mix(uEmber, uArm, step(0.5, vMix)), vTunnel * 0.75);
+	col = mix(col, uHot, vTunnel * vTunnel * 0.55);
 	float death = smoothstep(0.86, 1.0, uStory);
 	col = mix(col, uEmber, max(death * (1.0 - vRing), vGiant));
 	// the gas: hot white-orange while it falls, cooling to the violet of the arms
@@ -424,6 +697,8 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 			uniforms: {
 				uGas: { value: gas },
 				uBH: { value: 0 },
+				uFall: { value: 0 },
+				uWorm: { value: 0 },
 				uHoleNdc: { value: new Vector2() },
 				uEin: { value: 0.2 },
 				uAspect: { value: 1 },
@@ -439,12 +714,68 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 				uHot: { value: new Color() },
 				uStar: { value: new Color() },
 				uEmber: { value: new Color() },
+				uPortal: { value: new Color() },
 			},
 		});
 	const material = makeMaterial(0);
 	const gasMaterial = makeMaterial(1);
 	applyPalette(material);
 	applyPalette(gasMaterial);
+
+	const wormMaterial = new ShaderMaterial({
+		vertexShader: WORM_VERTEX,
+		fragmentShader: WORM_FRAGMENT,
+		transparent: true,
+		depthWrite: false,
+		blending: AdditiveBlending,
+		uniforms: {
+			uWorm: { value: 0 },
+			uLc: { value: -WORM_L },
+			uWarm: { value: new Color() },
+			uCold: { value: new Color() },
+			uHot: { value: new Color() },
+		},
+	});
+	const wormGeometry = buildWormhole(small ? 56 : 90, small ? 28 : 44);
+	const wormhole = new LineSegments(wormGeometry, wormMaterial);
+	wormhole.frustumCulled = false;
+	wormhole.visible = false;
+	wormhole.renderOrder = 2;
+	scene.add(wormhole);
+	// The Penrose diagram, in screen space (no camera), over the stars and under the wormhole.
+	const penMaterial = new ShaderMaterial({
+		vertexShader: PEN_VERTEX,
+		fragmentShader: PEN_FRAGMENT,
+		transparent: true,
+		depthWrite: false,
+		depthTest: false,
+		blending: AdditiveBlending,
+		uniforms: {
+			uZoom: { value: 1 },
+			uAspect: { value: 1 },
+			uPen: { value: 0 },
+			uTop: { value: new Color() },
+			uBottom: { value: new Color() },
+			uHot: { value: new Color() },
+		},
+	});
+	const penGeometry = buildPenrose();
+	const penrose = new LineSegments(penGeometry, penMaterial);
+	penrose.frustumCulled = false;
+	penrose.visible = false;
+	penrose.renderOrder = 3;
+	scene.add(penrose);
+	const paintWormhole = () => {
+		const w = wormMaterial.uniforms;
+		w.uWarm.value.copy(material.uniforms.uEmber.value);
+		w.uCold.value.copy(material.uniforms.uPortal.value);
+		w.uHot.value.copy(material.uniforms.uHot.value);
+		const pen = penMaterial.uniforms;
+		pen.uTop.value.copy(material.uniforms.uPortal.value);
+		pen.uBottom.value.copy(material.uniforms.uArm.value);
+		pen.uHot.value.copy(material.uniforms.uHot.value);
+	};
+	paintWormhole();
 
 	const geometry = buildGeometry(count);
 	const points = new Points(geometry, material);
@@ -502,6 +833,12 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		const bang = reduce ? 1 : galaxyState.bang;
 		// The closing: the black hole alone, lifted toward the viewer (0 -> 1).
 		const hole = reduce || engineDown ? 0 : galaxyState.hole;
+		const fall = reduce || engineDown ? 0 : galaxyState.fall;
+		const worm = reduce || engineDown ? 0 : galaxyState.worm;
+		wrap.style.setProperty(
+			"--hole-exit",
+			reduce ? "0" : String(galaxyState.exit),
+		);
 		for (const m of [material, gasMaterial]) {
 			const mu = m.uniforms;
 			mu.uTime.value = time;
@@ -509,6 +846,8 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 			mu.uBang.value = bang;
 			mu.uOpacity.value = intro;
 			mu.uBH.value = hole;
+			mu.uFall.value = fall;
+			mu.uWorm.value = worm;
 		}
 		const u = material.uniforms;
 
@@ -524,7 +863,11 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		// The epilogue: the galaxy goes to the middle of an empty stage and, in the open,
 		// merges with a smaller one and dies (the page content is not there). On a phone
 		// the stage is narrow: it shrinks to fit.
-		const stage = { x: 0, y: 0.04, s: Math.min(0.92, visW / 8.2) };
+		const stage = {
+			x: 0,
+			y: 0.04 * (1 - smooth(0, 0.6, galaxyState.hole)),
+			s: Math.min(0.92, visW / 8.2),
+		};
 		// Slowly: it takes the whole stretch up to the epilogue to settle in the middle.
 		const e = smooth(EPILOGUE_FROM - 0.24, EPILOGUE_FROM, story);
 		group.position.set(
@@ -537,7 +880,10 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		const lay = smooth(0, 0.22, hole);
 		const lift = smooth(0.22, 0.85, hole);
 		const base =
-			(side.s + (stage.s - side.s) * e) * (1 + 2.1 * smooth(0.05, 1, hole));
+			(side.s + (stage.s - side.s) * e) *
+			(1 + 2.1 * smooth(0.05, 1, hole)) *
+			// falling in: the hole swells until it fills the whole screen
+			(1 + 9 * smooth(0, 1, fall) ** 2);
 		group.scale.setScalar(base);
 		// rotation.x: 0 = the disc seen edge-on, PI/2 = seen straight on.
 		const tilt = 0.95 - 0.83 * lay + 1.33 * lift;
@@ -558,6 +904,17 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 			m.uniforms.uEin.value = (2 * 0.25 * base) / visH;
 			m.uniforms.uAspect.value = camera.aspect;
 		}
+		// Crossing the wormhole: the camera coordinate runs from the black hole's mouth to the
+		// white hole's.
+		// The Penrose diagram rushes toward you as you fall and gives way to the tunnel.
+		const view = penroseView(fall, worm);
+		penrose.visible = view.alpha > 0;
+		penMaterial.uniforms.uPen.value = view.alpha;
+		penMaterial.uniforms.uAspect.value = camera.aspect;
+		penMaterial.uniforms.uZoom.value = view.zoom;
+		wormhole.visible = worm > 0 && worm < 1;
+		wormMaterial.uniforms.uWorm.value = worm;
+		wormMaterial.uniforms.uLc.value = -WORM_L * 0.85 + worm * WORM_L * 1.7;
 
 		renderer.render(scene, camera);
 	};
@@ -582,6 +939,7 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 	const mo = new MutationObserver(() => {
 		applyPalette(material);
 		applyPalette(gasMaterial);
+		paintWormhole();
 		if (reduce) draw(performance.now());
 	});
 	mo.observe(document.documentElement, {
@@ -600,6 +958,10 @@ const mountGalaxy = (wrap: HTMLDivElement) => {
 		window.removeEventListener("pointermove", onPointer);
 		geometry.dispose();
 		gasGeometry.dispose();
+		wormGeometry.dispose();
+		penGeometry.dispose();
+		penMaterial.dispose();
+		wormMaterial.dispose();
 		material.dispose();
 		gasMaterial.dispose();
 		renderer.dispose();

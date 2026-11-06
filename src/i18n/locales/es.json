@@ -110,7 +110,19 @@
 		"LINE_1": "Una galaxia menor cae en su órbita y se funde con ella.",
 		"LINE_2": "Sin gas no nacen más estrellas: la luz se vuelve brasa.",
 		"LINE_3": "Las estrellas se apagan una a una.",
-		"LINE_4": "Solo queda el agujero negro, en silencio."
+		"LINE_4": "Solo queda el agujero negro, en silencio.",
+		"LINE_5": "Cruzas el horizonte de sucesos: ya no hay vuelta atrás.",
+		"LINE_6": "Al otro lado, un agujero blanco y un universo nuevo."
+	},
+	"PENROSE": {
+		"BLACK_HOLE": "Agujero negro",
+		"WHITE_HOLE": "Agujero blanco",
+		"UNIVERSE": "Universo",
+		"PARALLEL": "Universo paralelo",
+		"NEW": "Universo nuevo",
+		"ANTI": "Antiuniverso",
+		"HORIZON": "Horizonte",
+		"WORMHOLE": "Agujero de gusano"
 	},
 	"FOOTER": {
 		"SITE": "Sitio",

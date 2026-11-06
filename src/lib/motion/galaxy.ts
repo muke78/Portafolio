@@ -1,4 +1,9 @@
-import { EPILOGUE_FROM, galaxyState, PEAK } from "@/lib/galaxyState";
+import {
+	EPILOGUE_FROM,
+	galaxyState,
+	PEAK,
+	penroseView,
+} from "@/lib/galaxyState";
 import { type Cleanup, MOTION, type MotionTools } from "./core";
 
 /**
@@ -28,6 +33,27 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		document.querySelectorAll<HTMLElement>("[data-epilogue-line]"),
 	);
 	const tweens: gsap.core.Animation[] = [];
+	const labels = Array.from(
+		document.querySelectorAll<HTMLElement>("[data-penrose-label]"),
+	);
+
+	// The Penrose diagram's labels ride on its diamonds: same maths as the canvas
+	// (penroseView), written once per frame, only while the diagram is visible.
+	const placeLabels = () => {
+		const { zoom, alpha } = penroseView(galaxyState.fall, galaxyState.worm);
+		const w = window.innerWidth;
+		const h = window.innerHeight;
+		for (const el of labels) {
+			const x = Number(el.dataset.x);
+			const y = Number(el.dataset.y);
+			const px = w / 2 + ((x * zoom) / (w / h)) * (w / 2);
+			const py = h / 2 - y * zoom * (h / 2);
+			const inside = px > -80 && px < w + 80 && py > -40 && py < h + 40;
+			el.style.opacity = inside ? String(Math.min(1, alpha * 1.3)) : "0";
+			el.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px) translate(-50%, -50%) rotate(${el.dataset.rot ?? 0}deg)`;
+		}
+	};
+	if (labels.length > 0) gsap.ticker.add(placeLabels);
 
 	const pageEnd = () => ScrollTrigger.maxScroll(window);
 	const top = () =>
@@ -64,11 +90,14 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 
 	if (stage) {
 		// The epilogue, scene by scene, each with its own distance (share of the stretch):
-		//   0    - .30   the smaller galaxy falls in and is absorbed (story -> .86)
-		//   .30  - .36   calm: the merged galaxy just turns, nothing changes
-		//   .36  - .64   the gas runs out, the light turns to embers, the stars go out (-> 1)
-		//   .64  - .66   silence: only the black hole is left
-		//   .66  - 1     the black hole comes toward you and bends the new stars (hole 0 -> 1)
+		//   0    - .20   the smaller galaxy falls in and is absorbed (story -> .86)
+		//   .20  - .24   calm: the merged galaxy just turns, nothing changes
+		//   .24  - .43   the gas runs out, the light turns to embers, the stars go out (-> 1)
+		//   .43  - .45   silence: only the black hole is left
+		//   .45  - .60   the black hole comes toward you and bends the new stars (hole 0 -> 1)
+		//   .60  - .76   you fall in: the stars streak out of the hole (fall 0 -> 1)
+		//   .76  - .93   the wormhole is crossed from end to end (worm 0 -> 1)
+		//   .93  - 1     the white hole floods everything with light (exit 0 -> 1)
 		const tl0 = gsap.timeline({
 			defaults: { ease: "none" },
 			scrollTrigger: {
@@ -81,12 +110,15 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		tl0
 			.fromTo(
 				galaxyState,
-				{ story: EPILOGUE_FROM, hole: 0 },
-				{ story: 0.86, duration: 0.3, immediateRender: false },
+				{ story: EPILOGUE_FROM, hole: 0, fall: 0, worm: 0, exit: 0 },
+				{ story: 0.86, duration: 0.2, immediateRender: false },
 				0,
 			)
-			.to(galaxyState, { story: 1, duration: 0.28 }, 0.36)
-			.to(galaxyState, { hole: 1, duration: 0.34 }, 0.66)
+			.to(galaxyState, { story: 1, duration: 0.19 }, 0.24)
+			.to(galaxyState, { hole: 1, duration: 0.15 }, 0.45)
+			.to(galaxyState, { fall: 1, duration: 0.16 }, 0.6)
+			.to(galaxyState, { worm: 1, duration: 0.17 }, 0.76)
+			.to(galaxyState, { exit: 1, duration: 0.07 }, 0.93)
 			.set({}, {}, 1);
 		tweens.push(tl0);
 
@@ -102,17 +134,18 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 					invalidateOnRefresh: true,
 				},
 			});
-			// [in, out] as a share of the epilogue; the last phrase stays. Each phrase comes
-			// AFTER what it says has happened (the merge is over by .30, the stars go out
-			// between .36 and .64, the black hole is alone from .66) and has its own stretch.
+			// [in, out] as a share of the epilogue; each phrase comes AFTER what it says has
+			// happened and has its own stretch; the last one leaves before the white hole.
 			const beats: [number, number][] = [
-				[0.31, 0.4],
-				[0.42, 0.52],
-				[0.54, 0.63],
-				[0.67, 2],
+				[0.21, 0.27],
+				[0.28, 0.35],
+				[0.36, 0.43],
+				[0.46, 0.58],
+				[0.62, 0.74],
+				[0.8, 0.92],
 			];
 			lines.forEach((line, i) => {
-				const [from, to] = beats[i] ?? [0.9, 2];
+				const [from, to] = beats[i] ?? [0.8, 0.92];
 				tl.fromTo(
 					line,
 					{ autoAlpha: 0, y: 16 },
@@ -121,6 +154,8 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 				);
 				if (to <= 1) tl.to(line, { autoAlpha: 0, y: -12, duration: 0.05 }, to);
 			});
+			const veil = document.querySelector<HTMLElement>("[data-epilogue-veil]");
+			if (veil) tl.to(veil, { autoAlpha: 0, duration: 0.05 }, 0.9);
 			// Give the timeline its full length so the shares above are shares of the stretch.
 			tl.set({}, {}, 1);
 			tweens.push(tl);
@@ -128,6 +163,7 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 	}
 
 	return () => {
+		gsap.ticker.remove(placeLabels);
 		for (const t of tweens) {
 			(t as gsap.core.Tween).scrollTrigger?.kill();
 			t.kill();
@@ -135,6 +171,11 @@ export const galaxyScene = ({ gsap, ScrollTrigger }: MotionTools): Cleanup => {
 		// Reduced motion mid-session: show the galaxy at its peak, still.
 		galaxyState.story = PEAK;
 		galaxyState.hole = 0;
+		galaxyState.fall = 0;
+		galaxyState.worm = 0;
+		galaxyState.exit = 0;
 		for (const line of lines) gsap.set(line, { clearProps: "all" });
+		const veil = document.querySelector<HTMLElement>("[data-epilogue-veil]");
+		if (veil) gsap.set(veil, { clearProps: "all" });
 	};
 };

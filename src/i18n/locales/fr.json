@@ -110,7 +110,19 @@
 		"LINE_1": "Une galaxie plus petite tombe dans son orbite et fusionne avec elle.",
 		"LINE_2": "Sans gaz, plus aucune étoile ne naît : la lumière devient braise.",
 		"LINE_3": "Les étoiles s'éteignent une à une.",
-		"LINE_4": "Il ne reste que le trou noir, en silence."
+		"LINE_4": "Il ne reste que le trou noir, en silence.",
+		"LINE_5": "Tu franchis l'horizon des événements : il n'y a plus de retour.",
+		"LINE_6": "De l'autre côté, un trou blanc et un nouvel univers."
+	},
+	"PENROSE": {
+		"BLACK_HOLE": "Trou noir",
+		"WHITE_HOLE": "Trou blanc",
+		"UNIVERSE": "Univers",
+		"PARALLEL": "Univers parallèle",
+		"NEW": "Nouvel univers",
+		"ANTI": "Antivers",
+		"HORIZON": "Horizon",
+		"WORMHOLE": "Trou de ver"
 	},
 	"FOOTER": {
 		"SITE": "Site",

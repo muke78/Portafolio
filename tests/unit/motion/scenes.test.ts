@@ -416,7 +416,7 @@ describe("galaxyScene", () => {
 
 	it("with an epilogue it scrubs the story and the closing, each phrase after its scene", () => {
 		html(
-			`<section data-epilogue>${[1, 2, 3, 4].map(() => "<p data-epilogue-line></p>").join("")}</section>`,
+			`<section data-epilogue>${[1, 2, 3, 4, 5, 6].map(() => "<p data-epilogue-line></p>").join("")}</section>`,
 		);
 		run(galaxyScene);
 		// the walk to the epilogue, the story + closing timeline and the phrases
@@ -443,12 +443,15 @@ describe("galaxyScene", () => {
 					(c) => c.startTime() / (phrases as gsap.core.Timeline).duration(),
 				)[0];
 		const starts = lines.map(startOf);
-		// in order, and the merge (over by .30) is finished before its phrase comes in
-		expect(starts[0]).toBeGreaterThan(0.3);
+		// in order, and the merge (over by .20) is finished before its phrase comes in
+		expect(starts[0]).toBeGreaterThan(0.2);
 		for (let i = 1; i < starts.length; i++)
-			expect(starts[i]).toBeGreaterThan(starts[i - 1] + 0.08);
-		// the last one (the black hole alone) waits for the stars to be gone
-		expect(starts[3]).toBeGreaterThan(0.64);
+			expect(starts[i]).toBeGreaterThan(starts[i - 1] + 0.05);
+		// the black hole alone waits for the stars to be gone (.43); falling in comes after
+		// it has swelled (.60) and the white hole's phrase after the tunnel begins (.76)
+		expect(starts[3]).toBeGreaterThan(0.43);
+		expect(starts[4]).toBeGreaterThan(0.6);
+		expect(starts[5]).toBeGreaterThan(0.76);
 		galaxyState.hole = 1;
 	});
 

@@ -16,8 +16,20 @@
  *   hole   0 -> 1  the closing, after every star is gone: the black hole alone comes
  *                  toward you (it tilts up like a cup lifted off a table), hundreds of
  *                  new stars fill the sky and are bent around it (lensing)
+ *   fall   0 -> 1  you fall in: the stars streak out of the hole like a tunnel
+ *   worm   0 -> 1  the stars are gone and a wormhole (Einstein-Rosen bridge, the
+ *                  grid of the embedding diagram) is crossed from end to end
+ *   exit   0 -> 1  the white hole: the light floods the screen (the page below
+ *                  is the light side of the world)
  */
-export const galaxyState = { bang: 1, story: 0, hole: 0 };
+export const galaxyState = {
+	bang: 1,
+	story: 0,
+	hole: 0,
+	fall: 0,
+	worm: 0,
+	exit: 0,
+};
 
 /**
  * Story value where the epilogue begins: the galaxy has formed (disc, first stars, arms
@@ -28,3 +40,18 @@ export const galaxyState = { bang: 1, story: 0, hole: 0 };
 export const EPILOGUE_FROM = 0.54;
 /** Story value of a healthy galaxy: the still frame under reduced motion. */
 export const PEAK = 0.72;
+
+const smooth01 = (a: number, b: number, x: number) => {
+	const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+	return t * t * (3 - 2 * t);
+};
+
+/**
+ * The Penrose diagram that rushes toward you while you fall (zoom in diamonds per half
+ * screen height) and how visible it is. One place for it: the canvas draws the lines with it
+ * (ParticleGalaxy.tsx) and the scroll engine puts the labels on them (motion/galaxy.ts).
+ */
+export const penroseView = (fall: number, worm: number) => ({
+	zoom: 0.3 * Math.exp(Math.log(9) * (fall * 0.85 + worm * 0.15)),
+	alpha: smooth01(0.12, 0.5, fall) * (1 - smooth01(0.3, 0.7, worm)),
+});
