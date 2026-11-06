@@ -1,10 +1,16 @@
 import { expect, type Page } from "@playwright/test";
 
 /** Islands hydrate lazily (client:idle / client:visible): wait until one is live. */
-export const waitForIsland = (page: Page, componentFile: string) =>
-	expect(
-		page.locator(`astro-island[component-url$="/${componentFile}"]:not([ssr])`),
+export const waitForIsland = (page: Page, componentFile: string) => {
+	// The dev server serves some islands without the extension (/@id/@/…/Nav), the build
+	// with it (…/Nav.tsx): accept both.
+	const name = componentFile.replace(/\.tsx$/, "");
+	return expect(
+		page.locator(
+			`astro-island[component-url$="/${name}"]:not([ssr]), astro-island[component-url$="/${name}.tsx"]:not([ssr])`,
+		),
 	).toHaveCount(1, { timeout: 20_000 });
+};
 
 /**
  * The contact form enters with an animation (mask + staggered fields). A

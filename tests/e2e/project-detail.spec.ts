@@ -11,7 +11,7 @@ test("a project card opens its own shareable URL and the back button returns", a
 	// The rails fetch their cards when they come near the viewport: open the
 	// page on the section and wait for the first card.
 	await page.goto("/es/home#projects");
-	const firstLink = page.locator("#projects article h3 a").first();
+	const firstLink = page.locator("#projects article h4 a").first();
 	await expect(firstLink).toBeVisible({ timeout: 15_000 });
 	const href = await firstLink.getAttribute("href");
 	expect(href).toMatch(/^\/es\/project\/[\w-]+$/);

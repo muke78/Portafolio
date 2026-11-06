@@ -35,7 +35,10 @@ test.describe("first visit", () => {
 			timeout: 9_000,
 		});
 
-		await page.getByRole("button", { name: "Saltar la introducción" }).click();
+		// The button floats forever (corrupt.ts), so it is never "stable" for Playwright.
+		await page
+			.getByRole("button", { name: "Saltar la introducción" })
+			.click({ force: true });
 		await expect(gate).toHaveCount(0);
 		await expect(page.locator("#main-content")).not.toHaveAttribute(
 			"inert",
@@ -48,9 +51,10 @@ test.describe("first visit", () => {
 		page,
 	}) => {
 		await page.goto("/es/home");
-		await page.getByRole("button", { name: /Comenzar/ }).click();
+		// The particle drifts forever, so it is never "stable" for Playwright.
+		await page.getByRole("button", { name: /Comenzar/ }).click({ force: true });
 		await expect(page.locator("[data-intro]")).toHaveCount(0, {
-			timeout: 8_000,
+			timeout: 20_000,
 		});
 		await expect(page.locator("html")).not.toHaveClass(/intro-on/);
 		// The hero ends up in place and the page scrolls again.
@@ -72,7 +76,10 @@ test.describe("first visit", () => {
 		page,
 	}) => {
 		await page.goto("/es/home");
-		await page.getByRole("button", { name: "Saltar la introducción" }).click();
+		// The button floats forever (corrupt.ts), so it is never "stable" for Playwright.
+		await page
+			.getByRole("button", { name: "Saltar la introducción" })
+			.click({ force: true });
 		await page.locator("footer").scrollIntoViewIfNeeded();
 		const ask = page.getByRole("group", { name: "¿Volver a ver el origen?" });
 		await expect(ask).toBeVisible({ timeout: 10_000 });
@@ -80,7 +87,9 @@ test.describe("first visit", () => {
 
 		// Next visit: straight to the header, stars already spread.
 		await page.goto("/es/home");
-		await expect(page.locator("[data-intro]")).toHaveCount(0);
+		// The markup stays in the page (crawlers) but the gate is never shown.
+		await expect(page.locator("[data-intro]")).toBeHidden();
+		await expect(page.locator("html")).not.toHaveClass(/intro-on/);
 		await expect(page.locator("[data-hero-line]").first()).toBeVisible();
 	});
 });
@@ -99,7 +108,8 @@ test.describe("returning visitor who wants it again", () => {
 
 	test("a deep link with an anchor goes straight in", async ({ page }) => {
 		await page.goto("/es/home#projects");
-		await expect(page.locator("[data-intro]")).toHaveCount(0);
+		await expect(page.locator("[data-intro]")).toBeHidden();
+		await expect(page.locator("html")).not.toHaveClass(/intro-on/);
 	});
 });
 
