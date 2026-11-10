@@ -163,6 +163,8 @@
 		"OPINIONS_PLACEHOLDER_SELECT_COUNTRY": "Select a country",
 
 		"OPINIONS_FORM_VALID_COUNTRY_EMPTY": "The country cannot be empty",
+		"OPINIONS_FORM_VALID_COUNTRY_MAX": "The country can be up to 100 characters",
+		"OPINIONS_FORM_VALID_JOB_MAX": "The job title can be up to 100 characters",
 		"OPINIONS_FORM_VALID_COUNTRY_FLAG_LENGTH": "The code does not match the flag entry"
 	},
 	"FORM": {
@@ -188,6 +190,8 @@
 
 		"FORM_VALID_NAME": "The name must be longer than 4 letters",
 		"FORM_VALID_EMAIL": "Invalid email format",
+		"FORM_VALID_EMAIL_MAX": "The email can be up to 254 characters",
+		"FORM_VALID_NAME_MAX": "The name can be up to 100 characters",
 		"FORM_VALID_PHONE_MIN": "The number must have at least 7 digits",
 		"FORM_VALID_PHONE_MAX": "The number is too long",
 		"FORM_VALID_PHONE_REGEX": "The number must contain only digits and valid symbols (+, -, spaces, parentheses)",

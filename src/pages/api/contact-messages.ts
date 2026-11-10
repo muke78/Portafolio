@@ -51,7 +51,10 @@ export const POST: APIRoute = async (ctx) => {
 	if (!parsed.success) return json({ message: "Invalid data" }, 400);
 	const body = parsed.data;
 
-	const human = await verifyTurnstile(token, ip);
+	const human = await verifyTurnstile(token, ip, {
+		hostname: url.hostname,
+		action: "contact",
+	});
 	if (human !== "ok") return turnstileFailure(human);
 
 	try {

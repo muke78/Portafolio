@@ -85,7 +85,10 @@ export const POST: APIRoute = async (ctx) => {
 	const parsed = opinionsSchema({ currentLocale: "es" }).safeParse(rest);
 	if (!parsed.success) return json({ message: "Invalid data" }, 400);
 
-	const human = await verifyTurnstile(token, ip);
+	const human = await verifyTurnstile(token, ip, {
+		hostname: url.hostname,
+		action: "comment",
+	});
 	if (human !== "ok") return turnstileFailure(human);
 
 	try {

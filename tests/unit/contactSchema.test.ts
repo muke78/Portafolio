@@ -28,7 +28,9 @@ describe("contactSchema", () => {
 		// left the optional field untouched. Caught live in the browser,
 		// not by the pre-fix version of this test (which only tried the
 		// key fully absent, via destructuring).
-		expect(schema.safeParse({ ...valid, moreInformation: "" }).success).toBe(true);
+		expect(schema.safeParse({ ...valid, moreInformation: "" }).success).toBe(
+			true,
+		);
 	});
 
 	it("rejects a name shorter than 5 characters", () => {
