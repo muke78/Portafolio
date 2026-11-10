@@ -33,7 +33,9 @@ export const MOTION = {
 	hero: { total: 1.7 },
 	// Pinned manifesto: how many viewport heights of scroll it lasts.
 	manifesto: { screens: 2, screensMobile: 1.4 },
-	marquee: { maxBoost: 4, maxSkew: 3 },
+	// Opinions lanes: scroll boost, lean (deg), px of travel before a press becomes a drag,
+	// and the fastest a flick can leave the lane (x its calm speed).
+	marquee: { maxBoost: 4, maxSkew: 3, dragStart: 6, maxFlick: 8 },
 	// Image masks: a frame opens (clip-path) while its picture settles (scale).
 	mask: {
 		duration: 1.1,

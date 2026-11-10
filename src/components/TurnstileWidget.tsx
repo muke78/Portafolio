@@ -20,6 +20,7 @@ interface TurnstileApi {
 			language: string;
 			theme: "auto";
 			appearance: "interaction-only";
+			action: string;
 			callback: (token: string) => void;
 			"expired-callback": () => void;
 			"error-callback": () => void;
@@ -61,13 +62,20 @@ export const turnstileEnabled = Boolean(PUBLIC_TURNSTILE_SITE_KEY);
 
 interface Props {
 	locale: string;
+	/** Nombre del formulario (`comment`, `contact`): el servidor exige que coincida. */
+	action: string;
 	/** Recibe el token, o `null` cuando vence o falla. */
 	onToken: (token: string | null) => void;
 	/** Cambia este numero para pedir un token nuevo (cada token sirve una sola vez). */
 	resetKey?: number;
 }
 
-export const TurnstileWidget = ({ locale, onToken, resetKey = 0 }: Props) => {
+export const TurnstileWidget = ({
+	locale,
+	action,
+	onToken,
+	resetKey = 0,
+}: Props) => {
 	const container = useRef<HTMLDivElement>(null);
 	const widgetId = useRef<string | null>(null);
 	const onTokenRef = useRef(onToken);
@@ -86,6 +94,7 @@ export const TurnstileWidget = ({ locale, onToken, resetKey = 0 }: Props) => {
 					language: locale,
 					theme: "auto",
 					appearance: "interaction-only",
+					action,
 					callback: (token) => onTokenRef.current(token),
 					"expired-callback": () => onTokenRef.current(null),
 					"error-callback": () => onTokenRef.current(null),
@@ -98,7 +107,7 @@ export const TurnstileWidget = ({ locale, onToken, resetKey = 0 }: Props) => {
 			if (widgetId.current) window.turnstile?.remove(widgetId.current);
 			widgetId.current = null;
 		};
-	}, [locale]);
+	}, [locale, action]);
 
 	useEffect(() => {
 		if (resetKey > 0 && widgetId.current) {

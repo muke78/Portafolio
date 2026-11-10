@@ -10,18 +10,42 @@ interface SharedLimiter {
 	limit(options: { key: string }): Promise<{ success: boolean }>;
 }
 
-const sharedLimiter = async (): Promise<SharedLimiter | null> => {
-	if (import.meta.env.DEV) return null;
+let warnedMissingBinding = false;
+
+/** Avisa UNA vez por isolate: sin el binding el limite deja de ser global. */
+const warnMissingBinding = () => {
+	if (warnedMissingBinding) return;
+	warnedMissingBinding = true;
+	console.error(
+		"[rate-limit] El binding RL_PUBLIC_WRITE no esta disponible: se usa el contador en memoria de este isolate, que NO es un limite global. Revisa wrangler.jsonc y el despliegue.",
+	);
+};
+
+/** Solo para pruebas: vuelve a permitir el aviso. */
+export const resetMissingBindingWarning = () => {
+	warnedMissingBinding = false;
+};
+
+export const sharedLimiter = async ({
+	dev = import.meta.env.DEV,
+	load = () => import("cloudflare:workers") as Promise<{ env: unknown }>,
+}: {
+	dev?: boolean;
+	load?: () => Promise<{ env: unknown }>;
+} = {}): Promise<SharedLimiter | null> => {
+	if (dev) return null;
 	try {
-		const { env } = await import("cloudflare:workers");
+		const { env } = await load();
 		const candidate = (env as { RL_PUBLIC_WRITE?: Partial<SharedLimiter> })
 			.RL_PUBLIC_WRITE;
-		return typeof candidate?.limit === "function"
-			? (candidate as SharedLimiter)
-			: null;
+		if (typeof candidate?.limit === "function") {
+			return candidate as SharedLimiter;
+		}
 	} catch {
-		return null;
+		// cae al aviso de abajo
 	}
+	warnMissingBinding();
+	return null;
 };
 
 /** `true` si la clave ya agoto su cupo. Con el binding manda su limite; sin el, `options`. */

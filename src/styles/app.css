@@ -283,6 +283,16 @@
 	}
 }
 
+/* The lane that slides the other way: the same loop, run backwards. */
+@keyframes testimonial-marquee-reverse {
+	from {
+		transform: translateX(-50%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
 /* ============================================================
    ABOUT — drop cap
    ============================================================ */
@@ -755,6 +765,20 @@ html:not(.motion-ok) [data-epilogue] {
 /* Opinions marquee: the moving track is its own compositor layer. */
 .motion-ok [data-marquee-track] {
 	will-change: transform;
+}
+
+/* Opinions lanes can be grabbed and dragged. Horizontal moves belong to the
+   lane; vertical ones stay with the page, so a thumb can still scroll past. */
+.motion-ok [data-marquee] {
+	cursor: grab;
+	touch-action: pan-y;
+}
+.motion-ok [data-marquee][data-dragging] {
+	cursor: grabbing;
+	user-select: none;
+}
+.motion-ok [data-marquee] img {
+	-webkit-user-drag: none;
 }
 
 /* Manifesto: a soft veil of the page colour behind the statement, so the
