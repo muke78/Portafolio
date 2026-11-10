@@ -14,9 +14,12 @@ test("switching language while at #contact lands back at #contact in the new loc
 }) => {
 	await page.goto("/es/home#contact");
 	await expect
-		.poll(async () => (await page.locator("#contact").boundingBox())?.y ?? -9999, {
-			timeout: 20_000,
-		})
+		.poll(
+			async () => (await page.locator("#contact").boundingBox())?.y ?? -9999,
+			{
+				timeout: 20_000,
+			},
+		)
 		.toBeGreaterThan(80);
 
 	await waitForIsland(page, "Nav.tsx");
@@ -28,9 +31,12 @@ test("switching language while at #contact lands back at #contact in the new loc
 	await page.waitForURL(/\/en\/home#contact/);
 
 	await expect
-		.poll(async () => (await page.locator("#contact").boundingBox())?.y ?? -9999, {
-			timeout: 8000,
-		})
+		.poll(
+			async () => (await page.locator("#contact").boundingBox())?.y ?? -9999,
+			{
+				timeout: 8000,
+			},
+		)
 		.toBeGreaterThan(80);
 
 	const box = await page.locator("#contact").boundingBox();

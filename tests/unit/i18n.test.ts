@@ -4,7 +4,9 @@ import { getI18N } from "@/i18n";
 describe("getI18N", () => {
 	it("defaults to the Spanish locale when currentLocale is omitted", () => {
 		const i18n = getI18N({});
-		expect(i18n.META.META_TITLE).toBe("Erick González — Desarrollador Full-Stack");
+		expect(i18n.META.META_TITLE).toBe(
+			"Erick González — Desarrollador Full-Stack",
+		);
 	});
 
 	it("returns distinct content for es vs en", () => {

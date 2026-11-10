@@ -88,13 +88,13 @@ export const ProjectCard = ({
 						<li
 							key={topic}
 							title={topic}
-							className="size-9 overflow-hidden rounded-full border-2 border-card bg-muted"
+							className="size-10 overflow-hidden rounded-full border-2 border-card bg-muted"
 						>
 							<img
 								src={techIconUrl(topic)}
 								alt={topic}
-								width={36}
-								height={36}
+								width={32}
+								height={32}
 								loading="lazy"
 								decoding="async"
 								draggable="false"

@@ -20,7 +20,9 @@ test.describe("contact form", () => {
 		await page.getByRole("button", { name: "Enviar mensaje" }).click();
 		// react-hook-form + zodResolver should surface field errors without
 		// ever reaching the network.
-		await expect(page.getByText("El nombre debe ser mayor a 4 letras")).toBeVisible();
+		await expect(
+			page.getByText("El nombre debe ser mayor a 4 letras"),
+		).toBeVisible();
 	});
 
 	test("shows a success toast when the API call succeeds", async ({ page }) => {

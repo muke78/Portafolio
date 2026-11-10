@@ -24,7 +24,12 @@ test.describe("Home sections without tabs", () => {
 		}
 
 		// One rail per project category, each with its own heading.
-		for (const name of ["Frontend", "Backend", "Empresas", "Análisis de datos"]) {
+		for (const name of [
+			"Frontend",
+			"Backend",
+			"Empresas",
+			"Análisis de datos",
+		]) {
 			await expect(
 				page.getByRole("heading", { name, level: 3, exact: true }),
 			).toBeAttached();

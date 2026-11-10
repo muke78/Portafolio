@@ -15,9 +15,9 @@ test.describe("opinions submit form", () => {
 	const fillValidForm = async (page: import("@playwright/test").Page) => {
 		const dialog = page.getByRole("dialog", { name: "Dejar un comentario" });
 		await dialog.getByPlaceholder("Tu nombre completo").fill("Erick González");
-		await dialog.getByPlaceholder("Escribe tu experiencia aquí").fill(
-			"Excelente trabajo en cada uno de los proyectos entregados.",
-		);
+		await dialog
+			.getByPlaceholder("Escribe tu experiencia aquí")
+			.fill("Excelente trabajo en cada uno de los proyectos entregados.");
 		await dialog.getByRole("combobox").click();
 		await page.getByRole("option", { name: "México" }).click();
 		return dialog;
@@ -32,7 +32,9 @@ test.describe("opinions submit form", () => {
 		await dialog.getByRole("button", { name: "Enviar comentario" }).click();
 
 		// sendOpinions.tsx swaps to <SubmittedOpinion> once isSubmitted flips.
-		await expect(dialog.getByRole("button", { name: "Enviar comentario" })).toBeHidden();
+		await expect(
+			dialog.getByRole("button", { name: "Enviar comentario" }),
+		).toBeHidden();
 	});
 
 	test("shows an inline error and stays on the form when the POST fails", async ({
@@ -48,12 +50,16 @@ test.describe("opinions submit form", () => {
 		// Regression coverage for the res.ok check in sendOpinions.tsx -
 		// a failed POST must surface role="alert", not silently succeed.
 		await expect(dialog.getByRole("alert")).toBeVisible();
-		await expect(dialog.getByRole("button", { name: "Enviar comentario" })).toBeVisible();
+		await expect(
+			dialog.getByRole("button", { name: "Enviar comentario" }),
+		).toBeVisible();
 	});
 
 	test("client-side validation blocks an empty submit", async ({ page }) => {
 		const dialog = page.getByRole("dialog", { name: "Dejar un comentario" });
 		await dialog.getByRole("button", { name: "Enviar comentario" }).click();
-		await expect(dialog.getByText("El nombre debe ser mayor a 4 letras")).toBeVisible();
+		await expect(
+			dialog.getByText("El nombre debe ser mayor a 4 letras"),
+		).toBeVisible();
 	});
 });
