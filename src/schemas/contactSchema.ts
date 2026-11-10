@@ -5,8 +5,13 @@ import type { PropsLang } from "@/types/currentLang.interface";
 export const contactSchema = ({ currentLocale }: PropsLang) => {
 	const i18n = getI18N({ currentLocale });
 	const schema = z.object({
-		name: z.string().min(5, i18n.FORM.FORM_VALID_NAME),
-		email: z.email(i18n.FORM.FORM_VALID_EMAIL),
+		name: z
+			.string()
+			.min(5, i18n.FORM.FORM_VALID_NAME)
+			.max(100, i18n.FORM.FORM_VALID_NAME_MAX),
+		email: z
+			.email(i18n.FORM.FORM_VALID_EMAIL)
+			.max(254, i18n.FORM.FORM_VALID_EMAIL_MAX),
 		phone: z
 			.string()
 			.min(7, i18n.FORM.FORM_VALID_PHONE_MIN)
