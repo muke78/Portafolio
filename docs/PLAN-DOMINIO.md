@@ -10,50 +10,50 @@ olvidar ningún lugar.
 
 ## Dominios actuales
 
-| Pieza | Worker / servicio | URL de hoy |
-|---|---|---|
-| Sitio público | Worker `portafolio` | `https://portafolio.erickm-gonzalez-rivera.workers.dev` |
-| Backend (API) | Worker `backend-portafolio` | `https://backend-portafolio.erickm-gonzalez-rivera.workers.dev/api` |
-| Admin (CMS) | Worker `portafolio-admin` | `https://portafolio-admin.erickm-gonzalez-rivera.workers.dev` |
-| Imágenes y CV | Bucket R2 `portfolio` | `https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev` |
-| Zero Trust | Aplicación de Access del admin | equipo `throbbing-lake-8623.cloudflareaccess.com` |
-| Turnstile | Widget `portafolio` | hostname `portafolio.erickm-gonzalez-rivera.workers.dev` |
+| Pieza         | Worker / servicio              | URL de hoy                                                          |
+| ------------- | ------------------------------ | ------------------------------------------------------------------- |
+| Sitio público | Worker `portafolio`            | `https://portafolio.erickm-gonzalez-rivera.workers.dev`             |
+| Backend (API) | Worker `backend-portafolio`    | `https://backend-portafolio.erickm-gonzalez-rivera.workers.dev/api` |
+| Admin (CMS)   | Worker `portafolio-admin`      | `https://portafolio-admin.erickm-gonzalez-rivera.workers.dev`       |
+| Imágenes y CV | Bucket R2 `portfolio`          | `https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev`               |
+| Zero Trust    | Aplicación de Access del admin | equipo `throbbing-lake-8623.cloudflareaccess.com`                   |
+| Turnstile     | Widget `portafolio`            | hostname `portafolio.erickm-gonzalez-rivera.workers.dev`            |
 
 ## Hostnames propuestos
 
-| Pieza | Después |
-|---|---|
-| Sitio | `khelde.dev` (y `www.khelde.dev` redirigido al principal) |
-| Backend | `api.khelde.dev` |
-| Admin | `admin.khelde.dev` |
-| Imágenes y CV | `media.khelde.dev` |
+| Pieza         | Después                                                   |
+| ------------- | --------------------------------------------------------- |
+| Sitio         | `khelde.dev` (y `www.khelde.dev` redirigido al principal) |
+| Backend       | `api.khelde.dev`                                          |
+| Admin         | `admin.khelde.dev`                                        |
+| Imágenes y CV | `media.khelde.dev`                                        |
 
 ## Qué cambia, pieza por pieza
 
 ### 1. Cloudflare (panel)
 
-| Dónde | Qué hacer |
-|---|---|
-| Agregar el sitio (zona) | Dominio en la cuenta, nameservers apuntando a Cloudflare, zona **activa** |
-| Workers → `portafolio` → Settings → Domains & Routes | Agregar **Custom domain** `khelde.dev` (+ `www`) |
-| Workers → `backend-portafolio` → Domains & Routes | Agregar **Custom domain** `api.khelde.dev` |
-| Workers → `portafolio-admin` → Domains & Routes | Agregar **Custom domain** `admin.khelde.dev` |
-| R2 → bucket `portfolio` → Settings → **Dominios personalizados** | Agregar `media.khelde.dev` |
-| Turnstile → widget `portafolio` | Agregar el hostname `khelde.dev` (conservar el de `workers.dev` hasta el final) |
-| Zero Trust → Access → aplicación del admin | Agregar `admin.khelde.dev` como **destino adicional de la misma aplicación** |
-| Reglas del dominio | Redirección `www` → apex; regla de caché larga para `media.khelde.dev` (las claves nunca cambian); protección contra hotlinking |
+| Dónde                                                            | Qué hacer                                                                                                                       |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Agregar el sitio (zona)                                          | Dominio en la cuenta, nameservers apuntando a Cloudflare, zona **activa**                                                       |
+| Workers → `portafolio` → Settings → Domains & Routes             | Agregar **Custom domain** `khelde.dev` (+ `www`)                                                                                |
+| Workers → `backend-portafolio` → Domains & Routes                | Agregar **Custom domain** `api.khelde.dev`                                                                                      |
+| Workers → `portafolio-admin` → Domains & Routes                  | Agregar **Custom domain** `admin.khelde.dev`                                                                                    |
+| R2 → bucket `portfolio` → Settings → **Dominios personalizados** | Agregar `media.khelde.dev`                                                                                                      |
+| Turnstile → widget `portafolio`                                  | Agregar el hostname `khelde.dev` (conservar el de `workers.dev` hasta el final)                                                 |
+| Zero Trust → Access → aplicación del admin                       | Agregar `admin.khelde.dev` como **destino adicional de la misma aplicación**                                                    |
+| Reglas del dominio                                               | Redirección `www` → apex; regla de caché larga para `media.khelde.dev` (las claves nunca cambian); protección contra hotlinking |
 
 Los Custom Domains de Workers crean el DNS y el certificado solos.
 
 ### 2. Sitio (`Portafolio`)
 
-| Variable | Tipo | Antes | Después | Dónde se cambia |
-|---|---|---|---|---|
-| `SITE_URL` | build | `…portafolio…workers.dev` (valor por defecto del código) | `https://khelde.dev` | panel → portafolio → Settings → Build → Variables |
-| `PUBLIC_MEDIA_URL` | build | `…r2.dev` | `https://media.khelde.dev` | igual |
-| `VITE_API_URL` | build | `…backend-portafolio…workers.dev/api` | `https://api.khelde.dev/api` | igual |
-| `PUBLIC_TURNSTILE_SITE_KEY` | build | clave actual | **no cambia** | — |
-| `TURNSTILE_SECRET_KEY` | secreto | clave actual | **no cambia** | — |
+| Variable                    | Tipo    | Antes                                                    | Después                      | Dónde se cambia                                   |
+| --------------------------- | ------- | -------------------------------------------------------- | ---------------------------- | ------------------------------------------------- |
+| `SITE_URL`                  | build   | `…portafolio…workers.dev` (valor por defecto del código) | `https://khelde.dev`         | panel → portafolio → Settings → Build → Variables |
+| `PUBLIC_MEDIA_URL`          | build   | `…r2.dev`                                                | `https://media.khelde.dev`   | igual                                             |
+| `VITE_API_URL`              | build   | `…backend-portafolio…workers.dev/api`                    | `https://api.khelde.dev/api` | igual                                             |
+| `PUBLIC_TURNSTILE_SITE_KEY` | build   | clave actual                                             | **no cambia**                | —                                                 |
+| `TURNSTILE_SECRET_KEY`      | secreto | clave actual                                             | **no cambia**                | —                                                 |
 
 - Los tres valores por defecto de `astro.config.mjs` (`SITE_URL`, `PUBLIC_MEDIA_URL`,
   `VITE_API_URL`) también conviene actualizarlos en una rama aparte, para que un build sin
@@ -64,12 +64,12 @@ Los Custom Domains de Workers crean el DNS y el certificado solos.
 
 ### 3. Backend (`Backend_Portafolio`)
 
-| Variable | Antes | Después | Dónde |
-|---|---|---|---|
-| `PUBLIC_MEDIA_URL` | `…r2.dev` | `https://media.khelde.dev` | `wrangler.jsonc` → `vars` |
-| `ALLOWED_ORIGINS` | `http://localhost:4321,http://localhost:4322` | **no cambia** | — |
-| `ACCESS_TEAM_DOMAIN` | `https://throbbing-lake-8623.cloudflareaccess.com` | **no cambia** | — |
-| `ACCESS_AUD` | el de la aplicación de Access | **no cambia** si el admin sigue en la misma aplicación | — |
+| Variable             | Antes                                              | Después                                                | Dónde                     |
+| -------------------- | -------------------------------------------------- | ------------------------------------------------------ | ------------------------- |
+| `PUBLIC_MEDIA_URL`   | `…r2.dev`                                          | `https://media.khelde.dev`                             | `wrangler.jsonc` → `vars` |
+| `ALLOWED_ORIGINS`    | `http://localhost:4321,http://localhost:4322`      | **no cambia**                                          | —                         |
+| `ACCESS_TEAM_DOMAIN` | `https://throbbing-lake-8623.cloudflareaccess.com` | **no cambia**                                          | —                         |
+| `ACCESS_AUD`         | el de la aplicación de Access                      | **no cambia** si el admin sigue en la misma aplicación | —                         |
 
 - `ALLOWED_ORIGINS` solo importa si un **navegador** llama directo al backend. Hoy no pasa:
   el sitio y el admin lo llaman desde el servidor. Se amplía únicamente si eso cambia.
@@ -77,14 +77,14 @@ Los Custom Domains de Workers crean el DNS y el certificado solos.
 
 ### 4. Admin (`Portafolio_admin`)
 
-| Variable | Antes | Después | Dónde |
-|---|---|---|---|
-| `PUBLIC_MEDIA_URL` | `…r2.dev` | `https://media.khelde.dev` | panel → portafolio-admin → Build → Variables |
-| `PUBLIC_PORTFOLIO_URL` | `…portafolio…workers.dev` | `https://khelde.dev` | igual |
-| `BACKEND_URL` | `…backend-portafolio…workers.dev/api` | `https://api.khelde.dev/api` | `wrangler.jsonc` → `vars` (solo respaldo y local; en producción habla por Service Binding) |
-| `ACCESS_TEAM_DOMAIN` | `https://throbbing-lake-8623.cloudflareaccess.com` | **no cambia** | — |
-| `ACCESS_AUD` | el actual | **no cambia** si es la misma aplicación | — |
-| `ADMIN_EMAILS` | secreto | **no cambia** | — |
+| Variable               | Antes                                              | Después                                 | Dónde                                                                                      |
+| ---------------------- | -------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `PUBLIC_MEDIA_URL`     | `…r2.dev`                                          | `https://media.khelde.dev`              | panel → portafolio-admin → Build → Variables                                               |
+| `PUBLIC_PORTFOLIO_URL` | `…portafolio…workers.dev`                          | `https://khelde.dev`                    | igual                                                                                      |
+| `BACKEND_URL`          | `…backend-portafolio…workers.dev/api`              | `https://api.khelde.dev/api`            | `wrangler.jsonc` → `vars` (solo respaldo y local; en producción habla por Service Binding) |
+| `ACCESS_TEAM_DOMAIN`   | `https://throbbing-lake-8623.cloudflareaccess.com` | **no cambia**                           | —                                                                                          |
+| `ACCESS_AUD`           | el actual                                          | **no cambia** si es la misma aplicación | —                                                                                          |
+| `ADMIN_EMAILS`         | secreto                                            | **no cambia**                           | —                                                                                          |
 
 - El **Service Binding** `BACKEND` no depende de ningún dominio: sigue igual.
 - Si se crea una aplicación **nueva** en Access en lugar de agregar un hostname a la
@@ -102,10 +102,19 @@ Los Custom Domains de Workers crean el DNS y el certificado solos.
 
 ### 6. Fuera de Cloudflare (acordarse)
 
-- Enlace del portafolio en el **CV** (PDF) y en LinkedIn.
-- Campo **Website** y descripción en el **About** de los tres repositorios de GitHub.
-- README y documentación que citen la URL vieja.
-- Search Console, si se registra el sitio.
+Son enlaces que **nadie actualiza solo**: si se olvidan, siguen mandando a `workers.dev`.
+
+| Dónde                                                                                      | Qué cambiar                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **CV** (PDF)                                                                               | El enlace al portafolio. Hay que volver a exportar y **subir el PDF nuevo** desde el admin (ver `cv_pdf`).                                                                                                                                                                           |
+| **LinkedIn**                                                                               | El sitio web del perfil y cualquier sección "Destacados" o experiencia que cite el portafolio.                                                                                                                                                                                       |
+| **Instagram**                                                                              | El enlace de la biografía.                                                                                                                                                                                                                                                           |
+| **GitHub, los tres repositorios** (`Portafolio`, `Backend_Portafolio`, `Portafolio_admin`) | Campo **Website** y descripción del **About** de cada repositorio.                                                                                                                                                                                                                   |
+| **GitHub, perfil de `muke78`**                                                             | El campo **Website** del perfil y los enlaces sociales de la cuenta.                                                                                                                                                                                                                 |
+| **README del perfil** (`muke78/muke78`, el `.md` que se ve en el perfil)                   | Todos los enlaces al portafolio.                                                                                                                                                                                                                                                     |
+| **El propio portafolio**                                                                   | Enlaces al sitio dentro de su contenido: `README.md` de este repositorio y cualquier texto del admin (Sobre mí, descripciones, "Textos") que cite la URL vieja. Lo que sale de `SITE_URL` (canónicos, sitemap, `robots.txt`, `llms.txt`, JSON-LD) cambia solo en el siguiente build. |
+| README y documentación                                                                     | Los tres repositorios: buscar la URL vieja (`git grep workers.dev`) y reemplazarla.                                                                                                                                                                                                  |
+| Search Console                                                                             | Registrar `khelde.dev` si se usa, y avisar el cambio de dirección.                                                                                                                                                                                                                   |
 
 ## Orden recomendado (para no dejar nada caído)
 
@@ -123,6 +132,7 @@ Los Custom Domains de Workers crean el DNS y el certificado solos.
    - Turnstile: quitar el hostname de `workers.dev`.
    - Access: quitar el destino de `workers.dev` del admin.
 8. Actualizar los valores por defecto de `astro.config.mjs` y la documentación (rama aparte).
+9. Cambiar los enlaces de la sección 6: CV, LinkedIn, Instagram, GitHub (repositorios, perfil y README del perfil) y los del propio portafolio.
 
 **Cuidado con el paso 7:** apagar `workers_dev` del backend **antes** de que el sitio use
 `https://api.khelde.dev/api` dejaría al sitio sin API. El sitio llama al backend por URL
@@ -138,4 +148,6 @@ pública (`VITE_API_URL`); solo el admin usa Service Binding.
 - [ ] Subir y borrar una imagen desde el admin funciona y se ve en `media.khelde.dev`.
 - [ ] `/estado` del admin: todo en "Correcto", conexión por Service Binding.
 - [ ] `r2.dev` y `workers.dev` ya no responden.
-- [ ] CV, LinkedIn y GitHub apuntan al dominio nuevo.
+- [ ] CV (PDF nuevo subido desde el admin), LinkedIn e Instagram apuntan al dominio nuevo.
+- [ ] GitHub: Website y About de los tres repositorios, Website del perfil de `muke78` y README del perfil (`muke78/muke78`) apuntan al dominio nuevo.
+- [ ] Dentro del portafolio: `README.md` y los textos del admin ya no citan `workers.dev`.
