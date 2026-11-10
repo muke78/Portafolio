@@ -17,7 +17,7 @@ interface Props {
 	title?: string;
 	/** Meta description. Defaults to the site description. */
 	description?: string;
-	/** Absolute URL of the social preview image. Defaults to /kdl.webp. */
+	/** Absolute URL of the social preview image. Defaults to /logo-og.png. */
 	image?: string;
 	/** Solo el Home tiene la puerta de la introduccion (el punto cero). */
 	intro?: boolean;
@@ -33,7 +33,7 @@ const copy = await getSiteCopy(currentLocale);
 const currentYear = new Date().getFullYear();
 const siteOrigin = site ?? new URL(url.origin);
 const canonicalUrl = new URL(url.pathname, siteOrigin).toString();
-const ogImageUrl = image ?? new URL("/kdl.webp", siteOrigin).toString();
+const ogImageUrl = image ?? new URL("/logo-og.png", siteOrigin).toString();
 const pageTitle = title ?? i18n.META.META_TITLE;
 const siteDescription = copy?.meta_description ?? i18n.META.META_DESCRIPTION;
 const pageDescription = description ?? siteDescription;
@@ -63,6 +63,13 @@ const personSchema = {
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={ogImageUrl} />
+    {!image && (
+      <>
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+      </>
+    )}
     <meta property="og:image:alt" content={i18n.META.META_IMAGE_ALT} />
     <meta property="og:site_name" content={i18n.META.META_TITLE} />
 
@@ -80,7 +87,9 @@ const personSchema = {
     <meta name="robots" content="index, follow" />
     <meta name="author" content="muke78" />
     <meta name="copyright" content={`Copyright © ${currentYear}`} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonicalUrl} />
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />

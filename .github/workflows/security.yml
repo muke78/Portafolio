@@ -48,9 +48,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
+      # CLI directo (MIT, sin licencia): gitleaks-action exige GITLEAKS_LICENSE en
+      # repos de organización. El binario se verifica contra el sha256 del release.
+      - name: Instalar gitleaks
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          curl -sSfL -o gitleaks.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
+          rm gitleaks.tgz
+
+      - name: Escanear secretos
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            ./gitleaks git --redact --no-banner --verbose --log-opts="origin/${BASE_REF}..HEAD" .
+          else
+            ./gitleaks git --redact --no-banner --verbose .
+          fi
 
   dependency-review:
     name: Revisión de dependencias nuevas
