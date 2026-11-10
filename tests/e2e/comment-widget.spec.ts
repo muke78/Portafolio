@@ -9,7 +9,9 @@ test.describe("comment widget", () => {
 	});
 
 	test("opens with role=dialog", async ({ page }) => {
-		await expect(page.getByRole("dialog", { name: "Dejar un comentario" })).toBeVisible();
+		await expect(
+			page.getByRole("dialog", { name: "Dejar un comentario" }),
+		).toBeVisible();
 	});
 
 	test("stays open when clicking inside a field", async ({ page }) => {
@@ -29,7 +31,9 @@ test.describe("comment widget", () => {
 	test("the trigger button toggles it closed", async ({ page }) => {
 		const dialog = page.getByRole("dialog", { name: "Dejar un comentario" });
 		await expect(dialog).toBeVisible();
-		await page.getByRole("button", { name: "Cerrar formulario de comentario" }).click();
+		await page
+			.getByRole("button", { name: "Cerrar formulario de comentario" })
+			.click();
 		await expect(dialog).toBeHidden();
 	});
 });
