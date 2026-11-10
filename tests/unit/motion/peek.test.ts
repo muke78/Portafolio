@@ -60,7 +60,8 @@ describe("peekScenes", () => {
 		// Cursor x + gap, centred on the cursor's y.
 		expect(gsap.getProperty(img, "x")).toBe(228);
 		expect(gsap.getProperty(img, "y")).toBe(-110);
-		expect(img.style.clipPath).toBe("inset(0% 0% 0% 0%)");
+		// jsdom 31 serializa el recorte en su forma corta (inset(0%)); antes salia con los cuatro lados.
+		expect(img.style.clipPath).toMatch(/^inset\(0%( 0% 0% 0%)?\)$/);
 	});
 
 	it("never scales the picture (it enters whole)", async () => {
