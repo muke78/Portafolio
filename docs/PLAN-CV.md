@@ -12,9 +12,11 @@ servirlo desde el admin en lugar de una URL fija en `Header.astro`.
 - ✅ ~~Decisión de abandonar Canva y maquetar en Word/Google Docs~~.
 - ✅ ~~Versión 1 del CV entregada en Word~~ (Harvard, una columna, habilidades actualizadas,
   erratas corregidas, Zascita como primer puesto, freelance agrupado).
-- 🔄 Versión 2 en redacción; falta que la persona dueña confirme rol y fechas en Zascita,
-  qué productos se pueden nombrar, idiomas y certificaciones.
-- ⏳ Paso 2 (backend, admin, sitio) no empieza hasta aprobar el CV.
+- ✅ ~~Versión 2 aprobada y PDF final~~.
+- ✅ ~~Paso 2: `POST`/`DELETE /api/cv` y migración `cv_pdf_key` en el backend, sección
+  Currículum en el admin y `Header.astro` dinámico en el sitio~~.
+- ✅ ~~PDF nuevo subido desde el admin y Blob de Vercel retirado~~.
+- ⏳ Release a `main`: solo con orden explícita.
 
 ## Estado actual
 
@@ -139,8 +141,8 @@ bucket (`PUBLIC_MEDIA_URL`), igual que las imágenes. Cuando se compre el domini
 
 ## Orden de trabajo
 
-1. Rehacer el CV (este plan, Paso 1) y revisarlo.
-2. Aprobación del CV nuevo.
-3. Backend → Admin → Sitio, una rama por repo, PR a `dev`.
-4. Subir el PDF desde el admin y retirar el Blob de Vercel.
+1. ✅ ~~Rehacer el CV (este plan, Paso 1) y revisarlo.~~
+2. ✅ ~~Aprobación del CV nuevo.~~
+3. ✅ ~~Backend → Admin → Sitio, una rama por repo, PR a `dev`.~~
+4. ✅ ~~Subir el PDF desde el admin y retirar el Blob de Vercel.~~
 5. Release a `main` solo con orden explícita.
