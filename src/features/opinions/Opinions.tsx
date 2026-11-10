@@ -1,6 +1,7 @@
-import { MessageSquare, Quote } from "lucide-react";
-import { type CSSProperties, useEffect, useState } from "react";
-import { CountryFlag } from "@/features/opinions/Items/CountryFlag";
+import { MessageSquare } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { splitIntoLanes } from "@/features/opinions/lanes";
+import { OpinionLane } from "@/features/opinions/OpinionLane";
 import { SkeletonTestimonialCard } from "@/features/opinions/SkeletonTestimonialCard";
 import { getI18N } from "@/i18n";
 import { isLocale, LOCALE_META } from "@/i18n/locales";
@@ -16,6 +17,8 @@ export const Opinions = ({
 	const [data, setData] = useState<Testimonial[]>(initialData);
 	const [loading, setLoading] = useState<boolean>(initialData.length === 0);
 	const i18n = getI18N({ currentLocale });
+	// Two lanes that read as one list: newest first, one on top, the next below.
+	const lanes = useMemo(() => splitIntoLanes(data), [data]);
 	const dateLocale =
 		LOCALE_META[isLocale(currentLocale) ? currentLocale : "es"].bcp47;
 
@@ -45,11 +48,14 @@ export const Opinions = ({
 				aria-busy="true"
 				aria-label={i18n.COMMON.LOADING}
 			>
-				<div className="flex w-max gap-6 py-4">
-					{[0, 1, 2, 3].map((i) => (
-						<SkeletonTestimonialCard key={i} />
-					))}
-				</div>
+				{/* Two strips, like the two lanes that replace them: no layout shift. */}
+				{[0, 1].map((lane) => (
+					<div key={lane} className="flex w-max gap-6 py-4">
+						{[0, 1, 2, 3].map((i) => (
+							<SkeletonTestimonialCard key={i} />
+						))}
+					</div>
+				))}
 			</div>
 		);
 	}
@@ -135,98 +141,19 @@ export const Opinions = ({
 						</div>
 					</div>
 				) : (
-					<div
-						data-marquee
-						data-mask="left"
-						className="relative w-full overflow-hidden"
-						style={
-							{
-								"--marquee-duration": `${Math.max(50, data.length * 14)}s`,
-							} as CSSProperties
-						}
-					>
-						{/* Edge fade as two static overlays: a mask over moving content
-						    would be recomposited every frame. */}
-						<div
-							aria-hidden="true"
-							className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[6%] bg-gradient-to-r from-background to-transparent"
+					<div className="flex flex-col">
+						<OpinionLane
+							items={lanes.top}
+							direction="left"
+							dateLocale={dateLocale}
+							noCountry={i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
 						/>
-						<div
-							aria-hidden="true"
-							className="pointer-events-none absolute inset-y-0 right-0 z-10 w-[6%] bg-gradient-to-l from-background to-transparent"
+						<OpinionLane
+							items={lanes.bottom}
+							direction="right"
+							dateLocale={dateLocale}
+							noCountry={i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
 						/>
-						<div
-							data-marquee-track
-							className="flex w-max gap-6 py-4 motion-safe:[animation:testimonial-marquee_var(--marquee-duration)_linear_infinite] hover:[animation-play-state:paused] focus-within:[animation-play-state:paused]"
-						>
-							{[...data, ...data].map((testimonial, i) => (
-								// biome-ignore lint/a11y/useSemanticElements: <fieldset> brings its own default border/padding UA styling that would fight this card's design - role=group keeps the semantics without it
-								<div
-									key={`${testimonial.comment_id}-${i}`}
-									role="group"
-									// biome-ignore lint/a11y/noNoninteractiveTabindex: intentional - focusing a card is what pauses the auto-scrolling marquee (see focus-within: below), not a click target
-									tabIndex={0}
-									aria-label={`${testimonial.name}: ${testimonial.description}`}
-									className="group relative w-[340px] shrink-0 rounded-xl bg-card border border-border overflow-hidden hover-lift [contain:layout_paint] focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
-								>
-									<div className="flex flex-col p-6">
-										<div className="flex items-start justify-between mb-4">
-											<div className="flex-shrink-0 rounded-lg bg-muted p-2">
-												<Quote className="w-6 h-6 text-primary" />
-											</div>
-
-											<div className="inline-flex items-center rounded-full border border-border text-muted-foreground text-xs font-mono px-2.5 py-0.5">
-												{new Date(testimonial.created_at).toLocaleDateString(
-													dateLocale,
-													{
-														day: "numeric",
-														month: "short",
-														year: "numeric",
-													},
-												)}
-											</div>
-										</div>
-
-										<div className="flex items-center gap-3 mb-4">
-											<div className="flex-1 min-w-0">
-												<div className="flex items-center gap-2 mb-1">
-													<h3 className="font-medium text-foreground text-base leading-tight truncate">
-														{testimonial.name}
-													</h3>
-													<CountryFlag
-														countryCode={testimonial.country_flag}
-														size="1em"
-													/>
-												</div>
-												<p className="text-sm text-muted-foreground truncate">
-													{testimonial.job}
-												</p>
-											</div>
-										</div>
-
-										<div className="flex-1">
-											<p className="text-muted-foreground leading-relaxed text-sm mb-4 line-clamp-4">
-												"{testimonial.description}"
-											</p>
-										</div>
-
-										<div className="flex items-center justify-between pt-4 border-t border-border">
-											<div className="flex items-center gap-2 text-xs text-muted-foreground">
-												<CountryFlag
-													countryCode={testimonial.country_flag}
-													size="1em"
-												/>
-												<span className="text-sm">
-													{testimonial.country
-														? testimonial.country
-														: i18n.OPINIONS.OPINIONS_NOT_FOUND_COUNTRY}
-												</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							))}
-						</div>
 					</div>
 				)}
 			</div>

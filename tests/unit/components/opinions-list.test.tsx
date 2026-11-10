@@ -73,7 +73,7 @@ describe("Opinions", () => {
 		).toBeInTheDocument();
 	});
 
-	it("loops the cards twice for the endless marquee, each one a focusable group", async () => {
+	it("splits the comments in two lanes that slide opposite ways", async () => {
 		vi.stubGlobal(
 			"fetch",
 			respond({
@@ -82,27 +82,67 @@ describe("Opinions", () => {
 		);
 		const { container } = render(<Opinions currentLocale="es" />);
 		await screen.findAllByText("Luis Gómez");
-		const groups = within(
-			container.querySelector("[data-marquee-track]") as HTMLElement,
-		).getAllByRole("group");
-		expect(groups).toHaveLength(4);
-		for (const g of groups) expect(g).toHaveAttribute("tabindex", "0");
-		expect(groups[0]).toHaveAccessibleName(/Ana Pérez: Un trabajo excelente/);
-		expect(container.querySelector("[data-marquee]")).toHaveStyle(
-			"--marquee-duration: 50s",
-		);
+		const lanes = container.querySelectorAll<HTMLElement>("[data-marquee]");
+		expect([...lanes].map((l) => l.dataset.marqueeDir)).toEqual([
+			"left",
+			"right",
+		]);
+		for (const lane of lanes) {
+			expect(lane.querySelectorAll("[data-marquee-track]")).toHaveLength(1);
+		}
 	});
 
-	it("slows the marquee as comments pile up", async () => {
+	it("puts the newest on the top lane and the next one below", async () => {
+		const data = [
+			comment({ comment_id: 1, name: "Vieja", created_at: "2025-01-01" }),
+			comment({ comment_id: 2, name: "Nueva", created_at: "2026-06-01" }),
+			comment({ comment_id: 3, name: "Media", created_at: "2025-08-01" }),
+		];
+		vi.stubGlobal("fetch", respond({ data }));
+		const { container } = render(<Opinions currentLocale="es" />);
+		await screen.findAllByText("Nueva");
+		const names = (lane: Element) =>
+			[...lane.querySelectorAll("[role=group]:not([data-repeat]) h3")].map(
+				(h) => h.textContent,
+			);
+		const [top, bottom] = container.querySelectorAll("[data-marquee]");
+		expect(names(top)).toEqual(["Nueva", "Vieja"]);
+		expect(names(bottom)).toEqual(["Media"]);
+	});
+
+	it("reads each comment once: the cards that close the loop are hidden and skipped by Tab", async () => {
+		vi.stubGlobal(
+			"fetch",
+			respond({
+				data: [comment(), comment({ comment_id: 2, name: "Luis Gómez" })],
+			}),
+		);
+		const { container } = render(<Opinions currentLocale="es" />);
+		await screen.findAllByText("Luis Gómez");
+		const lane = container.querySelector("[data-marquee]") as HTMLElement;
+		const real = within(lane).getAllByRole("group");
+		expect(real).toHaveLength(1); // aria-hidden copies are not in the tree
+		expect(real[0]).toHaveAttribute("tabindex", "0");
+		expect(real[0]).toHaveAccessibleName(/Luis Gómez: Un trabajo excelente/);
+		const copies = lane.querySelectorAll("[data-repeat]");
+		expect(copies.length).toBeGreaterThan(0);
+		for (const copy of copies) {
+			expect(copy).toHaveAttribute("aria-hidden", "true");
+			expect(copy).toHaveAttribute("tabindex", "-1");
+		}
+	});
+
+	it("sets the loop length from the cards in one half, the same speed on every lane", async () => {
 		const many = Array.from({ length: 10 }, (_, i) =>
 			comment({ comment_id: i + 1 }),
 		);
 		vi.stubGlobal("fetch", respond({ data: many }));
 		const { container } = render(<Opinions currentLocale="es" />);
 		await screen.findAllByText("Ana Pérez");
-		expect(container.querySelector("[data-marquee]")).toHaveStyle(
-			"--marquee-duration: 140s",
-		);
+		// 5 cards a lane, repeated to 10 so one half is wider than any screen.
+		for (const lane of container.querySelectorAll("[data-marquee]")) {
+			expect(lane).toHaveStyle("--marquee-duration: 140s");
+		}
 	});
 
 	it("formats the date in the page language", async () => {
