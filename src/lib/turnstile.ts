@@ -46,6 +46,10 @@ interface Options {
 	secret?: string;
 	dev?: boolean;
 	fetcher?: typeof fetch;
+	/** Sitio donde se resolvio el reto (el de la peticion). Si se da, `siteverify` debe coincidir. */
+	hostname?: string;
+	/** Nombre del formulario (`comment`, `contact`). Si se da, `siteverify` debe coincidir. */
+	action?: string;
 }
 
 export const verifyTurnstile = async (
@@ -55,6 +59,8 @@ export const verifyTurnstile = async (
 		secret = TURNSTILE_SECRET_KEY,
 		dev = import.meta.env.DEV,
 		fetcher = fetch,
+		hostname,
+		action,
 	}: Options = {},
 ): Promise<TurnstileResult> => {
 	if (!secret) return dev ? "ok" : "unavailable";
@@ -76,8 +82,23 @@ export const verifyTurnstile = async (
 			signal: AbortSignal.timeout(5000),
 		});
 		if (!response.ok) return "unavailable";
-		const result = (await response.json()) as { success?: unknown };
-		return result.success === true ? "ok" : "failed";
+		const result = (await response.json()) as {
+			success?: unknown;
+			hostname?: unknown;
+			action?: unknown;
+		};
+		if (result.success !== true) return "failed";
+		// Un token resuelto en otro sitio o para otro formulario no vale aqui, aunque
+		// sea valido para Cloudflare (la misma clave de sitio sirve a ambos formularios).
+		if (
+			hostname !== undefined &&
+			(typeof result.hostname !== "string" ||
+				result.hostname.toLowerCase() !== hostname.toLowerCase())
+		) {
+			return "failed";
+		}
+		if (action !== undefined && result.action !== action) return "failed";
+		return "ok";
 	} catch {
 		return "unavailable";
 	}

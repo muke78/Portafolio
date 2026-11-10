@@ -271,6 +271,7 @@ export const SendOpinions = ({ currentLocale, onClose }: SendOpinionsProps) => {
 					<div data-dialog-item>
 						<TurnstileWidget
 							locale={currentLocale}
+							action="comment"
 							onToken={setToken}
 							resetKey={resetKey}
 						/>
