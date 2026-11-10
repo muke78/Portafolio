@@ -7,6 +7,15 @@ servirlo desde el admin en lugar de una URL fija en `Header.astro`.
 > nombres de clientes, ni arquitectura interna, ni capturas, ni código. Los borradores del
 > CV viven **fuera del repo** hasta que la persona dueña los revise.
 
+## Avance
+
+- ✅ ~~Decisión de abandonar Canva y maquetar en Word/Google Docs~~.
+- ✅ ~~Versión 1 del CV entregada en Word~~ (Harvard, una columna, habilidades actualizadas,
+  erratas corregidas, Zascita como primer puesto, freelance agrupado).
+- 🔄 Versión 2 en redacción; falta que la persona dueña confirme rol y fechas en Zascita,
+  qué productos se pueden nombrar, idiomas y certificaciones.
+- ⏳ Paso 2 (backend, admin, sitio) no empieza hasta aprobar el CV.
+
 ## Estado actual
 
 - El botón "Ver CV" de `src/components/sections/Header.astro` apunta a una URL fija de
