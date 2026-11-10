@@ -59,6 +59,7 @@ export const OpinionLane = ({
 			>
 				{cards.map((testimonial, i) => (
 					<OpinionCard
+						// biome-ignore lint/suspicious/noArrayIndexKey: the lane repeats the same comment on purpose, so the id alone is not unique
 						key={`${testimonial.comment_id}-${i}`}
 						testimonial={testimonial}
 						dateLocale={dateLocale}
