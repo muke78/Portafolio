@@ -7,6 +7,10 @@ olvidar ningún lugar.
 
 > Se escribió **antes** de comprar el dominio. Los nombres de los hostnames nuevos son los
 > propuestos; si se elige otro, se ajusta la columna "Después".
+>
+> **Avance:** ✅ dominio `khelde.dev` comprado · ✅ registrado en Google Search Console ·
+> ✅ registrado en Bing Webmaster Tools. Lo tachado (~~así~~) ya está hecho. Falta todo lo
+> de Cloudflare (zona activa, Custom Domains, variables) y los enlaces externos.
 
 ## Dominios actuales
 
@@ -114,11 +118,12 @@ Son enlaces que **nadie actualiza solo**: si se olvidan, siguen mandando a `work
 | **README del perfil** (`muke78/muke78`, el `.md` que se ve en el perfil)                   | Todos los enlaces al portafolio.                                                                                                                                                                                                                                                     |
 | **El propio portafolio**                                                                   | Enlaces al sitio dentro de su contenido: `README.md` de este repositorio y cualquier texto del admin (Sobre mí, descripciones, "Textos") que cite la URL vieja. Lo que sale de `SITE_URL` (canónicos, sitemap, `robots.txt`, `llms.txt`, JSON-LD) cambia solo en el siguiente build. |
 | README y documentación                                                                     | Los tres repositorios: buscar la URL vieja (`git grep workers.dev`) y reemplazarla.                                                                                                                                                                                                  |
-| Search Console                                                                             | Registrar `khelde.dev` si se usa, y avisar el cambio de dirección.                                                                                                                                                                                                                   |
+| ~~Google Search Console~~ ✅                                                               | ~~Registrar `khelde.dev`~~ (hecho). Pendiente solo: enviar el sitemap cuando el sitio responda en el dominio nuevo.                                                                                                                                                                  |
+| ~~Bing Webmaster Tools~~ ✅                                                                | ~~Registrar `khelde.dev`~~ (hecho). Pendiente solo: enviar el sitemap cuando el sitio responda en el dominio nuevo.                                                                                                                                                                  |
 
 ## Orden recomendado (para no dejar nada caído)
 
-1. Comprar el dominio y esperar a que la zona esté **activa**.
+1. ~~Comprar el dominio~~ ✅ (comprado) y esperar a que la zona esté **activa**.
 2. Agregar los Custom Domains (sitio, backend, admin) y el de R2. **No** tocar variables todavía.
 3. Turnstile: agregar `khelde.dev`. Access: agregar `admin.khelde.dev` a la misma aplicación.
 4. Probar cada hostname nuevo: `https://api.khelde.dev/api` (salud), una imagen en
