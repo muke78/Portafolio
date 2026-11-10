@@ -45,7 +45,11 @@ describe("opinionsSchema", () => {
 	});
 
 	it("rejects a country_flag that isn't exactly 2 characters", () => {
-		expect(schema.safeParse({ ...valid, country_flag: "M" }).success).toBe(false);
-		expect(schema.safeParse({ ...valid, country_flag: "MEX" }).success).toBe(false);
+		expect(schema.safeParse({ ...valid, country_flag: "M" }).success).toBe(
+			false,
+		);
+		expect(schema.safeParse({ ...valid, country_flag: "MEX" }).success).toBe(
+			false,
+		);
 	});
 });

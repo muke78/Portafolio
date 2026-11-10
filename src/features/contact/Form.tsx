@@ -271,6 +271,7 @@ export const Form = ({
 						<div data-stagger-item>
 							<TurnstileWidget
 								locale={currentLocale}
+								action="contact"
 								onToken={setToken}
 								resetKey={resetKey}
 							/>
