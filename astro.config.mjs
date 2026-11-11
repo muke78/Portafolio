@@ -13,18 +13,17 @@ import {
 } from "./src/lib/inlineScripts.ts";
 
 // Unica fuente de la URL del sitio: canonicos, sitemap y robots.txt salen de
-// aqui. Con dominio propio: define SITE_URL en las variables de build.
-const SITE_URL = (
-	process.env.SITE_URL ??
-	"https://portafolio.erickm-gonzalez-rivera.workers.dev"
-).replace(/\/+$/, "");
+// aqui. El panel de Cloudflare puede sobrescribirla con SITE_URL (variable de build).
+const SITE_URL = (process.env.SITE_URL ?? "https://khelde.dev").replace(
+	/\/+$/,
+	"",
+);
 
 // Origen del bucket R2 (imagenes): el CSP lo permite en `img-src`. Misma variable y
 // mismo valor por defecto que `PUBLIC_MEDIA_URL` en el esquema de abajo.
-const MEDIA_ORIGIN = new URL(
-	process.env.PUBLIC_MEDIA_URL ??
-		"https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev",
-).origin;
+const DEFAULT_MEDIA_URL = "https://media.khelde.dev";
+const MEDIA_ORIGIN = new URL(process.env.PUBLIC_MEDIA_URL ?? DEFAULT_MEDIA_URL)
+	.origin;
 
 // Cloudflare Turnstile: el widget carga su script y su marco desde este origen.
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
@@ -171,19 +170,17 @@ export default defineConfig({
 			// Es una URL publica (el navegador la ve), asi que puede tener un valor
 			// por defecto: si el panel de Cloudflare no inyecta la variable de
 			// build, el build no falla. Con la variable definida (o en `.env`) ese
-			// valor manda; al tener dominio propio, cambia aqui o en el panel.
+			// valor manda.
 			VITE_API_URL: envField.string({
 				context: "client",
 				access: "public",
-				default:
-					"https://backend-portafolio.erickm-gonzalez-rivera.workers.dev/api",
+				default: "https://api.khelde.dev/api",
 			}),
-			// Origen publico del bucket R2 (imagenes). Con dominio propio:
-			// https://media.khelde.dev. Ver src/lib/media.ts.
+			// Origen publico del bucket R2 (imagenes). Ver src/lib/media.ts.
 			PUBLIC_MEDIA_URL: envField.string({
 				context: "client",
 				access: "public",
-				default: "https://pub-a3fda08feb4f417fa5634c34e7959461.r2.dev",
+				default: DEFAULT_MEDIA_URL,
 			}),
 			API_SECRET_TOKEN: envField.string({
 				context: "server",
